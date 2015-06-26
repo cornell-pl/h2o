@@ -1,1 +1,0 @@
-The pde named make plot is the one to use to make the graphs. Also included are several data files that have the data for sites in Oregon, Ithaca, Philly, and Mass.

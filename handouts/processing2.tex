@@ -1,0 +1,128 @@
+\documentclass[10pt,twocolumn]{article}
+
+\usepackage[no-math]{fontspec}
+\defaultfontfeatures{Scale=MatchLowercase,Mapping=tex-text}
+\setmainfont{Garamond Premier Pro}
+\setsansfont{Consolas}
+
+\usepackage{balance}
+\usepackage[margin=.5in]{geometry}
+\setlength{\columnsep}{1cm}
+\begin{document}
+
+\thispagestyle{empty}
+
+\twocolumn[
+\centerline{\LARGE \bf Processing Reference Sheet II}
+
+\bigskip
+\hrule
+\bigskip
+]
+
+\noindent\textbf{\large Basics}
+
+\begin{description}
+\item{\texttt{mouseClicked()}}\ \\[.25em]
+Invoked each time the mouse button is clicked.
+
+\item{\texttt{keyPressed()}}\ \\[.25em] 
+Invoked each time any key is pressed. The key pressed can be accessed
+from \texttt{key}.
+\end{description}
+
+\bigskip
+
+\noindent\textbf{\large Arrays}
+
+\begin{description}
+\item{\texttt{new A[n]}} \\[.25em]
+Creates an new array objects of type \texttt{A} of length
+\texttt{n}. 
+
+\item{\texttt{A[] = \{ v1, ... vk \};}} \\[.25em] 
+Creates a new array initialized with elements \texttt{v1} through \texttt{vk}. 
+
+
+\item{\texttt{a.length}} \\[.25em]
+The length of array \texttt{a}. 
+
+\item{\texttt{a[i]}} \\[.25em]
+The \texttt{i}th element of array \texttt{a}. 
+
+\item{\texttt{a[i] = v}} \\[.25em]
+Stores \texttt{v} as the \texttt{i}th element of array \texttt{a}. 
+
+\item{\texttt{for(int i = 0; i < a.length; i++) \{ ... \}}} \\[.25em]
+  Iterates through the elements of array \texttt{a}. In each iteration
+  of the loop, the element can be accessed using index \texttt{i}.
+\end{description}
+
+\bigskip
+
+\noindent\textbf{\large Maps}
+\begin{description}
+\item{\texttt{google\_map()}}\ \\[.25em]
+%
+Creates a new Google map object.
+
+\item{\texttt{ms\_map()}}\ \\[.25em]
+Creates a new Microsoft map object.
+
+\item{\texttt{map.draw()}}\ \\[.25em] 
+Draws map \texttt{map} on the screen.
+
+\item{\texttt{zoom\_ui(map)}}\ \\[.25em] 
+Adds handlers to enable zooming and panning using the mouse.
+
+\item{\texttt{location(str)}}\ \\[.25em] 
+Computes the geographic coordinates (latitude and longitude) from a
+string \texttt{str} containing a USGS site identifier.
+
+\item{\texttt{marker(loc)}}\ \\[.25em] 
+Creates a marker from location \texttt{loc}.
+
+\item{\texttt{zoomAndPanTo(loc,lev)}}\ \\[.25em] 
+Focuses the map at location \texttt{loc} and zooms in to level \texttt{lev}.
+
+\item{\texttt{map.addMarkers(mark)}}\ \\[.25em] 
+Adds marker \texttt{mark} to map \texttt{map}. 
+
+\end{description}
+
+\balance
+
+\bigskip
+
+\noindent\textbf{\large Graph}
+\begin{description}
+
+\item{\texttt{Water}}\ \\[.25em] 
+An object \texttt{w} of type \texttt{Water} contains the following integer fields. 
+\begin{itemize}
+\item{\texttt{year}}
+\item{\texttt{month}}
+\item{\texttt{day}}
+\item{\texttt{discharge}}
+\item{\texttt{gage}}
+\end{itemize}
+Each of these fields can be accessed using ``dot'' notation. For
+example, to access the \texttt{discharge} field, you would write
+\texttt{w.discharge}.
+
+\item{\texttt{parse(str)}}\ \\[.25em] 
+Extracts an array of \texttt{Water} objects representing stream flow
+data from a string \texttt{str} containing a USGS site identifier.
+
+\item{\texttt{sort(arr)}}\ \\[.25em] 
+Sorts the array \texttt{arr} in place. 
+
+\item{\texttt{plot(pairs,bool)}}\ \\[.25em] Creates a chart containing
+  a plot of the x-y coordinates represented in array \texttt{pairs};
+  uses a semi-logarithmic plot if \texttt{bool} is \texttt{true}.
+
+\item{\texttt{draw\_charts()}}\ \\[.25em] 
+Draws all charts on the screen.
+\end{description}
+
+\end{document}
