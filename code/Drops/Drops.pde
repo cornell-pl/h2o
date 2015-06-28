@@ -15,23 +15,31 @@ final int SPEED_MAX = 5;           // Maximum waterdrop speed
 final int FLOOR_Y = 390;           // Threshold below which waterdrops are considered not caught
 final int DROP_ADD_FREQ = 97;      // How frequently to add new water drops
 final int FONT_SIZE = 36;          // Size of game over text
+final int DIRTY_DROP_PERC = 20;     // Maximum number of dirty drops out of 100 drops 
 
 /* GLOBAL VARIABLES */
 Set drops;                         // Set of current water drops
 int lives;                         // Number of "lives" left
 int score;                         // Current score 
-PImage bucket, waterdrop, splat;   // Images
+PImage bucket;              // bucket Image
+PImage[] splats = new PImage[2];    //Splat Image 0:water;1:dirty
+PImage[] waterdrops = new PImage[2]; // Drop images 0:water;1:dirty
 
 /* DROP DATA STRUCTURE */
 class Drop {
     float x, y;                      // Drop coordinates
     float speed;                     // Drop speed
+    int type;                       // Drop type 0:water; 1:dirty 
 
     // Drop constructor
     Drop() {
-        x = random(width - waterdrop.width);
+        if(random(0,100) < DIRTY_DROP_PERC)
+           type = 1;
+        else
+          type = 0;
+        x = random(width - waterdrops[type].width);
         y = DROP_Y;             
-        speed = random(SPEED_MIN, SPEED_MAX); 
+        speed = random(SPEED_MIN, SPEED_MAX);
     }
 }
 
@@ -42,8 +50,10 @@ void setup() {
     score = 0;
     lives = LIVES;
     bucket = loadImage("bucket.png");
-    waterdrop = loadImage("waterdrop.png");
-    splat = loadImage("splat.png");
+    waterdrops[0] = loadImage("waterdrop.png");
+    waterdrops[1] = loadImage("dirtydrop.png");
+    splats[0] = loadImage("watersplat.png");
+    splats[1] = loadImage("dirtysplat.png");
     drops = new HashSet();
 }
 
@@ -51,7 +61,7 @@ void setup() {
 // Check if d has been caught
 boolean caught(Drop d) {
     return (d.x >= mouseX - bucket.width / 2 && 
-            d.x + waterdrop.width <= mouseX - bucket.width / 2 + bucket.width &&
+            d.x + waterdrops[d.type].width <= mouseX - bucket.width / 2 + bucket.width &&
             d.y >= FLOOR_Y - bucket.height &&
             d.y <= FLOOR_Y);
 }
@@ -71,7 +81,7 @@ void draw() {
         // Draw the lives
         text("Lives: ", LIVES_TEXT_X, LIVES_TEXT_Y);
         for (int i = 0; i < lives; i++) {
-            image(waterdrop, LIVES_DROP_X + waterdrop.width * i, LIVES_DROP_Y);    
+            image(waterdrops[0], LIVES_DROP_X + waterdrops[0].width * i, LIVES_DROP_Y);    
         }
 
         // Draw the current score
@@ -96,17 +106,26 @@ void draw() {
 
             if (caught(d)) {
                 // If d caught, increment score
-                score++;
-                image(splat,d.x,d.y);
-                iter.remove();
+                if(d.type == 0){
+                  score++;
+                  image(splats[d.type],d.x,d.y);
+                  iter.remove();
+                }else{
+                  lives--;
+                  score--;
+                  image(splats[d.type],d.x,d.y);
+                  iter.remove();
+                }
             } else if (dropped(d)) {
                 // Otherwise if d dropped, decrement lives
-                lives--;
-                image(splat,d.x,d.y);
+                if(d.type == 0){
+                  lives--;
+                }
+                image(splats[d.type],d.x,d.y);
                 iter.remove();
             } else {
                 // Otherwise, just redraw d at its new position
-                image(waterdrop,d.x,d.y); 
+                image(waterdrops[d.type],d.x,d.y); 
             }
         }
     } else {
