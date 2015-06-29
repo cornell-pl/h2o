@@ -1,5 +1,17 @@
 import java.util.*;
 
+/* Screen coordinates have the origin in the top left corner,
+   and positive x and y being left and down, respectively.
+   
+   --------> x
+   |
+   |
+   |
+   v
+   y
+   
+*/
+
 /* CONSTANTS */
 final int BOARD_SIZE = 400;        // Size of the game board
 final int LIVES = 5;               // Number of "lives" each player gets
@@ -8,17 +20,17 @@ final int LIVES_TEXT_Y = 25;       // Y-coordinate of lives text on board
 final int LIVES_DROP_X = 50;       // X-coordinate of first lives waterdrop on board
 final int LIVES_DROP_Y = 5;        // Y-coordinate of first lives waterdrop on board
 final int SCORE_TEXT_X = 10;       // X-coordinate of score text on board
-final int SCORE_TEXT_Y = 60;       // X-coordinate of score text on board
+final int SCORE_TEXT_Y = 60;       // Y-coordinate of score text on board
 final int DROP_Y = -50;            // Y-coordinate of waterdrops on board
 final int SPEED_MIN = 1;           // Minimum waterdrop speed
 final int SPEED_MAX = 5;           // Maximum waterdrop speed
 final int FLOOR_Y = 390;           // Threshold below which waterdrops are considered not caught
 final int DROP_ADD_FREQ = 97;      // How frequently to add new water drops
 final int FONT_SIZE = 36;          // Size of game over text
-final int DIRTY_DROP_PERC = 20;     // Maximum number of dirty drops out of 100 drops 
+final int DIRTY_DROP_PERC = 20;    // Maximum number of dirty drops out of 100 drops 
 
 /* GLOBAL VARIABLES */
-Set drops;                         // Set of current water drops
+Set<Drop> drops;                   // Set of current water drops
 int lives;                         // Number of "lives" left
 int score;                         // Current score 
 PImage bucket;              // bucket Image
@@ -46,7 +58,7 @@ class Drop {
 /* SETUP BOARD */
 void setup() {
     size(BOARD_SIZE, BOARD_SIZE);
-    smooth();
+    //smooth();
     score = 0;
     lives = LIVES;
     bucket = loadImage("bucket.png");
