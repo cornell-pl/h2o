@@ -50,7 +50,7 @@ void keyHandler() {
 
 void draw() {
   if (keyPressed) {
-     keyAction(); 
+     keyHandler(); 
   }
   map.draw();
 }
