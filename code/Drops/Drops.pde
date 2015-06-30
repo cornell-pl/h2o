@@ -24,7 +24,8 @@ final int SCORE_TEXT_Y = 60;       // Y-coordinate of score text on board
 final int DROP_Y = -50;            // Y-coordinate of waterdrops on board
 final int SPEED_MIN = 1;           // Minimum waterdrop speed
 final int SPEED_MAX = 5;           // Maximum waterdrop speed
-final int FLOOR_Y = 390;           // Threshold below which waterdrops are considered not caught
+final int FLOOR_Y = 375;           // Threshold below which waterdrops are considered not caught
+final int ABS_FLOOR_Y = 400;           // Threshold below which waterdrops are considered vanished
 final int DROP_ADD_FREQ = 97;      // How frequently to add new water drops
 final int FONT_SIZE = 36;          // Size of game over text
 final int DIRTY_DROP_PERC = 20;    // Maximum number of dirty drops out of 100 drops 
@@ -82,6 +83,9 @@ boolean caught(Drop d) {
 boolean dropped(Drop d) {
     return (d.y >= FLOOR_Y);
 }
+boolean vanished(Drop d) {
+    return (d.y >= ABS_FLOOR_Y);
+}
 
 /* DRAW BOARD */
 void draw() {
@@ -115,7 +119,7 @@ void draw() {
 
             // Move d by its speed
             d.y += d.speed;
-
+            
             if (caught(d)) {
                 // If d caught, increment score
                 if(d.type == 0){
@@ -128,21 +132,22 @@ void draw() {
                   image(splats[d.type],d.x,d.y);
                   iter.remove();
                 }
-            } else if (dropped(d)) {
-                // Otherwise if d dropped, decrement lives
+            } else if (vanished(d)) {
                 if(d.type == 0){
                   lives--;
                 }
-                image(splats[d.type],d.x,d.y);
                 iter.remove();
-            } else {
+            } else if (dropped(d)) {
+                // Otherwise if d dropped, decrement lives
+                d.speed=0.5;
+                image(splats[d.type],d.x,d.y);
+            } else {              
                 // Otherwise, just redraw d at its new position
                 image(waterdrops[d.type],d.x,d.y); 
             }
         }
     } else {
         // If the player does not have lives left
-
         textSize(FONT_SIZE);
         textAlign(CENTER);
 
