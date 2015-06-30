@@ -14,11 +14,11 @@
 \thispagestyle{empty}
 
 \twocolumn[
-\centerline{\LARGE \bf Processing Reference Sheet}
+\centerline{\LARGE \bf Drops Reference Sheet}
 
-\bigskip
+\medskip
 \hrule
-\bigskip
+\medskip
 ]
 
 \noindent\textbf{\large Drop}
@@ -34,6 +34,10 @@
 \item{\texttt{d.speed}}\ \\[.25em]
 %
   The speed (in the $y$ direction) of \texttt{d} in pixels per frame. 
+
+\item{\texttt{d.dirty}}\ \\[.25em]
+%
+  A boolean that is \texttt{true} if \texttt{d} is a dirty drop and \texttt{false} otherwise.
 
 \item{\texttt{d.draw()}}\ \\[.25em]
 %
@@ -53,33 +57,9 @@
 
 \end{description}
 
-\bigskip
+\medskip
 
-\noindent\textbf{Graphics}
-\begin{description}
-\item{\texttt{background(c)}}\ \\[.25em]
-%
-Sets the background color to \texttt{c}. There are many ways to describe colors: 
-\begin{itemize}
-\item \texttt{n}: a single number between \texttt{0} (black) and \texttt{255} (white) describes a shade of grey. 
-\item \texttt{(r,g,b)}: a triple of numbers each ranging from
-  \texttt{0} to \texttt{255}, describe a color in terms of the
-  relative amounts of red, green, and blue.
-\end{itemize}
-
-\item{\texttt{fill(c)}}\ \\[.25em]
-Sets the current fill color to \texttt{c}. 
-
-\item{\texttt{ellipse(x,y,w,h)}}\ \\[.25em]
-Draws an ellipse at coordinates \texttt{x} and \texttt{y} with witdth \texttt{w} and height \texttt{h}. 
-
-\item{\texttt{rect(x,y,w,h)}}\ \\[.25em]
-Draws a rectangle at coordinates \texttt{x} and \texttt{y} with witdth \texttt{w} and height \texttt{h}. 
-\end{description}
-
-\bigskip
-
-\noindent\textbf{\large Conditionals, Loops, and Control Flow}
+\noindent\textbf{\large Conditionals and Return}
 \begin{description}
 
 \item{\texttt{if(b) \{ ... \} else \{ ... \}}}\ \\[.25em] 
@@ -87,18 +67,12 @@ Draws a rectangle at coordinates \texttt{x} and \texttt{y} with witdth \texttt{w
 Conditionally executes the first block of code if \texttt{b} evaluates to
 \texttt{true}, and the second block of code if it evaluates to \texttt{false}.
 
-\item{\texttt{for(Object o : drops.toArray()) \\ \{ Drop d = (Drop) o; ... \}}} \ \\[.25em]
-%
-  Iterates over each drop \texttt{d} in \texttt{drops}. Within
-  the block of code \texttt{\{...\}}, the variable
-  \texttt{d} refers to the current drop.
-
 \item{\texttt{return b}} \ \\[.25em]
 %
   Returns \texttt{b} as the value of the current method.
 \end{description}
 
-\bigskip
+\medskip
 
 \balance
 
@@ -118,8 +92,70 @@ Conditionally executes the first block of code if \texttt{b} evaluates to
   Multiplies \texttt{n1} by \texttt{n2}. 
 
 \item{\texttt{n1 / n2}} \ \\[.25em]
-  Divides \texttt{n1} by \texttt{n2} (with no remainder);
+  Divides \texttt{n1} by \texttt{n2} (with no remainder).
 \end{description}
 
+\medskip
+
+\noindent{\textbf{Files}
+\begin{description}
+\item{\texttt{Drops}}\ \\[.25em]
+The ``main'' file. Your code goes here.
+
+\item{\texttt{Constants}}\ \\[.25em] 
+Defines constants that determine the basic parameters of the game.
+
+\item{\texttt{Globals}}\ \\[.25em] 
+Declares global variables that store the game state.
+
+\item{\texttt{Draw}}\ \\[.25em] 
+Defines the main \texttt{draw} method, which is invoked every time the screen refreshes.
+
+\item{\texttt{Drop}}\ \\[.25em] 
+Defines the \texttt{Drop} data structure.
+
+\item{\texttt{Setup}}\ \\[.25em] 
+Defines the main \texttt{setup} method, which is invoked once when the application begins.
+
+\end{description}
+
+\medskip
+
+\noindent\textbf{Advanced Graphics}
+\begin{description}
+\item{\texttt{background(c)}}\ \\[.25em]
+%
+Sets the background color to \texttt{c}. There are many ways to describe colors: 
+\begin{itemize}
+\item \texttt{n}: a single number between \texttt{0} (black) and \texttt{255} (white) describes a shade of grey. 
+\item \texttt{(r,g,b)}: a triple of numbers each ranging from
+  \texttt{0} to \texttt{255}, describe a color in terms of the
+  relative amounts of red, green, and blue.
+\end{itemize}
+
+\item{\texttt{fill(c)}}\ \\[.25em]
+Sets the current fill color to \texttt{c}. 
+
+\item{\texttt{ellipse(x,y,w,h)}}\ \\[.25em]
+Draws an ellipse at coordinates \texttt{x} and \texttt{y} with witdth \texttt{w} and height \texttt{h}. 
+
+\item{\texttt{rect(x,y,w,h)}}\ \\[.25em]
+Draws a rectangle at coordinates \texttt{x} and \texttt{y} with witdth \texttt{w} and height \texttt{h}. 
+
+\item{\texttt{mouseX}}\ \\[.25em]
+%
+The current $x$ coordinate of the mouse pointer.
+
+\item{\texttt{mouseY}}\ \\[.25em]
+%
+The current $y$ coordinate of the mouse pointer.
+
+\item{\texttt{mouseClicked()}}\ \\[.25em]
+Invoked each time the mouse button is clicked.
+
+\item{\texttt{keyPressed()}}\ \\[.25em] 
+Invoked each time any key is pressed. The key pressed can be accessed
+from \texttt{key}.
+\end{description}
 
 \end{document}
