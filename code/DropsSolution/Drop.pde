@@ -22,6 +22,24 @@ class Drop {
       return dirty;
    }
    
+   // Check if d has been caught
+   boolean caught() {
+     return (x >= mouseX - bucket.width / 2 && 
+             x + img.width <= mouseX - bucket.width / 2 + bucket.width &&
+             y >= FLOOR_Y - bucket.height &&
+             y <= FLOOR_Y);
+     }
+
+  // Check if d has hit the floor
+  boolean splatted() {
+      return (y >= SPLAT_Y);
+  }
+
+  // Check if d has been dropped
+  boolean dropped() {
+      return (y >= FLOOR_Y);
+  }
+   
    void splat() {
       if (dirty) {
         img = loadImage("dirtysplat.png");

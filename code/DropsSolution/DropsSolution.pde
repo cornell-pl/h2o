@@ -4,7 +4,7 @@ import java.util.*;
 boolean process(Drop d) {
   // Move d by its speed
   d.y += d.speed;
-  if (caught(d)) {
+  if (d.caught()) {
     // If d caught, increment score unless dirty
     if(d.dirty()) {
       lives--;
@@ -13,13 +13,13 @@ boolean process(Drop d) {
       score++;
     }
     return false;
-  } else if (dropped(d)) {
+  } else if (d.dropped()) {
     // If d dropped, decrement lives unless dirty
     if(!d.dirty()) {
       lives--;
     }
     return false;
-  } else if (splat(d)) {
+  } else if (d.splatted()) {
     // Otherwise if d splatted, slow down, change image, and draw
     d.speed=0.5;
     d.splat();

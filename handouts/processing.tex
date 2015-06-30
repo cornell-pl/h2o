@@ -5,6 +5,8 @@
 \setmainfont{Garamond Premier Pro}
 \setsansfont{Consolas}
 
+\usepackage{balance}
+
 \usepackage[margin=.5in]{geometry}
 \setlength{\columnsep}{1cm}
 \begin{document}
@@ -19,33 +21,36 @@
 \bigskip
 ]
 
-\noindent\textbf{\large Basics}
+\noindent\textbf{\large Drop}
 \begin{description}
-\item{\texttt{setup()}}\ \\[.25em]
+\item{\texttt{d.x}}\ \\[.25em]
 %
-  Invoked once at the start of the execution of the application to
-  initialize the screen and set global variables.
+  The $x$ coordinate of \texttt{d} on the canvas. 
 
-\item{\texttt{draw()}} \ \\[.25em]
+\item{\texttt{d.y}}\ \\[.25em]
 %
-  Invoked repeatedly throughout the execution of the application to
-  re-draw the screen.
+  The $y$ coordinate of \texttt{d} on the canvas. 
 
-\item{\texttt{size(width,height)}} \ \\[.25em]
-  Sets the size of the screen to \texttt{width} and \texttt{height}
-  pixels.
+\item{\texttt{d.speed}}\ \\[.25em]
+%
+  The speed (in the $y$ direction) of \texttt{d} in pixels per frame. 
 
-\item{\texttt{millis()}} \ \\[.25em]
+\item{\texttt{d.draw()}}\ \\[.25em]
 %
-  Returns the number of milliseconds that have elapsed since the start
-  of the execution of the application.
-\item{\texttt{mouseX}} \ \\[.25em]
-%
-  Returns the current x-coordinate of the mouse.
+  Draw \texttt{d} at its current $x$ and $y$ position.
 
-\item{\texttt{mouseY}} \ \\[.25em]
+\item{\texttt{d.caught()}}\ \\[.25em]
 %
-  Returns the current y-coordinate of the mouse.
+  Returns \texttt{true} if \texttt{d} has been caught in the bucket.
+
+\item{\texttt{d.splatted()}}\ \\[.25em]
+%
+  Returns \texttt{true} if \texttt{d} is about to hit the floor.
+
+\item{\texttt{d.dropped()}}\ \\[.25em]
+%
+  Returns \texttt{true} if \texttt{d} has hit the floor.
+
 \end{description}
 
 \bigskip
@@ -74,7 +79,7 @@ Draws a rectangle at coordinates \texttt{x} and \texttt{y} with witdth \texttt{w
 
 \bigskip
 
-\noindent\textbf{\large Conditionals and Loops}
+\noindent\textbf{\large Conditionals, Loops, and Control Flow}
 \begin{description}
 
 \item{\texttt{if(b) \{ ... \} else \{ ... \}}}\ \\[.25em] 
@@ -87,9 +92,15 @@ Conditionally executes the first block of code if \texttt{b} evaluates to
   Iterates over each drop \texttt{d} in \texttt{drops}. Within
   the block of code \texttt{\{...\}}, the variable
   \texttt{d} refers to the current drop.
+
+\item{\texttt{return b}} \ \\[.25em]
+%
+  Returns \texttt{b} as the value of the current method.
 \end{description}
 
 \bigskip
+
+\balance
 
 \noindent\textbf{\large Assignment and Arithmetic}
 \begin{description}
@@ -103,76 +114,12 @@ Conditionally executes the first block of code if \texttt{b} evaluates to
 \item{\texttt{n1 - n2}} \ \\[.25em]
   Subtracts \texttt{n1} from \texttt{n2}. 
 
-\item{\texttt{n1 \% n2}}\ \\[.25em]
-  Calculates the remainder after dividing \texttt{n1} by \texttt{n2}. 
+\item{\texttt{n1 * n2}} \ \\[.25em]
+  Multiplies \texttt{n1} by \texttt{n2}. 
+
+\item{\texttt{n1 / n2}} \ \\[.25em]
+  Divides \texttt{n1} by \texttt{n2} (with no remainder);
 \end{description}
 
-\bigskip
-
-\noindent\textbf{\large Drops}
-\begin{description}
-
-\item{\texttt{new Drop()}}\ \\[.25em]
-% 
-Creates a new drop at the top of the screen with a random x-coordinate and speed. 
-
-\item{\texttt{d.x}}\ \\[.25em]
-% 
-The x-coordinate of drop \texttt{d}.
-
-\item{\texttt{d.y}}\ \\[.25em]
-% 
-The x-coordinate of drop \texttt{d}.
-\item{\texttt{d.speed}}\ \\[.25em]
-% 
-The speed of drop \texttt{d}.
-
-\item{\texttt{d.caught()}}\ \\[.25em]
-% 
-Returns \texttt{true} if \texttt{d} has been caught by the bucket, and
-\texttt{false} otherwise.
-
-\item{\texttt{d.dropped()}}\ \\[.25em]
-% 
-Returns \texttt{true} if \texttt{d} has been dropped, and
-\texttt{false} otherwise.
-
-\item{\texttt{drops.add(d)}}\ \\[.25em]
-% 
-Add \texttt{d} to the set \texttt{drops}.
-
-\item{\texttt{drops.remove(d)}}\ \\[.25em]
-% 
-Remove \texttt{d} from the set \texttt{drops}.
-
-\end{description}
-
-\bigskip
-
-\noindent\textbf{\large Helpers}
-\begin{description}
-
-\item{\texttt{draw\_drop(d)}}\ \\[.25em] 
-%
-Draws drop \texttt{d} on the screen. 
-
-\item{\texttt{draw\_bucket(x)}}\ \\[.25em] 
-% 
-Draws a bucket image at \texttt{x} pixels to the right of the left
-edge of the screen.
-
-\item{\texttt{draw\_lives()}}\ \\[.25em] 
-% 
-Draws the current number of remaining ``lives.''
-
-\item{\texttt{draw\_score()}}\ \\[.25em] 
-% 
-Draws the current score.
-
-\item{\texttt{draw\_game\_over()}}\ \\[.25em] 
-%
-Draws a ``game over'' screen and prints the final score. 
-
-\end{description}
 
 \end{document}
