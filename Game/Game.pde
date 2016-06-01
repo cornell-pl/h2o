@@ -34,14 +34,14 @@ void initialize(int x, int y) {
 void initalizeRiver1() {
   /* Adds River Tiles at designated Locations
   River design 1 used. (See Excel sheet)*/
-  for (int i=142; i<=158; i++) { 
+  for (int i=141; i<=157; i++) { 
     River r = new River();
     Tile t = new Tile(r);    //River Tiles have no (zero) slope and soil values.
     Location loc = gameMap.get(i);
     loc.changeTile(t);
     riverLocs.add(loc);
   }
-  for (int i=170; i<=390; i+=20) { 
+  for (int i=169; i<=389; i+=20) { 
     River r = new River();
     Tile t = new Tile(r);
     Location loc = gameMap.get(i);
@@ -85,19 +85,19 @@ void addFactory() {
 }
 
 void trialRun1() {
-  /* Trial run of game for testing. Factory added at 55 and 141, Farm added at 112 */
+  /* Trial run of game for testing. Factory added at 54 and 140, Farm added at 111 */
   Factory fc1 = new Factory();
-  Location loc1 = gameMap.get(55);
+  Location loc1 = gameMap.get(54);
   loc1.changeLandUse(fc1);
   luLocs.add(loc1);
   
   Factory fc2 = new Factory();
-  Location loc2 = gameMap.get(141);
+  Location loc2 = gameMap.get(140);
   loc2.changeLandUse(fc2);
   luLocs.add(loc2);
   
   Farm fm1 = new Farm();
-  Location loc3 = gameMap.get(112);
+  Location loc3 = gameMap.get(111);
   loc3.changeLandUse(fm1);
   luLocs.add(loc3);
   
