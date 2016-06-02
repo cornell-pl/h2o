@@ -8,19 +8,20 @@ void setup() {
 void draw() {
 }
 
-ArrayList<Location> gameMap = new ArrayList<Location>(); //List of all grid Locations on game map
+Location[][] gameMap; //2D Matrix of all grid Locations on game map
 ArrayList<Location> luLocs = new ArrayList<Location>(); //List of all LandUse (excluding GreenFields) Locations on game map
 ArrayList<Location> riverLocs = new ArrayList<Location>(); //List of all River Locations on game map
 
 void initialize(int s) {
   /*Initializes a game with square gameboard of linear dimension s 
   All locations are initialized with GreenFields*/
-   for (int y=1; y<=s; y++) {
-     for (int x=1; x<=s; x++) {
+  gameMap = new Location[s][s];
+   for (int y=0; y<s; y++) {
+     for (int x=0; x<s; x++) {
        GreenField gf = new GreenField();
        Tile t = new Tile(gf, 0, 0); //Default zero values for slope and soil
        Location l = new Location(x, y, t);
-       gameMap.add(l);
+       gameMap[y][x] = l;
      }
    }
 }
@@ -34,17 +35,17 @@ void initialize(int x, int y) {
 void initalizeRiver1() {
   /* Adds River Tiles at designated Locations
   River design 1 used. (See Excel sheet)*/
-  for (int i=141; i<=157; i++) { 
+  for (int x=1; x<=17; x++) { 
     River r = new River();
     Tile t = new Tile(r);    //River Tiles have no (zero) slope and soil values.
-    Location loc = gameMap.get(i);
+    Location loc = gameMap[7][x];
     loc.changeTile(t);
     riverLocs.add(loc);
   }
-  for (int i=169; i<=389; i+=20) { 
+  for (int y=7; y<=19; y++) { 
     River r = new River();
     Tile t = new Tile(r);
-    Location loc = gameMap.get(i);
+    Location loc = gameMap[y][9];
     loc.changeTile(t);
     riverLocs.add(loc);
   }
@@ -85,19 +86,19 @@ void addFactory() {
 }
 
 void trialRun1() {
-  /* Trial run of game for testing. Factory added at 54 and 140, Farm added at 111 */
+  /* Trial run of game for testing. Factory added at <14, 2> and <0, 7>, Farm added at <11, 5> */
   Factory fc1 = new Factory();
-  Location loc1 = gameMap.get(54);
+  Location loc1 = gameMap[2][14];
   loc1.changeLandUse(fc1);
   luLocs.add(loc1);
   
   Factory fc2 = new Factory();
-  Location loc2 = gameMap.get(140);
+  Location loc2 = gameMap[7][0];
   loc2.changeLandUse(fc2);
   luLocs.add(loc2);
   
   Farm fm1 = new Farm();
-  Location loc3 = gameMap.get(111);
+  Location loc3 = gameMap[5][11];
   loc3.changeLandUse(fm1);
   luLocs.add(loc3);
   
