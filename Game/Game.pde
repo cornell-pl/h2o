@@ -18,9 +18,9 @@ class Watershed {
     /* Constructor 1: Initializes a square watershed of linear dimension s units */
     isSquare = true;
     size = s;
+    drawGrid(s);      //Draws the grid
     initialize(s);    //Creates the Location array for the watershed
     initializeRiver1();    //Creates the river
-    drawGrid(s);      //Draws the grid
   }
   
   Watershed(int x, int y) {

@@ -32,4 +32,5 @@ void drawTile(int x, int y, color c) {
   int ypos = 10;
   fill(c);
   rect(x*w + xpos, y*w + ypos, w, h);
+  fill(255);
 }
