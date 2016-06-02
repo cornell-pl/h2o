@@ -81,7 +81,6 @@ float linearDecayPollution() {
   return ldPollutionTotal;
 }
 
-//TODO: add functions for all landuses. To take in a set of coordinates as argument
 void addFactory(int x, int y) {
   /* Places a new Factory at coordinate <x, y> on the map. */
   Factory fc = new Factory();
@@ -96,6 +95,14 @@ void addFarm(int x, int y) {
   Location loc = gameMap[y][x];
   loc.changeLandUse(fm);
   if (!luLocs.contains(loc)) luLocs.add(loc);
+}
+
+void removeLandUse(int x, int y) {
+  /* Removes LandUse at coordinate <x, y> on the map. (changes them to GreenFields) */
+  GreenField gf= new GreenField();
+  Location loc = gameMap[y][x];
+  loc.changeLandUse(gf);
+  if (luLocs.contains(loc)) luLocs.remove(loc);  //Conditional allows this method to be used on GreenField Tile
 }
 
 void trialRun1() {
