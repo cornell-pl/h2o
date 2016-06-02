@@ -21,7 +21,7 @@ void initialize(int s) {
        GreenField gf = new GreenField();
        Tile t = new Tile(gf, 0, 0); //Default zero values for slope and soil
        Location l = new Location(x, y, t);
-       gameMap[y][x] = l;
+       gameMap[y][x] = l; //helloooooo
      }
    }
 }
@@ -82,25 +82,27 @@ float linearDecayPollution() {
 }
 
 //TODO: add functions for all landuses. To take in a set of coordinates as argument
-void addFactory() {
+void addFactory(int x, int y) {
+  /* Places a new Factory at coordinate <x, y> on the map. */
+  Factory fc = new Factory();
+  Location loc = gameMap[y][x];
+  loc.changeLandUse(fc);
+  if (!luLocs.contains(loc)) luLocs.add(loc);
+}
+
+void addFarm(int x, int y) {
+  /* Places a new Factory at coordinate <x, y> on the map. */
+  Farm fm = new Farm();
+  Location loc = gameMap[y][x];
+  loc.changeLandUse(fm);
+  if (!luLocs.contains(loc)) luLocs.add(loc);
 }
 
 void trialRun1() {
   /* Trial run of game for testing. Factory added at <14, 2> and <0, 7>, Farm added at <11, 5> */
-  Factory fc1 = new Factory();
-  Location loc1 = gameMap[2][14];
-  loc1.changeLandUse(fc1);
-  luLocs.add(loc1);
-  
-  Factory fc2 = new Factory();
-  Location loc2 = gameMap[7][0];
-  loc2.changeLandUse(fc2);
-  luLocs.add(loc2);
-  
-  Farm fm1 = new Farm();
-  Location loc3 = gameMap[5][11];
-  loc3.changeLandUse(fm1);
-  luLocs.add(loc3);
+  addFactory(14, 2);
+  addFactory(0, 7);
+  addFarm(11, 5);
   
   println("Simple sum of all pollution: ", sumPollution());
   println("Total pollution entering river after linear decay: ", linearDecayPollution());
