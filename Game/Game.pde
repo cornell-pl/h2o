@@ -1,9 +1,23 @@
+Watershed WS;
+  
 void setup() {
-  size(600, 600);
+  size(700, 700);
   trialRun1();
+  commandBox();
 }
 
 void draw() {
+  if (key == CODED && keyCode == ENTER) {
+    command = cp5.get(Textfield.class,"input command").getText();
+    locX = Integer.parseInt(cp5.get(Textfield.class,"Location X").getText());
+    locY = Integer.parseInt(cp5.get(Textfield.class,"LocationY").getText());
+    println(command, locX, locY);
+    
+    if (command == "FC") {
+      WS.addFactory(locX, locY);
+      println("added Factory");
+    }
+  }
 }
 
 class Watershed {
@@ -31,8 +45,8 @@ class Watershed {
     drawGrid(x,y);
   }
 
-  void initialize(int s) {
-    /*Initializes a game with square game map of linear dimension s units  //<>//
+  void initialize(int s) { //<>//
+    /*Initializes a game with square game map of linear dimension s units 
     All locations are initialized with GreenFields*/
     gameMap = new Location[s][s];
      for (int y=0; y<s; y++) {
@@ -56,6 +70,7 @@ class Watershed {
            Tile t = new Tile(gf, 0, 0); //Default zero values for slope and soil
            Location l = new Location(x, y, t);
            gameMap[y][x] = l;
+           drawTile(x, y, gf.getIcon());
          }
        }
    }
@@ -143,7 +158,7 @@ class Watershed {
 void trialRun1() {
   /* Trial run of game for testing. Factory added at <14, 2> and <0, 7>, 
   Farm added at <11, 5>; includes test of removeLandUse() */
-  Watershed WS = new Watershed(20);
+  WS = new Watershed(20);
   WS.addFactory(14, 2);
   WS.addFactory(0, 7);
   WS.addFarm(11, 5);

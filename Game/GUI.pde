@@ -1,3 +1,5 @@
+import controlP5.*;
+
 void drawGrid(int s) {
   /* Draws a square tile grid of linear dimension s units */
   int w = 20;    //width of a tile
@@ -32,5 +34,45 @@ void drawTile(int x, int y, color c) {
   int ypos = 10;
   fill(c);
   rect(x*w + xpos, y*w + ypos, w, h);
-  fill(255);
+  fill(255);    //resets to white.
+}
+
+//**** Implements a command text box for interaction  ****//
+String command;
+int locX;
+int locY;
+ControlP5 cp5;
+
+void commandBox() {
+  cp5 = new ControlP5(this);
+  PFont font = createFont("arial", 18);
+  
+  cp5.addTextfield("input command")
+     .setPosition(20, 450)
+     .setSize(200,40)
+     .setFont(font)
+     .setFocus(true)
+     .setColor(color(255))
+     ;
+  
+  cp5.addTextfield("Location X")
+     .setPosition(20, 550)
+     .setSize(80,40)
+     .setFont(font)
+     .setFocus(true)
+     .setColor(color(255))
+     ;
+     
+  cp5.addTextfield("Location Y")
+   .setPosition(160, 550)
+   .setSize(80,40)
+   .setFont(font)
+   .setFocus(true)
+   .setColor(color(255))
+   ;
+}
+
+void doStuff(String textValue) {
+  if (textValue == "addFC") {
+  }
 }
