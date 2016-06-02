@@ -7,7 +7,11 @@ void setup() {
 }
 
 void draw() {
-  if (key == CODED && keyCode == ENTER) {
+  keyPressed();
+}
+
+void keyPressed(){
+  if (keyCode == ENTER) {
     command = cp5.get(Textfield.class,"input command").getText();
     locX = Integer.parseInt(cp5.get(Textfield.class,"Location X").getText());
     locY = Integer.parseInt(cp5.get(Textfield.class,"LocationY").getText());
