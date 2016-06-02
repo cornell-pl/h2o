@@ -10,9 +10,14 @@ class Watershed {
   Location[][] gameMap; //2D Matrix of all grid Locations on game map
   ArrayList<Location> luLocs = new ArrayList<Location>(); //List of all LandUse (excluding GreenFields) Locations on game map
   ArrayList<Location> riverLocs = new ArrayList<Location>(); //List of all River Locations on game map
+  boolean isSquare;
+  int size;
+  int[] sizeXY = new int[2];
   
   Watershed(int s) {
     /* Constructor 1: Initializes a square watershed of linear dimension s units */
+    isSquare = true;
+    size = s;
     initialize(s);    //Creates the Location array for the watershed
     initializeRiver1();    //Creates the river
     drawGrid(s);      //Draws the grid
@@ -20,6 +25,8 @@ class Watershed {
   
   Watershed(int x, int y) {
     /* Constructor 2: Initializes a watershed of dimension x*y units */
+    isSquare = false;
+    sizeXY[0] = x; sizeXY[1] = y;
     initialize(x, y);
     drawGrid(x,y);
   }
@@ -34,6 +41,7 @@ class Watershed {
          Tile t = new Tile(gf, 0, 0); //Default zero values for slope and soil
          Location l = new Location(x, y, t);
          gameMap[y][x] = l;
+         drawTile(x, y, gf.getIcon());
        }
      }
   }
@@ -51,7 +59,6 @@ class Watershed {
          }
        }
    }
-  
 
   void initializeRiver1() {
     /* Adds River Tiles at designated Locations
@@ -62,6 +69,7 @@ class Watershed {
       Location loc = gameMap[7][x];
       loc.changeTile(t);
       riverLocs.add(loc);
+      drawTile(x, 7, r.getIcon());
     }
     for (int y=7; y<=19; y++) { 
       River r = new River();
@@ -69,6 +77,7 @@ class Watershed {
       Location loc = gameMap[y][9];
       loc.changeTile(t);
       riverLocs.add(loc);
+      drawTile(9, y, r.getIcon());
     }
   }
   
@@ -103,27 +112,30 @@ class Watershed {
   }
   
   void addFactory(int x, int y) {
-    /* Places a new Factory at coordinate <x, y> on the map. */
+    /* Places a new Factory at Location <x, y> on the map. */
     Factory fc = new Factory();
     Location loc = gameMap[y][x];
     loc.changeLandUse(fc);
     if (!luLocs.contains(loc)) luLocs.add(loc);
+    drawTile(x, y, fc.getIcon());
   }
   
   void addFarm(int x, int y) {
-    /* Places a new Factory at coordinate <x, y> on the map. */
+    /* Places a new Farm at Location <x, y> on the map. */
     Farm fm = new Farm();
     Location loc = gameMap[y][x];
     loc.changeLandUse(fm);
     if (!luLocs.contains(loc)) luLocs.add(loc);
+    drawTile(x, y, fm.getIcon());    //!!!! x*20, y*20 is bad implementation. TO BE FIXED
   }
   
   void removeLandUse(int x, int y) {
-    /* Removes LandUse at coordinate <x, y> on the map. (changes them to GreenFields) */
+    /* Removes LandUse at Location <x, y> on the map. (changes them to GreenFields) */
     GreenField gf= new GreenField();
     Location loc = gameMap[y][x];
     loc.changeLandUse(gf);
     if (luLocs.contains(loc)) luLocs.remove(loc);  //Conditional allows this method to be used on GreenField Tile
+    drawTile(x, y, gf.getIcon());
   }
 }
   
