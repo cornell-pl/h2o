@@ -90,12 +90,15 @@ Textlabel instructions;
 void showInstructions() {
   instructions = cp5.addTextlabel("label")
                     .setMultiline(true)
-                    .setSize(400, 400)
-                    .setText("A single ControlP5 textlabel, in yellow." + 
+                    .setSize(380, 400)
+                    .setText("Choose an action:" + 
                     "\nTo construct a factory, type FC into INPUT"+
                     "\nTo build a farm, type FM into INPUT"+
                     "\nTo remove a land use, type RM into INPUT"+
-                    "\n\nThen enter the X and Y coordinates and hit enter.")
+                    "\n\nThen enter the X and Y coordinates and hit enter."+
+                    "\n\nNotes: \n*Do not hit enter while cursor in input boxes. Click outside of the box before hitting enter"+
+                    "\n*Doesn't catch errors. Bad coordinate inputs crashes game"+
+                    "\n*I don't know why this font looks like crap")
                     //.setPosition(s*w+xpos,s*h+ypos)  The auto-positioning method when these vars are GUI class fields
                     .setPosition(460,100)
                     .setColorValue(0)
