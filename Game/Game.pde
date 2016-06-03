@@ -1,30 +1,58 @@
 Watershed WS;
   
+/* ###  PROBLEMS  ###: 
+*  River can be removed and changed by add and remove methods. 
+*  Drawings, specifically the position of the input console only works for 20*20 map.
+*  Need to add coherency in all drawing dimensions, including sizing of the window.
+* ###  TODO  ###:
+*  Add a bang button to activate methods.
+*  Make GUI class
+*  Fonts look kinda shitty
+*/
+
 void setup() {
   frameRate(10);
-  size(700, 700);
-  trialRun1();
+  size(850, 700);
+  //trialRun1();
+  WS = new Watershed(20);
   commandBox();
+  showInstructions();
 }
 
-int count = 0;
 void draw() {  
   if (keyPressed && key == '\n'){ 
     command = cp5.get(Textfield.class,"input command").getText();
     locXstr = cp5.get(Textfield.class,"Location X").getText();
     locYstr = cp5.get(Textfield.class,"Location Y").getText();
-    println(count, command, locXstr, locYstr);
-    count ++;
-    int locX = Integer.parseInt(locXstr);
-    int locY = Integer.parseInt(locYstr);
-    doStuff(locX, locY, WS);
-    println(WS.sumPollution());
-    println("added Factory");
+    if (command.equals("FC")){
+      int locX = Integer.parseInt(locXstr);
+      int locY = Integer.parseInt(locYstr);
+      WS.addFactory(locX, locY);
+      println("Added Factory at <", locX, ",", locY,">");
+      println("Simple sum of all pollution: ", WS.sumPollution());
+      println("Total pollution entering river after linear decay: ", WS.linearDecayPollution());
+    }
+    if (command.equals("FM")){
+      int locX = Integer.parseInt(locXstr);
+      int locY = Integer.parseInt(locYstr);
+      WS.addFarm(locX, locY);
+      println("Added Farm at <", locX, ",", locY,">");
+      println("Simple sum of all pollution: ", WS.sumPollution());
+      println("Total pollution entering river after linear decay: ", WS.linearDecayPollution());
+    }
+    if (command.equals("RM")){
+      int locX = Integer.parseInt(locXstr);
+      int locY = Integer.parseInt(locYstr);
+      WS.removeLandUse(locX, locY);
+      println("Removed land use at <", locX, ",", locY,">");
+      println("Simple sum of all pollution: ", WS.sumPollution());
+      println("Total pollution entering river after linear decay: ", WS.linearDecayPollution());
+    }
   }
 }
 
-
 class Watershed {
+  /* Contains all elements of the Game and implements the GUI. All user functions can be accessed from this class */
   Location[][] gameMap; //2D Matrix of all grid Locations on game map
   ArrayList<Location> luLocs = new ArrayList<Location>(); //List of all LandUse (excluding GreenFields) Locations on game map
   ArrayList<Location> riverLocs = new ArrayList<Location>(); //List of all River Locations on game map
