@@ -72,7 +72,6 @@ void commandBox() {
    ;
 }
 
-void doStuff(String textValue) {
-  if (textValue == "addFC") {
-  }
+void doStuff(int X, int Y, Watershed WS) {
+  WS.addFactory(X, Y);
 }

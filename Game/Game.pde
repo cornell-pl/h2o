@@ -1,28 +1,27 @@
 Watershed WS;
   
 void setup() {
+  frameRate(10);
   size(700, 700);
   trialRun1();
   commandBox();
 }
 
-void draw() {
-
-  command = cp5.get(Textfield.class,"input command").getText();
-  locXstr = cp5.get(Textfield.class,"Location X").getText();
-  locYstr = cp5.get(Textfield.class,"Location Y").getText();
-  
+int count = 0;
+void draw() {  
   if (keyPressed && key == '\n'){ 
-    println(command, locXstr, locYstr);
-    if (command == "FC") {
-      int locX = Integer.parseInt(locXstr);
-      int locY = Integer.parseInt(locYstr);
-      WS.addFactory(locX, locY);
-      
-      println("added Factory");
-    } 
+    command = cp5.get(Textfield.class,"input command").getText();
+    locXstr = cp5.get(Textfield.class,"Location X").getText();
+    locYstr = cp5.get(Textfield.class,"Location Y").getText();
+    println(count, command, locXstr, locYstr);
+    count ++;
+    int locX = Integer.parseInt(locXstr);
+    int locY = Integer.parseInt(locYstr);
+    doStuff(locX, locY, WS);
+    println(WS.sumPollution());
+    println("added Factory");
   }
- }
+}
 
 
 class Watershed {
