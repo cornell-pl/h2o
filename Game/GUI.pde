@@ -39,13 +39,13 @@ void drawTile(int x, int y, color c) {
 
 //**** Implements a command text box for interaction  ****//
 String command;
-int locX;
-int locY;
+String locXstr;
+String locYstr;
 ControlP5 cp5;
 
 void commandBox() {
-  cp5 = new ControlP5(this);
   PFont font = createFont("arial", 18);
+  cp5 = new ControlP5(this);
   
   cp5.addTextfield("input command")
      .setPosition(20, 450)

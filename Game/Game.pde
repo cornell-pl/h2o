@@ -7,22 +7,23 @@ void setup() {
 }
 
 void draw() {
-  keyPressed();
-}
 
-void keyPressed(){
-  if (keyCode == ENTER) {
-    command = cp5.get(Textfield.class,"input command").getText();
-    locX = Integer.parseInt(cp5.get(Textfield.class,"Location X").getText());
-    locY = Integer.parseInt(cp5.get(Textfield.class,"LocationY").getText());
-    println(command, locX, locY);
-    
+  command = cp5.get(Textfield.class,"input command").getText();
+  locXstr = cp5.get(Textfield.class,"Location X").getText();
+  locYstr = cp5.get(Textfield.class,"Location Y").getText();
+  
+  if (keyPressed && key == '\n'){ 
+    println(command, locXstr, locYstr);
     if (command == "FC") {
+      int locX = Integer.parseInt(locXstr);
+      int locY = Integer.parseInt(locYstr);
       WS.addFactory(locX, locY);
+      
       println("added Factory");
-    }
+    } 
   }
-}
+ }
+
 
 class Watershed {
   Location[][] gameMap; //2D Matrix of all grid Locations on game map
@@ -53,8 +54,23 @@ class Watershed {
     /*Initializes a game with square game map of linear dimension s units 
     All locations are initialized with GreenFields*/
     gameMap = new Location[s][s];
-     for (int y=0; y<s; y++) {
-       for (int x=0; x<s; x++) {
+    for (int y=0; y<s; y++) {
+      for (int x=0; x<s; x++) {
+       GreenField gf = new GreenField();
+       Tile t = new Tile(gf, 0, 0); //Default zero values for slope and soil
+       Location l = new Location(x, y, t);
+       gameMap[y][x] = l;
+       drawTile(x, y, gf.getIcon());
+       }
+    }
+  }
+
+  void initialize(int w, int h) {
+    /*Initializes a game with game map of dimension w*h units
+    All locations are initialized with GreenFields*/
+    gameMap = new Location[h][w];
+     for (int y=0; y<h; y++) {
+       for (int x=0; x<w; x++) {
          GreenField gf = new GreenField();
          Tile t = new Tile(gf, 0, 0); //Default zero values for slope and soil
          Location l = new Location(x, y, t);
@@ -62,21 +78,6 @@ class Watershed {
          drawTile(x, y, gf.getIcon());
        }
      }
-  }
-
-  void initialize(int w, int h) {
-    /*Initializes a game with game map of dimension w*h units
-    All locations are initialized with GreenFields*/
-    gameMap = new Location[h][w];
-       for (int y=0; y<h; y++) {
-         for (int x=0; x<w; x++) {
-           GreenField gf = new GreenField();
-           Tile t = new Tile(gf, 0, 0); //Default zero values for slope and soil
-           Location l = new Location(x, y, t);
-           gameMap[y][x] = l;
-           drawTile(x, y, gf.getIcon());
-         }
-       }
    }
 
   void initializeRiver1() {
@@ -144,8 +145,8 @@ class Watershed {
     Farm fm = new Farm();
     Location loc = gameMap[y][x];
     loc.changeLandUse(fm);
-    if (!luLocs.contains(loc)) luLocs.add(loc);
-    drawTile(x, y, fm.getIcon());    //!!!! x*20, y*20 is bad implementation. TO BE FIXED
+    if (!luLocs.contains(loc)) luLocs.add(loc);  
+    drawTile(x, y, fm.getIcon());  
   }
   
   void removeLandUse(int x, int y) {
