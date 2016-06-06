@@ -31,19 +31,18 @@ void draw() {
         println("Simple sum of all pollution: ", WS.sumPollution());
         println("Total pollution entering river after linear decay: ", WS.linearDecayPollution());
       }
-      if (command.equals("FM")){
+      else if (command.equals("FM")){
         WS.addFarm(locX, locY);
         println("Added Farm at <", locX, ",", locY,">");
         println("Simple sum of all pollution: ", WS.sumPollution());
         println("Total pollution entering river after linear decay: ", WS.linearDecayPollution());
       }
-      if (command.equals("RM")){
+      else if (command.equals("RM")){
         WS.removeLandUse(locX, locY);
         println("Removed land use at <", locX, ",", locY,">");
         println("Simple sum of all pollution: ", WS.sumPollution());
         println("Total pollution entering river after linear decay: ", WS.linearDecayPollution());
-      } else {println("Bad command");
-      }
+      } else println("Bad command");
     }
   }
 }
