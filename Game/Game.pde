@@ -1,4 +1,5 @@
 Watershed WS;
+GUI graphics;
   
 /* ###  PROBLEMS  ###: 
 *  River can be removed and changed by add and remove methods. 
@@ -12,18 +13,19 @@ Watershed WS;
 
 void setup() {
   frameRate(10);
-  size(850, 700);
+  size(1050, 700);
   //trialRun1();
   WS = new Watershed(20);
-  commandBox();
-  showInstructions();
+  graphics.commandBox();
+  graphics.showInstructions();
 }
 
 void draw() {  
   if (keyPressed && key == '\n'){ 
-    command = cp5.get(Textfield.class,"input command").getText();
-    locXstr = cp5.get(Textfield.class,"Location X").getText();
-    locYstr = cp5.get(Textfield.class,"Location Y").getText();
+    graphics.grabCommands();
+    String command = graphics.command;
+    String locXstr =graphics.locXstr;
+    String locYstr = graphics.locYstr;
     if (command.equals("FC")){
       int locX = Integer.parseInt(locXstr);
       int locY = Integer.parseInt(locYstr);
@@ -64,7 +66,8 @@ class Watershed {
     /* Constructor 1: Initializes a square watershed of linear dimension s units */
     isSquare = true;
     size = s;
-    drawGrid(s);      //Draws the grid
+    graphics = new GUI();
+    graphics.drawGrid(s);      //Draws the grid
     initialize(s);    //Creates the Location array for the watershed
     initializeRiver1();    //Creates the river
   }
@@ -73,8 +76,9 @@ class Watershed {
     /* Constructor 2: Initializes a watershed of dimension x*y units */
     isSquare = false;
     sizeXY[0] = x; sizeXY[1] = y;
+    graphics = new GUI();
+    graphics.drawGrid(x,y);
     initialize(x, y);
-    drawGrid(x,y);
   }
 
   void initialize(int s) { //<>//
@@ -87,7 +91,7 @@ class Watershed {
        Tile t = new Tile(gf, 0, 0); //Default zero values for slope and soil
        Location l = new Location(x, y, t);
        gameMap[y][x] = l;
-       drawTile(x, y, gf.getIcon());
+       graphics.drawTile(x, y, gf.getIcon());
        }
     }
   }
@@ -102,7 +106,7 @@ class Watershed {
          Tile t = new Tile(gf, 0, 0); //Default zero values for slope and soil
          Location l = new Location(x, y, t);
          gameMap[y][x] = l;
-         drawTile(x, y, gf.getIcon());
+         graphics.drawTile(x, y, gf.getIcon());
        }
      }
    }
@@ -116,7 +120,7 @@ class Watershed {
       Location loc = gameMap[7][x];
       loc.changeTile(t);
       riverLocs.add(loc);
-      drawTile(x, 7, r.getIcon());
+      graphics.drawTile(x, 7, r.getIcon());
     }
     for (int y=7; y<=19; y++) { 
       River r = new River();
@@ -124,7 +128,7 @@ class Watershed {
       Location loc = gameMap[y][9];
       loc.changeTile(t);
       riverLocs.add(loc);
-      drawTile(9, y, r.getIcon());
+      graphics.drawTile(9, y, r.getIcon());
     }
   }
   
@@ -164,7 +168,7 @@ class Watershed {
     Location loc = gameMap[y][x];
     loc.changeLandUse(fc);
     if (!luLocs.contains(loc)) luLocs.add(loc);
-    drawTile(x, y, fc.getIcon());
+    graphics.drawTile(x, y, fc.getIcon());
   }
   
   void addFarm(int x, int y) {
@@ -173,7 +177,7 @@ class Watershed {
     Location loc = gameMap[y][x];
     loc.changeLandUse(fm);
     if (!luLocs.contains(loc)) luLocs.add(loc);  
-    drawTile(x, y, fm.getIcon());  
+    graphics.drawTile(x, y, fm.getIcon());  
   }
   
   void removeLandUse(int x, int y) {
@@ -182,7 +186,7 @@ class Watershed {
     Location loc = gameMap[y][x];
     loc.changeLandUse(gf);
     if (luLocs.contains(loc)) luLocs.remove(loc);  //Conditional allows this method to be used on GreenField Tile
-    drawTile(x, y, gf.getIcon());
+    graphics.drawTile(x, y, gf.getIcon());
   }
 }
   
