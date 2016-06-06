@@ -1,5 +1,6 @@
 Watershed WS;
 GUI graphics;
+ControlP5 cp5;
   
 /* ###  PROBLEMS  ###: 
 *  River can be removed and changed by add and remove methods. 
@@ -7,15 +8,15 @@ GUI graphics;
 *  Need to add coherency in all drawing dimensions, including sizing of the window.
 * ###  TODO  ###:
 *  Add a bang button to activate methods.
-*  Make GUI class
 *  Fonts look kinda shitty
 */
 
 void setup() {
   frameRate(10);
-  size(1050, 700);
+  size(1050, 1000);
+  cp5 = new ControlP5(this);
   //trialRun1();
-  WS = new Watershed(20);
+  WS = new Watershed(40);
   graphics.commandBox();
   graphics.showInstructions();
 }
@@ -23,32 +24,28 @@ void setup() {
 void draw() {  
   if (keyPressed && key == '\n'){ 
     graphics.grabCommands();
-    String command = graphics.command;
-    String locXstr =graphics.locXstr;
-    String locYstr = graphics.locYstr;
-    if (command.equals("FC")){
-      int locX = Integer.parseInt(locXstr);
-      int locY = Integer.parseInt(locYstr);
-      WS.addFactory(locX, locY);
-      println("Added Factory at <", locX, ",", locY,">");
-      println("Simple sum of all pollution: ", WS.sumPollution());
-      println("Total pollution entering river after linear decay: ", WS.linearDecayPollution());
-    }
-    if (command.equals("FM")){
-      int locX = Integer.parseInt(locXstr);
-      int locY = Integer.parseInt(locYstr);
-      WS.addFarm(locX, locY);
-      println("Added Farm at <", locX, ",", locY,">");
-      println("Simple sum of all pollution: ", WS.sumPollution());
-      println("Total pollution entering river after linear decay: ", WS.linearDecayPollution());
-    }
-    if (command.equals("RM")){
-      int locX = Integer.parseInt(locXstr);
-      int locY = Integer.parseInt(locYstr);
-      WS.removeLandUse(locX, locY);
-      println("Removed land use at <", locX, ",", locY,">");
-      println("Simple sum of all pollution: ", WS.sumPollution());
-      println("Total pollution entering river after linear decay: ", WS.linearDecayPollution());
+    String command = graphics.getCommand();
+    int locX =graphics.getLocX();
+    int locY = graphics.getLocY();
+    if (locX >= 0 && locY >= 0 && locX < WS.sizeX && locY < WS.sizeY) {
+      if (command.equals("FC")){
+        WS.addFactory(locX, locY);
+        println("Added Factory at <", locX, ",", locY,">");
+        println("Simple sum of all pollution: ", WS.sumPollution());
+        println("Total pollution entering river after linear decay: ", WS.linearDecayPollution());
+      }
+      if (command.equals("FM")){
+        WS.addFarm(locX, locY);
+        println("Added Farm at <", locX, ",", locY,">");
+        println("Simple sum of all pollution: ", WS.sumPollution());
+        println("Total pollution entering river after linear decay: ", WS.linearDecayPollution());
+      }
+      if (command.equals("RM")){
+        WS.removeLandUse(locX, locY);
+        println("Removed land use at <", locX, ",", locY,">");
+        println("Simple sum of all pollution: ", WS.sumPollution());
+        println("Total pollution entering river after linear decay: ", WS.linearDecayPollution());
+      }
     }
   }
 }
@@ -59,14 +56,14 @@ class Watershed {
   ArrayList<Location> luLocs = new ArrayList<Location>(); //List of all LandUse (excluding GreenFields) Locations on game map
   ArrayList<Location> riverLocs = new ArrayList<Location>(); //List of all River Locations on game map
   boolean isSquare;
-  int size;
-  int[] sizeXY = new int[2];
+  int sizeX;
+  int sizeY;
   
   Watershed(int s) {
     /* Constructor 1: Initializes a square watershed of linear dimension s units */
     isSquare = true;
-    size = s;
-    graphics = new GUI();
+    sizeX = s; sizeY = s;
+    graphics = new GUI(s);
     graphics.drawGrid(s);      //Draws the grid
     initialize(s);    //Creates the Location array for the watershed
     initializeRiver1();    //Creates the river
@@ -75,8 +72,8 @@ class Watershed {
   Watershed(int x, int y) {
     /* Constructor 2: Initializes a watershed of dimension x*y units */
     isSquare = false;
-    sizeXY[0] = x; sizeXY[1] = y;
-    graphics = new GUI();
+    sizeX = x; sizeX = y;
+    graphics = new GUI(x, y);
     graphics.drawGrid(x,y);
     initialize(x, y);
   }
@@ -112,8 +109,9 @@ class Watershed {
    }
 
   void initializeRiver1() {
-    /* Adds River Tiles at designated Locations
-    River design 1 used. (See Excel sheet)*/
+    /* Simple river for a 20*20 board.
+    *Adds River Tiles at designated Locations
+    *River design 1 used. (See Excel sheet)*/
     for (int x=1; x<=17; x++) { 
       River r = new River();
       Tile t = new Tile(r);    //River Tiles have no (zero) slope and soil values.
