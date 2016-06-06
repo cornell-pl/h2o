@@ -12,13 +12,10 @@ ControlP5 cp5;
 */
 
 void setup() {
-  frameRate(10);
-  size(1050, 1000);
+  frameRate(15);
+  size(1050, 1200);
   cp5 = new ControlP5(this);
-  //trialRun1();
-  WS = new Watershed(30, 50);
-  graphics.commandBox();
-  graphics.showInstructions();
+  WS = new Watershed(30, 40);
 }
 
 void draw() {  
@@ -45,6 +42,7 @@ void draw() {
         println("Removed land use at <", locX, ",", locY,">");
         println("Simple sum of all pollution: ", WS.sumPollution());
         println("Total pollution entering river after linear decay: ", WS.linearDecayPollution());
+      } else {println("Bad command");
       }
     }
   }
@@ -60,7 +58,7 @@ class Watershed {
   int sizeY;
   
   Watershed(int x, int y) {
-    /* Initializes a watershed of dimension x*y units */
+    /* Constructor: Initializes a watershed of dimension x*y units */
     isSquare = true;
     sizeX = x; sizeY = y;
     graphics = new GUI(x, y);
@@ -73,7 +71,6 @@ class Watershed {
     /*Initializes a game with square game map of dimension sizeX*sizeY units 
     All locations are initialized with GreenFields*/
     gameMap = new Location[sizeY][sizeX];
-    println(sizeX, sizeY);
     for (int y=0; y<sizeY; y++) {
       for (int x=0; x<sizeX; x++) {
        GreenField gf = new GreenField();
@@ -85,22 +82,7 @@ class Watershed {
     }
   }
 
-  void initialize(int w, int h) {
-    /*Initializes a game with game map of dimension w*h units
-    All locations are initialized with GreenFields*/
-    gameMap = new Location[h][w];
-    println(gameMap);
-     for (int y=0; y<h; y++) {
-       for (int x=0; x<w; x++) {
-         GreenField gf = new GreenField();
-         Tile t = new Tile(gf, 0, 0); //Default zero values for slope and soil
-         Location l = new Location(x, y, t);
-         gameMap[y][x] = l;
-         graphics.drawTile(x, y, gf.getIcon());
-       }
-     }
-   }
-
+  //**** Methods to place rivers of various designs in map  ****//  -----------------------------------------------
   void initializeRiver1() {
     /* Simple river for a 20*20 board.
     *Adds River Tiles at designated Locations
@@ -123,6 +105,7 @@ class Watershed {
     }
   }
   
+  //**** Methods to calculate pollution according various models  ****//  -----------------------------------------------
   int sumPollution() {
     /* Returns simple sum of pollution generated for all locations */
     int totalPollution = 0;
@@ -153,6 +136,7 @@ class Watershed {
     return ldPollutionTotal;
   }
   
+  //**** Methods to add, change and remove land uses  ****//  -----------------------------------------------
   void addFactory(int x, int y) {
     /* Places a new Factory at Location <x, y> on the map. */
     Factory fc = new Factory();

@@ -10,13 +10,16 @@ class GUI {
 
   GUI(int x, int y) {
     sizeX = x; sizeY = y;
+    drawGrid();      //Draws the grid
+    commandBox();     //Initializes the textfields
+    showInstructions();     //Displays the instructions
   }
   
   
   //**** Draws elements of the game map  ****//  -----------------------------------------------
   
   void drawGrid() {
-    /* Draws a square tile grid of linear dimension s units */
+    /* Draws a tile grid of dimensions sizeX*sizeY units */
     for (int x=xpos; x < sizeX*tileWidth+xpos; x+=tileWidth) {
       for (int y=ypos; y < sizeY*tileHeight+ypos; y+=tileHeight) {
         rect(x, y, tileWidth, tileHeight);
@@ -51,10 +54,9 @@ class GUI {
   void commandBox() {
     /* Initializes command boxes and labesl */
     PFont font = createFont("Arial", 16, true);
-    //cp5 = new ControlP5(this);
     
     cp5.addTextfield("input command")
-       .setPosition(20, 480)
+       .setPosition(xpos + sizeX*tileWidth + 40, 480)
        .setSize(200,40)
        .setFont(font)
        .setFocus(true)
@@ -62,23 +64,23 @@ class GUI {
        ;
     
     cp5.addTextfield("Location X")
-       .setPosition(20, 560)
+       .setPosition(xpos + sizeX*tileWidth + 40, 560)
        .setSize(80,40)
        .setFont(font)
-       .setFocus(true)
+       .setFocus(false)
        .setColor(color(255))
        ;
        
     cp5.addTextfield("Location Y")
-     .setPosition(160, 560)
+     .setPosition(xpos + sizeX*tileWidth + 200, 560)
      .setSize(80,40)
      .setFont(font)
-     .setFocus(true)
+     .setFocus(false)
      .setColor(color(255))
      ;
   }
   
-  // Getter methods
+  // Getter methods for input into text fields
   void grabCommands() {
     /* Grabs input from the command boxes, ensures they are valid, and stores them*/
     command = cp5.get(Textfield.class,"input command").getText();
@@ -125,7 +127,7 @@ class GUI {
                       "\n*Doesn't catch errors. Bad coordinate inputs crashes game"+
                       "\n*I don't know why this font looks like crap")
                       //.setPosition(s*w+xpos,s*h+ypos)  The auto-positioning method when these vars are GUI class fields
-                      .setPosition(460,100)
+                      .setPosition(xpos + sizeX*tileWidth + 40, 100)
                       .setColorValue(0)
                       .setFont(createFont("Arial",16, true))
                       ;
