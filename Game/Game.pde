@@ -4,8 +4,6 @@ ControlP5 cp5;
   
 /* ###  PROBLEMS  ###: 
 *  River can be removed and changed by add and remove methods. 
-*  Drawings, specifically the position of the input console only works for 20*20 map.
-*  Need to add coherency in all drawing dimensions, including sizing of the window.
 * ###  TODO  ###:
 *  Add a bang button to activate methods.
 *  Fonts look kinda shitty
@@ -13,9 +11,9 @@ ControlP5 cp5;
 
 void setup() {
   frameRate(15);
-  size(1050, 1200);
+  size(1050, 800);
   cp5 = new ControlP5(this);
-  WS = new Watershed(30, 40);
+  WS = new Watershed(20, 20);   //Creates watershed of size 20*20
 }
 
 void draw() {  
@@ -94,7 +92,7 @@ class Watershed {
       riverLocs.add(loc);
       graphics.drawTile(x, 7, r.getIcon());
     }
-    for (int y=7; y<=19; y++) { 
+    for (int y=7; y<sizeY; y++) {    //River auto-scales to reach bottom
       River r = new River();
       Tile t = new Tile(r);
       Location loc = gameMap[y][9];
