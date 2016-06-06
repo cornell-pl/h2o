@@ -8,56 +8,37 @@ class GUI {
   int sizeX;
   int sizeY;
 
-  GUI(int s) {
-    sizeX = s; sizeY = s;
-  }
   GUI(int x, int y) {
     sizeX = x; sizeY = y;
   }
   
+  
   //**** Draws elements of the game map  ****//  -----------------------------------------------
   
-  void drawGrid(int s) {
+  void drawGrid() {
     /* Draws a square tile grid of linear dimension s units */
-    for (int x=xpos; x < s*tileWidth+xpos; x+=tileWidth) {
-      for (int y=ypos; y < s*tileHeight+ypos; y+=tileHeight) {
+    for (int x=xpos; x < sizeX*tileWidth+xpos; x+=tileWidth) {
+      for (int y=ypos; y < sizeY*tileHeight+ypos; y+=tileHeight) {
         rect(x, y, tileWidth, tileHeight);
       }
     }
     //Draw axis labels.
     int xcount = 0;
-    for (int x=xpos; x < s*tileWidth+xpos; x+=tileWidth){
+    for (int x=xpos; x < sizeX*tileWidth+xpos; x+=tileWidth){
       text(xcount, x+3, xpos-7);
       xcount ++;
     }
     int ycount = 0;
-    for (int y=ypos; y < s*tileHeight+ypos; y+=tileHeight){
+    for (int y=ypos; y < sizeY*tileHeight+ypos; y+=tileHeight){
       text(ycount, ypos-21, y+15);
       ycount ++;
     }
   }
   
-  void drawGrid(int x, int y) {
-    /* Draws a tile grid of dimension sizeX*sizeY units */
-    int w = 20;    //width of a tile
-    int h = 20;    //height of a tile
-    int xpos = 40;   //xpos and ypos determines the position of the top left corner of the map.
-    int ypos = 40;
-    for (int x_=xpos; x_ < x*w+xpos; x_+=w) {
-      for (int y_=ypos; y_ < y*h+ypos; y_+=h) {
-        rect(x_, y_, w, h);
-      }
-    }
-  }
-  
   void drawTile(int x, int y, color c) {
     /* Draws a tile at Location <x, y> on game map, fill color c */
-    int w = 20;    //width of a tile
-    int h = 20;    //height of a tile
-    int xpos = 40;   //xpos and ypos determines the position of the top left corner of the map.
-    int ypos = 40;
     fill(c);
-    rect(x*w + xpos, y*w + ypos, w, h);
+    rect(x*tileWidth + xpos, y*tileHeight + ypos, tileWidth, tileHeight);
     fill(255);    //resets to white.
   }
   

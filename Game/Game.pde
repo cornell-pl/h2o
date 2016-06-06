@@ -16,7 +16,7 @@ void setup() {
   size(1050, 1000);
   cp5 = new ControlP5(this);
   //trialRun1();
-  WS = new Watershed(40);
+  WS = new Watershed(30, 50);
   graphics.commandBox();
   graphics.showInstructions();
 }
@@ -59,31 +59,23 @@ class Watershed {
   int sizeX;
   int sizeY;
   
-  Watershed(int s) {
-    /* Constructor 1: Initializes a square watershed of linear dimension s units */
+  Watershed(int x, int y) {
+    /* Initializes a watershed of dimension x*y units */
     isSquare = true;
-    sizeX = s; sizeY = s;
-    graphics = new GUI(s);
-    graphics.drawGrid(s);      //Draws the grid
-    initialize(s);    //Creates the Location array for the watershed
+    sizeX = x; sizeY = y;
+    graphics = new GUI(x, y);
+    graphics.drawGrid();      //Draws the grid
+    initialize();    //Creates the Location array for the watershed
     initializeRiver1();    //Creates the river
   }
-  
-  Watershed(int x, int y) {
-    /* Constructor 2: Initializes a watershed of dimension x*y units */
-    isSquare = false;
-    sizeX = x; sizeX = y;
-    graphics = new GUI(x, y);
-    graphics.drawGrid(x,y);
-    initialize(x, y);
-  }
 
-  void initialize(int s) { //<>//
-    /*Initializes a game with square game map of linear dimension s units 
+  void initialize() { //<>//
+    /*Initializes a game with square game map of dimension sizeX*sizeY units 
     All locations are initialized with GreenFields*/
-    gameMap = new Location[s][s];
-    for (int y=0; y<s; y++) {
-      for (int x=0; x<s; x++) {
+    gameMap = new Location[sizeY][sizeX];
+    println(sizeX, sizeY);
+    for (int y=0; y<sizeY; y++) {
+      for (int x=0; x<sizeX; x++) {
        GreenField gf = new GreenField();
        Tile t = new Tile(gf, 0, 0); //Default zero values for slope and soil
        Location l = new Location(x, y, t);
@@ -97,6 +89,7 @@ class Watershed {
     /*Initializes a game with game map of dimension w*h units
     All locations are initialized with GreenFields*/
     gameMap = new Location[h][w];
+    println(gameMap);
      for (int y=0; y<h; y++) {
        for (int x=0; x<w; x++) {
          GreenField gf = new GreenField();
@@ -192,7 +185,7 @@ class Watershed {
 void trialRun1() {
   /* Trial run of game for testing. Factory added at <14, 2> and <0, 7>, 
   Farm added at <11, 5>; includes test of removeLandUse() */
-  WS = new Watershed(20);
+  WS = new Watershed(20, 20);
   WS.addFactory(14, 2);
   WS.addFactory(0, 7);
   WS.addFarm(11, 5);
