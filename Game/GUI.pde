@@ -112,7 +112,7 @@ class GUI {
     return locY;
   }
  
-  //**** Implements a textlabe for game instructions  ****//  -----------------------------------------------
+  //**** Implements a textlabel for game instructions  ****//  -----------------------------------------------
   Textlabel instructions;
   void showInstructions() {
     instructions = cp5.addTextlabel("label")

@@ -25,9 +25,9 @@ void draw() {
     if (locX >= 0 && locY >= 0 && locX < WS.sizeX && locY < WS.sizeY) {
       if (command.equals("FC")){    //Factory command
         WS.addFactory(locX, locY);
-      }else if (command.equals("FM")){    //farm command
+      }else if (command.equals("FM")){    //Farm command
         WS.addFarm(locX, locY);
-      }else if (command.equals("RM")){    //remove command
+      }else if (command.equals("RM")){    //Remove command
         WS.removeLandUse(locX, locY);
       } else println("Bad command. Nothing happened.");
     }
