@@ -133,7 +133,7 @@ class Watershed {
       loc.changeLandUse(fc);
       if (!luLocs.contains(loc)) luLocs.add(loc);
       graphics.drawTile(x, y, fc.getIcon());
-      println("Added Factory at <", x, ",", y,">");
+      println("Added Factory at", loc);
     }else {
       println("Cannot built factory in river. Nothing is added");
     }
@@ -147,7 +147,7 @@ class Watershed {
       loc.changeLandUse(fm);
       if (!luLocs.contains(loc)) luLocs.add(loc);  
       graphics.drawTile(x, y, fm.getIcon());  
-      println("Added Farm at <", x, ",", y,">");
+      println("Added Farm at", loc);
     }else {
       println("Cannot built farm in river. Nothing is added.");
     }
@@ -162,7 +162,7 @@ class Watershed {
       loc.changeLandUse(gf);
       if (luLocs.contains(loc)) luLocs.remove(loc);  //Conditional allows this method to be used on GreenField Tile
       graphics.drawTile(x, y, gf.getIcon());
-      println("Removed land use at <", x, ",", y,">");
+      println("Removed land use at", loc);
     }else {
       println("River cannot be removed.");
     }

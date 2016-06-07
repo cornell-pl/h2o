@@ -45,6 +45,6 @@ class Location {
     
   @Override
   public String toString() {
-    return "<" + str(xpos) + ", " + str(xpos)+ ">";
+    return "<" + str(xpos) + ", " + str(ypos)+ ">";
   }
 }
