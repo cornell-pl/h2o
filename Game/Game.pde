@@ -3,7 +3,7 @@ GUI graphics;
 ControlP5 cp5;
   
 /* ###  PROBLEMS  ###: 
-*  River can be removed and changed by add and remove methods. 
+*  
 * ###  TODO  ###:
 *  Add a bang button to activate methods.
 *  Fonts look kinda shitty
@@ -23,25 +23,16 @@ void draw() {
     int locX =graphics.getLocX();
     int locY = graphics.getLocY();
     if (locX >= 0 && locY >= 0 && locX < WS.sizeX && locY < WS.sizeY) {
-      if (command.equals("FC")){
+      if (command.equals("FC")){    //Factory command
         WS.addFactory(locX, locY);
-        println("Added Factory at <", locX, ",", locY,">");
-        println("Simple sum of all pollution: ", WS.sumPollution());
-        println("Total pollution entering river after linear decay: ", WS.linearDecayPollution());
-      }
-      else if (command.equals("FM")){
+      }else if (command.equals("FM")){    //farm command
         WS.addFarm(locX, locY);
-        println("Added Farm at <", locX, ",", locY,">");
-        println("Simple sum of all pollution: ", WS.sumPollution());
-        println("Total pollution entering river after linear decay: ", WS.linearDecayPollution());
-      }
-      else if (command.equals("RM")){
+      }else if (command.equals("RM")){    //remove command
         WS.removeLandUse(locX, locY);
-        println("Removed land use at <", locX, ",", locY,">");
-        println("Simple sum of all pollution: ", WS.sumPollution());
-        println("Total pollution entering river after linear decay: ", WS.linearDecayPollution());
-      } else println("Bad command");
+      } else println("Bad command. Nothing happened.");
     }
+     println("Simple sum of all pollution: ", WS.sumPollution());
+     println("Total pollution entering river after linear decay: ", WS.linearDecayPollution()); println("");
   }
 }
 
@@ -136,29 +127,45 @@ class Watershed {
   //**** Methods to add, change and remove land uses  ****//  -----------------------------------------------
   void addFactory(int x, int y) {
     /* Places a new Factory at Location <x, y> on the map. */
-    Factory fc = new Factory();
     Location loc = gameMap[y][x];
-    loc.changeLandUse(fc);
-    if (!luLocs.contains(loc)) luLocs.add(loc);
-    graphics.drawTile(x, y, fc.getIcon());
+    if (!riverLocs.contains(loc)) {
+      Factory fc = new Factory();
+      loc.changeLandUse(fc);
+      if (!luLocs.contains(loc)) luLocs.add(loc);
+      graphics.drawTile(x, y, fc.getIcon());
+      println("Added Factory at <", x, ",", y,">");
+    }else {
+      println("Cannot built factory in river. Nothing is added");
+    }
   }
   
   void addFarm(int x, int y) {
     /* Places a new Farm at Location <x, y> on the map. */
-    Farm fm = new Farm();
     Location loc = gameMap[y][x];
-    loc.changeLandUse(fm);
-    if (!luLocs.contains(loc)) luLocs.add(loc);  
-    graphics.drawTile(x, y, fm.getIcon());  
+    if (!riverLocs.contains(loc)) {
+      Farm fm = new Farm();
+      loc.changeLandUse(fm);
+      if (!luLocs.contains(loc)) luLocs.add(loc);  
+      graphics.drawTile(x, y, fm.getIcon());  
+      println("Added Farm at <", x, ",", y,">");
+    }else {
+      println("Cannot built farm in river. Nothing is added.");
+    }
   }
   
   void removeLandUse(int x, int y) {
     /* Removes LandUse at Location <x, y> on the map. (changes them to GreenFields) */
-    GreenField gf= new GreenField();
+    
     Location loc = gameMap[y][x];
-    loc.changeLandUse(gf);
-    if (luLocs.contains(loc)) luLocs.remove(loc);  //Conditional allows this method to be used on GreenField Tile
-    graphics.drawTile(x, y, gf.getIcon());
+    if (!riverLocs.contains(loc)) {
+      GreenField gf= new GreenField();
+      loc.changeLandUse(gf);
+      if (luLocs.contains(loc)) luLocs.remove(loc);  //Conditional allows this method to be used on GreenField Tile
+      graphics.drawTile(x, y, gf.getIcon());
+      println("Removed land use at <", x, ",", y,">");
+    }else {
+      println("River cannot be removed.");
+    }
   }
 }
   
