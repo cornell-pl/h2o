@@ -1,6 +1,5 @@
 Watershed WS;
 GUI graphics;
-ControlP5 cp5;
   
 /* ###  PROBLEMS  ###: 
 *  
@@ -12,29 +11,13 @@ ControlP5 cp5;
 void setup() {
   frameRate(15);
   size(1050, 800);
-  cp5 = new ControlP5(this);
   WS = new Watershed(20, 20);   //Creates watershed of size 20*20
 }
 
 void draw() {  
   graphics.render();
-  if (keyPressed && key == '\n'){ 
-    graphics.grabCommands();
-    String command = graphics.getCommand();
-    int locX =graphics.getLocX();
-    int locY = graphics.getLocY();
-    if (locX >= 0 && locY >= 0 && locX < WS.sizeX && locY < WS.sizeY) {
-      if (command.equals("FC")){    //Factory command
-        WS.addFactory(locX, locY);
-      }else if (command.equals("FM")){    //Farm command
-        WS.addFarm(locX, locY);
-      }else if (command.equals("RM")){    //Remove command
-        WS.removeLandUse(locX, locY);
-      } else println("Bad command. Nothing happened.");
-    }
-     println("Simple sum of all pollution: ", WS.sumPollution());
-     println("Total pollution entering river after linear decay: ", WS.linearDecayPollution()); println("");
-  }
+  //println("Simple sum of all pollution: ", WS.sumPollution());
+  //println("Total pollution entering river after linear decay: ", WS.linearDecayPollution()); println("");
 }
 
 
