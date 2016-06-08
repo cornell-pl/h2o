@@ -117,7 +117,8 @@ class Button{
     fill(255);  //Color of text label
     text(label, x+bWidth+5, y+9);
     if (isPressed) {
-      fill(selectedColor);
+      fill(0);  //Color of text label
+      text(label + " is selected", 20, graphics.ypos + graphics.sizeY*graphics.tileHeight + 30);      
     }else if (over) {
       fill(overColor);
     }else {
@@ -143,7 +144,7 @@ class Button{
       if (! isPressed) {
         isPressed = true;
       }else{
-        factoryB.isPressed = false;
+        isPressed = false;
       } 
     } else {
       isPressed = false;
