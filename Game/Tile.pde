@@ -2,29 +2,26 @@ class Tile {
   /*A Tile holds properties of the terrain */
   int slope;   //Slope of tile
   int soil;  
+  int xpos;  //x-coordinate
+  int ypos;  //y-coordinate
   LandType landT;
-  Tile(LandType lt){
-    /* Initializes Tile with LandType lt, slope & soil are at default 0 values */
-    landT = lt;
-  }
   
   Tile(LandType lt, int sl, int so) {
-   /* Initializes Tile with LandType lt, and integer slope sl, soil so values */
+   /* Constructor: Initializes Tile with LandType lt, and integer slope sl, soil so values */
    landT = lt;
    slope = sl;
    soil = so;
   }
   
-  //TO-DO
   int getSlope() {
     /*Retuns slope of the tile */
-    return 0;
+    return slope;
   }
   
   //TO-DO
   int getSoil() {
     /* Returns the soil permeability of the tile */
-    return 0;
+    return soil;
   }
   
   //TO-DO

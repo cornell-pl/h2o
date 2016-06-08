@@ -1,6 +1,6 @@
-color riverBlue = #7CE3F5;
-color factoryBrown = #E36607; 
-color farmYellow = #F5E77E;
+final color riverBlue = #7CE3F5;
+final color factoryBrown = #E36607; 
+final color farmYellow = #F5E77E;
 
 abstract class LandType {
   color icon;

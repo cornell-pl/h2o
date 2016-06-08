@@ -41,13 +41,11 @@ class Watershed {
   Location[][] gameMap; //2D Matrix of all grid Locations on game map
   ArrayList<Location> luLocs = new ArrayList<Location>(); //List of all LandUse (excluding GreenFields) Locations on game map
   ArrayList<Location> riverLocs = new ArrayList<Location>(); //List of all River Locations on game map
-  boolean isSquare;
   int sizeX;
   int sizeY;
   
   Watershed(int x, int y) {
     /* Constructor: Initializes a watershed of dimension x*y units */
-    isSquare = true;
     sizeX = x; sizeY = y;
     graphics = new GUI(x, y);
     graphics.drawGrid();      //Draws the grid
@@ -77,7 +75,7 @@ class Watershed {
     *River design 1 used. (See Excel sheet)*/
     for (int x=1; x<=17; x++) { 
       River r = new River();
-      Tile t = new Tile(r);    //River Tiles have no (zero) slope and soil values.
+      Tile t = new Tile(r, 0, 0);    //River Tiles have no (zero) slope and soil values.
       Location loc = gameMap[7][x];
       loc.changeTile(t);
       riverLocs.add(loc);
@@ -85,7 +83,7 @@ class Watershed {
     }
     for (int y=7; y<sizeY; y++) {    //River auto-scales to reach bottom
       River r = new River();
-      Tile t = new Tile(r);
+      Tile t = new Tile(r, 0, 0);
       Location loc = gameMap[y][9];
       loc.changeTile(t);
       riverLocs.add(loc);
@@ -117,7 +115,7 @@ class Watershed {
         if (d < minDist) minDist = d;
       }
       //Calculate pollution contribution from l after linear decay
-      float ldPollution = l.getPollution() - 0.1 * minDist;
+      float ldPollution = l.getPollution()/minDist;
       if (ldPollution < 0) ldPollution = 0;
       ldPollutionTotal += ldPollution;
     }
