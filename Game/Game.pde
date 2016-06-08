@@ -9,25 +9,25 @@ GUI graphics;
 */
 
 void setup() {
-  frameRate(15);
+  frameRate(30);
   size(1050, 800);
   WS = new Watershed(20, 20);   //Creates watershed of size 20*20
 }
 
 void draw() {  
+  background(204);
   graphics.render();
   //println("Simple sum of all pollution: ", WS.sumPollution());
   //println("Total pollution entering river after linear decay: ", WS.linearDecayPollution()); println("");
 }
 
 
-
 class Watershed {
   /* Contains all elements of the Game and implements the GUI. All user functions can be accessed from this class */
   Tile[][] gameMap; //2D Matrix of all grid Tiles on game map
   ArrayList<int[]> riverTiles = new ArrayList<int[]>(); //Records the coordinates of all river tiles on map;
-  int sizeX;
-  int sizeY;
+  final int sizeX;
+  final int sizeY;
   
   Watershed(int x, int y) {
     /* Constructor: Initializes a watershed of dimension x*y units */
