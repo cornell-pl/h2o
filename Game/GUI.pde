@@ -10,22 +10,24 @@ class GUI {
 
   GUI(int x, int y) {
     sizeX = x; sizeY = y;
-    drawGrid();      //Draws the grid
+    showInstructions();
     commandBox();     //Initializes the textfields
-    showInstructions();     //Displays the instructions
+  }
+  
+  void render() {
+    /* Draws each frame   */
+    for (Tile[] tileRow : WS.gameMap) {
+      for (Tile t: tileRow) {
+        graphics.drawTile(t.getX(), t.getY(), t.getLandT().getIcon());
+      }
+    }
+    axisLabels();
   }
   
   
   //**** Draws elements of the game map  ****//  -----------------------------------------------
-  
-  void drawGrid() {
-    /* Draws a tile grid of dimensions sizeX*sizeY units */
-    for (int x=xpos; x < sizeX*tileWidth+xpos; x+=tileWidth) {
-      for (int y=ypos; y < sizeY*tileHeight+ypos; y+=tileHeight) {
-        rect(x, y, tileWidth, tileHeight);
-      }
-    }
-    //Draw axis labels.
+  void axisLabels() {
+    /* Draw axis labels. */
     int xcount = 0;
     for (int x=xpos; x < sizeX*tileWidth+xpos; x+=tileWidth){
       text(xcount, x+3, xpos-7);
@@ -40,6 +42,7 @@ class GUI {
   
   void drawTile(int x, int y, color c) {
     /* Draws a tile at Location <x, y> on game map, fill color c */
+    stroke(255);
     fill(c);
     rect(x*tileWidth + xpos, y*tileHeight + ypos, tileWidth, tileHeight);
     fill(255);    //resets to white.

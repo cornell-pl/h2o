@@ -17,6 +17,7 @@ void setup() {
 }
 
 void draw() {  
+  graphics.render();
   if (keyPressed && key == '\n'){ 
     graphics.grabCommands();
     String command = graphics.getCommand();
@@ -36,6 +37,8 @@ void draw() {
   }
 }
 
+
+
 class Watershed {
   /* Contains all elements of the Game and implements the GUI. All user functions can be accessed from this class */
   Tile[][] gameMap; //2D Matrix of all grid Tiles on game map
@@ -47,7 +50,6 @@ class Watershed {
     /* Constructor: Initializes a watershed of dimension x*y units */
     sizeX = x; sizeY = y;
     graphics = new GUI(x, y);
-    graphics.drawGrid();      //Draws the grid
     initialize();    //Creates the Tile array for the watershed
     initializeRiver1();    //Creates the river
   }
@@ -55,13 +57,12 @@ class Watershed {
   void initialize() { //<>//
     /*Initializes a game with square game map of dimension sizeX*sizeY units 
     All Tiles are initialized with GreenFields*/
-    gameMap = new Tile[sizeY][sizeX];
+    gameMap = new Tile[sizeX][sizeY];
     for (int y=0; y<sizeY; y++) {
       for (int x=0; x<sizeX; x++) {
        GreenField gf = new GreenField();
        Tile t = new Tile(gf, x, y, 0, 0); //Default zero values for slope and soil
-       gameMap[y][x] = t;
-       graphics.drawTile(x, y, gf.getIcon());
+       gameMap[x][y] = t;
        }
     }
   }
@@ -77,7 +78,6 @@ class Watershed {
       Tile rTile = new Tile(r, x, yp, 0, 0);    //River Tiles have no (zero) slope and soil values.
       gameMap[x][yp] = rTile;
       riverTiles.add(new int[] {x, yp});
-      graphics.drawTile(x, yp, r.getIcon());
     }
     int xp = 9;
     for (int y=7; y<sizeY; y++) {    //River auto-scales to reach bottom
@@ -85,7 +85,6 @@ class Watershed {
       Tile rTile = new Tile(r, xp, y, 0, 0);
       gameMap[xp][y] = rTile;
       riverTiles.add(new int[] {xp, y});
-      graphics.drawTile(xp, y, r.getIcon());
     }
   }
   
@@ -108,9 +107,8 @@ class Watershed {
     float ldPollutionTotal = 0.;
     for (Tile[] tileRow : gameMap) {
       for (Tile t: tileRow) {   //Calculate pollution contribution from t after linear decay
-        float ldPollution;
         if (t.getPollution() != 0) {
-          ldPollution = t.getPollution()/t.distToRiver;
+          float ldPollution = t.getPollution()/t.distToRiver;
           ldPollutionTotal += ldPollution;
         }
      }
@@ -134,12 +132,11 @@ class Watershed {
   
   void addFactory(int x, int y) {
     /* Places a new Factory at Location <x, y> on the map. */
-    Tile t = gameMap[y][x];
+    Tile t = gameMap[x][y];
     if (! (t.getLandT() instanceof River)) {
       Factory fc = new Factory();
       t.changeLandType(fc);
       t.distToRiver = distToRiver(x, y);
-      graphics.drawTile(x, y, fc.getIcon());
       println("Added Factory at", t);
     }else {
       println("Cannot built factory in river. Nothing is added");
@@ -148,12 +145,11 @@ class Watershed {
   
   void addFarm(int x, int y) {
     /* Places a new Farm at Location <x, y> on the map. */
-    Tile t = gameMap[y][x];
+    Tile t = gameMap[x][y];
     if (! (t.getLandT() instanceof River)) {
       Farm fm = new Farm();
       t.changeLandType(fm); 
       t.distToRiver = distToRiver(x, y);
-      graphics.drawTile(x, y, fm.getIcon());  
       println("Added Farm at", t);
     }else {
       println("Cannot built farm in river. Nothing is added.");
@@ -163,7 +159,7 @@ class Watershed {
   void removeLandUse(int x, int y) {
     /* Removes LandUse at Location <x, y> on the map. (changes them to GreenFields) */
     
-    Tile t = gameMap[y][x];
+    Tile t = gameMap[x][y];
     if (!riverTiles.contains(t)) {
       GreenField gf= new GreenField();
       t.changeLandType(gf);
