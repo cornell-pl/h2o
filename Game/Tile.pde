@@ -4,7 +4,7 @@ class Tile {
   int soil;  
   int xpos;  //x-coordinate
   int ypos;  //y-coordinate
-  float distToRiver;   //Memoization, Calculate and save only when needed
+  float distToRiver;   //This is calculated only when a landuse (non-greenField) is added.
   LandType landT;
   
   Tile(LandType lt, int x, int y, int sl, int so) {
