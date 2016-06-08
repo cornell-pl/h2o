@@ -15,7 +15,8 @@ class GUI {
   }
   
   void render() {
-    /* Draws each frame   */
+    /* Single function for all graphics.
+    * Draws each frame   */
     for (Tile[] tileRow : WS.gameMap) {
       for (Tile t: tileRow) {
         graphics.drawTile(t.getX(), t.getY(), t.getLandT().getIcon());
