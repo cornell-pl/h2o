@@ -22,6 +22,8 @@ class GUI {
       }
     }
     axisLabels();
+    showFeedback();
+    
     factoryB.display();
     farmB.display();
     removeB.display();
@@ -50,27 +52,40 @@ class GUI {
     rect(x*tileWidth + xpos, y*tileHeight + ypos, tileWidth, tileHeight);
     fill(255);    //resets to white.
   }
+  
+  void showFeedback() {
+    fill(0);  //Color of text 
+    text(message, 60, ypos + sizeY*tileHeight + 30);   
+    text(message2, 60, ypos + sizeY*tileHeight + 60);   
+  }
 }
 
 //**** Buttons and mouse interaction  ****//  -----------------------------------------------
 Button factoryB;
 Button farmB;
 Button removeB;
-
+String message = "";
+String message2 = "";
 
 void mousePressed() {
   if (factoryB.over) {      //When factory button is clicked on
     factoryB.press();
+    message = "Add factory mode is selected";
+    message2 = "";
     farmB.isPressed = false;     //Reset all other buttons when one is pressed
     removeB.isPressed = false;
   }
   else if (farmB.over) {      //When farm button is clicked on
     farmB.press();
+    message = "Add farm mode is selected";
+    message2 = "";
     factoryB.isPressed = false;     //Reset all other buttons when one is pressed
     removeB.isPressed = false;
   }
   else if(removeB.over) {   //When remove button is clicked on
     removeB.press();
+    message = "Remove mode is selected";
+    message2 = "";
     factoryB.isPressed = false;     //Reset all other buttons when one is pressed
     farmB.isPressed = false;
   }
@@ -92,6 +107,7 @@ void mousePressed() {
     factoryB.isPressed = false;     //Reset all buttons when click on blank areas
     farmB.isPressed = false;     
     removeB.isPressed = false;
+    message = "";
   }
 }
 
@@ -139,9 +155,7 @@ class Button{
   void display() {
     fill(255);  //Color of text label
     text(label, x+bWidth+5, y+15);
-    if (isPressed) {
-      fill(0);  //Color of text label
-      text(label + " is selected", 20, ypos + sizeY*tileHeight + 30);    
+    if (isPressed) { 
       fill(selectedColor);
     }else if (over) {
       fill(overColor);
