@@ -50,7 +50,7 @@ class GUI {
   
   void drawTile(int x, int y, color c) {
     /* Draws a tile at Location <x, y> on game map, fill color c */
-    stroke(255);
+    stroke(220);
     fill(c);
     rect(x*tileWidth + xpos, y*tileHeight + ypos, tileWidth, tileHeight);
     fill(255);    //resets to white.

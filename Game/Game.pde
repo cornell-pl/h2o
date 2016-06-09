@@ -38,12 +38,12 @@ class Watershed {
 
   void initialize() { //<>//
     /*Initializes a game with square game map of dimension sizeX*sizeY units 
-    All Tiles are initialized with GreenFields*/
+    All Tiles are initialized with Forests*/
     gameMap = new Tile[sizeX][sizeY];
     for (int y=0; y<sizeY; y++) {
       for (int x=0; x<sizeX; x++) {
-       GreenField gf = new GreenField();
-       Tile t = new Tile(gf, x, y, 0, 0); //Default zero values for slope and soil
+       Forest fo = new Forest();
+       Tile t = new Tile(fo, x, y, 0, 0); //Default zero values for slope and soil
        gameMap[x][y] = t;
        }
     }
@@ -143,12 +143,12 @@ class Watershed {
   }
   
   void removeLandUse(int x, int y) {
-    /* Removes LandUse at Location <x, y> on the map. (changes them to GreenFields) */
+    /* Removes LandUse at Location <x, y> on the map. (changes them to Dirt) */
     Tile t = gameMap[x][y];
     if (! (t.getLandT() instanceof River)) {
-      GreenField gf= new GreenField();
-      t.changeLandUse(gf);
-      graphics.drawTile(x, y, gf.getIcon());
+      Dirt di= new Dirt();
+      t.changeLandUse(di);
+      graphics.drawTile(x, y, di.getIcon());
       message2 = "Removed land use at " + t;
       println("Removed land use at", t);
     }else {
