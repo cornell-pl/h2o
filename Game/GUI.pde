@@ -6,7 +6,9 @@ final int xposB = xpos + sizeX*tileWidth + 40;    //Drawing dimensions. xpos and
 final int yposB = 100;    //All buttons scale with respect to this
 
 class GUI {
-
+  PFont axisFont = createFont("Calibri", 12);
+  PFont messageFont = createFont("Calibri", 13);
+  
   GUI(int x, int y) {
     factoryB = new Button(xposB, yposB, tileWidth, tileHeight, factoryBrown, #73A29C, #575FAD, "Factory");
     farmB = new Button(xposB, yposB + 50, tileWidth, tileHeight, farmYellow, #73A29C, #F0AD1D, "Farm");
@@ -33,6 +35,7 @@ class GUI {
   //**** Draws elements of the game map  ****//  -----------------------------------------------
   void axisLabels() {
     /* Draw axis labels. */
+    textFont(axisFont);
     int xcount = 0;
     for (int x=xpos; x < sizeX*tileWidth+xpos; x+=tileWidth){
       text(xcount, x+3, xpos-7);
@@ -55,8 +58,11 @@ class GUI {
   
   void showFeedback() {
     fill(0);  //Color of text 
+    textFont(messageFont);
     text(message, 60, ypos + sizeY*tileHeight + 30);   
-    text(message2, 60, ypos + sizeY*tileHeight + 60);   
+    text(message2, 60, ypos + sizeY*tileHeight + 50);   
+    text("Simple sum of all pollution: " + WS.sumPollution(), 60, ypos + sizeY*tileHeight + 90);
+    text("Total pollution entering river after linear decay: " + WS.linearDecayPollution(), 60, ypos + sizeY*tileHeight + 110);
   }
 }
 
@@ -137,6 +143,8 @@ class Button{
   color overColor;           //Color when mouse over button
   color selectedColor;        //Color when button is selected
   String label;
+  PFont baseFont = createFont("Arial", 15);
+  PFont selectedFont = createFont("Arial Black", 15);
   
   boolean over = false;
   boolean isPressed = false;     //press state of the button
@@ -154,12 +162,17 @@ class Button{
   
   void display() {
     fill(255);  //Color of text label
-    text(label, x+bWidth+5, y+15);
     if (isPressed) { 
+      textFont(selectedFont);
+      text(label, x+bWidth+5, y+15);
       fill(selectedColor);
     }else if (over) {
+      textFont(baseFont);
+      text(label, x+bWidth+5, y+15);
       fill(overColor);
     }else {
+      textFont(baseFont);
+      text(label, x+bWidth+5, y+15);
       fill(baseColor);
     }
     rect(x, y, bWidth, bHeight);
