@@ -1,14 +1,16 @@
-final static int xpos = 40;   //xpos and ypos determines the position of the top left corner of the map, in pixels
-final static int ypos = 40;
-final static int tileWidth = 20;   //width of a tile in pixels
-final static int tileHeight = 20;    //height of a tile in pixels
+final int xpos = 40;   //xpos and ypos determines the position of the top left corner of the map, in pixels
+final int ypos = 40;
+final int tileWidth = 20;   //width of a tile in pixels
+final int tileHeight = 20;    //height of a tile in pixels
+final int xposB = xpos + sizeX*tileWidth + 40;    //Drawing dimensions. xpos and ypos are the coordinates of the top most button. 
+final int yposB = 100;    //All buttons scale with respect to this
 
 class GUI {
 
   GUI(int x, int y) {
-    factoryB = new Button(Button.xposB, Button.yposB, tileWidth, tileHeight, factoryBrown, #73A29C, #575FAD, "Factory");
-    farmB = new Button(Button.xposB, Button.yposB + 50, tileWidth, tileHeight, farmYellow, #73A29C, #F0AD1D, "Farm");
-    //removeB = new Button(xpos, ypos+100, tileWidth, tileHeight, farmYellow, #73A29C, #F0AD1D, "Farm");
+    factoryB = new Button(xposB, yposB, tileWidth, tileHeight, factoryBrown, #73A29C, #575FAD, "Factory");
+    farmB = new Button(xposB, yposB + 50, tileWidth, tileHeight, farmYellow, #73A29C, #F0AD1D, "Farm");
+    removeB = new Button(xposB, yposB+100, tileWidth, tileHeight, #FFFFFF, #FACCCC, #E3F5EA, "Remove");
   }
   
   void render() {
@@ -22,6 +24,7 @@ class GUI {
     axisLabels();
     factoryB.display();
     farmB.display();
+    removeB.display();
   }
   
   
@@ -59,25 +62,36 @@ void mousePressed() {
   if (factoryB.over) {      //When factory button is clicked on
     factoryB.press();
     farmB.isPressed = false;     //Reset all other buttons when one is pressed
-    //removeB.isPressed = false;
+    removeB.isPressed = false;
   }
   else if (farmB.over) {      //When farm button is clicked on
     farmB.press();
     factoryB.isPressed = false;     //Reset all other buttons when one is pressed
-    //removeB.isPressed = false;
+    removeB.isPressed = false;
   }
+  else if(removeB.over) {   //When remove button is clicked on
+    removeB.press();
+    factoryB.isPressed = false;     //Reset all other buttons when one is pressed
+    farmB.isPressed = false;
+  }
+  
   else if (mouseOverMap()){     //When mouse clicked on tile
-    int[] loc = converter(mouseX, mouseY);
-    if (factoryB.isPressed) {        //If factory button is in pressed state
-    WS.addFactory(loc[0], loc[1]);
-    } else if (farmB.isPressed) {        //If farm button is in pressed state
-    WS.addFarm(loc[0], loc[1]);
-    }
-  }
+        int[] loc = converter(mouseX, mouseY);
+        
+        if (factoryB.isPressed) {        //If factory button is in pressed state
+          WS.addFactory(loc[0], loc[1]);
+        } 
+        else if (farmB.isPressed) {        //If farm button is in pressed state
+          WS.addFarm(loc[0], loc[1]);
+        }
+        else if(removeB.isPressed) {    //If remove button is in pressed state
+          WS.removeLandUse(loc[0],loc[1]);
+        }
+      }
   else {
     factoryB.isPressed = false;     //Reset all buttons when click on blank areas
     farmB.isPressed = false;     
-    //removeB.isPressed = false;
+    removeB.isPressed = false;
   }
 }
 
@@ -99,9 +113,7 @@ int[] converter(int xraw, int yraw) {
 }
 
 
-class Button{
-  final static int xposB = xpos + sizeX*tileWidth + 40;    //Drawing dimensions. xpos and ypos are the coordinates of the top most button. 
-  final static int yposB = 100;    //All buttons scale with respect to this
+class Button{ 
   int x, y;                 // The x- and y-coordinates of the Button in pixels
   int bWidth;                 // Dimensions in pixels
   int bHeight;

@@ -1,7 +1,7 @@
 Watershed WS;
 GUI graphics;
-final static int sizeX = 30;    //Dimensions of the watershed in tiles
-final static int sizeY = 30;
+final int sizeX = 30;    //Dimensions of the watershed in tiles
+final int sizeY = 30;
   
 /* ###  PROBLEMS  ###: 
 *  
