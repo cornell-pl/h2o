@@ -116,7 +116,7 @@ class Watershed {
     Tile t = gameMap[x][y];
     if (! (t.getLandT() instanceof River)) {
       Factory fc = new Factory();
-      t.changeLandType(fc);
+      t.changeLandUse(fc);
       t.distToRiver = distToRiver(x, y);
       message2 = "Added Factory at " + t;
       println("Added Factory at", t);
@@ -132,7 +132,7 @@ class Watershed {
     Tile t = gameMap[x][y];
     if (! (t.getLandT() instanceof River)) {
       Farm fm = new Farm();
-      t.changeLandType(fm); 
+      t.changeLandUse(fm); 
       t.distToRiver = distToRiver(x, y);
       message2 = "Added Farm at " + t;
       println("Added Farm at", t);
@@ -147,7 +147,7 @@ class Watershed {
     Tile t = gameMap[x][y];
     if (! (t.getLandT() instanceof River)) {
       GreenField gf= new GreenField();
-      t.changeLandType(gf);
+      t.changeLandUse(gf);
       graphics.drawTile(x, y, gf.getIcon());
       message2 = "Removed land use at " + t;
       println("Removed land use at", t);

@@ -2,24 +2,21 @@ final color riverBlue = #7CE3F5;
 final color factoryBrown = #E36607; 
 final color farmYellow = #F5E77E;
 
-abstract class LandType {
+abstract class LandUse {
+  int pollution;
   color icon;
+  int getPollution() {
+    /*Returns pollution of LandUse */
+    return pollution;
+  }
   color getIcon() {
     return icon;
   }
 }
 
-class River extends LandType {
+class River extends LandUse {
   River(){
     icon = riverBlue;
-  }
-}
-
-abstract class LandUse extends LandType {
-  int pollution;
-  int getPollution() {
-    /*Returns pollution of LandUse */
-    return pollution;
   }
 }
   
