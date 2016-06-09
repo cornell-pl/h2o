@@ -36,7 +36,7 @@ class Watershed {
     initializeRiver2();    //Creates the river
   }
 
-  void initialize() { //<>//
+  void initialize() { //<>// //<>//
     /*Initializes a game with square game map of dimension sizeX*sizeY units 
     All Tiles are initialized with Forests*/
     gameMap = new Tile[sizeX][sizeY];
@@ -152,6 +152,21 @@ class Watershed {
     }else {
       message2 = "Cannot built farm in river. Nothing is added.";
       println("Cannot built farm in river. Nothing is added.");
+    }
+  }
+  
+  void addHouse(int x, int y) {
+    /* Places a new House at Location <x, y> on the map. */
+    Tile t = gameMap[x][y];
+    if (! (t.getLandT() instanceof River)) {
+      House hs = new House();
+      t.changeLandUse(hs); 
+      t.distToRiver = distToRiver(x, y);
+      message2 = "Added House at " + t;
+      println("Added House at", t);
+    }else {
+      message2 = "Cannot built house in river. Nothing is added.";
+      println("Cannot built house in river. Nothing is added.");
     }
   }
   

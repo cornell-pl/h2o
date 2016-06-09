@@ -10,9 +10,10 @@ class GUI {
   PFont messageFont = createFont("Calibri", 13);
   
   GUI(int x, int y) {
-    factoryB = new Button(xposB, yposB, tileWidth, tileHeight, factoryBrown, #73A29C, #575FAD, "Factory");
+    factoryB = new Button(xposB, yposB, tileWidth, tileHeight, factoryBrown, #73A29C, #EA7E2F, "Factory");
     farmB = new Button(xposB, yposB + 50, tileWidth, tileHeight, farmYellow, #73A29C, #F0AD1D, "Farm");
-    removeB = new Button(xposB, yposB+100, tileWidth, tileHeight, #FFFFFF, #FACCCC, #E3F5EA, "Remove");
+    houseB = new Button(xposB, yposB + 100, tileWidth, tileHeight, houseTurquoise, #73A29C, #55F7B5, "House");
+    removeB = new Button(xposB, yposB+150, tileWidth, tileHeight, #FFFFFF, #73A29C, #E3F5EA, "Remove");
   }
   
   void render() {
@@ -28,6 +29,7 @@ class GUI {
     
     factoryB.display();
     farmB.display();
+    houseB.display();
     removeB.display();
   }
   
@@ -71,6 +73,7 @@ class GUI {
 //**** Buttons and mouse interaction  ****//  -----------------------------------------------
 Button factoryB;
 Button farmB;
+Button houseB;
 Button removeB;
 String message = "";
 String message2 = "";
@@ -81,6 +84,7 @@ void mousePressed() {
     message = "Add factory mode is selected";
     message2 = "";
     farmB.isPressed = false;     //Reset all other buttons when one is pressed
+    houseB.isPressed = false;
     removeB.isPressed = false;
   }
   else if (farmB.over) {      //When farm button is clicked on
@@ -88,6 +92,15 @@ void mousePressed() {
     message = "Add farm mode is selected";
     message2 = "";
     factoryB.isPressed = false;     //Reset all other buttons when one is pressed
+    houseB.isPressed = false;
+    removeB.isPressed = false;
+  }
+  else if (houseB.over) {      //When farm button is clicked on
+    houseB.press();
+    message = "Add house mode is selected";
+    message2 = "";
+    factoryB.isPressed = false;     //Reset all other buttons when one is pressed
+    farmB.isPressed = false;
     removeB.isPressed = false;
   }
   else if(removeB.over) {   //When remove button is clicked on
@@ -96,6 +109,7 @@ void mousePressed() {
     message2 = "";
     factoryB.isPressed = false;     //Reset all other buttons when one is pressed
     farmB.isPressed = false;
+    houseB.isPressed = false;
   }
   
   else if (mouseOverMap()){     //When mouse clicked on tile
@@ -107,6 +121,9 @@ void mousePressed() {
         else if (farmB.isPressed) {        //If farm button is in pressed state
           WS.addFarm(loc[0], loc[1]);
         }
+        else if (houseB.isPressed) {        //If farm button is in pressed state
+          WS.addHouse(loc[0], loc[1]);
+        }
         else if(removeB.isPressed) {    //If remove button is in pressed state
           WS.removeLandUse(loc[0],loc[1]);
         }
@@ -114,6 +131,7 @@ void mousePressed() {
   else {
     factoryB.isPressed = false;     //Reset all buttons when click on blank areas
     farmB.isPressed = false;     
+    houseB.isPressed = false;
     removeB.isPressed = false;
     message = "";
   }

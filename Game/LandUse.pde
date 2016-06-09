@@ -1,8 +1,9 @@
 final color riverBlue = #6FB4D8;
-final color factoryBrown = #E36607; 
+final color factoryBrown = #EA9253; 
 final color farmYellow = #F5E77E;
 final color forestGreen = #5DD65E;
 final color dirtBrown = #AF956A;
+final color houseTurquoise = #9EFCD6;
 
 abstract class LandUse {
   int pollution;
@@ -31,7 +32,7 @@ class Factory extends LandUse {
 
 class Farm extends LandUse {
  Farm () {
-   pollution = 5;
+   pollution = 7;
    icon = farmYellow;
  }
 }
@@ -47,6 +48,13 @@ class Forest extends LandUse {
   Forest () {
     pollution = 0;
     icon = forestGreen;
+  }
+}
+  
+class House extends LandUse {
+  House() {
+    pollution = 2;
+    icon = houseTurquoise;
   }
 }
   
