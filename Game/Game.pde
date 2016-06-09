@@ -1,5 +1,7 @@
 Watershed WS;
 GUI graphics;
+final static int sizeX = 30;    //Dimensions of the watershed in tiles
+final static int sizeY = 30;
   
 /* ###  PROBLEMS  ###: 
 *  
@@ -11,7 +13,7 @@ GUI graphics;
 void setup() {
   frameRate(30);
   size(1050, 800);
-  WS = new Watershed(20, 20);   //Creates watershed of size 20*20
+  WS = new Watershed(sizeX, sizeY);   //Creates watershed of size 20*20
 }
 
 void draw() {  
@@ -26,12 +28,9 @@ class Watershed {
   /* Contains all elements of the Game and implements the GUI. All user functions can be accessed from this class */
   Tile[][] gameMap; //2D Matrix of all grid Tiles on game map
   ArrayList<int[]> riverTiles = new ArrayList<int[]>(); //Records the coordinates of all river tiles on map;
-  final int sizeX;
-  final int sizeY;
   
   Watershed(int x, int y) {
     /* Constructor: Initializes a watershed of dimension x*y units */
-    sizeX = x; sizeY = y;
     graphics = new GUI(x, y);
     initialize();    //Creates the Tile array for the watershed
     initializeRiver1();    //Creates the river
@@ -152,7 +151,6 @@ class Watershed {
     }
   }
 }
-  
   
 void trialRun1() {
   /* Trial run of game for testing. Factory added at <14, 2> and <0, 7>, 

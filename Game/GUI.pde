@@ -1,16 +1,14 @@
-class GUI {
-  final int tileWidth = 20;   //width of a tile in pixels
-  final int tileHeight = 20;    //height of a tile in pixels
-  final int xpos = 40;   //xpos and ypos determines the position of the top left corner of the map, in pixels
-  final int ypos = 40;
-  final int sizeX;
-  final int sizeY;
+final static int xpos = 40;   //xpos and ypos determines the position of the top left corner of the map, in pixels
+final static int ypos = 40;
+final static int tileWidth = 20;   //width of a tile in pixels
+final static int tileHeight = 20;    //height of a tile in pixels
 
+class GUI {
 
   GUI(int x, int y) {
-    sizeX = x; sizeY = y;
-    factoryB = new Button(xpos + sizeX*tileWidth + 40, 100, tileWidth, tileHeight, factoryBrown, #73A29C, #575FAD, "Factory");
-    farmB = new Button(xpos + sizeX*tileWidth + 40, 150, tileWidth, tileHeight, farmYellow, #73A29C, #F0AD1D, "Farm");
+    factoryB = new Button(Button.xposB, Button.yposB, tileWidth, tileHeight, factoryBrown, #73A29C, #575FAD, "Factory");
+    farmB = new Button(Button.xposB, Button.yposB + 50, tileWidth, tileHeight, farmYellow, #73A29C, #F0AD1D, "Farm");
+    //removeB = new Button(xpos, ypos+100, tileWidth, tileHeight, farmYellow, #73A29C, #F0AD1D, "Farm");
   }
   
   void render() {
@@ -18,7 +16,7 @@ class GUI {
     * Draws each frame   */
     for (Tile[] tileRow : WS.gameMap) {
       for (Tile t: tileRow) {
-        graphics.drawTile(t.getX(), t.getY(), t.getLandT().getIcon());
+        drawTile(t.getX(), t.getY(), t.getLandT().getIcon());
       }
     }
     axisLabels();
@@ -85,8 +83,8 @@ void mousePressed() {
 
 boolean mouseOverMap(){
   /* Helper function: Returns true if the mouse position is over the Watershed map. false otherwise. */
-  int[] xRange = {graphics.xpos, graphics.xpos + graphics.sizeX*graphics.tileWidth};
-  int[] yRange = {graphics.ypos, graphics.ypos + graphics.sizeY*graphics.tileHeight};
+  int[] xRange = {xpos, xpos + sizeX*tileWidth};
+  int[] yRange = {ypos, ypos + sizeY*tileHeight};
   return ((mouseX > xRange[0] && mouseX < xRange[1]) && (mouseY > yRange[0] && mouseY < yRange[1]));
 }
 
@@ -94,14 +92,16 @@ int[] converter(int xraw, int yraw) {
   /*Helper function: converts raw coordinates x and y in frame to tile locations   */
     int xloc = 0;
     int yloc = 0;
-    xloc = (xraw-graphics.xpos)/graphics.tileWidth;
-    yloc = (yraw-graphics.ypos)/graphics.tileHeight;
+    xloc = (xraw-xpos)/tileWidth;
+    yloc = (yraw-ypos)/tileHeight;
     int[] out = {xloc, yloc};
     return out;
 }
 
 
 class Button{
+  final static int xposB = xpos + sizeX*tileWidth + 40;    //Drawing dimensions. xpos and ypos are the coordinates of the top most button. 
+  final static int yposB = 100;    //All buttons scale with respect to this
   int x, y;                 // The x- and y-coordinates of the Button in pixels
   int bWidth;                 // Dimensions in pixels
   int bHeight;
@@ -129,7 +129,7 @@ class Button{
     text(label, x+bWidth+5, y+15);
     if (isPressed) {
       fill(0);  //Color of text label
-      text(label + " is selected", 20, graphics.ypos + graphics.sizeY*graphics.tileHeight + 30);    
+      text(label + " is selected", 20, ypos + sizeY*tileHeight + 30);    
       fill(selectedColor);
     }else if (over) {
       fill(overColor);
