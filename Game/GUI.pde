@@ -57,6 +57,8 @@ class GUI {
   }
   
   void showFeedback() {
+    fill(255);
+    rect(60 - 20, ypos + sizeY*tileHeight + 10, 420, 110);
     fill(0);  //Color of text 
     textFont(messageFont);
     text(message, 60, ypos + sizeY*tileHeight + 30);   

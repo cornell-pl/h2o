@@ -134,7 +134,7 @@ class Watershed {
       Farm fm = new Farm();
       t.changeLandType(fm); 
       t.distToRiver = distToRiver(x, y);
-      message2 = "Added Farm at" + t;
+      message2 = "Added Farm at " + t;
       println("Added Farm at", t);
     }else {
       message2 = "Cannot built farm in river. Nothing is added.";
@@ -144,9 +144,8 @@ class Watershed {
   
   void removeLandUse(int x, int y) {
     /* Removes LandUse at Location <x, y> on the map. (changes them to GreenFields) */
-    
     Tile t = gameMap[x][y];
-    if (!riverTiles.contains(t)) {
+    if (! (t.getLandT() instanceof River)) {
       GreenField gf= new GreenField();
       t.changeLandType(gf);
       graphics.drawTile(x, y, gf.getIcon());
