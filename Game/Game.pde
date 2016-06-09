@@ -103,7 +103,7 @@ class Watershed {
   
   //**** Methods to add, change and remove land uses  ****//  -----------------------------------------------
   float distToRiver(int x, int y) {
-    /* Returns the distance for <x, y> to closest River Tile. */
+    /* Helper: Returns the distance for <x, y> to closest River Tile. */
     float minDist = (float) Integer.MAX_VALUE;
     for (int[] rCoords: riverTiles) {
       float d = dist(x, y, rCoords[0], rCoords[1]);
@@ -111,8 +111,7 @@ class Watershed {
     }
     return minDist;
   }
-  
-  
+    
   void addFactory(int x, int y) {
     /* Places a new Factory at Location <x, y> on the map. */
     Tile t = gameMap[x][y];

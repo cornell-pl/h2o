@@ -9,7 +9,8 @@ class GUI {
 
   GUI(int x, int y) {
     sizeX = x; sizeY = y;
-    factoryB = new Button(xpos + sizeX*tileWidth + 40, 100, tileWidth, tileHeight, factoryBrown, #E118F0, #575FAD, "Factory");
+    factoryB = new Button(xpos + sizeX*tileWidth + 40, 100, tileWidth, tileHeight, factoryBrown, #73A29C, #575FAD, "Factory");
+    farmB = new Button(xpos + sizeX*tileWidth + 40, 150, tileWidth, tileHeight, farmYellow, #73A29C, #F0AD1D, "Farm");
   }
   
   void render() {
@@ -22,7 +23,7 @@ class GUI {
     }
     axisLabels();
     factoryB.display();
-    factoryB.update();
+    farmB.display();
   }
   
   
@@ -57,30 +58,40 @@ Button removeB;
 
 
 void mousePressed() {
-  if (factoryB.over) {
+  if (factoryB.over) {      //When factory button is clicked on
     factoryB.press();
-    //farmB.isPressed = false;     //Reset all other buttons when one is pressed
+    farmB.isPressed = false;     //Reset all other buttons when one is pressed
     //removeB.isPressed = false;
   }
-  else if (factoryB.isPressed && mouseOverMap()){
+  else if (farmB.over) {      //When farm button is clicked on
+    farmB.press();
+    factoryB.isPressed = false;     //Reset all other buttons when one is pressed
+    //removeB.isPressed = false;
+  }
+  else if (mouseOverMap()){     //When mouse clicked on tile
     int[] loc = converter(mouseX, mouseY);
+    if (factoryB.isPressed) {        //If factory button is in pressed state
     WS.addFactory(loc[0], loc[1]);
+    } else if (farmB.isPressed) {        //If farm button is in pressed state
+    WS.addFarm(loc[0], loc[1]);
+    }
   }
   else {
-    factoryB.isPressed =false;     //Reset all buttons when click on blank areas
-    //farmB.isPressed = false;     
+    factoryB.isPressed = false;     //Reset all buttons when click on blank areas
+    farmB.isPressed = false;     
     //removeB.isPressed = false;
   }
 }
 
 boolean mouseOverMap(){
+  /* Helper function: Returns true if the mouse position is over the Watershed map. false otherwise. */
   int[] xRange = {graphics.xpos, graphics.xpos + graphics.sizeX*graphics.tileWidth};
   int[] yRange = {graphics.ypos, graphics.ypos + graphics.sizeY*graphics.tileHeight};
   return ((mouseX > xRange[0] && mouseX < xRange[1]) && (mouseY > yRange[0] && mouseY < yRange[1]));
 }
 
 int[] converter(int xraw, int yraw) {
-  //Helper function: converts raw coordinates x and y in frame to tile locations
+  /*Helper function: converts raw coordinates x and y in frame to tile locations   */
     int xloc = 0;
     int yloc = 0;
     xloc = (xraw-graphics.xpos)/graphics.tileWidth;
@@ -100,7 +111,7 @@ class Button{
   String label;
   
   boolean over = false;
-  boolean isPressed = false;
+  boolean isPressed = false;     //press state of the button
   
   Button(int xp, int yp, int w, int h, color c, color o, color s, String l) {
     x = xp;
@@ -115,17 +126,18 @@ class Button{
   
   void display() {
     fill(255);  //Color of text label
-    text(label, x+bWidth+5, y+9);
+    text(label, x+bWidth+5, y+15);
     if (isPressed) {
       fill(0);  //Color of text label
-      text(label + " is selected", 20, graphics.ypos + graphics.sizeY*graphics.tileHeight + 30);      
+      text(label + " is selected", 20, graphics.ypos + graphics.sizeY*graphics.tileHeight + 30);    
+      fill(selectedColor);
     }else if (over) {
       fill(overColor);
     }else {
       fill(baseColor);
     }
     rect(x, y, bWidth, bHeight);
-    //println("isPressed", isPressed, mouseStatus);
+    update();
   }  
   
   // Updates the over field every frame
