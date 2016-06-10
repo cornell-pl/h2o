@@ -71,19 +71,19 @@ class GUI {
     colorMode(HSB);
     
     //Draws the Slidier
-    for (int i = x; i <= x+w-50; i++) {     //Green to red portion
-      float inter = map(i, x, x+w-50, 0, 1);
+    for (float i = x; i <= x+w-w*0.25; i++) {     //Green to red portion
+      float inter = map(i, x, x+w-w*0.25, 0, 1);
       color c = lerpColor(green, red, inter);
       stroke(c);
       line(i, y, i, y+h);
     }
-    for (int i = x+w-50; i <= x+w; i++) {       //Red to extreme portion
-      float inter = map(i, x+w-50, x+w, 0, 1);
+    for (float i = x+w-w*0.25; i <= x+w; i++) {       //Red to extreme portion
+      float inter = map(i, x+w-w*0.25, x+w, 0, 1);
       color c = lerpColor(red, extreme, inter);
       stroke(c);
       line(i, y, i, y+h);
     }
-    
+ 
     //Draws the needle
     stroke(50);
     strokeWeight(4);
@@ -95,6 +95,25 @@ class GUI {
       sliderX = x+w;
     } 
     line(sliderX, y-5, sliderX, y+h+5);
+    
+    //Gives a text indicator:
+    String pLevel;
+    if (sliderX - x < w*0.2) {
+      pLevel = "Healthy";
+    } else if (sliderX - x < w*0.34){
+      pLevel = "Okay";
+    } else if (sliderX -x < w*0.55) {
+      pLevel = "Moderate";
+    } else if (sliderX-x < w*0.72) {
+      pLevel = "Unhealthy";
+    } else if (sliderX-x < w*0.89) {
+      pLevel = "Severe"; 
+    } else {
+      pLevel = "Extreme" ;
+    }
+    textFont(messageFont);
+    fill(0);
+    text("Pollution indicator: " + pLevel, x, y+60);
   }
   
   void showFeedback() {
