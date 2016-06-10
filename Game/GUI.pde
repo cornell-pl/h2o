@@ -13,7 +13,7 @@ class GUI {
     factoryB = new Button(xposB, yposB, tileWidth, tileHeight, factoryBrown, #73A29C, #EA7E2F, "Factory");
     farmB = new Button(xposB, yposB + 50, tileWidth, tileHeight, farmYellow, #73A29C, #F0AD1D, "Farm");
     houseB = new Button(xposB, yposB + 100, tileWidth, tileHeight, houseTurquoise, #73A29C, #55F7B5, "House");
-    removeB = new Button(xposB, yposB+150, tileWidth, tileHeight, #F5DAB9, #73A29C, #F5BB74, "Remove");
+    demolishB = new Button(xposB, yposB+150, tileWidth, tileHeight, #F5DAB9, #73A29C, #F5BB74, "Demolish");
     resetB = new Button(xposB, yposB+400, tileWidth + 10, tileHeight + 10, #FFFFFF, #989795, #171717, "RESET");
   }
   
@@ -32,7 +32,7 @@ class GUI {
     factoryB.display();
     farmB.display();
     houseB.display();
-    removeB.display();
+    demolishB.display();
     resetB.display();
   }
   
@@ -110,8 +110,10 @@ class GUI {
       pLevel = "Unhealthy";
     } else if (sliderX-x < w*0.89) {
       pLevel = "Severe"; 
-    } else {
+    } else if (sliderX-x <= w){
       pLevel = "Extreme" ;
+    } else {
+      pLevel = "Off the scale";
     }
     textFont(messageFont);
     fill(0);
@@ -135,7 +137,7 @@ class GUI {
 Button factoryB;
 Button farmB;
 Button houseB;
-Button removeB;
+Button demolishB;
 Button resetB;
 String message = "";
 String message2 = "";
@@ -147,7 +149,8 @@ void mousePressed() {
     message2 = "";
     farmB.isPressed = false;     //Reset all other buttons when one is pressed
     houseB.isPressed = false;
-    removeB.isPressed = false;
+    demolishB.isPressed = false;
+    resetB.isPressed = false;
   }
   else if (farmB.over) {      //When farm button is clicked on
     farmB.press();
@@ -155,7 +158,8 @@ void mousePressed() {
     message2 = "";
     factoryB.isPressed = false;     //Reset all other buttons when one is pressed
     houseB.isPressed = false;
-    removeB.isPressed = false;
+    demolishB.isPressed = false;
+    resetB.isPressed = false;
   }
   else if (houseB.over) {      //When farm button is clicked on
     houseB.press();
@@ -163,28 +167,33 @@ void mousePressed() {
     message2 = "";
     factoryB.isPressed = false;     //Reset all other buttons when one is pressed
     farmB.isPressed = false;
-    removeB.isPressed = false;
+    demolishB.isPressed = false;
+    resetB.isPressed = false;
   }
-  else if(removeB.over) {   //When remove button is clicked on
-    removeB.press();
-    message = "Remove mode is selected";
+  else if(demolishB.over) {   //When demolish button is clicked on
+    demolishB.press();
+    message = "Demolish mode is selected";
     message2 = "";
     factoryB.isPressed = false;     //Reset all other buttons when one is pressed
     farmB.isPressed = false;
     houseB.isPressed = false;
+    resetB.isPressed = false;
   }
-  else if(resetB.over) {  //When clear button is clicked on
-    resetB.press();
-    factoryB.isPressed = false;     //Reset all buttons, including self, when clicked
-    farmB.isPressed = false;
-    houseB.isPressed = false;
-    removeB.isPressed = false;
-    message = "Will reset the game";
-    message2 = "Hit enter to proceed";
-    if (keyPressed && (keyCode == RETURN || keyCode == ENTER)) {
-     println("enter is pressed");
-     message = "Restarting game";
-     WS = new Watershed(sizeX, sizeY);
+  else if(resetB.over) {  //When reset button is clicked on
+    if (resetB.isPressed) {
+      message = "Restarting game";
+      message2 = "";
+      WS = new Watershed(sizeX, sizeY);
+      message = "Game is reset";
+      message2 = "";
+    } else {
+      resetB.press();
+      factoryB.isPressed = false;     //Reset all buttons, including self, when clicked
+      farmB.isPressed = false;
+      houseB.isPressed = false;
+      demolishB.isPressed = false;
+      message = "Do you want to reset the game?";
+      message2 = "Click reset button again to reset the game";
     }
   }
   
@@ -200,7 +209,7 @@ void mousePressed() {
         else if (houseB.isPressed) {        //If farm button is in pressed state
           WS.addHouse(loc[0], loc[1]);
         }
-        else if(removeB.isPressed) {    //If remove button is in pressed state
+        else if(demolishB.isPressed) {    //If demolish button is in pressed state
           WS.removeLandUse(loc[0],loc[1]);
         }
       }
@@ -208,7 +217,12 @@ void mousePressed() {
     factoryB.isPressed = false;     //Reset all buttons when click on blank areas
     farmB.isPressed = false;     
     houseB.isPressed = false;
-    removeB.isPressed = false;
+    demolishB.isPressed = false;
+    if (resetB.isPressed) {
+      message2 = "";
+    }
+    resetB.isPressed = false;
+    
     message = "";
   }
 }
