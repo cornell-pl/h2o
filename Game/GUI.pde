@@ -13,7 +13,8 @@ class GUI {
     factoryB = new Button(xposB, yposB, tileWidth, tileHeight, factoryBrown, #73A29C, #EA7E2F, "Factory");
     farmB = new Button(xposB, yposB + 50, tileWidth, tileHeight, farmYellow, #73A29C, #F0AD1D, "Farm");
     houseB = new Button(xposB, yposB + 100, tileWidth, tileHeight, houseTurquoise, #73A29C, #55F7B5, "House");
-    removeB = new Button(xposB, yposB+150, tileWidth, tileHeight, #FFFFFF, #73A29C, #E3F5EA, "Remove");
+    removeB = new Button(xposB, yposB+150, tileWidth, tileHeight, #F5DAB9, #73A29C, #F5BB74, "Remove");
+    resetB = new Button(xposB, yposB+400, tileWidth + 10, tileHeight + 10, #FFFFFF, #989795, #171717, "RESET");
   }
   
   void render() {
@@ -32,6 +33,7 @@ class GUI {
     farmB.display();
     houseB.display();
     removeB.display();
+    resetB.display();
   }
   
   
@@ -134,6 +136,7 @@ Button factoryB;
 Button farmB;
 Button houseB;
 Button removeB;
+Button resetB;
 String message = "";
 String message2 = "";
 
@@ -169,6 +172,20 @@ void mousePressed() {
     factoryB.isPressed = false;     //Reset all other buttons when one is pressed
     farmB.isPressed = false;
     houseB.isPressed = false;
+  }
+  else if(resetB.over) {  //When clear button is clicked on
+    resetB.press();
+    factoryB.isPressed = false;     //Reset all buttons, including self, when clicked
+    farmB.isPressed = false;
+    houseB.isPressed = false;
+    removeB.isPressed = false;
+    message = "Will reset the game";
+    message2 = "Hit enter to proceed";
+    if (keyPressed && (keyCode == RETURN || keyCode == ENTER)) {
+     println("enter is pressed");
+     message = "Restarting game";
+     WS = new Watershed(sizeX, sizeY);
+    }
   }
   
   else if (mouseOverMap()){     //When mouse clicked on tile
