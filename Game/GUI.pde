@@ -85,11 +85,14 @@ class GUI {
       stroke(c);
       line(i, y, i, y+h);
     }
- 
+    stroke(255);
+    noFill();
+    rect(x-1, y-1, w+2, h+2);
+    
     //Draws the needle
     stroke(50);
     strokeWeight(4);
-    float scaleC = 2;    //Scaling constant that scales ldPollution number to pixel coordinates of slider
+    float scaleC = 1.5;    //Scaling constant that scales ldPollution number to pixel coordinates of slider
     float sliderX = x;    //xposition of the slider in pixels;
     if (sliderX + scaleC*WS.ldPollution <= x+w){
       sliderX = sliderX + scaleC*WS.ldPollution;
@@ -110,7 +113,7 @@ class GUI {
       pLevel = "Unhealthy";
     } else if (sliderX-x < w*0.89) {
       pLevel = "Severe"; 
-    } else if (sliderX-x <= w){
+    } else if (sliderX-x < w){
       pLevel = "Extreme" ;
     } else {
       pLevel = "Off the scale";
