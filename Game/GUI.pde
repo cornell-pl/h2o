@@ -25,6 +25,7 @@ class GUI {
       }
     }
     axisLabels();
+    showPollutionSlider();
     showFeedback();
     
     factoryB.display();
@@ -52,13 +53,52 @@ class GUI {
   
   void drawTile(int x, int y, color c) {
     /* Draws a tile at Location <x, y> on game map, fill color c */
-    stroke(220);
+    stroke(210);
+    strokeWeight(1.5);
     fill(c);
     rect(x*tileWidth + xpos, y*tileHeight + ypos, tileWidth, tileHeight);
     fill(255);    //resets to white.
   }
   
+  void showPollutionSlider() {
+    color green = #4BDE4A;
+    color red = #FF3300;
+    color extreme = #A72200;
+    int x =  xpos + sizeX*tileWidth + 40;     //xposition of the slider
+    int y = yposB + 220;       //yposition of the slider
+    int w = 200;    //width of slider
+    int h = 25;  //height if slider
+    colorMode(HSB);
+    
+    //Draws the Slidier
+    for (int i = x; i <= x+w-50; i++) {     //Green to red portion
+      float inter = map(i, x, x+w-50, 0, 1);
+      color c = lerpColor(green, red, inter);
+      stroke(c);
+      line(i, y, i, y+h);
+    }
+    for (int i = x+w-50; i <= x+w; i++) {       //Red to extreme portion
+      float inter = map(i, x+w-50, x+w, 0, 1);
+      color c = lerpColor(red, extreme, inter);
+      stroke(c);
+      line(i, y, i, y+h);
+    }
+    
+    //Draws the needle
+    stroke(50);
+    strokeWeight(4);
+    float scaleC = 2;    //Scaling constant that scales ldPollution number to pixel coordinates of slider
+    float sliderX = x;    //xposition of the slider in pixels;
+    if (sliderX + scaleC*WS.ldPollution <= x+w){
+      sliderX = sliderX + scaleC*WS.ldPollution;
+    }else{
+      sliderX = x+w;
+    } 
+    line(sliderX, y-5, sliderX, y+h+5);
+  }
+  
   void showFeedback() {
+    stroke(255);
     fill(255);
     rect(60 - 20, ypos + sizeY*tileHeight + 10, 420, 110);
     fill(0);  //Color of text 
@@ -181,6 +221,8 @@ class Button{
   }
   
   void display() {
+    stroke(255);
+    strokeWeight(2);
     fill(255);  //Color of text label
     if (isPressed) { 
       textFont(selectedFont);

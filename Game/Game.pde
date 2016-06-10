@@ -18,6 +18,7 @@ void setup() {
 
 void draw() {  
   background(204);
+  WS.updatePollution();
   graphics.render();
   //println("Simple sum of all pollution: ", WS.sumPollution());
   //println("Total pollution entering river after linear decay: ", WS.linearDecayPollution()); println("");
@@ -28,6 +29,8 @@ class Watershed {
   /* Contains all elements of the Game and implements the GUI. All user functions can be accessed from this class */
   Tile[][] gameMap; //2D Matrix of all grid Tiles on game map
   ArrayList<int[]> riverTiles = new ArrayList<int[]>(); //Records the coordinates of all river tiles on map;
+  int totalPollution;
+  float ldPollution;
   
   Watershed(int x, int y) {
     /* Constructor: Initializes a watershed of dimension x*y units */
@@ -111,7 +114,13 @@ class Watershed {
     return ldPollutionTotal;
   }
   
-  
+  void updatePollution() {
+    /* Updates the totalPollution and ldPollution variables.
+    * To be called in each frame */
+    totalPollution = sumPollution();
+    ldPollution = linearDecayPollution();
+  }
+    
   
   //**** Methods to add, change and remove land uses  ****//  -----------------------------------------------
   float distToRiver(int x, int y) {
