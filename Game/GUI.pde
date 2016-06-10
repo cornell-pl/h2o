@@ -13,8 +13,9 @@ class GUI {
     factoryB = new Button(xposB, yposB, tileWidth, tileHeight, factoryBrown, #73A29C, #EA7E2F, "Factory");
     farmB = new Button(xposB, yposB + 50, tileWidth, tileHeight, farmYellow, #73A29C, #F0AD1D, "Farm");
     houseB = new Button(xposB, yposB + 100, tileWidth, tileHeight, houseTurquoise, #73A29C, #55F7B5, "House");
-    demolishB = new Button(xposB, yposB+150, tileWidth, tileHeight, #F5DAB9, #73A29C, #F5BB74, "Demolish");
-    resetB = new Button(xposB, yposB+400, tileWidth + 10, tileHeight + 10, #FFFFFF, #989795, #171717, "RESET");
+    forestB = new Button(xposB, yposB + 150, tileWidth, tileHeight, forestGreen, #73A29C, #02A002, "Forest");
+    demolishB = new Button(xposB, yposB+200, tileWidth, tileHeight, #F5DAB9, #73A29C, #F5BB74, "Demolish");
+    resetB = new Button(xposB + 200, yposB+600, tileWidth + 10, tileHeight + 10, #FFFFFF, #989795, #171717, "RESET");
   }
   
   void render() {
@@ -37,6 +38,7 @@ class GUI {
     factoryB.display();
     farmB.display();
     houseB.display();
+    forestB.display();
     demolishB.display();
     resetB.display();
   }
@@ -88,7 +90,7 @@ class GUI {
     color red = #FF3300;
     color extreme = #A72200;
     int x =  xpos + sizeX*tileWidth + 40;     //xposition of the slider
-    int y = yposB + 220;       //yposition of the slider
+    int y = yposB + 270;       //yposition of the slider
     int w = 200;    //width of slider
     int h = 25;  //height if slider
     colorMode(HSB);
@@ -161,6 +163,7 @@ class GUI {
 Button factoryB;
 Button farmB;
 Button houseB;
+Button forestB;
 Button demolishB;
 Button resetB;
 String message = "";
@@ -191,12 +194,22 @@ void mousePressed() {
     demolishB.isPressed = false;
     resetB.isPressed = false;
   }
-  else if (houseB.over) {      //When farm button is clicked on
+  else if (houseB.over) {      //When house button is clicked on
     houseB.press();
     message = "Add house mode is selected";
     message2 = "";
     factoryB.isPressed = false;     //Reset all other buttons when one is pressed
     farmB.isPressed = false;
+    demolishB.isPressed = false;
+    resetB.isPressed = false;
+  }
+  else if (forestB.over) {      //When forest button is clicked on
+    forestB.press();
+    message = "Add forest mode is selected";
+    message2 = "";
+    factoryB.isPressed = false;     //Reset all other buttons when one is pressed
+    farmB.isPressed = false;
+    houseB.isPressed = false;
     demolishB.isPressed = false;
     resetB.isPressed = false;
   }
@@ -234,6 +247,7 @@ void mousePressed() {
     factoryB.isPressed = false;     //Reset all buttons when click on blank areas
     farmB.isPressed = false;     
     houseB.isPressed = false;
+    forestB.isPressed = false;
     demolishB.isPressed = false;
     if (resetB.isPressed) {
       message2 = "";
@@ -258,8 +272,11 @@ void mouseReleased() {
         else if (farmB.isPressed) {        //If farm button is in pressed state
           WS.addFarm(x, y);
         }
-        else if (houseB.isPressed) {        //If farm button is in pressed state
+        else if (houseB.isPressed) {        //If house button is in pressed state
           WS.addHouse(x, y);
+        }
+        else if (forestB.isPressed) {        //If forest button is in pressed state
+          WS.addForest(x, y);
         }
         else if(demolishB.isPressed) {    //If demolish button is in pressed state
           WS.removeLandUse(x,y);

@@ -6,9 +6,9 @@ final color dirtBrown = #AF956A;
 final color houseTurquoise = #9EFCD6;
 
 abstract class LandUse {
-  int pollution;
+  float pollution;
   color icon;
-  int getPollution() {
+  float getPollution() {
     /*Returns pollution of LandUse */
     return pollution;
   }
@@ -46,7 +46,7 @@ class Dirt extends LandUse {
 
 class Forest extends LandUse {
   Forest () {
-    pollution = 0;
+    pollution = -0.1;
     icon = forestGreen;
   }
 }

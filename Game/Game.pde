@@ -44,11 +44,19 @@ class Watershed {
     All Tiles are initialized with Forests*/
     gameMap = new Tile[sizeX][sizeY];
     for (int y=0; y<sizeY; y++) {
-      for (int x=0; x<sizeX; x++) {
-       Forest fo = new Forest();
-       Tile t = new Tile(fo, x, y, 0, 0); //Default zero values for slope and soil
-       gameMap[x][y] = t;
+      for (int x=0; x<sizeX; x++) { 
+       float r = random(0, 1);          //random forest or dirt
+       if (r > 0.9) {
+         Forest fo = new Forest();
+         Tile t = new Tile(fo, x, y, 0, 0); //Default zero values for slope and soil
+         gameMap[x][y] = t;
+         }
+       else {
+         Dirt d = new Dirt();
+         Tile t = new Tile(d, x, y, 0, 0); //Default zero values for slope and soil
+         gameMap[x][y] = t;
        }
+      }
     }
   }
 
@@ -95,6 +103,7 @@ class Watershed {
         totalPollution += t.getPollution();
       }
     }
+    if (totalPollution < 0) totalPollution = 0;
     return totalPollution;
   }
 
@@ -111,6 +120,7 @@ class Watershed {
         }
      }
    }
+   if (ldPollutionTotal < 0.) ldPollutionTotal = 0.;
     return ldPollutionTotal;
   }
   
@@ -176,6 +186,20 @@ class Watershed {
     }else {
       message2 = "Cannot built house in river. Nothing is added.";
       println("Cannot built house in river. Nothing is added.");
+    }
+  }
+  void addForest(int x, int y) {
+    /* Places a new House at Location <x, y> on the map. */
+    Tile t = gameMap[x][y];
+    if (! (t.getLandT() instanceof River)) {
+      Forest fo = new Forest();
+      t.changeLandUse(fo); 
+      t.distToRiver = distToRiver(x, y);
+      message2 = "Added Forest at " + t;
+      println("Added Forest at", t);
+    }else {
+      message2 = "Cannot plant trees in river. Nothing is added.";
+      println("Cannot plant trees in river. Nothing is added.");
     }
   }
   
