@@ -182,6 +182,7 @@ void mousePressed() {
     message2 = "";
     farmB.isPressed = false;     //Reset all other buttons when one is pressed
     houseB.isPressed = false;
+    forestB.isPressed = false;
     demolishB.isPressed = false;
     resetB.isPressed = false;
   }
@@ -191,6 +192,7 @@ void mousePressed() {
     message2 = "";
     factoryB.isPressed = false;     //Reset all other buttons when one is pressed
     houseB.isPressed = false;
+    forestB.isPressed = false;
     demolishB.isPressed = false;
     resetB.isPressed = false;
   }
@@ -200,6 +202,7 @@ void mousePressed() {
     message2 = "";
     factoryB.isPressed = false;     //Reset all other buttons when one is pressed
     farmB.isPressed = false;
+    forestB.isPressed = false;
     demolishB.isPressed = false;
     resetB.isPressed = false;
   }
@@ -219,6 +222,7 @@ void mousePressed() {
     message2 = "";
     factoryB.isPressed = false;     //Reset all other buttons when one is pressed
     farmB.isPressed = false;
+    forestB.isPressed = false;
     houseB.isPressed = false;
     resetB.isPressed = false;
   }
@@ -234,6 +238,7 @@ void mousePressed() {
       factoryB.isPressed = false;     //Reset all buttons, including self, when clicked
       farmB.isPressed = false;
       houseB.isPressed = false;
+      forestB.isPressed = false;
       demolishB.isPressed = false;
       message = "Do you want to reset the game?";
       message2 = "Click reset button again to reset the game";

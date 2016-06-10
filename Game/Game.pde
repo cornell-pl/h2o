@@ -114,13 +114,13 @@ class Watershed {
     float ldPollutionTotal = 0.;
     for (Tile[] tileRow : gameMap) {
       for (Tile t: tileRow) {   //Calculate pollution contribution from t after linear decay
-        if (t.getPollution() != 0) {
+        if (t.getPollution() != 0.) {
           float ldPollution = t.getPollution()/t.distToRiver;
           ldPollutionTotal += ldPollution;
         }
      }
    }
-   if (ldPollutionTotal < 0.) ldPollutionTotal = 0.;
+   //if (ldPollutionTotal < 0.) ldPollutionTotal = 0.;
     return ldPollutionTotal;
   }
   

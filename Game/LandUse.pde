@@ -46,7 +46,7 @@ class Dirt extends LandUse {
 
 class Forest extends LandUse {
   Forest () {
-    pollution = -0.1;
+    pollution = 0;     //Zero div error (-infinity pollution) occurs when this is negative. Check math. 
     icon = forestGreen;
   }
 }
