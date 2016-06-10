@@ -19,15 +19,20 @@ class GUI {
   
   void render() {
     /* Single function for all graphics.
-    * Draws each frame   */
+    * Draws each frame   */    
     for (Tile[] tileRow : WS.gameMap) {
       for (Tile t: tileRow) {
-        drawTile(t.getX(), t.getY(), t.getLandT().getIcon());
+        drawTile(t.getX(), t.getY(), t.getLandT().getIcon(), 255);
+        if (mouseOverMap()) {   //Highlight tile mouse is over
+          int[] pos = converter(mouseX, mouseY);
+          drawTile(pos[0], pos[1], #B6FAB1, 50);
+        } 
       }
     }
     axisLabels();
     showPollutionSlider();
     showFeedback();
+    highlight();
     
     factoryB.display();
     farmB.display();
@@ -38,6 +43,22 @@ class GUI {
   
   
   //**** Draws elements of the game map  ****//  -----------------------------------------------
+  void highlight() {
+  /* Highlights tiles during click and drag */
+  int[] posP = converter(mousePX, mousePY);   //tile coordinate when mouse is pressed
+  int[] posC = converter(mouseX, mouseY);     //current tile coordinate
+  ArrayList<int[]> highlighted = new ArrayList<int[]>();
+  for (int x = min(posP[0], posC[0]); x <= max(posP[0], posC[0]); x++) {
+    for (int y = min(posP[1], posC[1]); y <= max(posP[1], posC[1]); y++) {
+      highlighted.add(new int[] {x, y});
+    }
+  }
+  if (mousePressed && mouseOverMap()) {
+      for (int[] p : highlighted) {
+        drawTile(p[0], p[1], #B6FAB1, 100);
+      }
+  }
+}
   void axisLabels() {
     /* Draw axis labels. */
     textFont(axisFont);
@@ -53,11 +74,11 @@ class GUI {
     }
   }
   
-  void drawTile(int x, int y, color c) {
-    /* Draws a tile at Location <x, y> on game map, fill color c */
+  void drawTile(int x, int y, color c, int t) {
+    /* Draws a tile at Location <x, y> on game map, fill color c, transparency t */
     stroke(210);
     strokeWeight(1.5);
-    fill(c);
+    fill(c, t);
     rect(x*tileWidth + xpos, y*tileHeight + ypos, tileWidth, tileHeight);
     fill(255);    //resets to white.
   }
@@ -144,8 +165,14 @@ Button demolishB;
 Button resetB;
 String message = "";
 String message2 = "";
+int mousePX;    // Mouse press positions
+int mousePY;
+int mouseRX;   //Mouse release positions
+int mouseRY;
+int mouseCX = mouseX;     //Current mouse positions
+int mouseCY = mouseY;
 
-void mousePressed() {
+void mousePressed() {  
   if (factoryB.over) {      //When factory button is clicked on
     factoryB.press();
     message = "Add factory mode is selected";
@@ -199,23 +226,10 @@ void mousePressed() {
       message2 = "Click reset button again to reset the game";
     }
   }
-  
   else if (mouseOverMap()){     //When mouse clicked on tile
-        int[] loc = converter(mouseX, mouseY);
-        
-        if (factoryB.isPressed) {        //If factory button is in pressed state
-          WS.addFactory(loc[0], loc[1]);
-        } 
-        else if (farmB.isPressed) {        //If farm button is in pressed state
-          WS.addFarm(loc[0], loc[1]);
-        }
-        else if (houseB.isPressed) {        //If farm button is in pressed state
-          WS.addHouse(loc[0], loc[1]);
-        }
-        else if(demolishB.isPressed) {    //If demolish button is in pressed state
-          WS.removeLandUse(loc[0],loc[1]);
-        }
-      }
+    mousePX = mouseX;
+    mousePY = mouseY;
+  }
   else {
     factoryB.isPressed = false;     //Reset all buttons when click on blank areas
     farmB.isPressed = false;     
@@ -229,6 +243,32 @@ void mousePressed() {
     message = "";
   }
 }
+
+void mouseReleased() {
+  if (mouseOverMap()){
+    mouseRX = mouseX;
+    mouseRY = mouseY;
+    int[] posP = converter(mousePX, mousePY);
+    int[] posR = converter(mouseRX, mouseRY);
+    for (int x = min(posP[0], posR[0]); x <= max(posP[0], posR[0]); x++) {
+      for (int y = min(posP[1], posR[1]); y <= max(posP[1], posR[1]); y++) {
+        if (factoryB.isPressed) {        //If factory button is in pressed state
+          WS.addFactory(x, y);
+        } 
+        else if (farmB.isPressed) {        //If farm button is in pressed state
+          WS.addFarm(x, y);
+        }
+        else if (houseB.isPressed) {        //If farm button is in pressed state
+          WS.addHouse(x, y);
+        }
+        else if(demolishB.isPressed) {    //If demolish button is in pressed state
+          WS.removeLandUse(x,y);
+        }
+      }
+    }
+  }
+}
+  
 
 boolean mouseOverMap(){
   /* Helper function: Returns true if the mouse position is over the Watershed map. false otherwise. */

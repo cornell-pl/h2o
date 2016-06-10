@@ -185,7 +185,7 @@ class Watershed {
     if (! (t.getLandT() instanceof River)) {
       Dirt di= new Dirt();
       t.changeLandUse(di);
-      graphics.drawTile(x, y, di.getIcon());
+      graphics.drawTile(x, y, di.getIcon(), 255);
       message2 = "Removed land use at " + t;
       println("Removed land use at", t);
     }else {
