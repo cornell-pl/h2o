@@ -240,8 +240,8 @@ void mousePressed() {
       houseB.isPressed = false;
       forestB.isPressed = false;
       demolishB.isPressed = false;
-      message = "Do you want to reset the game?";
-      message2 = "Click reset button again to reset the game";
+      message = "Do you want to reset the game? Click button again to reset.";
+      message2 = "Click anywhere to cancel.";
     }
   }
   else if (mouseOverMap()){     //When mouse clicked on tile
