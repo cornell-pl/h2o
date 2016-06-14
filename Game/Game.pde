@@ -137,81 +137,105 @@ class Watershed {
     return minDist;
   }
     
-  void addFactory(int x, int y) {
-    /* Places a new Factory at Location <x, y> on the map. */
+  boolean addFactory(int x, int y) {
+    /* Places a new Factory at Location <x, y> on the map. 
+    Returns true if successful. False otherwise.  */
     Tile t = gameMap[x][y];
-    if (! (t.getLandT() instanceof River)) {
+    if (! (t.getLandU() instanceof River)) {
       Factory fc = new Factory();
       t.changeLandUse(fc);
       t.distToRiver = distToRiver(x, y);
       message2 = "Added a Factory at " + t;
       println("Added a Factory at", t);
-      
+      return true;      
     }else {
       message2 = "Cannot built factory in river. Nothing is added.";
       println("Cannot built factory in river. Nothing is added");
+      return false;
     }
   }
   
-  void addFarm(int x, int y) {
-    /* Places a new Farm at Location <x, y> on the map. */
+  boolean addFarm(int x, int y) {
+    /* Places a new Farm at Location <x, y> on the map. 
+    Returns true if successful. False otherwise. */
     Tile t = gameMap[x][y];
-    if (! (t.getLandT() instanceof River)) {
+    if (! (t.getLandU() instanceof River)) {
       Farm fm = new Farm();
       t.changeLandUse(fm); 
       t.distToRiver = distToRiver(x, y);
       message2 = "Added a Farm at " + t;
       println("Added a Farm at", t);
+      return true;
     }else {
       message2 = "Cannot built farm in river. Nothing is added.";
       println("Cannot built farm in river. Nothing is added.");
+      return false;
     }
   }
   
-  void addHouse(int x, int y) {
-    /* Places a new House at Location <x, y> on the map. */
+  boolean addHouse(int x, int y) {
+    /* Places a new House at Location <x, y> on the map. 
+    Returns true if successful. False otherwise. */
     Tile t = gameMap[x][y];
-    if (! (t.getLandT() instanceof River)) {
+    if (! (t.getLandU() instanceof River)) {
       House hs = new House();
       t.changeLandUse(hs); 
       t.distToRiver = distToRiver(x, y);
       message2 = "Added a House at " + t;
       println("Added a House at", t);
+      return true;
     }else {
       message2 = "Cannot built house in river. Nothing is added.";
       println("Cannot built house in river. Nothing is added.");
+      return false;
     }
   }
-  void addForest(int x, int y) {
-    /* Places a new House at Location <x, y> on the map. */
+  boolean addForest(int x, int y) {
+    /* Places a new House at Location <x, y> on the map. 
+    Returns true if successful. False otherwise.  */
     Tile t = gameMap[x][y];
-    if (! (t.getLandT() instanceof River)) {
+    if (! (t.getLandU() instanceof River)) {
       Forest fo = new Forest();
       t.changeLandUse(fo); 
       t.distToRiver = distToRiver(x, y);
       message2 = "Added a Forest at " + t;
       println("Added a Forest at", t);
+      return true;
     }else {
       message2 = "Cannot plant trees in river. Nothing is added.";
       println("Cannot plant trees in river. Nothing is added.");
+      return false;
     }
   }
   
-  void removeLandUse(int x, int y) {
-    /* Removes LandUse at Location <x, y> on the map. (changes them to Dirt) */
+  boolean removeLandUse(int x, int y) {
+    /* Removes LandUse at Location <x, y> on the map. (changes them to Dirt) 
+    Returns true if successful. False otherwise.*/
     Tile t = gameMap[x][y];
-    if (! (t.getLandT() instanceof River)) {
-      LandUse olu = t.getLandT();   //Original land use
+    if (! (t.getLandU() instanceof River)) {
+      LandUse olu = t.getLandU();   //Original land use
       Dirt di= new Dirt();
       t.changeLandUse(di);
       graphics.drawTile(x, y, di.getIcon(), 255);
       message2 = "Removed " + olu.toString() + " at " + t;
       println("Removed land use at", t);
+      return true;
     }else {
       message2 = "River cannot be removed.";
       println("River cannot be removed.");
+      return false;
     }
   }
+  
+  //**** Heat map methods  ****//  -----------------------------------------------
+  ArrayList<Tile> getNeighbours(Tile t) { 
+    String T = t.getLandU().toString();        //The String representing the name of the landUse;
+    ArrayList<Tile> neighbours = new ArrayList<Tile>();
+    
+    return neighbours;
+  }
+  
+  
 }
   
 void trialRun1() {

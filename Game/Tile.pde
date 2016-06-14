@@ -26,7 +26,7 @@ class Tile {
     return soil;
   }
   
-  LandUse getLandT() {
+  LandUse getLandU() {
     /* Returns the LandUse object of the Tile */
     return landU;
   }

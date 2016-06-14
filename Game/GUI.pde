@@ -23,7 +23,7 @@ class GUI {
     * Draws each frame   */    
     for (Tile[] tileRow : WS.gameMap) {
       for (Tile t: tileRow) {
-        drawTile(t.getX(), t.getY(), t.getLandT().getIcon(), 255);
+        drawTile(t.getX(), t.getY(), t.getLandU().getIcon(), 255);
         if (mouseOverMap()) {   //Highlight tile mouse is over
           int[] pos = converter(mouseX, mouseY);
           drawTile(pos[0], pos[1], #B6FAB1, 100);
@@ -250,38 +250,39 @@ void mouseReleased() {
     int[] posR = converter(mouseRX, mouseRY);
     int count = 0;
     String thing = "";
+    boolean s = false;
     for (int x = min(posP[0], posR[0]); x <= max(posP[0], posR[0]); x++) {
       for (int y = min(posP[1], posR[1]); y <= max(posP[1], posR[1]); y++) {
         if (pushed == factoryB) {        //If factory button is in pressed state
-          WS.addFactory(x, y);
-          count ++;
+          s = WS.addFactory(x, y);      //count++ only when true
+          if (s) count ++;
           thing = "Factories";
         } 
         else if (pushed == farmB) {        //If farm button is in pressed state
-          WS.addFarm(x, y);
-          count ++;
+          s = WS.addFarm(x, y);
+          if (s) count ++;
           thing = "Farms";
         }
         else if (pushed == houseB) {        //If house button is in pressed state
-          WS.addHouse(x, y);
-          count ++;
+          s = WS.addHouse(x, y);
+          if (s) count ++;
           thing = "Houses";
         }
         else if (pushed == forestB) {        //If forest button is in pressed state
-          WS.addForest(x, y);
-          count ++;
+          s = WS.addForest(x, y);
+          if (s) count ++;
           thing = "Forests";
         }
         else if(pushed == demolishB) {    //If demolish button is in pressed state
-          WS.removeLandUse(x,y);
-          count ++;
+          s = WS.removeLandUse(x,y);
+          if (s) count ++;
         }
       }
     }
-    if (count > 1) {  //Different message if multiple objects added
+    if (count > 1 || (count == 1 && s == false)) {  //Different message if multiple objects 
       message2 = "Added " + Integer.toString(count) + " " + thing;    
       if (pushed == demolishB) message2 = "Removed land use at " + Integer.toString(count) + " locations";
-    }
+    }    
   }
 }
   
