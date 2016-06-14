@@ -201,10 +201,11 @@ class Watershed {
     /* Removes LandUse at Location <x, y> on the map. (changes them to Dirt) */
     Tile t = gameMap[x][y];
     if (! (t.getLandT() instanceof River)) {
+      LandUse olu = t.getLandT();   //Original land use
       Dirt di= new Dirt();
       t.changeLandUse(di);
       graphics.drawTile(x, y, di.getIcon(), 255);
-      message2 = "Removed land use at " + t;
+      message2 = "Removed " + olu.toString() + " at " + t;
       println("Removed land use at", t);
     }else {
       message2 = "River cannot be removed.";
