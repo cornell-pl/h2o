@@ -144,8 +144,8 @@ class Watershed {
       Factory fc = new Factory();
       t.changeLandUse(fc);
       t.distToRiver = distToRiver(x, y);
-      message2 = "Added Factory at " + t;
-      println("Added Factory at", t);
+      message2 = "Added a Factory at " + t;
+      println("Added a Factory at", t);
       
     }else {
       message2 = "Cannot built factory in river. Nothing is added.";
@@ -160,8 +160,8 @@ class Watershed {
       Farm fm = new Farm();
       t.changeLandUse(fm); 
       t.distToRiver = distToRiver(x, y);
-      message2 = "Added Farm at " + t;
-      println("Added Farm at", t);
+      message2 = "Added a Farm at " + t;
+      println("Added a Farm at", t);
     }else {
       message2 = "Cannot built farm in river. Nothing is added.";
       println("Cannot built farm in river. Nothing is added.");
@@ -175,8 +175,8 @@ class Watershed {
       House hs = new House();
       t.changeLandUse(hs); 
       t.distToRiver = distToRiver(x, y);
-      message2 = "Added House at " + t;
-      println("Added House at", t);
+      message2 = "Added a House at " + t;
+      println("Added a House at", t);
     }else {
       message2 = "Cannot built house in river. Nothing is added.";
       println("Cannot built house in river. Nothing is added.");
@@ -189,8 +189,8 @@ class Watershed {
       Forest fo = new Forest();
       t.changeLandUse(fo); 
       t.distToRiver = distToRiver(x, y);
-      message2 = "Added Forest at " + t;
-      println("Added Forest at", t);
+      message2 = "Added a Forest at " + t;
+      println("Added a Forest at", t);
     }else {
       message2 = "Cannot plant trees in river. Nothing is added.";
       println("Cannot plant trees in river. Nothing is added.");

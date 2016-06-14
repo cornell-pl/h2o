@@ -276,24 +276,39 @@ void mouseReleased() {
     mouseRY = mouseY;
     int[] posP = converter(mousePX, mousePY);
     int[] posR = converter(mouseRX, mouseRY);
+    int count = 0;
+    String thing = "";
     for (int x = min(posP[0], posR[0]); x <= max(posP[0], posR[0]); x++) {
       for (int y = min(posP[1], posR[1]); y <= max(posP[1], posR[1]); y++) {
         if (factoryB.isPressed) {        //If factory button is in pressed state
           WS.addFactory(x, y);
+          count ++;
+          thing = "Factories";
         } 
         else if (farmB.isPressed) {        //If farm button is in pressed state
           WS.addFarm(x, y);
+          count ++;
+          thing = "Farms";
         }
         else if (houseB.isPressed) {        //If house button is in pressed state
           WS.addHouse(x, y);
+          count ++;
+          thing = "Houses";
         }
         else if (forestB.isPressed) {        //If forest button is in pressed state
           WS.addForest(x, y);
+          count ++;
+          thing = "Forests";
         }
         else if(demolishB.isPressed) {    //If demolish button is in pressed state
           WS.removeLandUse(x,y);
+          count ++;
         }
       }
+    }
+    if (count > 1) {  //Different message if multiple objects added
+      message2 = "Added " + Integer.toString(count) + " " + thing;    
+      if (demolishB.isPressed) message2 = "Removed land use at " + Integer.toString(count) + " locations";
     }
   }
 }
