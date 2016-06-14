@@ -2,13 +2,7 @@ Watershed WS;
 GUI graphics;
 final int sizeX = 30;    //Dimensions of the watershed in tiles
 final int sizeY = 30;
-  
-/* ###  PROBLEMS  ###: 
-*  
-* ###  TODO  ###:
-*  Add a bang button to activate methods.
-*  Fonts look kinda shitty
-*/
+
 
 void setup() {
   frameRate(30);
@@ -28,7 +22,7 @@ void draw() {
 class Watershed {
   /* Contains all elements of the Game and implements the GUI. All user functions can be accessed from this class */
   Tile[][] gameMap; //2D Matrix of all grid Tiles on game map
-  ArrayList<int[]> riverTiles = new ArrayList<int[]>(); //Records the coordinates of all river tiles on map;
+  final ArrayList<int[]> riverTiles = new ArrayList<int[]>(); //Records the coordinates of all river tiles on map;
   int totalPollution;
   float ldPollution;
   
@@ -46,7 +40,7 @@ class Watershed {
     for (int y=0; y<sizeY; y++) {
       for (int x=0; x<sizeX; x++) { 
        float r = random(0, 1);          //random forest or dirt
-       if (r > 0.9) {
+       if (r > 0) {
          Forest fo = new Forest();
          Tile t = new Tile(fo, x, y, 0, 0); //Default zero values for slope and soil
          gameMap[x][y] = t;

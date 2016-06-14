@@ -4,6 +4,7 @@ final color farmYellow = #F5E77E;
 final color forestGreen = #5DD65E;
 final color dirtBrown = #AF956A;
 final color houseTurquoise = #9EFCD6;
+final color demolishBeige = #F5DAB9;
 
 abstract class LandUse {
   float pollution;

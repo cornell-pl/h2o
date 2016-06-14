@@ -3,7 +3,7 @@ final int ypos = 40;
 final int tileWidth = 20;   //width of a tile in pixels
 final int tileHeight = 20;    //height of a tile in pixels
 final int xposB = xpos + sizeX*tileWidth + 40;    //Drawing dimensions. xpos and ypos are the coordinates of the top most button. 
-final int yposB = 100;    //All buttons scale with respect to this
+final int yposB = 100;    //All buttons scale with respect to these
 
 class GUI {
   PFont axisFont = createFont("Calibri", 12);
@@ -14,7 +14,7 @@ class GUI {
     farmB = new Button(xposB, yposB + 50, tileWidth, tileHeight, farmYellow, #73A29C, #F0AD1D, "Farm");
     houseB = new Button(xposB, yposB + 100, tileWidth, tileHeight, houseTurquoise, #73A29C, #55F7B5, "House");
     forestB = new Button(xposB, yposB + 150, tileWidth, tileHeight, forestGreen, #73A29C, #02A002, "Forest");
-    demolishB = new Button(xposB, yposB+200, tileWidth, tileHeight, #F5DAB9, #73A29C, #F5BB74, "Demolish");
+    demolishB = new Button(xposB, yposB+200, tileWidth, tileHeight, demolishBeige, #73A29C, #F5BB74, "Demolish");
     resetB = new Button(xposB + 200, yposB+600, tileWidth + 10, tileHeight + 10, #FFFFFF, #989795, #171717, "RESET");
   }
   
@@ -26,7 +26,7 @@ class GUI {
         drawTile(t.getX(), t.getY(), t.getLandT().getIcon(), 255);
         if (mouseOverMap()) {   //Highlight tile mouse is over
           int[] pos = converter(mouseX, mouseY);
-          drawTile(pos[0], pos[1], #B6FAB1, 50);
+          drawTile(pos[0], pos[1], #B6FAB1, 100);
         } 
       }
     }
@@ -56,8 +56,15 @@ class GUI {
     }
   }
   if (mousePressed && mouseOverMap()) {
+    color hc;
       for (int[] p : highlighted) {
-        drawTile(p[0], p[1], #B6FAB1, 100);
+        if  (factoryB.isPressed) hc = factoryBrown;     //Reset all buttons, including self, when clicked
+        else if (farmB.isPressed) hc = farmYellow;
+        else if (houseB.isPressed) hc = houseTurquoise;
+        else if (forestB.isPressed) hc = #1EC610;
+        else if (demolishB.isPressed) hc = demolishBeige;
+        else hc = #B6FAB1;
+        drawTile(p[0], p[1], hc, 100);
       }
   }
 }
