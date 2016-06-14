@@ -9,11 +9,14 @@ void setup() {
   size(1050, 800);
   WS = new Watershed(sizeX, sizeY);   //Creates watershed of size 20*20
 }
-
+ArrayList<Tile> neighbors = new ArrayList<Tile>();
 void draw() {  
   background(204);
   WS.updatePollution();
   graphics.render();
+  
+  //WS.getNeighbors(WS.gameMap[5][11]);
+  //text(neighbors.toString(), 700, 600);
   //println("Simple sum of all pollution: ", WS.sumPollution());
   //println("Total pollution entering river after linear decay: ", WS.linearDecayPollution()); println("");
 }
@@ -33,14 +36,14 @@ class Watershed {
     initializeRiver2();    //Creates the river
   }
 
-  void initialize() { //<>// //<>//
+  void initialize() {  //<>//
     /*Initializes a game with square game map of dimension sizeX*sizeY units 
     All Tiles are initialized with Forests*/
     gameMap = new Tile[sizeX][sizeY];
     for (int y=0; y<sizeY; y++) {
       for (int x=0; x<sizeX; x++) { 
        float r = random(0, 1);          //random forest or dirt
-       if (r > 0) {
+       if (r > 0.9) {
          Forest fo = new Forest();
          Tile t = new Tile(fo, x, y, 0, 0); //Default zero values for slope and soil
          gameMap[x][y] = t;
@@ -227,15 +230,55 @@ class Watershed {
     }
   }
   
+  
   //**** Heat map methods  ****//  -----------------------------------------------
-  ArrayList<Tile> getNeighbours(Tile t) { 
-    String T = t.getLandU().toString();        //The String representing the name of the landUse;
-    ArrayList<Tile> neighbours = new ArrayList<Tile>();
-    
-    return neighbours;
+  
+  
+  void getNeighbors(Tile t) { 
+    if (!(t.getLandU() instanceof Forest)) {
+      String T = t.getLandU().toString();        //The String representing the name of the landUse;
+      ArrayList<Tile> n = new ArrayList<Tile>();
+          if(t.getX() > 0) {
+            Tile left = gameMap[t.getX()-1][t.getY()];
+            n.add(left);
+            if (t.getY() > 0) {
+              Tile topLeft = gameMap[t.getX()-1][t.getY()-1];
+              n.add(topLeft);
+            }
+            if (t.getY() < sizeY-1) {
+              Tile bottomLeft = gameMap[t.getX()-1][t.getY()+1];
+              n.add(bottomLeft);
+            }
+          }
+          if (t.getX() < sizeX -1) {
+            Tile right = gameMap[t.getX()+1][t.getY()];
+            n.add(right);
+            if (t.getY() > 0) {
+              Tile topRight = gameMap[t.getX()+1][t.getY()-1];
+              n.add(topRight);
+            }
+            if (t.getY() < sizeY -1) {
+              Tile bottomRight = gameMap[t.getX()+1][t.getY()+1];
+              n.add(bottomRight);
+          }
+          if (t.getY() > 0) {
+            Tile up = gameMap[t.getX()][t.getY()-1];
+            n.add(up);
+          }
+          if (t.getY() < sizeY -1) {
+            Tile down = gameMap[t.getX()][t.getY()+1];
+            n.add(down);
+          }
+
+        for (Tile x : n) {
+          if (x.getLandU().toString().equals(T) && !neighbors.contains(x)) {
+            neighbors.add(x);
+            getNeighbors(x);
+          }
+        }
+       }
+    }
   }
-  
-  
 }
   
 void trialRun1() {
