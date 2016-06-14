@@ -2,6 +2,7 @@ Watershed WS;
 GUI graphics;
 final int sizeX = 30;    //Dimensions of the watershed in tiles
 final int sizeY = 30;
+final int budget = 123456789;
 
 
 void setup() {
@@ -112,7 +113,7 @@ class Watershed {
     for (Tile[] tileRow : gameMap) {
       for (Tile t: tileRow) {   //Calculate pollution contribution from t after linear decay
         if (t.getPollution() != 0.) {
-          float ldPollution = t.getPollution()/t.distToRiver;
+          float ldPollution = t.getPollution()/(t.distToRiver+1.5);
           ldPollutionTotal += ldPollution;
         }
      }

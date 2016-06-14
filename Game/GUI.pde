@@ -8,6 +8,8 @@ final int yposB = 100;    //All buttons scale with respect to these
 class GUI {
   PFont axisFont = createFont("Calibri", 12);
   PFont messageFont = createFont("Calibri", 13);
+  PFont budgetFont = createFont("Calibri-Bold", 28);
+  PFont numeralFont = createFont("Courier-Bold", 30);
   
   GUI(int x, int y) {
     factoryB = new Button(xposB, yposB, tileWidth, tileHeight, factoryBrown, #73A29C, #EA7E2F, "Factory");
@@ -33,6 +35,7 @@ class GUI {
     axisLabels();
     showPollutionSlider();
     showFeedback();
+    showBudget();
     highlight();
     
     factoryB.display();
@@ -90,6 +93,15 @@ class GUI {
     fill(c, t);
     rect(x*tileWidth + xpos, y*tileHeight + ypos, tileWidth, tileHeight);
     fill(255);    //resets to white.
+  }
+  
+  void showBudget() {
+    int x = xpos + sizeX*tileWidth + 40;
+    int y = yposB + 430;
+    textFont(budgetFont);
+    text("Budget: ", x, y);
+    textFont(numeralFont);
+    text(Integer.toString(budget), x, y+35);
   }
   
   void showPollutionSlider() {
