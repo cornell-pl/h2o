@@ -54,16 +54,6 @@ class Tile {
     return ypos;
   }
   
-  float distFrom(Tile other) {
-    /*Returns distance of self from other tile */
-    int ox = other.getX();
-    int oy = other.getY();
-    int xDist = xpos - ox;
-    int yDist = ypos - oy;
-    float dist = sqrt(sq(xDist) + sq(yDist));
-    return dist;
-  }
-  
   @Override
   public String toString() {
     return "<" + str(xpos) + ", " + str(ypos)+ ">";
