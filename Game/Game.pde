@@ -2,7 +2,7 @@ Watershed WS;
 GUI graphics;
 final int sizeX = 30;    //Dimensions of the watershed in tiles
 final int sizeY = 30;
-final int budget = 286;
+final int budget = 300000000;
 
 
 void setup() {
@@ -15,11 +15,6 @@ void draw() {
   background(204);
   WS.updatePollution();
   graphics.render();
-  
-  //WS.getNeighbors(WS.gameMap[5][11]);
-  //text(neighbors.toString(), 700, 600);
-  //println("Simple sum of all pollution: ", WS.sumPollution());
-  //println("Total pollution entering river after linear decay: ", WS.linearDecayPollution()); println("");
 }
 
 
