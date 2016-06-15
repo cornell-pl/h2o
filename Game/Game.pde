@@ -2,7 +2,7 @@ Watershed WS;
 GUI graphics;
 final int sizeX = 30;    //Dimensions of the watershed in tiles
 final int sizeY = 30;
-final int budget = 123456789;
+final int budget = 286;
 
 
 void setup() {

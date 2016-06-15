@@ -8,8 +8,8 @@ final int yposB = 100;    //All buttons scale with respect to these
 class GUI {
   PFont axisFont = createFont("Calibri", 12);
   PFont messageFont = createFont("Calibri", 13);
-  PFont budgetFont = createFont("Calibri-Bold", 28);
-  PFont numeralFont = createFont("Courier-Bold", 30);
+  PFont budgetFont = createFont("Calibri-Bold", 24);
+  PFont numeralFont = createFont("Courier-Bold", 34);
   
   GUI(int x, int y) {
     factoryB = new Button(xposB, yposB, tileWidth, tileHeight, factoryBrown, #73A29C, #EA7E2F, "Factory");
@@ -101,12 +101,22 @@ class GUI {
   void showBudget() {
     int x = xpos + sizeX*tileWidth + 40;
     int y = yposB + 430;
+    String bu = "Budget: ";
+    textAlign(LEFT, TOP);
     textFont(budgetFont);
-    text("Budget: ", x, y);
+    text(bu, x, y);
     textFont(numeralFont);
-   // String 
-    
-    //text(Integer.toString(budget), x, y+35);
+    String budgetDisplay = "";
+    int b = budget;
+    while(b > 999){
+      String s = Integer.toString(b);
+      budgetDisplay = "," + s.substring(s.length()-3) + budgetDisplay;
+      b = b/1000;
+    }
+    String s = Integer.toString(b);
+    budgetDisplay = s + budgetDisplay;
+    textAlign(LEFT, TOP);
+    text(budgetDisplay, x, y+36);
   }
   
   void showPollutionSlider() {
