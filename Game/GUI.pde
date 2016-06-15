@@ -151,10 +151,12 @@ class GUI {
     strokeWeight(4);
     float scaleC = 1.5;    //Scaling constant that scales ldPollution number to pixel coordinates of slider
     float sliderX = x;    //xposition of the slider in pixels;
-    if (sliderX + scaleC*WS.ldPollution <= x+w){
-      sliderX = sliderX + scaleC*WS.ldPollution;
-    }else{
+    if (WS.ldPollution <= 0.) {
+      sliderX = x;
+    }else if (sliderX + scaleC*WS.ldPollution >= x+w) {
       sliderX = x+w;
+    }else {
+      sliderX = sliderX + scaleC*WS.ldPollution;
     } 
     line(sliderX, y-5, sliderX, y+h+5);
     
@@ -189,7 +191,7 @@ class GUI {
     text(message, 60, ypos + sizeY*tileHeight + 30);   
     text(message2, 60, ypos + sizeY*tileHeight + 50);   
     text("Simple sum of all pollution: " + WS.sumPollution(), 60, ypos + sizeY*tileHeight + 90);
-    text("Total pollution entering river after linear decay: " + WS.linearDecayPollution(), 60, ypos + sizeY*tileHeight + 110);
+    text("Total pollution entering river after distance decay: " + WS.linearDecayPollution(), 60, ypos + sizeY*tileHeight + 110);
   }
 }
 
