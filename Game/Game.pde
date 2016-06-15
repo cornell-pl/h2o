@@ -231,14 +231,14 @@ class Watershed {
     Tile t = gameMap[x][y];
     if (! (t.getLandU() instanceof River)) {
       LandUse olu = t.getLandU();   //Original land use
-      Dirt di= new Dirt();
-      t.changeLandUse(di);
-      graphics.drawTile(x, y, di.getIcon(), 255);
-      message2 = "Removed " + olu.toString() + " at " + t;
       if (olu instanceof Dirt) {
         message2 = "Nothing to remove";
         return false;
       }
+      Dirt di= new Dirt();
+      t.changeLandUse(di);
+      graphics.drawTile(x, y, di.getIcon(), 255);
+      message2 = "Removed " + olu.toString() + " at " + t;
       println("Removed land use at", t);
       return true;
     }else {
