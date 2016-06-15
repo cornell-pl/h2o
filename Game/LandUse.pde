@@ -30,9 +30,11 @@ class River extends LandUse {
 }
   
 class Factory extends LandUse {
+  /* Factory gives fixed profit no matter the location */
  Factory () {
    pollution = 10;
    icon = factoryBrown;   //Color code for drawing on map
+   int baseProfit = 2000;
  }
    @Override
   public String toString() {
@@ -41,9 +43,11 @@ class Factory extends LandUse {
 }
 
 class Farm extends LandUse {
+  /* Farm gives less profit further from river  */
  Farm () {
    pollution = 7;
    icon = farmYellow;
+   int baseProfit = 500;
  }
    @Override
   public String toString() {
@@ -55,6 +59,7 @@ class Dirt extends LandUse {
  Dirt() {
    pollution = 0;
    icon = dirtBrown;
+   int baseProfit = 0;
  }
    @Override
   public String toString() {
@@ -64,8 +69,9 @@ class Dirt extends LandUse {
 
 class Forest extends LandUse {
   Forest () {
-    pollution = 0;     //Zero div error (-infinity pollution) occurs when this is negative. Check math. 
+    pollution = -5;    
     icon = forestGreen;
+    int baseProfit = -100;
   }
   @Override
   public String toString() {
