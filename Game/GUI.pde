@@ -17,7 +17,7 @@ class GUI {
     houseB = new Button(xposB, yposB + 100, tileWidth, tileHeight, houseTurquoise, #73A29C, #55F7B5, "House");
     forestB = new Button(xposB, yposB + 150, tileWidth, tileHeight, forestGreen, #73A29C, #02A002, "Forest");
     demolishB = new Button(xposB, yposB+200, tileWidth, tileHeight, demolishBeige, #73A29C, #F5BB74, "Demolish");
-    resetB = new Button(xposB + 200, yposB+600, tileWidth + 10, tileHeight + 10, #FFFFFF, #989795, #171717, "RESET");
+    resetB = new Button(xposB + 200, yposB+600, tileWidth + 5, tileHeight + 5, #FFFFFF, #989795, #171717, "RESET");
   }
   
   void render() {
@@ -74,16 +74,19 @@ class GUI {
   void axisLabels() {
     /* Draw axis labels. */
     textFont(axisFont);
-    int xcount = 0;
+    textAlign(CENTER, BOTTOM);
+    int xcount = 0;  
     for (int x=xpos; x < sizeX*tileWidth+xpos; x+=tileWidth){
-      text(xcount, x+3, xpos-7);
+      text(xcount, x+(tileWidth/2), ypos-3);
       xcount ++;
     }
+    textAlign(RIGHT,CENTER);
     int ycount = 0;
     for (int y=ypos; y < sizeY*tileHeight+ypos; y+=tileHeight){
-      text(ycount, ypos-21, y+15);
+      text(ycount, xpos-7, y+(tileHeight/2));
       ycount ++;
     }
+    textAlign(LEFT);
   }
   
   void drawTile(int x, int y, color c, int t) {
@@ -101,7 +104,9 @@ class GUI {
     textFont(budgetFont);
     text("Budget: ", x, y);
     textFont(numeralFont);
-    text(Integer.toString(budget), x, y+35);
+   // String 
+    
+    //text(Integer.toString(budget), x, y+35);
   }
   
   void showPollutionSlider() {
@@ -179,6 +184,7 @@ class GUI {
 }
 
 //**** Buttons and mouse interaction  ****//  -----------------------------------------------
+
 Button factoryB;
 Button farmB;
 Button houseB;
@@ -199,29 +205,54 @@ int mouseCY = mouseY;
 
 void mousePressed() {  
   if (factoryB.over) {      //When factory button is clicked on
+    if (pushed == factoryB) {
+        message = "";
+        pushed = null;
+      } else {
     pushed = factoryB;
     message = "Add factory mode is selected";
     message2 = "";
+      }
   }
   else if (farmB.over) {      //When farm button is clicked on
+    if (pushed == farmB) {
+        message = "";
+        pushed = null;
+      }else {
     pushed = farmB;
     message = "Add farm mode is selected";
     message2 = "";
+      }
   }
   else if (houseB.over) {      //When house button is clicked on
+    if (pushed == houseB) {
+        message = "";
+        pushed = null;
+      } else {
     pushed = houseB;
     message = "Add house mode is selected";
     message2 = "";
+      }
   }
   else if (forestB.over) {      //When forest button is clicked on
+    if (pushed == forestB) {
+        message = "";
+        pushed = null;
+      }else {
     pushed = forestB;
     message = "Add forest mode is selected";
     message2 = "";
+      }
   }
   else if(demolishB.over) {   //When demolish button is clicked on
+    if (pushed == demolishB) {
+        message = "";
+        pushed = null;
+      } else {
     pushed = demolishB;
     message = "Demolish mode is selected";
     message2 = "";
+      }
   }
   else if(resetB.over) {  //When reset button is clicked on
     if (pushed == resetB) {
@@ -325,16 +356,16 @@ class Button{
   color overColor;           //Color when mouse over button
   color selectedColor;        //Color when button is selected
   String label;
-  PFont baseFont = createFont("Arial", 15);
-  PFont selectedFont = createFont("Arial Black", 15);
+  PFont baseFont = createFont("Arial", 16);
+  PFont selectedFont = createFont("Arial-Black", 16);
   
   boolean over = false;
   
   Button(int xp, int yp, int w, int h, color c, color o, color s, String l) {
     x = xp;
     y = yp;
-    bWidth = w;
-    bHeight = h;
+    bWidth = w+5;
+    bHeight = h+5;
     baseColor = c;
     overColor = o;           //Color when mouse over button
     selectedColor = s; 
@@ -345,17 +376,18 @@ class Button{
     stroke(255);
     strokeWeight(2);
     fill(255);  //Color of text label
+    textAlign(LEFT,CENTER);
     if (pushed == this) { 
       textFont(selectedFont);
-      text(label, x+bWidth+5, y+15);
+      text(label, x+bWidth+8, y+(bHeight/2.)-3);
       fill(selectedColor);
     }else if (over) {
       textFont(baseFont);
-      text(label, x+bWidth+5, y+15);
+      text(label, x+bWidth+5, y+(bHeight/2.)-1);
       fill(overColor);
     }else {
       textFont(baseFont);
-      text(label, x+bWidth+5, y+15);
+      text(label, x+bWidth+5, y+(bHeight/2.)-1);
       fill(baseColor);
     }
     rect(x, y, bWidth, bHeight);
@@ -364,8 +396,8 @@ class Button{
   
   // Updates the over field every frame
   void update() {
-    if ((mouseX >= x) && (mouseX <= x+bWidth) && 
-        (mouseY >= y) && (mouseY <= y+bHeight)) {
+    if ((mouseX >= x-1) && (mouseX <= x+bWidth+textWidth(label)+1) && 
+        (mouseY >= y-1) && (mouseY <= y+bHeight+1)) {
       over = true;
     } else {
       over = false;
