@@ -190,12 +190,30 @@ class Watershed {
     }
   }
   boolean addForest(int x, int y) {
-    /* Places a new House at Location <x, y> on the map. 
+    /* Places a new Forest at Location <x, y> on the map. 
     Returns true if successful. False otherwise.  */
     Tile t = gameMap[x][y];
     if (! (t.getLandU() instanceof River)) {
       Forest fo = new Forest();
       t.changeLandUse(fo); 
+      t.distToRiver = distToRiver(x, y);
+      message2 = "Added a Forest at " + t;
+      println("Added a Forest at", t);
+      return true;
+    }else {
+      message2 = "Cannot plant trees in river. Nothing is added.";
+      println("Cannot plant trees in river. Nothing is added.");
+      return false;
+    }
+  }
+  
+  boolean addDirt(int x, int y) {
+    /* Places a new Dirt at Location <x, y> on the map. 
+    Returns true if successful. False otherwise.  */
+    Tile t = gameMap[x][y];
+    if (! (t.getLandU() instanceof River)) {
+      Dirt di = new Dirt();
+      t.changeLandUse(di); 
       t.distToRiver = distToRiver(x, y);
       message2 = "Added a Forest at " + t;
       println("Added a Forest at", t);
@@ -217,6 +235,10 @@ class Watershed {
       t.changeLandUse(di);
       graphics.drawTile(x, y, di.getIcon(), 255);
       message2 = "Removed " + olu.toString() + " at " + t;
+      if (olu instanceof Dirt) {
+        message2 = "Nothing to remove";
+        return false;
+      }
       println("Removed land use at", t);
       return true;
     }else {
