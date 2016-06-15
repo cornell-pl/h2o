@@ -4,12 +4,13 @@ class Tile {
   int soil;  
   int xpos;  //x-coordinate
   int ypos;  //y-coordinate
-  float distToRiver;   //This is calculated only when a landuse (non-greenField) is added.
   LandUse landU;
+  float distToR = -10;
+  float pollution;        //Source pollution this Tile generates
+  float decayPollution;      //Pollution entering river from this tile after decay
   
-  Tile(LandUse lu, int x, int y, int sl, int so) {
+  Tile(int x, int y, int sl, int so) {
    /* Constructor: Initializes Tile with LandUse lu, and integer slope sl, soil so values */
-   landU = lu;
    xpos = x;
    ypos = y;
    slope = sl;
@@ -34,6 +35,9 @@ class Tile {
   void changeLandUse(LandUse lu) {
     /* Changes the LandUse held by the Tile to lu */
     landU = lu;
+    //distToR = distToRiver();
+    pollution = lu.getPollution();
+    //decayPollution = lu.getPollution()/distToR;
   }
   
   float getPollution() {
@@ -41,6 +45,17 @@ class Tile {
     if (! (landU instanceof River)) {
       return landU.getPollution();
     }else return 0;
+  }
+  
+  
+  float distToRiver() {
+    /* Helper: Returns the distance of self to closest River Tile. */
+    float minDist = (float) Integer.MAX_VALUE;
+    for (int[] rCoords: WS.riverTiles) {
+      float d = dist(xpos, ypos, rCoords[0], rCoords[1]);
+      if (d < minDist) minDist = d;
+    }
+    return minDist;
   }
   
   // ----  Some geometry methods ---- //
