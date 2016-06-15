@@ -32,6 +32,8 @@ class GUI {
         } 
       }
     }
+    showPollution();
+    
     axisLabels();
     showPollutionSlider();
     showFeedback();
@@ -48,6 +50,15 @@ class GUI {
   
   
   //**** Draws elements of the game map  ****//  -----------------------------------------------
+  void drawTile(int x, int y, color c, int t) {
+    /* Draws a tile at Location <x, y> on game map, fill color c, transparency t */
+    stroke(210);
+    strokeWeight(1.5);
+    fill(c, t);
+    rect(x*tileWidth + xpos, y*tileHeight + ypos, tileWidth, tileHeight);
+    fill(255);    //resets to white.
+  }  
+  
   void highlight() {
   /* Highlights tiles during click and drag */
   int[] posP = converter(mousePX, mousePY);   //tile coordinate when mouse is pressed
@@ -87,15 +98,6 @@ class GUI {
       ycount ++;
     }
     textAlign(LEFT);
-  }
-  
-  void drawTile(int x, int y, color c, int t) {
-    /* Draws a tile at Location <x, y> on game map, fill color c, transparency t */
-    stroke(210);
-    strokeWeight(1.5);
-    fill(c, t);
-    rect(x*tileWidth + xpos, y*tileHeight + ypos, tileWidth, tileHeight);
-    fill(255);    //resets to white.
   }
   
   void showBudget() {
@@ -194,6 +196,19 @@ class GUI {
     text("Total pollution entering river after distance decay: " + WS.linearDecayPollution(), 60, ypos + sizeY*tileHeight + 110);
   }
 }
+
+ //**** Some helper displays  ****//  -----------------------------------------------
+ void showPollution() {
+   for (Tile[] tileRow : WS.gameMap) {
+      for (Tile t: tileRow) {
+        textSize(10);
+        textAlign(LEFT, TOP);
+        text(round(t.getPollution()), t.getX()*tileWidth + xpos+2, t.getY()*tileHeight + ypos+1);
+      }
+   }
+ }
+   
+ 
 
 //**** Buttons and mouse interaction  ****//  -----------------------------------------------
 
