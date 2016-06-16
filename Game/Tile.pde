@@ -16,27 +16,18 @@ class Tile {
    slope = sl;
    soil = so;
   }
-  
-  int getSlope() {
-    /*Retuns slope of the tile */
-    return slope;
-  }
-  
-  int getSoil() {
-    /* Returns the soil permeability of the tile */
-    return soil;
-  }
-  
-  LandUse getLandU() {
-    /* Returns the LandUse object of the Tile */
-    return landU;
-  }
+ 
   
   void changeLandUse(LandUse lu) {
     /* Changes the LandUse held by the Tile to lu */
     landU = lu;
     pollution = lu.getPollution();
     decayPollution = pollution/distToR;
+  }
+  
+  LandUse getLandU() {
+    /* Returns the LandUse object of the Tile */
+    return landU;
   }
   
   float getPollution() {
@@ -46,11 +37,18 @@ class Tile {
     }else return 0;
   }
   
-  float getldPollution() {
+  float getDecayPollution() {
     if (! (landU instanceof River)) {
       return decayPollution;
     }else return 0;
   }
+  
+  float getDistToRiver() {
+    /* Returns the LandUse object of the Tile */
+    return distToR;
+  }
+  
+  
   
   // ----  Some geometry methods ---- //
   int getX(){

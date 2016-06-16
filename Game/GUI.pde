@@ -33,7 +33,8 @@ class GUI {
       }
     }
     //showPollution();
-    showldPollution();
+    //showldPollution();
+    //showDist();
     
     axisLabels();
     showPollutionSlider();
@@ -152,14 +153,14 @@ class GUI {
     //Draws the needle
     stroke(50);
     strokeWeight(4);
-    float scaleC = 1.5;    //Scaling constant that scales ldPollution number to pixel coordinates of slider
+    float scaleC = 1.5;    //Scaling constant that scales decayPollution number to pixel coordinates of slider
     float sliderX = x;    //xposition of the slider in pixels;
-    if (WS.ldPollution <= 0.) {
+    if (WS.totalDecayPollution <= 0.) {
       sliderX = x;
-    }else if (sliderX + scaleC*WS.ldPollution >= x+w) {
+    }else if (sliderX + scaleC*WS.totalDecayPollution >= x+w) {
       sliderX = x+w;
     }else {
-      sliderX = sliderX + scaleC*WS.ldPollution;
+      sliderX = sliderX + scaleC*WS.totalDecayPollution;
     } 
     line(sliderX, y-5, sliderX, y+h+5);
     
@@ -194,9 +195,9 @@ class GUI {
     text(message, 60, ypos + sizeY*tileHeight + 30);   
     text(message2, 60, ypos + sizeY*tileHeight + 50);   
     text("Simple sum of all pollution: " + WS.sumPollution(), 60, ypos + sizeY*tileHeight + 90);
-    text("Total pollution entering river after distance decay: " + WS.linearDecayPollution(), 60, ypos + sizeY*tileHeight + 110);
+    text("Total pollution entering river after distance decay: " + WS.sumDecayPollution(), 60, ypos + sizeY*tileHeight + 110);
   }
-}
+
 
  //**** Some helper displays  ****//  -----------------------------------------------
  void showPollution() {
@@ -214,11 +215,21 @@ class GUI {
       for (Tile t: tileRow) {
         textSize(10);
         textAlign(LEFT, TOP);
-        text(round(t.getldPollution()), t.getX()*tileWidth + xpos+2, t.getY()*tileHeight + ypos+1);
+        text(round(t.getDecayPollution()), t.getX()*tileWidth + xpos+2, t.getY()*tileHeight + ypos+1);
       }
    }
  }
-   
+ 
+ void showDist() {
+   for (Tile[] tileRow : WS.gameMap) {
+      for (Tile t: tileRow) {
+        textSize(10);
+        textAlign(LEFT, TOP);
+        text(round(t.getDistToRiver()), t.getX()*tileWidth + xpos+2, t.getY()*tileHeight + ypos+1);
+      }
+   }
+ }
+}
  
 
 //**** Buttons and mouse interaction  ****//  -----------------------------------------------

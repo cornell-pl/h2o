@@ -23,7 +23,7 @@ class Watershed {
   Tile[][] gameMap; //2D Matrix of all grid Tiles on game map
   ArrayList<int[]> riverTiles = new ArrayList<int[]>();   //Records the coordinates of all river tiles on map;
   int totalPollution;
-  float ldPollution;
+  float totalDecayPollution;
   
   Watershed(int x, int y) {
     /* Constructor: Initializes a watershed of dimension x*y units */
@@ -72,10 +72,8 @@ class Watershed {
     for (int[] c: rCoords) { 
       River r = new River();
       gameMap[c[0]][c[1]].landU = r;
-      riverTiles.add(new int[] {c[0],c[1]});
-      println("added", c);
+      riverTiles.add(c);
     }
-    println(riverTiles);
   }
   
   void initializeRiver1() {
@@ -115,32 +113,28 @@ class Watershed {
         totalPollution += t.getPollution();
       }
     }
-    if (totalPollution < 0) totalPollution = 0;
+    //if (totalPollution < 0) totalPollution = 0;
     return totalPollution;
   }
 
-  float linearDecayPollution() {
+  float sumDecayPollution() {
     /* Linear decay model of pollution that enters the river.
-    Pollution entering river = source pollution / dist to river
-    Returns total pollution entering river from all sources according this model*/
-    float ldPollutionTotal = 0.;
+    Returns total pollution entering river from all sources according decay model defined in Tile*/
+    float dPollutionTotal = 0.;
     for (Tile[] tileRow : gameMap) {
       for (Tile t: tileRow) {   //Calculate pollution contribution from t after linear decay
-        if (t.getPollution() != 0.) {
-          float ldPollution = t.getPollution()/(t.distToR+1.5);
-          ldPollutionTotal += ldPollution;
+          dPollutionTotal += t.getDecayPollution();
         }
      }
-   }
    //if (ldPollutionTotal < 0.) ldPollutionTotal = 0.;
-    return ldPollutionTotal;
+    return dPollutionTotal;
   }
   
   void updatePollution() {
     /* Updates the totalPollution and ldPollution variables.
     * To be called in each frame */
     totalPollution = sumPollution();
-    ldPollution = linearDecayPollution();
+    totalDecayPollution = sumDecayPollution();
   }
     
   
@@ -304,5 +298,5 @@ void trialRun1() {
   WS.removeLandUse(5, 2);
   
   println("Simple sum of all pollution: ", WS.sumPollution());
-  println("Total pollution entering river after linear decay: ", WS.linearDecayPollution());
+  println("Total pollution entering river after linear decay: ", WS.sumDecayPollution());
 }
