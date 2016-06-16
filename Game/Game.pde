@@ -21,13 +21,19 @@ void draw() {
 class Watershed {
   /* Contains all elements of the Game and implements the GUI. All user functions can be accessed from this class */
   Tile[][] gameMap; //2D Matrix of all grid Tiles on game map
-  final ArrayList<int[]> riverTiles = new ArrayList<int[]>();   //Records the coordinates of all river tiles on map;
+  ArrayList<int[]> riverTiles = new ArrayList<int[]>();   //Records the coordinates of all river tiles on map;
   int totalPollution;
   float ldPollution;
   
   Watershed(int x, int y) {
     /* Constructor: Initializes a watershed of dimension x*y units */
     graphics = new GUI(x, y);
+    initialize();
+    initializeRiver2();    //Creates the river
+    setTileVals();
+  }     //<>//
+  
+  void initialize() {
     gameMap = new Tile[sizeX][sizeY];
     for (int j=0; j<sizeY; j++) {
       for (int i=0; i<sizeX; i++) { 
@@ -43,8 +49,19 @@ class Watershed {
          }
       }
     }
-    initializeRiver2();    //Creates the river
-  }     //<>//
+  }
+  
+  void setTileVals() {
+    /* Sets the pollution, ld pollution and distToRiver for each tile.
+    * Called once after map is initialized */
+    for (Tile[] tileRow : gameMap) {
+      for (Tile t: tileRow) {
+        t.pollution = t.landU.getPollution();
+        t.distToR = distToRiver(t.getX(),t.getY());
+        t.decayPollution = t.pollution/t.distToR;
+      }
+    }
+  }
 
   //**** Methods to place rivers of various designs in map  ****//  -----------------------------------------------
   void initializeRiver2() {
@@ -55,7 +72,10 @@ class Watershed {
     for (int[] c: rCoords) { 
       River r = new River();
       gameMap[c[0]][c[1]].landU = r;
+      riverTiles.add(new int[] {c[0],c[1]});
+      println("added", c);
     }
+    println(riverTiles);
   }
   
   void initializeRiver1() {
@@ -74,6 +94,16 @@ class Watershed {
       gameMap[xp][y].landU = r;
       riverTiles.add(new int[] {xp, y});
     }
+  }
+  
+  float distToRiver(int x, int y) {
+    /* Helper: Returns the distance of location <x, y> to closest River Tile. */
+    float minDist = (float) Integer.MAX_VALUE;
+    for (int[] rCoords: riverTiles) {
+      float d = dist(x, y, rCoords[0], rCoords[1]);
+      if (d < minDist) minDist = d;
+    }
+    return minDist;
   }
   
   //**** Methods to calculate pollution according various models  ****//  -----------------------------------------------

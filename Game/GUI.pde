@@ -32,7 +32,8 @@ class GUI {
         } 
       }
     }
-    showPollution();
+    //showPollution();
+    showldPollution();
     
     axisLabels();
     showPollutionSlider();
@@ -204,6 +205,16 @@ class GUI {
         textSize(10);
         textAlign(LEFT, TOP);
         text(round(t.getPollution()), t.getX()*tileWidth + xpos+2, t.getY()*tileHeight + ypos+1);
+      }
+   }
+ }
+ 
+ void showldPollution() {
+   for (Tile[] tileRow : WS.gameMap) {
+      for (Tile t: tileRow) {
+        textSize(10);
+        textAlign(LEFT, TOP);
+        text(round(t.getldPollution()), t.getX()*tileWidth + xpos+2, t.getY()*tileHeight + ypos+1);
       }
    }
  }
