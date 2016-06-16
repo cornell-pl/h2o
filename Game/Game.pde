@@ -2,7 +2,7 @@ Watershed WS;
 GUI graphics;
 final int sizeX = 30;    //Dimensions of the watershed in tiles
 final int sizeY = 30;
-final int budget = 300000000;
+int budget = 300000000;
 
 
 void setup() {
@@ -57,6 +57,7 @@ class Watershed {
     for (Tile[] tileRow : gameMap) {
       for (Tile t: tileRow) {
         t.distToR = distToRiver(t.getX(),t.getY());
+        t.landU.distToRiver = t.getDistToRiver();
         t.decayPollution = t.pollution/t.distToR;
       }
     }
@@ -103,7 +104,7 @@ class Watershed {
     return minDist;
   }
   
-  //**** Methods to calculate pollution according various models  ****//  -----------------------------------------------
+  //**** Methods to calculate pollution / money according various models  ****//  -----------------------------------------------
   int sumPollution() {
     /* Returns simple sum of pollution generated for all Tiles */
     int totalPollution = 0;
@@ -129,14 +130,26 @@ class Watershed {
     return dPollutionTotal;
   }
   
+  int sumActualProfit() {
+    /* Returns the total actual profits made from all the property on the map */
+    int profit = 0;
+    for (Tile[] tileRow : gameMap) {
+      for (Tile t: tileRow) { 
+        profit += t.actualProfit;
+      }
+    }
+    return profit;
+  }
+        
+  
   void updatePollution() {
     /* Updates the totalPollution and ldPollution variables.
     * To be called in each frame */
     totalPollution = sumPollution();
     totalDecayPollution = sumDecayPollution();
   }
-    
   
+
   //**** Methods to add, change and remove land uses  ****//  -----------------------------------------------
     
   boolean addFactory(int x, int y) {
@@ -146,6 +159,7 @@ class Watershed {
     if (! (t.getLandU() instanceof River)) {
       Factory fc = new Factory();
       t.changeLandUse(fc);
+      budget -= fc.getCost();
       message2 = "Added a Factory at " + t;
       println("Added a Factory at", t);
       return true;      
@@ -163,6 +177,7 @@ class Watershed {
     if (! (t.getLandU() instanceof River)) {
       Farm fm = new Farm();
       t.changeLandUse(fm); 
+      budget -= fm.getCost();
       message2 = "Added a Farm at " + t;
       println("Added a Farm at", t);
       return true;
@@ -180,6 +195,7 @@ class Watershed {
     if (! (t.getLandU() instanceof River)) {
       House hs = new House();
       t.changeLandUse(hs); 
+      budget -= hs.getCost();
       message2 = "Added a House at " + t;
       println("Added a House at", t);
       return true;
@@ -196,6 +212,7 @@ class Watershed {
     if (! (t.getLandU() instanceof River)) {
       Forest fo = new Forest();
       t.changeLandUse(fo); 
+      budget -= fo.getCost();
       message2 = "Added a Forest at " + t;
       println("Added a Forest at", t);
       return true;
@@ -225,6 +242,7 @@ class Watershed {
         return false;
       }
       addDirt(x,y);
+      budget += olu.getCost();    //Budget is kindly refunded upon demolition of property
       message2 = "Removed " + olu.toString() + " at " + t;
       println("Removed land use at", t);
       return true;

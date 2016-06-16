@@ -123,6 +123,9 @@ class GUI {
     text(budgetDisplay, x, y+36);
   }
   
+  void showProfit() {
+  }
+  
   void showPollutionSlider() {
     color green = #4BDE4A;
     color red = #FF3300;

@@ -8,23 +8,24 @@ class Tile {
   float distToR;
   float pollution;        //Source pollution this Tile generates
   float decayPollution;      //Pollution entering river from this tile after decay
-  float baseProfit;
+
+  float actualProfit;  //Actual profit made by the landU at this tile
+  
   
   Tile(LandUse lu, int x, int y, int sl, int so) {
-   /* Constructor: Initializes Tile with LandUse lu, and integer slope sl, soil so values */
-   xpos = x;
-   ypos = y;
-   slope = sl;
-   soil = so;
-   landU = lu;
-   pollution = lu.getPollution();
-   baseProfit = lu.getBaseProfit();
+     /* Constructor: Initializes Tile with LandUse lu, and integer slope sl, soil so values */
+     xpos = x;
+     ypos = y;
+     slope = sl;
+     soil = so;
+     landU = lu;     
   }
  
   
   void changeLandUse(LandUse lu) {
     /* Changes the LandUse held by the Tile to lu */
     landU = lu;
+    lu.distToRiver = distToR;
     pollution = lu.getPollution();
     decayPollution = pollution/distToR;
   }
@@ -50,6 +51,16 @@ class Tile {
   float getDistToRiver() {
     /* Returns the LandUse object of the Tile */
     return distToR;
+  }
+  
+  float getCost() {
+    /* Returns the cost of the landUse of this Tile */
+    return landU.getCost();
+  }
+  
+  int getBaseProfit() {
+    /* Returns the baseProfit of the landUse of this Tile */
+    return landU.getBaseProfit();
   }
   
   
