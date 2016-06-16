@@ -26,12 +26,12 @@ class GUI {
     for (Tile[] tileRow : WS.gameMap) {
       for (Tile t: tileRow) {
         drawTile(t.getX(), t.getY(), t.getLandU().getIcon(), 255);
-        if (mouseOverMap()) {   //Highlight tile mouse is over
-          int[] pos = converter(mouseX, mouseY);
-          drawTile(pos[0], pos[1], #B6FAB1, 100);
-        } 
       }
     }
+    if (mouseOverMap()) {   //Highlight tile mouse is over
+      int[] pos = converter(mouseX, mouseY);
+      drawTile(pos[0], pos[1], #B6FAB1, 200);
+    } 
    // showPollution();
     //showldPollution();
     //showDist();
@@ -39,6 +39,7 @@ class GUI {
     axisLabels();
     showPollutionSlider();
     showFeedback();
+    showSelectedTile();
     showBudget();
     showActualProfits();
     highlight();
@@ -56,35 +57,43 @@ class GUI {
   void drawTile(int x, int y, color c, int t) {
     /* Draws a tile at Location <x, y> on game map, fill color c, transparency t */
     stroke(210);
-    strokeWeight(1.5);
+    strokeWeight(1.6);
     fill(c, t);
     rect(x*tileWidth + xpos, y*tileHeight + ypos, tileWidth, tileHeight);
     fill(255);    //resets to white.
   }  
   
   void highlight() {
-  /* Highlights tiles during click and drag */
-  int[] posP = converter(mousePX, mousePY);   //tile coordinate when mouse is pressed
-  int[] posC = converter(mouseX, mouseY);     //current tile coordinate
-  ArrayList<int[]> highlighted = new ArrayList<int[]>();
-  for (int x = min(posP[0], posC[0]); x <= max(posP[0], posC[0]); x++) {
-    for (int y = min(posP[1], posC[1]); y <= max(posP[1], posC[1]); y++) {
-      highlighted.add(new int[] {x, y});
+    /* Highlights tiles during click and drag */
+    int[] posP = converter(mousePX, mousePY);   //tile coordinate when mouse is pressed
+    int[] posC = converter(mouseX, mouseY);     //current tile coordinate
+    ArrayList<int[]> highlighted = new ArrayList<int[]>();
+    for (int x = min(posP[0], posC[0]); x <= max(posP[0], posC[0]); x++) {
+      for (int y = min(posP[1], posC[1]); y <= max(posP[1], posC[1]); y++) {
+        highlighted.add(new int[] {x, y});
+      }
+    }
+    if (mousePressed && mouseOverMap()) {
+      color hc;
+        for (int[] p : highlighted) {
+          if  (pushed == factoryB) hc = factoryBrown;     //Reset all buttons, including self, when clicked
+          else if (pushed == farmB) hc = farmYellow;
+          else if (pushed == houseB) hc = houseTurquoise;
+          else if (pushed == forestB) hc = #1EC610;
+          else if (pushed == demolishB) hc = demolishBeige;
+          else hc = #B6FAB1;
+          drawTile(p[0], p[1], hc, 100);
+        }
     }
   }
-  if (mousePressed && mouseOverMap()) {
-    color hc;
-      for (int[] p : highlighted) {
-        if  (pushed == factoryB) hc = factoryBrown;     //Reset all buttons, including self, when clicked
-        else if (pushed == farmB) hc = farmYellow;
-        else if (pushed == houseB) hc = houseTurquoise;
-        else if (pushed == forestB) hc = #1EC610;
-        else if (pushed == demolishB) hc = demolishBeige;
-        else hc = #B6FAB1;
-        drawTile(p[0], p[1], hc, 100);
-      }
+  
+  void showSelectedTile() {
+    /* Accents the selected tile */
+    if (selected != null) {
+     drawTile(selected.getX(), selected.getY(), #E54545, 255);
+    }
   }
-}
+  
   void axisLabels() {
     /* Draw axis labels. */
     textFont(axisFont);
@@ -107,6 +116,7 @@ class GUI {
     int x = xpos + sizeX*tileWidth + 40;
     int y = yposB + 430;
     String bu = "Budget: ";
+    fill(0);
     textAlign(LEFT, TOP);
     textFont(budgetFont);
     text(bu, x, y);
@@ -118,6 +128,7 @@ class GUI {
   void showActualProfits() {
     int x = xpos + sizeX*tileWidth + 40;
     int y = yposB + 520;
+    fill(0);
     textFont(budgetFont);
     text("Total Profits: ", x, y);
     textFont(numeralFont);
@@ -210,7 +221,7 @@ class GUI {
     text("Simple sum of all pollution: " + WS.sumPollution(), 60, ypos + sizeY*tileHeight + 90);
     text("Total pollution entering river after distance decay: " + WS.sumDecayPollution(), 60, ypos + sizeY*tileHeight + 110);
   }
-
+  
 
  //**** Some helper displays  ****//  -----------------------------------------------
  void showPollution() {
@@ -254,6 +265,7 @@ Button forestB;
 Button demolishB;
 Button resetB;
 
+Tile selected = null;
 Button pushed = null;   //The current button that is pushed. null if none is pushed.
 
 String message = "";
@@ -266,6 +278,7 @@ int mouseCX = mouseX;     //Current mouse positions
 int mouseCY = mouseY;
 
 void mousePressed() {  
+  selected = null;
   if (factoryB.over) {      //When factory button is clicked on
     if (pushed == factoryB) {
         message = "";
@@ -348,7 +361,7 @@ void mousePressed() {
 }
 
 void mouseReleased() {
-  if (mouseOverMap()){
+  if (mouseOverMap() && mouseButton == LEFT){    //Left mouse button to add
     mouseRX = mouseX;
     mouseRY = mouseY;
     int[] posP = converter(mousePX, mousePY);
@@ -382,12 +395,20 @@ void mouseReleased() {
           s = WS.removeLandUse(x,y);
           if (s) count ++;
         }
+        else if (pushed == null) {
+          selected = WS.gameMap[posR[0]][posR[1]];
+        }
       }
     }
     if (count > 1 || (count == 1 && s == false)) {  //Different message if multiple objects 
       message2 = "Added " + Integer.toString(count) + " " + thing;    
       if (pushed == demolishB) message2 = "Removed land use at " + Integer.toString(count) + " locations";
     }    
+  }
+  if (mouseButton == RIGHT) {    //Right mouse button to cancel selection
+    message = "";
+    pushed = null;
+    selected = null;
   }
 }
   
