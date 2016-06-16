@@ -32,8 +32,8 @@ class GUI {
       int[] pos = converter(mouseX, mouseY);
       drawTile(pos[0], pos[1], #B6FAB1, 200);
     } 
-   // showPollution();
-    //showldPollution();
+      showPollution();
+    //showDecayPollution();
     //showDist();
     
     axisLabels();
@@ -89,8 +89,16 @@ class GUI {
   
   void showSelectedTile() {
     /* Accents the selected tile */
+    stroke(255);
+    fill(255);
+    rect(480, ypos + sizeY*tileHeight + 10, 190, 110);
     if (selected != null) {
-     drawTile(selected.getX(), selected.getY(), #E54545, 255);
+      drawTile(selected.getX(), selected.getY(), #B2EBF5, 150);
+      fill(0);  //Color of text 
+      textFont(messageFont);
+      String text = selected.toString() + 
+                    "\n" + selected.getLandU().toString();
+      text(text, 480, ypos + sizeY*tileHeight + 30);   
     }
   }
   
@@ -218,8 +226,8 @@ class GUI {
     textFont(messageFont);
     text(message, 60, ypos + sizeY*tileHeight + 30);   
     text(message2, 60, ypos + sizeY*tileHeight + 50);   
-    text("Simple sum of all pollution: " + WS.sumPollution(), 60, ypos + sizeY*tileHeight + 90);
-    text("Total pollution entering river after distance decay: " + WS.sumDecayPollution(), 60, ypos + sizeY*tileHeight + 110);
+    text("Simple sum of all pollution: " + WS.totalPollution, 60, ypos + sizeY*tileHeight + 90);
+    text("Total pollution entering river after distance decay: " + WS.totalDecayPollution, 60, ypos + sizeY*tileHeight + 110);
   }
   
 
@@ -234,7 +242,7 @@ class GUI {
    }
  }
  
- void showldPollution() {
+ void showDecayPollution() {
    for (Tile[] tileRow : WS.gameMap) {
       for (Tile t: tileRow) {
         textSize(10);
@@ -278,7 +286,6 @@ int mouseCX = mouseX;     //Current mouse positions
 int mouseCY = mouseY;
 
 void mousePressed() {  
-  selected = null;
   if (factoryB.over) {      //When factory button is clicked on
     if (pushed == factoryB) {
         message = "";
@@ -334,6 +341,8 @@ void mousePressed() {
       message = "Restarting game";
       message2 = "";
       WS = new Watershed(sizeX, sizeY);
+      pushed = null;
+      selected = null;
       message = "Game is reset";
       message2 = "";
     } else {
@@ -358,6 +367,7 @@ void mousePressed() {
     pushed = null;
     message = "";
   }
+  if (! mouseOverMap()) selected = null;    //Unselect when I click outside map
 }
 
 void mouseReleased() {
@@ -366,6 +376,7 @@ void mouseReleased() {
     mouseRY = mouseY;
     int[] posP = converter(mousePX, mousePY);
     int[] posR = converter(mouseRX, mouseRY);
+    selected = WS.gameMap[posR[0]][posR[1]];
     int count = 0;
     String thing = "";
     boolean s = false;
@@ -395,17 +406,19 @@ void mouseReleased() {
           s = WS.removeLandUse(x,y);
           if (s) count ++;
         }
-        else if (pushed == null) {
-          selected = WS.gameMap[posR[0]][posR[1]];
-        }
       }
     }
+    if (pushed == null) {
+      selected = WS.gameMap[posR[0]][posR[1]];     //Select tile if no button is pushed and clicked inside map
+    } 
+    if (pushed != null) selected = null;     //Remove selection when building things
+    
     if (count > 1 || (count == 1 && s == false)) {  //Different message if multiple objects 
       message2 = "Added " + Integer.toString(count) + " " + thing;    
       if (pushed == demolishB) message2 = "Removed land use at " + Integer.toString(count) + " locations";
     }    
   }
-  if (mouseButton == RIGHT) {    //Right mouse button to cancel selection
+  if (mouseButton == RIGHT) {    //Right mouse button to cancel selection and button pushed
     message = "";
     pushed = null;
     selected = null;
