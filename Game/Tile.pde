@@ -5,10 +5,11 @@ class Tile {
   final int xpos;  //x-coordinate
   final int ypos;  //y-coordinate
   LandUse landU;
+  
+  //Every derived variable that is summed over all Tiles in WS is stored as constants, to avoid expensive calculation over each frame.
   float distToR;
   float pollution;        //Source pollution this Tile generates
   float decayPollution;      //Pollution entering river from this tile after decay
-
   float actualProfit = 0;  //Actual profit made by the landU at this tile
   
   
