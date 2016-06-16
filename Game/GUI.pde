@@ -421,17 +421,17 @@ class Button{
   PFont baseFont = createFont("Arial", 16);
   PFont selectedFont = createFont("Arial-Black", 16);
   
-  boolean over = false;
+  boolean over = false;     //true if mouse is over button
   
   Button(int xp, int yp, int w, int h, color c, color o, color s, String l) {
     x = xp;
     y = yp;
     bWidth = w+5;
     bHeight = h+5;
-    baseColor = c;
+    baseColor = c;          //Default color
     overColor = o;           //Color when mouse over button
     selectedColor = s; 
-    label = l;
+    label = l;            //Color when button is in pushed state
   }
   
   void display() {
