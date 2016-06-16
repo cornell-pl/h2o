@@ -32,7 +32,7 @@ class GUI {
         } 
       }
     }
-    //showPollution();
+   // showPollution();
     //showldPollution();
     //showDist();
     

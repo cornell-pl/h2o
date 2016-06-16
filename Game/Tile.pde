@@ -8,13 +8,17 @@ class Tile {
   float distToR;
   float pollution;        //Source pollution this Tile generates
   float decayPollution;      //Pollution entering river from this tile after decay
+  float baseProfit;
   
-  Tile(int x, int y, int sl, int so) {
+  Tile(LandUse lu, int x, int y, int sl, int so) {
    /* Constructor: Initializes Tile with LandUse lu, and integer slope sl, soil so values */
    xpos = x;
    ypos = y;
    slope = sl;
    soil = so;
+   landU = lu;
+   pollution = lu.getPollution();
+   baseProfit = lu.getBaseProfit();
   }
  
   

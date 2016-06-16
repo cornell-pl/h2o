@@ -37,15 +37,15 @@ class Watershed {
     gameMap = new Tile[sizeX][sizeY];
     for (int j=0; j<sizeY; j++) {
       for (int i=0; i<sizeX; i++) { 
-         Tile t = new Tile(i, j, 0, 0); //Default zero values for slope and soil
-         gameMap[i][j] = t;
          float r = random(0,1);
          if (r > 0.9) {
            Forest fo = new Forest();
-           t.landU = fo;
+           Tile t = new Tile(fo, i, j, 0, 0); //Default zero values for slope and soil
+           gameMap[i][j] = t;
          }else{
            Dirt di = new Dirt();
-           t.landU = di;
+           Tile t = new Tile(di, i, j, 0, 0); //Default zero values for slope and soil
+           gameMap[i][j] = t;
          }
       }
     }
@@ -56,7 +56,6 @@ class Watershed {
     * Called once after map is initialized */
     for (Tile[] tileRow : gameMap) {
       for (Tile t: tileRow) {
-        t.pollution = t.landU.getPollution();
         t.distToR = distToRiver(t.getX(),t.getY());
         t.decayPollution = t.pollution/t.distToR;
       }

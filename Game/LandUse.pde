@@ -9,14 +9,24 @@ final color demolishBeige = #F5DAB9;
 abstract class LandUse {
   float pollution;
   color icon;
+  int baseProfit;
+  
   float getPollution() {
     /*Returns pollution of LandUse */
     return pollution;
   }
+  
+  float getBaseProfit() {
+    return baseProfit;
+  }
+  
   color getIcon() {
     return icon;
   }
 }
+
+
+
 
 class River extends LandUse {
   River(){
@@ -34,7 +44,7 @@ class Factory extends LandUse {
  Factory () {
    pollution = 10;
    icon = factoryBrown;   //Color code for drawing on map
-   int baseProfit = 2000;
+   baseProfit = 2000;
  }
    @Override
   public String toString() {
@@ -47,7 +57,7 @@ class Farm extends LandUse {
  Farm () {
    pollution = 7;
    icon = farmYellow;
-   int baseProfit = 500;
+   baseProfit = 1200;
  }
    @Override
   public String toString() {
@@ -59,7 +69,7 @@ class Dirt extends LandUse {
  Dirt() {
    pollution = 0;
    icon = dirtBrown;
-   int baseProfit = 0;
+   baseProfit = 0;
  }
    @Override
   public String toString() {
@@ -71,7 +81,7 @@ class Forest extends LandUse {
   Forest () {
     pollution = -5;    
     icon = forestGreen;
-    int baseProfit = -100;
+    baseProfit = -400;
   }
   @Override
   public String toString() {
@@ -83,6 +93,7 @@ class House extends LandUse {
   House() {
     pollution = 2;
     icon = houseTurquoise;
+    baseProfit = 1000;
   }
   @Override
   public String toString() {
