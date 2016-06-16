@@ -27,28 +27,13 @@ abstract class LandUse {
     return cost;
   }
   
-  float calcActualProfit() {
-    return baseProfit/distToRiver;
-  }
+  abstract float calcActualProfit();
   
   color getIcon() {
     return icon;
   }
 }
 
-
-
-
-class River extends LandUse {
-  River(){
-    icon = riverBlue;
-  }
-  
-  @Override
-  public String toString() {
-    return "River";
-  }
-}
   
 class Factory extends LandUse {
   /* Factory gives fixed profit no matter the location */
@@ -58,6 +43,11 @@ class Factory extends LandUse {
    cost = 2000;
    baseProfit = 5000;
  }
+ 
+ float calcActualProfit() {
+    return baseProfit;
+  }
+ 
    @Override
   public String toString() {
     return "Factory";
@@ -72,22 +62,32 @@ class Farm extends LandUse {
    cost = 1000;
    baseProfit = 2000;
  }
+  
+  float calcActualProfit() {
+    return baseProfit/sqrt(distToRiver);
+  }
+ 
    @Override
   public String toString() {
     return "Farm";
   }
 }
 
-class Dirt extends LandUse {
- Dirt() {
-   pollution = 0;
-   icon = dirtBrown;
-   baseProfit = 0;
-   cost = 0;
- }
-   @Override
+class House extends LandUse {
+  House() {
+    pollution = 2;
+    icon = houseTurquoise;
+    baseProfit = 1000;
+    cost = 1000;
+  }
+  
+  float calcActualProfit() {
+    return baseProfit/sqrt(distToRiver);
+  }
+  
+  @Override
   public String toString() {
-    return "Dirt";
+    return "House";
   }
 }
 
@@ -98,22 +98,48 @@ class Forest extends LandUse {
     baseProfit = 0;
     cost = 500;
   }
+  
+  float calcActualProfit() {
+    return 0;
+  }
+  
   @Override
   public String toString() {
     return "Forest";
   }
 }
-  
-class House extends LandUse {
-  House() {
-    pollution = 2;
-    icon = houseTurquoise;
-    baseProfit = 1000;
-    cost = 1000;
+
+class Dirt extends LandUse {
+ Dirt() {
+   pollution = 0;
+   icon = dirtBrown;
+   baseProfit = 0;
+   cost = 0;
+ }
+ 
+ float calcActualProfit() {
+    return 0;
   }
-  @Override
+ 
+   @Override
   public String toString() {
-    return "House";
+    return "Dirt";
   }
 }
+
+class River extends LandUse {
+  River(){
+    icon = riverBlue;
+  }
+  float calcActualProfit() {
+    return 0;
+  }
+ 
+  @Override
+  public String toString() {
+    return "River";
+  }
+}
+
+ 
   
