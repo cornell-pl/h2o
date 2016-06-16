@@ -2,7 +2,6 @@ Watershed WS;
 GUI graphics;
 final int sizeX = 30;    //Dimensions of the watershed in tiles
 final int sizeY = 30;
-int budget = 300000000;
 
 
 void setup() {
@@ -13,7 +12,7 @@ void setup() {
 
 void draw() {  
   background(204);
-  WS.updatePollution();
+  WS.update();
   graphics.render();
 }
 
@@ -22,11 +21,14 @@ class Watershed {
   /* Contains all elements of the Game and implements the GUI. All user functions can be accessed from this class */
   Tile[][] gameMap; //2D Matrix of all grid Tiles on game map
   ArrayList<int[]> riverTiles = new ArrayList<int[]>();   //Records the coordinates of all river tiles on map;
+  int budget;
   int totalPollution;
   float totalDecayPollution;
+  float totalActualProfits;
   
   Watershed(int x, int y) {
     /* Constructor: Initializes a watershed of dimension x*y units */
+    budget = 300000;
     graphics = new GUI(x, y);
     initialize();
     initializeRiver2();    //Creates the river
@@ -130,23 +132,26 @@ class Watershed {
     return dPollutionTotal;
   }
   
-  int sumActualProfit() {
+  int sumActualProfits() {
     /* Returns the total actual profits made from all the property on the map */
     int profit = 0;
     for (Tile[] tileRow : gameMap) {
       for (Tile t: tileRow) { 
-        profit += t.actualProfit;
+        if (! (t.getLandU() instanceof River)){
+        profit += t.getActualProfit();
+        }
       }
     }
     return profit;
   }
         
   
-  void updatePollution() {
-    /* Updates the totalPollution and ldPollution variables.
+  void update() {
+    /* Updates the totalPollution and totalDecayPollution and totalActualProfit variables.
     * To be called in each frame */
     totalPollution = sumPollution();
     totalDecayPollution = sumDecayPollution();
+    totalActualProfits = sumActualProfits();
   }
   
 
@@ -242,7 +247,7 @@ class Watershed {
         return false;
       }
       addDirt(x,y);
-      budget += olu.getCost();    //Budget is kindly refunded upon demolition of property
+      if (! (olu instanceof Forest)) budget += olu.getCost();    //Budget is kindly refunded upon demolition of property, but not for forests
       message2 = "Removed " + olu.toString() + " at " + t;
       println("Removed land use at", t);
       return true;

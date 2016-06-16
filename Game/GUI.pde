@@ -40,6 +40,7 @@ class GUI {
     showPollutionSlider();
     showFeedback();
     showBudget();
+    showActualProfits();
     highlight();
     
     factoryB.display();
@@ -110,20 +111,29 @@ class GUI {
     textFont(budgetFont);
     text(bu, x, y);
     textFont(numeralFont);
-    String budgetDisplay = "";
-    int b = budget;
-    while(b > 999){
-      String s = Integer.toString(b);
-      budgetDisplay = "," + s.substring(s.length()-3) + budgetDisplay;
-      b = b/1000;
-    }
-    String s = Integer.toString(b);
-    budgetDisplay = s + budgetDisplay;
     textAlign(LEFT, TOP);
-    text(budgetDisplay, x, y+36);
+    text(intToStr(WS.budget), x, y+36);
   }
   
-  void showProfit() {
+  void showActualProfits() {
+    int x = xpos + sizeX*tileWidth + 40;
+    int y = yposB + 520;
+    textFont(budgetFont);
+    text("Total Profits: ", x, y);
+    textFont(numeralFont);
+    text(intToStr(round(WS.totalActualProfits)), x, y+36);
+  }
+  
+  String intToStr(int n) {
+    String out = "";
+    while(n > 999){
+      String s = Integer.toString(n);
+      out = "," + s.substring(s.length()-3) + out;
+      n = n/1000;
+    }
+    String s = Integer.toString(n);
+    out = s + out;
+    return out;
   }
   
   void showPollutionSlider() {
