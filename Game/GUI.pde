@@ -577,7 +577,7 @@ class Button{
     fill(255);  //Color of text label
     textAlign(LEFT,CENTER);
     if (pushed == this) { 
-      stroke(150);
+      stroke(135);
       textFont(selectedFont);
       text(label, x+bWidth+8, y+(bHeight/2.)-3);
       fill(selectedColor);
