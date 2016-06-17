@@ -28,13 +28,10 @@ class GUI {
         drawTile(t.getX(), t.getY(), t.getLandU().getIcon(), 255);
       }
     }
-    if (mouseOverMap()) {   //Highlight tile mouse is over
-      int[] pos = converter(mouseX, mouseY);
-      drawTile(pos[0], pos[1], #B6FAB1, 200);
-    } 
       showPollution();
     //showDecayPollution();
     //showDist();
+    
     
     axisLabels();
     showPollutionSlider();
@@ -42,6 +39,7 @@ class GUI {
     showSelectedTile();
     showBudget();
     showActualProfits();
+    showOverTile();
     highlight();
     
     factoryB.display();
@@ -87,8 +85,49 @@ class GUI {
     }
   }
   
+  void showOverTile() {
+    /* Accents the Tile mouse is over, displays purchase information if in purchase mode */
+    String text3 = "";
+    Tile over = null;   //The Tile mouse is over
+    Factory fa = new Factory();     //This would be resolved bty making calcActualProfit() static, but that will mess up Tile.changeLandU()
+    Farm fm = new Farm();
+    House hs = new House();
+    Forest fo = new Forest();
+    
+    if (mouseOverMap()) {   //Highlight tile mouse is over
+      int[] pos = converter(mouseX, mouseY);
+      drawTile(pos[0], pos[1], #B6FAB1, 200);
+      over = WS.gameMap[pos[0]][pos[1]];
+
+      if (pushed == factoryB) {
+        float distToRiver = over.getDistToRiver();
+        float projectedProfit = fa.calcActualProfit(distToRiver);
+        text3 = "Will make: $" + projectedProfit;
+      }
+      else if (pushed == farmB) {
+        float distToRiver = over.getDistToRiver();
+        float projectedProfit = fm.calcActualProfit(distToRiver);
+        text3 = "Will make: $" + projectedProfit;
+      }
+      else if (pushed == houseB) {
+        float distToRiver = over.getDistToRiver();
+        float projectedProfit = hs.calcActualProfit(distToRiver);
+        text3 = "Will make: $" + projectedProfit;
+      }
+      else if (pushed == forestB) {
+        float distToRiver = over.getDistToRiver();
+        float projectedProfit = fo.calcActualProfit(distToRiver);
+        text3 = "Will make: $" + projectedProfit;
+      }
+    }
+    textFont(messageFont);
+    fill(100);
+    text(text3, 480, ypos + sizeY*tileHeight + 90);  
+    
+  }
+  
   void showSelectedTile() {
-    /* Accents the selected tile */
+    /* Accents the selected tile, displays tile information */
     //Draws the box
     stroke(255);
     fill(255);

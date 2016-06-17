@@ -26,10 +26,9 @@ class Tile {
   void changeLandUse(LandUse lu) {
     /* Changes the LandUse held by the Tile to lu */
     landU = lu;
-    lu.distToRiver = distToR;
     pollution = lu.getPollution();
     decayPollution = pollution/distToR;
-    actualProfit = lu.calcActualProfit();
+    actualProfit = lu.calcActualProfit(distToR);
   }
   
   LandUse getLandU() {

@@ -7,11 +7,9 @@ final color houseTurquoise = #9EFCD6;
 final color demolishBeige = #F5DAB9;
 
 abstract class LandUse {
-  float distToRiver;   //Copies distToR of tile holding this
   float pollution;
   color icon;
   int baseProfit;
-  int actualProfit;
   int cost;
   
   float getPollution() {
@@ -26,12 +24,12 @@ abstract class LandUse {
   int getCost() {
     return cost;
   }
-  
-  abstract float calcActualProfit();
-  
+    
   color getIcon() {
     return icon;
   }
+  
+  abstract float calcActualProfit(float distToR);
 }
 
   
@@ -44,7 +42,7 @@ class Factory extends LandUse {
    baseProfit = 5000;
  }
  
- float calcActualProfit() {
+ float calcActualProfit(float distToRiver) {
     return baseProfit;
   }
  
@@ -63,7 +61,7 @@ class Farm extends LandUse {
    baseProfit = 2000;
  }
   
-  float calcActualProfit() {
+  float calcActualProfit(float distToRiver) {
     return baseProfit/sqrt(distToRiver);
   }
  
@@ -81,7 +79,7 @@ class House extends LandUse {
     cost = 1000;
   }
   
-  float calcActualProfit() {
+  float calcActualProfit(float distToRiver) {
     return baseProfit/sqrt(distToRiver);
   }
   
@@ -99,7 +97,7 @@ class Forest extends LandUse {
     cost = 500;
   }
   
-  float calcActualProfit() {
+  float calcActualProfit(float distToRiver) {
     return -100;
   }
   
@@ -117,7 +115,7 @@ class Dirt extends LandUse {
    cost = 0;
  }
  
- float calcActualProfit() {
+ float calcActualProfit(float distToRiver) {
     return 0;
   }
  
@@ -131,7 +129,7 @@ class River extends LandUse {
   River(){
     icon = riverBlue;
   }
-  float calcActualProfit() {
+  float calcActualProfit(float distToRiver) {
     return 0;
   }
  
