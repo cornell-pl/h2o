@@ -10,6 +10,7 @@ String str;
 void setup() {
   // import excel data to a 2d string:
   saving = importExcel("/Users/Zhang/Documents/Cornell 2016 Summer/h2ogame/Game/River designs.xlsx");
+  //printForestCoords();
   printRiverCoords();
 }
 void draw() {
@@ -27,6 +28,18 @@ int countRiverTiles() {
   for (int x=0; x<30; x++) {
     for (int y=0; y<30; y++) {
       if (saving[x][y].equals("r")) {
+        count++; 
+      }
+    }
+  }
+  return count;
+}
+
+int countForestTiles() {
+  int count = 0;
+  for (int x=0; x<30; x++) {
+    for (int y=0; y<30; y++) {
+      if (saving[x][y].equals("f")) {
         count++; 
       }
     }
@@ -61,11 +74,11 @@ void printRiverCoords() {
 }
 
 void printForestCoords() {
-  int[][] rCoords = new int[countRiverTiles()][2];
+  int[][] rCoords = new int[countForestTiles()][2];
   int i = 0;
   for (int y=0; y<30; y++) {
     for (int x=0; x<30; x++) {
-      if (saving[x][y].equals("r")) {
+      if (saving[x][y].equals("f")) {
         rCoords[i][0] = y;
         rCoords[i][1] = x;
         i++;
@@ -73,7 +86,7 @@ void printForestCoords() {
     }
   }
   print("{");
-  int count = countRiverTiles();
+  int count = countForestTiles();
   for (int x = 0; x<count; x++) {
     int[] c = rCoords[x];
     if (x == count-1) {      //the last coordinate. Do not print a trailing comma.
