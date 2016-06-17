@@ -39,7 +39,7 @@ class GUI {
     showSelectedTile();
     showBudget();
     showActualProfits();
-    showOverTile();
+    showPurchaseInfo();
     highlight();
     
     factoryB.display();
@@ -61,8 +61,15 @@ class GUI {
     fill(255);    //resets to white.
   }  
   
+  Factory fa = new Factory();     //This would be resolved bty making calcActualProfit() static, but that will mess up Tile.changeLandU()
+  Farm fm = new Farm();
+  House hs = new House();
+  Forest fo = new Forest();
+  
+  String purchaseInfo = "";
+  float projectedProfit = 0;
   void highlight() {
-    /* Highlights tiles during click and drag */
+    /* Highlights tiles during click and drag, and shows bulk purchase info */
     int[] posP = converter(mousePX, mousePY);   //tile coordinate when mouse is pressed
     int[] posC = converter(mouseX, mouseY);     //current tile coordinate
     ArrayList<int[]> highlighted = new ArrayList<int[]>();
@@ -73,57 +80,75 @@ class GUI {
     }
     if (mousePressed && mouseOverMap()) {
       color hc;
-        for (int[] p : highlighted) {
-          if  (pushed == factoryB) hc = factoryBrown;     //Reset all buttons, including self, when clicked
-          else if (pushed == farmB) hc = farmYellow;
-          else if (pushed == houseB) hc = houseTurquoise;
-          else if (pushed == forestB) hc = #1EC610;
-          else if (pushed == demolishB) hc = demolishBeige;
-          else hc = #B6FAB1;
-          drawTile(p[0], p[1], hc, 100);
+      projectedProfit = 0;     //calculate purchase info
+      for (int[] p : highlighted) {
+        if  (pushed == factoryB) {    
+          hc = factoryBrown;      //highlight color
+          Tile t = WS.gameMap[p[0]][p[1]];
+          if (! (t.getLandU() instanceof River)) {
+            float d = t.getDistToRiver();
+            projectedProfit += fa.calcActualProfit(d);
+            purchaseInfo = "Will make: $" + projectedProfit;
+          }
         }
+        else if (pushed == farmB) {
+          hc = farmYellow;
+          Tile t = WS.gameMap[p[0]][p[1]];
+          if (! (t.getLandU() instanceof River)) {
+            float d = t.getDistToRiver();
+            projectedProfit += fm.calcActualProfit(d);
+            purchaseInfo = "Will make: $" + projectedProfit;
+          }
+        }
+        else if (pushed == houseB) hc = houseTurquoise;
+        else if (pushed == forestB) hc = #1EC610;
+        else if (pushed == demolishB) hc = demolishBeige;
+        else {
+          hc = #B6FAB1;
+          purchaseInfo = "";   //No button is pushed
+        } 
+        drawTile(p[0], p[1], hc, 100);    //draws highlighted tile
+      }
+      textFont(messageFont);
+      fill(100);
+      text(purchaseInfo, 480, ypos + sizeY*tileHeight + 90);  
     }
   }
   
-  void showOverTile() {
+  void showPurchaseInfo() {
     /* Accents the Tile mouse is over, displays purchase information if in purchase mode */
-    String text3 = "";
     Tile over = null;   //The Tile mouse is over
-    Factory fa = new Factory();     //This would be resolved bty making calcActualProfit() static, but that will mess up Tile.changeLandU()
-    Farm fm = new Farm();
-    House hs = new House();
-    Forest fo = new Forest();
-    
-    if (mouseOverMap()) {   //Highlight tile mouse is over
+    projectedProfit = 0;
+    if (mouseOverMap() && !mousePressed) {   //Highlight tile mouse is over
       int[] pos = converter(mouseX, mouseY);
       drawTile(pos[0], pos[1], #B6FAB1, 200);
       over = WS.gameMap[pos[0]][pos[1]];
-
-      if (pushed == factoryB) {
-        float distToRiver = over.getDistToRiver();
-        float projectedProfit = fa.calcActualProfit(distToRiver);
-        text3 = "Will make: $" + projectedProfit;
-      }
-      else if (pushed == farmB) {
-        float distToRiver = over.getDistToRiver();
-        float projectedProfit = fm.calcActualProfit(distToRiver);
-        text3 = "Will make: $" + projectedProfit;
-      }
-      else if (pushed == houseB) {
-        float distToRiver = over.getDistToRiver();
-        float projectedProfit = hs.calcActualProfit(distToRiver);
-        text3 = "Will make: $" + projectedProfit;
-      }
-      else if (pushed == forestB) {
-        float distToRiver = over.getDistToRiver();
-        float projectedProfit = fo.calcActualProfit(distToRiver);
-        text3 = "Will make: $" + projectedProfit;
-      }
+        if (!(over.getLandU() instanceof River)) {
+          if (pushed == factoryB) {
+            float distToRiver = over.getDistToRiver();
+            projectedProfit = fa.calcActualProfit(distToRiver);
+            purchaseInfo = "Will make: $" + projectedProfit;
+          }
+          else if (pushed == farmB) {
+            float distToRiver = over.getDistToRiver();
+            projectedProfit = fm.calcActualProfit(distToRiver);
+            purchaseInfo = "Will make: $" + projectedProfit;
+          }
+          else if (pushed == houseB) {
+            float distToRiver = over.getDistToRiver();
+            projectedProfit = hs.calcActualProfit(distToRiver);
+            purchaseInfo = "Will make: $" + projectedProfit;
+          }
+          else if (pushed == forestB) {
+            float distToRiver = over.getDistToRiver();
+            projectedProfit = fo.calcActualProfit(distToRiver);
+            purchaseInfo = "Will make: $" + projectedProfit;
+          } else purchaseInfo = "";   //Button not pressed
+        }else purchaseInfo = "";     //Over the river
     }
     textFont(messageFont);
     fill(100);
-    text(text3, 480, ypos + sizeY*tileHeight + 90);  
-    
+    text(purchaseInfo, 480, ypos + sizeY*tileHeight + 90);  
   }
   
   void showSelectedTile() {
