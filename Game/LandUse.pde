@@ -1,9 +1,9 @@
-final color riverBlue = #6FB4D8;
+final color riverBlue = #3CA1E3;
 final color factoryBrown = #EA9253; 
-final color farmYellow = #F5E77E;
+final color farmYellow = #F0D446;
 final color forestGreen = #5DD65E;
 final color dirtBrown = #AF956A;
-final color houseTurquoise = #9EFCD6;
+final color houseTurquoise = #9CC2C4;
 final color demolishBeige = #F5DAB9;
 
 abstract class LandUse {
@@ -35,12 +35,12 @@ abstract class LandUse {
   
 class Factory extends LandUse {
   /* Factory gives fixed profit no matter the location */
- Factory () {
+  Factory () {
    pollution = 10;
    icon = factoryBrown;   //Color code for drawing on map
    cost = 2000;
    baseProfit = 5000;
- }
+   }
  
  float calcActualProfit(float distToRiver) {
     return baseProfit;

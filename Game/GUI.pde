@@ -14,7 +14,7 @@ class GUI {
   GUI(int x, int y) {
     factoryB = new Button(xposB, yposB, tileWidth, tileHeight, factoryBrown, #73A29C, #EA7E2F, "Factory");
     farmB = new Button(xposB, yposB + 50, tileWidth, tileHeight, farmYellow, #73A29C, #F0AD1D, "Farm");
-    houseB = new Button(xposB, yposB + 100, tileWidth, tileHeight, houseTurquoise, #73A29C, #55F7B5, "House");
+    houseB = new Button(xposB, yposB + 100, tileWidth, tileHeight, houseTurquoise, #73A29C, #90B3B4, "House");
     forestB = new Button(xposB, yposB + 150, tileWidth, tileHeight, forestGreen, #73A29C, #02A002, "Forest");
     demolishB = new Button(xposB, yposB+200, tileWidth, tileHeight, demolishBeige, #73A29C, #F5BB74, "Demolish");
     resetB = new Button(xposB+20, ypos+tileHeight*sizeY+40, tileWidth + 5, tileHeight + 5, #FFFFFF, #989795, #171717, "RESET");
@@ -54,8 +54,8 @@ class GUI {
   //**** Draws elements of the game map  ****//  -----------------------------------------------
   void drawTile(int x, int y, color c, int t) {
     /* Draws a tile at Location <x, y> on game map, fill color c, transparency t */
-    stroke(210);
-    strokeWeight(1.6);
+    stroke(240);
+    strokeWeight(0.5);
     fill(c, t);
     rect(x*tileWidth + xpos, y*tileHeight + ypos, tileWidth, tileHeight);
     fill(255);    //resets to white.
@@ -176,7 +176,11 @@ class GUI {
     
     //Display info
     if (selected != null) {
-      drawTile(selected.getX(), selected.getY(), #B2EBF5, 150);
+      drawTile(selected.getX(), selected.getY(), 255, 130);
+      noFill();
+      strokeWeight(1);
+      stroke(245);
+      rect(selected.getX()*tileWidth + xpos, selected.getY()*tileHeight + ypos, tileWidth, tileHeight);
       fill(0);  //Color of text 
       textFont(messageFont);
       String text1 = selected.toString() + 
@@ -253,6 +257,7 @@ class GUI {
     colorMode(HSB);
     
     //Draws the Slidier
+    strokeWeight(1);
     for (float i = x; i <= x+w-w*0.25; i++) {     //Green to red portion
       float inter = map(i, x, x+w-w*0.25, 0, 1);
       color c = lerpColor(green, red, inter);
