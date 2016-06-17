@@ -6,7 +6,7 @@ final int sizeY = 30;
 
 void setup() {
   frameRate(30);
-  size(1050, 800);
+  size(1300, 1080);
   WS = new Watershed(sizeX, sizeY);   //Creates watershed of size 20*20
 }
 

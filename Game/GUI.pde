@@ -1,7 +1,7 @@
 final int xpos = 40;   //xpos and ypos determines the position of the top left corner of the map, in pixels
 final int ypos = 40;
-final int tileWidth = 20;   //width of a tile in pixels
-final int tileHeight = 20;    //height of a tile in pixels
+final int tileWidth = 30;   //width of a tile in pixels
+final int tileHeight = 30;    //height of a tile in pixels
 final int xposB = xpos + sizeX*tileWidth + 40;    //Drawing dimensions. xpos and ypos are the coordinates of the top most button. 
 final int yposB = 100;    //All buttons scale with respect to these
 
@@ -17,7 +17,7 @@ class GUI {
     houseB = new Button(xposB, yposB + 100, tileWidth, tileHeight, houseTurquoise, #73A29C, #55F7B5, "House");
     forestB = new Button(xposB, yposB + 150, tileWidth, tileHeight, forestGreen, #73A29C, #02A002, "Forest");
     demolishB = new Button(xposB, yposB+200, tileWidth, tileHeight, demolishBeige, #73A29C, #F5BB74, "Demolish");
-    resetB = new Button(xposB + 200, yposB+600, tileWidth + 5, tileHeight + 5, #FFFFFF, #989795, #171717, "RESET");
+    resetB = new Button(xposB+20, ypos+tileHeight*sizeY+40, tileWidth + 5, tileHeight + 5, #FFFFFF, #989795, #171717, "RESET");
   }
   
   void render() {
@@ -28,10 +28,10 @@ class GUI {
         drawTile(t.getX(), t.getY(), t.getLandU().getIcon(), 255);
       }
     }
-      showPollution();
+    //showPollution();
     //showDecayPollution();
     //showDist();
-    
+    //showProfit();
     
     axisLabels();
     showPollutionSlider();
@@ -89,7 +89,7 @@ class GUI {
             float d = t.getDistToRiver();
             projectedProfit += fa.calcActualProfit(d);         
           } else projectedProfit += 0;
-          purchaseInfo = "Will make: $" + projectedProfit;
+          purchaseInfo = "Money: +$" + projectedProfit;
         }
         else if (pushed == farmB) {
           hc = farmYellow;
@@ -98,7 +98,7 @@ class GUI {
             float d = t.getDistToRiver();
             projectedProfit += fm.calcActualProfit(d);
           } else projectedProfit += 0;
-          purchaseInfo = "Will make: $" + projectedProfit;
+          purchaseInfo = "Money: +$" + projectedProfit;
         }
         else if (pushed == houseB) {
           hc = houseTurquoise;
@@ -107,7 +107,7 @@ class GUI {
             float d = t.getDistToRiver();
             projectedProfit += hs.calcActualProfit(d);
           } else projectedProfit += 0;
-          purchaseInfo = "Will make: $" + projectedProfit;
+          purchaseInfo = "Money: +$" + projectedProfit;
         }
         else if (pushed == forestB) {
           hc = #1EC610;
@@ -116,7 +116,7 @@ class GUI {
             float d = t.getDistToRiver();
             projectedProfit += fo.calcActualProfit(d);
           } else projectedProfit += 0;
-          purchaseInfo = "Will make: $" + projectedProfit;
+          purchaseInfo = "Money: -$" + abs(projectedProfit);
         }
         else if (pushed == demolishB) hc = demolishBeige;
         else {
@@ -126,8 +126,8 @@ class GUI {
         drawTile(p[0], p[1], hc, 100);    //draws highlighted tile
       }
       textFont(messageFont);
-      fill(100);
-      text(purchaseInfo, 480, ypos + sizeY*tileHeight + 90);  
+      fill(145);
+      text(purchaseInfo, xpos+460, ypos + sizeY*tileHeight + 90);  
     }
   }
   
@@ -143,28 +143,28 @@ class GUI {
           if (pushed == factoryB) {
             float distToRiver = over.getDistToRiver();
             projectedProfit = fa.calcActualProfit(distToRiver);
-            purchaseInfo = "Will make: $" + projectedProfit;
+            purchaseInfo = "Money: +$" + projectedProfit;
           }
           else if (pushed == farmB) {
             float distToRiver = over.getDistToRiver();
             projectedProfit = fm.calcActualProfit(distToRiver);
-            purchaseInfo = "Will make: $" + projectedProfit;
+            purchaseInfo = "Money: +$" + projectedProfit;
           }
           else if (pushed == houseB) {
             float distToRiver = over.getDistToRiver();
             projectedProfit = hs.calcActualProfit(distToRiver);
-            purchaseInfo = "Will make: $" + projectedProfit;
+            purchaseInfo = "Money: +$" + projectedProfit;
           }
           else if (pushed == forestB) {
             float distToRiver = over.getDistToRiver();
             projectedProfit = fo.calcActualProfit(distToRiver);
-            purchaseInfo = "Will make: $" + projectedProfit;
+            purchaseInfo = "Money: -$" + abs(projectedProfit);
           } else purchaseInfo = "";   //Button not pressed
         }else purchaseInfo = "";     //Over the river
     }
     textFont(messageFont);
     fill(100);
-    text(purchaseInfo, 480, ypos + sizeY*tileHeight + 90);  
+    text(purchaseInfo, xpos+460, ypos + sizeY*tileHeight + 90);  
   }
   
   void showSelectedTile() {
@@ -172,7 +172,7 @@ class GUI {
     //Draws the box
     stroke(255);
     fill(255);
-    rect(480, ypos + sizeY*tileHeight + 10, 190, 110);
+    rect(xpos+450, ypos + sizeY*tileHeight + 10, 190, 110);
     
     //Display info
     if (selected != null) {
@@ -181,29 +181,30 @@ class GUI {
       textFont(messageFont);
       String text1 = selected.toString() + 
                     "     Type: " + selected.getLandU().toString();
-      text(text1, 480, ypos + sizeY*tileHeight + 30);   
+      text(text1, xpos+460, ypos + sizeY*tileHeight + 30);   
       String text2 = "Money: " + selected.getActualProfit() + 
                       "\nPollution: " + selected.getDecayPollution();
-      text(text2, 480, ypos + sizeY*tileHeight + 50);
+      text(text2, xpos+460, ypos + sizeY*tileHeight + 50);
     }
   }
   
-    void showFeedback() {
+   void showFeedback() {
     stroke(255);
     fill(255);
-    rect(60 - 20, ypos + sizeY*tileHeight + 10, 420, 110);
+    rect(xpos, ypos + sizeY*tileHeight + 10, 430, 110);
     fill(0);  //Color of text 
     textFont(messageFont);
-    text(message, 60, ypos + sizeY*tileHeight + 30);   
-    text(message2, 60, ypos + sizeY*tileHeight + 50);   
-    text("Simple sum of all pollution: " + WS.totalPollution, 60, ypos + sizeY*tileHeight + 90);
-    text("Total pollution entering river after distance decay: " + WS.totalDecayPollution, 60, ypos + sizeY*tileHeight + 110);
+    text(message, xpos + 20, ypos + sizeY*tileHeight + 30);   
+    text(message2, xpos + 20, ypos + sizeY*tileHeight + 50);   
+    text("Simple sum of all pollution: " + WS.totalPollution, xpos + 20, ypos + sizeY*tileHeight + 90);
+    text("Total pollution entering river after distance decay: " + WS.totalDecayPollution, xpos + 20, ypos + sizeY*tileHeight + 110);
   }
   
   void axisLabels() {
     /* Draw axis labels. */
     textFont(axisFont);
     textAlign(CENTER, BOTTOM);
+    fill(255);
     int xcount = 0;  
     for (int x=xpos; x < sizeX*tileWidth+xpos; x+=tileWidth){
       text(xcount, x+(tileWidth/2), ypos-3);
@@ -311,6 +312,7 @@ class GUI {
    for (Tile[] tileRow : WS.gameMap) {
       for (Tile t: tileRow) {
         textSize(10);
+        fill(0);
         textAlign(LEFT, TOP);
         text(round(t.getPollution()), t.getX()*tileWidth + xpos+2, t.getY()*tileHeight + ypos+1);
       }
@@ -321,6 +323,7 @@ class GUI {
    for (Tile[] tileRow : WS.gameMap) {
       for (Tile t: tileRow) {
         textSize(10);
+        fill(0);
         textAlign(LEFT, TOP);
         text(round(t.getDecayPollution()), t.getX()*tileWidth + xpos+2, t.getY()*tileHeight + ypos+1);
       }
@@ -331,8 +334,20 @@ class GUI {
    for (Tile[] tileRow : WS.gameMap) {
       for (Tile t: tileRow) {
         textSize(10);
+        fill(0);
         textAlign(LEFT, TOP);
         text(round(t.getDistToRiver()), t.getX()*tileWidth + xpos+2, t.getY()*tileHeight + ypos+1);
+      }
+   }
+ }
+ 
+ void showProfit() {
+   for (Tile[] tileRow : WS.gameMap) {
+      for (Tile t: tileRow) {
+        textSize(10);
+        fill(0);
+        textAlign(LEFT, TOP);
+        text(round(t.getActualProfit()), t.getX()*tileWidth + xpos+2, t.getY()*tileHeight + ypos+1);
       }
    }
  }
