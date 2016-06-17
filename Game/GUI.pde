@@ -89,17 +89,35 @@ class GUI {
   
   void showSelectedTile() {
     /* Accents the selected tile */
+    //Draws the box
     stroke(255);
     fill(255);
     rect(480, ypos + sizeY*tileHeight + 10, 190, 110);
+    
+    //Display info
     if (selected != null) {
       drawTile(selected.getX(), selected.getY(), #B2EBF5, 150);
       fill(0);  //Color of text 
       textFont(messageFont);
-      String text = selected.toString() + 
-                    "\n" + selected.getLandU().toString();
-      text(text, 480, ypos + sizeY*tileHeight + 30);   
+      String text1 = selected.toString() + 
+                    "     Type: " + selected.getLandU().toString();
+      text(text1, 480, ypos + sizeY*tileHeight + 30);   
+      String text2 = "Money: " + selected.getActualProfit() + 
+                      "\nPollution: " + selected.getDecayPollution();
+      text(text2, 480, ypos + sizeY*tileHeight + 50);
     }
+  }
+  
+    void showFeedback() {
+    stroke(255);
+    fill(255);
+    rect(60 - 20, ypos + sizeY*tileHeight + 10, 420, 110);
+    fill(0);  //Color of text 
+    textFont(messageFont);
+    text(message, 60, ypos + sizeY*tileHeight + 30);   
+    text(message2, 60, ypos + sizeY*tileHeight + 50);   
+    text("Simple sum of all pollution: " + WS.totalPollution, 60, ypos + sizeY*tileHeight + 90);
+    text("Total pollution entering river after distance decay: " + WS.totalDecayPollution, 60, ypos + sizeY*tileHeight + 110);
   }
   
   void axisLabels() {
@@ -138,21 +156,9 @@ class GUI {
     int y = yposB + 520;
     fill(0);
     textFont(budgetFont);
-    text("Total Profits: ", x, y);
+    text("Money: ", x, y);
     textFont(numeralFont);
     text(intToStr(round(WS.totalActualProfits)), x, y+36);
-  }
-  
-  String intToStr(int n) {
-    String out = "";
-    while(n > 999){
-      String s = Integer.toString(n);
-      out = "," + s.substring(s.length()-3) + out;
-      n = n/1000;
-    }
-    String s = Integer.toString(n);
-    out = s + out;
-    return out;
   }
   
   void showPollutionSlider() {
@@ -217,21 +223,10 @@ class GUI {
     fill(0);
     text("Pollution indicator: " + pLevel, x, y+60);
   }
-  
-  void showFeedback() {
-    stroke(255);
-    fill(255);
-    rect(60 - 20, ypos + sizeY*tileHeight + 10, 420, 110);
-    fill(0);  //Color of text 
-    textFont(messageFont);
-    text(message, 60, ypos + sizeY*tileHeight + 30);   
-    text(message2, 60, ypos + sizeY*tileHeight + 50);   
-    text("Simple sum of all pollution: " + WS.totalPollution, 60, ypos + sizeY*tileHeight + 90);
-    text("Total pollution entering river after distance decay: " + WS.totalDecayPollution, 60, ypos + sizeY*tileHeight + 110);
-  }
+
   
 
- //**** Some helper displays  ****//  -----------------------------------------------
+ //**** Some helper displays and functions  ****//  -----------------------------------------------
  void showPollution() {
    for (Tile[] tileRow : WS.gameMap) {
       for (Tile t: tileRow) {
@@ -261,6 +256,19 @@ class GUI {
       }
    }
  }
+ 
+  String intToStr(int n) {
+    /* Returns a String representation of the int */
+    String out = "";
+    while(n > 999){
+      String s = Integer.toString(n);
+      out = "," + s.substring(s.length()-3) + out;
+      n = n/1000;
+    }
+    String s = Integer.toString(n);
+    out = s + out;
+    return out;
+  }
 }
  
 

@@ -95,12 +95,12 @@ class Forest extends LandUse {
   Forest () {
     pollution = -5;    
     icon = forestGreen;
-    baseProfit = 0;
+    baseProfit = -100;
     cost = 500;
   }
   
   float calcActualProfit() {
-    return 0;
+    return -100;
   }
   
   @Override
