@@ -79,7 +79,7 @@ class GUI {
       }
     }
     if (mousePressed && mouseOverMap()) {
-      color hc;
+      color hc;       //Highlight color
       projectedProfit = 0;     //calculate purchase info
       for (int[] p : highlighted) {
         if  (pushed == factoryB) {    
@@ -87,9 +87,9 @@ class GUI {
           Tile t = WS.gameMap[p[0]][p[1]];
           if (! (t.getLandU() instanceof River)) {
             float d = t.getDistToRiver();
-            projectedProfit += fa.calcActualProfit(d);
-            purchaseInfo = "Will make: $" + projectedProfit;
-          }
+            projectedProfit += fa.calcActualProfit(d);         
+          } else projectedProfit += 0;
+          purchaseInfo = "Will make: $" + projectedProfit;
         }
         else if (pushed == farmB) {
           hc = farmYellow;
@@ -97,11 +97,27 @@ class GUI {
           if (! (t.getLandU() instanceof River)) {
             float d = t.getDistToRiver();
             projectedProfit += fm.calcActualProfit(d);
-            purchaseInfo = "Will make: $" + projectedProfit;
-          }
+          } else projectedProfit += 0;
+          purchaseInfo = "Will make: $" + projectedProfit;
         }
-        else if (pushed == houseB) hc = houseTurquoise;
-        else if (pushed == forestB) hc = #1EC610;
+        else if (pushed == houseB) {
+          hc = houseTurquoise;
+          Tile t = WS.gameMap[p[0]][p[1]];
+          if (! (t.getLandU() instanceof River)) {
+            float d = t.getDistToRiver();
+            projectedProfit += hs.calcActualProfit(d);
+          } else projectedProfit += 0;
+          purchaseInfo = "Will make: $" + projectedProfit;
+        }
+        else if (pushed == forestB) {
+          hc = #1EC610;
+          Tile t = WS.gameMap[p[0]][p[1]];
+          if (! (t.getLandU() instanceof River)) {
+            float d = t.getDistToRiver();
+            projectedProfit += fo.calcActualProfit(d);
+          } else projectedProfit += 0;
+          purchaseInfo = "Will make: $" + projectedProfit;
+        }
         else if (pushed == demolishB) hc = demolishBeige;
         else {
           hc = #B6FAB1;
