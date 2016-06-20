@@ -18,6 +18,7 @@ class GUI {
     forestB = new Button(xposB, yposB + 180, tileWidth, tileHeight, forestGreen, #73A29C, #02A002, "Forest");
     demolishB = new Button(xposB, yposB+240, tileWidth, tileHeight, demolishBeige, #73A29C, #F5BB74, "Demolish");
     resetB = new Button(xposB+20, ypos+tileHeight*sizeY+40, tileWidth + 5, tileHeight + 5, #FFFFFF, #989795, #171717, "RESET");
+    slider = new Slider(xposB+260, yposB+20, 220, 33);
   }
   
   void render() {
@@ -49,6 +50,7 @@ class GUI {
     forestB.display();
     demolishB.display();
     resetB.display();
+    slider.display();
   }
   
   
@@ -69,19 +71,21 @@ class GUI {
   
   void highlight() {
     /* Highlights tiles during click and drag, and shows bulk purchase info */
-    int[] posP = converter(mousePX, mousePY);   //tile coordinate when mouse is pressed
-    int[] posC = converter(mouseX, mouseY);     //current tile coordinate
-    ArrayList<int[]> highlighted = new ArrayList<int[]>();
-    for (int x = min(posP[0], posC[0]); x <= max(posP[0], posC[0]); x++) {
-      for (int y = min(posP[1], posC[1]); y <= max(posP[1], posC[1]); y++) {
-        highlighted.add(new int[] {x, y});
-      }
-    }
-    String purchaseInfo = "";
-    String pollutionInfo = "";
-    float projectedProfit = 0;
-    float projectedPollution = 0;
     if (mousePressed && mouseOverMap()) {
+      int[] posP = converter(mousePX, mousePY);   //tile coordinate when mouse is pressed
+      int[] posC = converter(mouseX, mouseY);     //current tile coordinate
+      ArrayList<int[]> highlighted = new ArrayList<int[]>();
+      if ((posP[0] >= 0 && posP[0] <sizeX) && (posP[1] >= 0 && posP[1] < sizeY)) {
+        for (int x = min(posP[0], posC[0]); x <= max(posP[0], posC[0]); x++) {
+          for (int y = min(posP[1], posC[1]); y <= max(posP[1], posC[1]); y++) {
+            highlighted.add(new int[] {x, y});
+          }
+        }
+      }
+      String purchaseInfo = "";
+      String pollutionInfo = "";
+      float projectedProfit = 0;
+      float projectedPollution = 0;
       color hc;       //Highlight color
       projectedProfit = 0;     //calculate purchase info
       projectedPollution = 0;
@@ -319,13 +323,7 @@ class GUI {
     strokeWeight(4);
     float scaleC = 1.5;    //Scaling constant that scales decayPollution number to pixel coordinates of slider
     float sliderX = x;    //xposition of the slider in pixels;
-    if (WS.totalDecayPollution <= 0.) {
-      sliderX = x;
-    }else if (sliderX + scaleC*WS.totalDecayPollution >= x+w) {
-      sliderX = x+w;
-    }else {
-      sliderX = sliderX + scaleC*WS.totalDecayPollution;
-    } 
+    sliderX = constrain(sliderX + scaleC*WS.totalDecayPollution, x, x+w);
     line(sliderX, y-5, sliderX, y+h+5);
     
     //Gives a text indicator:
@@ -575,12 +573,14 @@ boolean mouseOverMap(){
 
 int[] converter(int xraw, int yraw) {
   /*Helper function: converts raw coordinates x and y in frame to tile locations   */
+  if (mouseOverMap()){
     int xloc = 0;
     int yloc = 0;
     xloc = (xraw-xpos)/tileWidth;
     yloc = (yraw-ypos)/tileHeight;
     int[] out = {xloc, yloc};
     return out;
+  } else return new int[] {0,0};
 }
 
 
