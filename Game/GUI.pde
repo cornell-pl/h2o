@@ -18,7 +18,7 @@ class GUI {
     forestB = new Button(xposB, yposB + 180, tileWidth, tileHeight, forestGreen, #73A29C, #02A002, "Forest");
     demolishB = new Button(xposB, yposB+240, tileWidth, tileHeight, demolishBeige, #73A29C, #F5BB74, "Demolish");
     resetB = new Button(xposB+20, ypos+tileHeight*sizeY+40, tileWidth + 5, tileHeight + 5, #FFFFFF, #989795, #171717, "RESET");
-    slider = new Slider(xposB+260, yposB+20, 220, 33);
+    slider = new Slider(xposB+260, yposB, 0, 20);
   }
   
   void render() {

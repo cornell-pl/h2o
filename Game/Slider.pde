@@ -1,30 +1,31 @@
 Slider slider;
 
 class Slider {
-  int bWidth, bHeight;    // width and height of bar
-  float xpos, ypos;       // x and y position of bar
-  float spos, newspos;    // x position of slider
-  float sposMin, sposMax; // max and min values of slider
-  boolean over;           // is the mouse over the slider?
-  boolean locked;
+  int bWidth = 220;
+  int bHeight = 33;    // width and height of bar
+  float x, y;       // x and y position of bar
+  int sWidth = 20;        //width and height of slider
+  int sHeight = bHeight;
+  float spos;  // x position of slider
   float ratio;
   
-  Slider(float xp, float yp, int w, int h) {
-    bWidth = w;
-    bHeight = h;
-    int widthtoheight = w - h;
-    ratio = (float)w / (float)widthtoheight;
-    xpos = xp;
-    ypos = yp-bHeight/2;
-    spos = xpos + bWidth/2 - bHeight/2;
-    newspos = spos;
-    sposMin = xpos;
-    sposMax = xpos + bWidth;
+  int minVal;        //Min and max val of slider
+  int maxVal;
+  boolean over;           // is the mouse over the slider?
+  boolean locked;
+  
+  Slider(float xp, float yp, int minVal, int maxVal) {
+    x = xp;
+    y = yp;
+    spos = x + bWidth/2-sWidth/2;
+    minVal = minVal;
+    maxVal = maxVal;
+    ratio = (maxVal - minVal)/((float)(bWidth-sWidth));
   }
   
   boolean overEvent() {
-    if (mouseX > xpos && mouseX < xpos+bWidth &&
-       mouseY > ypos && mouseY < ypos+bHeight) {
+    if (mouseX > x && mouseX < x+bWidth &&
+       mouseY > y && mouseY < y+bHeight) {
       return true;
     } else {
       return false;
@@ -44,30 +45,25 @@ class Slider {
       locked = false;
     }
     if (locked) {
-      newspos = constrain(mouseX-bHeight/2, sposMin, sposMax);
-    }
-    if (abs(newspos - spos) > 1) {
-      spos = spos + (newspos-spos)/1;
+      spos = constrain(mouseX, x, x+bWidth-sWidth);
     }
   }
 
   void display() {
-    noStroke();
-    fill(100);
+    stroke(255);
+    strokeWeight(1);
+    fill(factoryBrown);
     rectMode(CORNER);
-    rect(xpos, ypos, bWidth, bHeight);
-    if (over || locked) {
-      fill(0, 0, 0);
-    } else {
-      fill(102, 102, 102);
-    }
-    rect(spos, ypos, bHeight, bHeight);
+    rect(x, y, bWidth, bHeight);
+    noStroke();
+    fill(50);
+    rect(spos, y-1, sWidth, sHeight+2);
+    text(getPos(), x, y + 50);
     update();
   }
 
   float getPos() {
-    // Convert spos to be values between
-    // 0 and the total width of the scrollbar
-    return spos * ratio;
+    // Convert spos to be values between minVal and maxVal
+    return (spos - x) * ratio;
   }
 }
