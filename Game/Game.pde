@@ -162,7 +162,7 @@ class Watershed {
           dPollutionTotal += t.getDecayPollution();
         }
      }
-     if (dPollutionTotal < 0.) dPollutionTotal = 0.;
+     if (dPollutionTotal < 0.) dPollutionTotal = 1.;
      return dPollutionTotal;
   }
   

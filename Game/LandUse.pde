@@ -9,9 +9,9 @@ final color demolishBeige = #F5DAB9;
 //Defining pollution as global variables
 int factoryPollution = 20;
 int farmPollution = 12;
-int housePollution = 5;
-int forestPollution = -5;
-int dirtPollution = 1;
+int housePollution = 6;
+int forestPollution = -2;
+int dirtPollution = 0;
 
 //Setting the build quota for each landUse
 final int factoryQuota = 40;
