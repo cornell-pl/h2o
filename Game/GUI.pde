@@ -6,10 +6,10 @@ final int xposB = xpos + sizeX*tileWidth + 40;    //Drawing dimensions. xpos and
 final int yposB = 100;    //All buttons scale with respect to these
 
 class GUI {
-  PFont axisFont = createFont("Calibri", 12);
-  PFont messageFont = createFont("Calibri", 13);
-  PFont budgetFont = createFont("Calibri-Bold", 24);
-  PFont numeralFont = createFont("Courier-Bold", 34);
+  final PFont axisFont = createFont("Calibri", 12);
+  final PFont messageFont = createFont("Calibri", 13);
+  final PFont budgetFont = createFont("Calibri-Bold", 24);
+  final PFont numeralFont = createFont("Courier-Bold", 34);
   
   GUI(int x, int y) {
     factoryB = new Button(xposB, yposB, tileWidth, tileHeight, factoryBrown, #73A29C, #EA7E2F, "Factory");
@@ -66,8 +66,6 @@ class GUI {
   House hs = new House();
   Forest fo = new Forest();
   
-  String purchaseInfo = "";
-  float projectedProfit = 0;
   void highlight() {
     /* Highlights tiles during click and drag, and shows bulk purchase info */
     int[] posP = converter(mousePX, mousePY);   //tile coordinate when mouse is pressed
@@ -78,93 +76,117 @@ class GUI {
         highlighted.add(new int[] {x, y});
       }
     }
+    String purchaseInfo = "";
+    String pollutionInfo = "";
+    float projectedProfit = 0;
+    float projectedPollution = 0;
     if (mousePressed && mouseOverMap()) {
       color hc;       //Highlight color
       projectedProfit = 0;     //calculate purchase info
+      projectedPollution = 0;
       for (int[] p : highlighted) {
-        if  (pushed == factoryB) {    
-          hc = factoryBrown;      //highlight color
-          Tile t = WS.gameMap[p[0]][p[1]];
-          if (! (t.getLandU() instanceof River)) {
-            float d = t.getDistToRiver();
-            projectedProfit += fa.calcActualProfit(d);         
-          } else projectedProfit += 0;
-          purchaseInfo = "Money: +$" + projectedProfit;
-        }
-        else if (pushed == farmB) {
-          hc = farmYellow;
-          Tile t = WS.gameMap[p[0]][p[1]];
-          if (! (t.getLandU() instanceof River)) {
-            float d = t.getDistToRiver();
+        Tile t = WS.gameMap[p[0]][p[1]];
+        float d = t.getDistToRiver();
+        if (! (t.getLandU() instanceof River)) {
+          if  (pushed == factoryB) {    
+            hc = factoryBrown;      //highlight color
+            projectedProfit += fa.calcActualProfit(d);  
+            projectedPollution += fa.calcDecayPollution(d);
+          } 
+          else if (pushed == farmB) {
+            hc = farmYellow;
             projectedProfit += fm.calcActualProfit(d);
-          } else projectedProfit += 0;
-          purchaseInfo = "Money: +$" + projectedProfit;
-        }
-        else if (pushed == houseB) {
-          hc = houseTurquoise;
-          Tile t = WS.gameMap[p[0]][p[1]];
-          if (! (t.getLandU() instanceof River)) {
-            float d = t.getDistToRiver();
+            projectedPollution += fm.calcDecayPollution(d);
+          }
+          else if (pushed == houseB) {
+            hc = houseTurquoise;
             projectedProfit += hs.calcActualProfit(d);
-          } else projectedProfit += 0;
-          purchaseInfo = "Money: +$" + projectedProfit;
-        }
-        else if (pushed == forestB) {
-          hc = #1EC610;
-          Tile t = WS.gameMap[p[0]][p[1]];
-          if (! (t.getLandU() instanceof River)) {
-            float d = t.getDistToRiver();
+            projectedPollution += hs.calcDecayPollution(d);
+          }
+          else if (pushed == forestB) {
+            hc = #1EC610;
             projectedProfit += fo.calcActualProfit(d);
-          } else projectedProfit += 0;
-          purchaseInfo = "Money: -$" + abs(projectedProfit);
-        }
-        else if (pushed == demolishB) hc = demolishBeige;
-        else {
+            projectedPollution += fo.calcDecayPollution(d);
+          }
+          else if (pushed == demolishB){
+            hc = demolishBeige;
+            purchaseInfo = "";   
+            pollutionInfo = "";
+          }
+          else {
+            hc = #B6FAB1;
+            purchaseInfo = "";   //No button is pushed
+            pollutionInfo = "";
+          }
+        }else {
           hc = #B6FAB1;
-          purchaseInfo = "";   //No button is pushed
-        } 
+          projectedProfit += 0;
+          projectedPollution += 0;
+        }
         drawTile(p[0], p[1], hc, 100);    //draws highlighted tile
       }
-      textFont(messageFont);
-      fill(145);
-      text(purchaseInfo, xpos+460, ypos + sizeY*tileHeight + 90);  
+      if (pushed != null && pushed != demolishB) {
+        if (projectedProfit > 0) purchaseInfo = "Money: +$" + projectedProfit;
+        else purchaseInfo = "Money: -$" + abs(projectedProfit);
+        if (projectedPollution > 0)pollutionInfo = "Pollution: +" + projectedPollution;
+        else pollutionInfo = "Pollution: -" + abs(projectedPollution);
+        textFont(messageFont);
+        fill(145);
+        text(purchaseInfo, xpos+460, ypos + sizeY*tileHeight + 80);  
+        text(pollutionInfo, xpos+460, ypos + sizeY*tileHeight + 100); 
+      }
     }
   }
   
   void showPurchaseInfo() {
     /* Accents the Tile mouse is over, displays purchase information if in purchase mode */
     Tile over = null;   //The Tile mouse is over
-    projectedProfit = 0;
+    String purchaseInfo = "";
+    String pollutionInfo = "";
+    float projectedProfit = 0;
+    float projectedPollution = 0;
     if (mouseOverMap() && !mousePressed) {   //Highlight tile mouse is over
       int[] pos = converter(mouseX, mouseY);
       drawTile(pos[0], pos[1], #B6FAB1, 200);
       over = WS.gameMap[pos[0]][pos[1]];
         if (!(over.getLandU() instanceof River)) {
+           float d = over.getDistToRiver();
           if (pushed == factoryB) {
-            float distToRiver = over.getDistToRiver();
-            projectedProfit = fa.calcActualProfit(distToRiver);
+            projectedProfit = fa.calcActualProfit(d);
+            projectedPollution = fa.calcDecayPollution(d);
             purchaseInfo = "Money: +$" + projectedProfit;
+            pollutionInfo = "Pollution: +" + projectedPollution;
           }
           else if (pushed == farmB) {
-            float distToRiver = over.getDistToRiver();
-            projectedProfit = fm.calcActualProfit(distToRiver);
+            projectedProfit = fm.calcActualProfit(d);
+            projectedPollution = fm.calcDecayPollution(d);
             purchaseInfo = "Money: +$" + projectedProfit;
+            pollutionInfo = "Pollution: +" + projectedPollution;
           }
           else if (pushed == houseB) {
-            float distToRiver = over.getDistToRiver();
-            projectedProfit = hs.calcActualProfit(distToRiver);
+            projectedProfit = hs.calcActualProfit(d);
+            projectedPollution = hs.calcDecayPollution(d);
             purchaseInfo = "Money: +$" + projectedProfit;
+            pollutionInfo = "Pollution: +" + projectedPollution;
           }
           else if (pushed == forestB) {
-            float distToRiver = over.getDistToRiver();
-            projectedProfit = fo.calcActualProfit(distToRiver);
+            projectedProfit = fo.calcActualProfit(d);
+            projectedPollution = fo.calcDecayPollution(d);
             purchaseInfo = "Money: -$" + abs(projectedProfit);
-          } else purchaseInfo = "";   //Button not pressed
-        }else purchaseInfo = "";     //Over the river
+            pollutionInfo = "Pollution: -" + abs(projectedPollution);
+          } else {                //Button not pressed
+            purchaseInfo = "";   
+            pollutionInfo = "";
+          }
+        }else {    //Over the river
+          purchaseInfo = ""; 
+          pollutionInfo = "";
+        }
     }
     textFont(messageFont);
     fill(100);
-    text(purchaseInfo, xpos+460, ypos + sizeY*tileHeight + 90);  
+    text(purchaseInfo, xpos+460, ypos + sizeY*tileHeight + 80);  
+    text(pollutionInfo, xpos+460, ypos + sizeY*tileHeight + 100);
   }
   
   void showSelectedTile() {
@@ -319,7 +341,7 @@ class GUI {
         textSize(10);
         fill(0);
         textAlign(LEFT, TOP);
-        text(round(t.getPollution()), t.getX()*tileWidth + xpos+2, t.getY()*tileHeight + ypos+1);
+        if(t.getPollution()!=0) text(round(t.getPollution()), t.getX()*tileWidth + xpos+2, t.getY()*tileHeight + ypos+1);
       }
    }
  }
@@ -352,7 +374,7 @@ class GUI {
         textSize(10);
         fill(0);
         textAlign(LEFT, TOP);
-        text(round(t.getActualProfit()), t.getX()*tileWidth + xpos+2, t.getY()*tileHeight + ypos+1);
+        if (round(t.getActualProfit())!=0) text(round(t.getActualProfit()), t.getX()*tileWidth + xpos+2, t.getY()*tileHeight + ypos+1);
       }
    }
  }

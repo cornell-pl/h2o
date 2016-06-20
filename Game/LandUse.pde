@@ -30,7 +30,7 @@ abstract class LandUse {
   
   float calcDecayPollution(float distToRiver) {
     /* Returns the pollution entering river acording to distance decay model.  */
-    float decayPollution = pollution/distToRiver;
+    float decayPollution = pollution/(distToRiver/2+0.5);
     return decayPollution;
   }
   
