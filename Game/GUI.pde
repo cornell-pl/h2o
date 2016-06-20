@@ -215,8 +215,8 @@ class GUI {
       String text1 = selected.toString() + 
                     "     Type: " + selected.getLandU().toString();
       text(text1, xpos+460, ypos + sizeY*tileHeight + 30);   
-      String text2 = "Money: " + selected.getActualProfit() + 
-                      "\nPollution: " + selected.getDecayPollution();
+      String text2 = "Money: " + nfc(selected.getActualProfit(),2) + 
+                      "\nPollution: " + nfc(selected.getDecayPollution(),2);
       text(text2, xpos+460, ypos + sizeY*tileHeight + 50);
     }
   }
