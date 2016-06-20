@@ -29,7 +29,7 @@ class GUI {
       }
     }
     //showPollution();
-    showDecayPollution();
+    //showDecayPollution();
     //showDist();
     //showProfit();
     
@@ -147,41 +147,48 @@ class GUI {
     float projectedPollution = 0;
     if (mouseOverMap() && !mousePressed) {   //Highlight tile mouse is over
       int[] pos = converter(mouseX, mouseY);
-      drawTile(pos[0], pos[1], #B6FAB1, 200);
+      color hc;
       over = WS.gameMap[pos[0]][pos[1]];
         if (!(over.getLandU() instanceof River)) {
            float d = over.getDistToRiver();
           if (pushed == factoryB) {
+            hc = fa.getIcon();
             projectedProfit = fa.calcActualProfit(d);
             projectedPollution = fa.calcDecayPollution(d);
             purchaseInfo = "Money: +$" + projectedProfit;
             pollutionInfo = "Pollution: +" + projectedPollution;
           }
           else if (pushed == farmB) {
+            hc = fm.getIcon();
             projectedProfit = fm.calcActualProfit(d);
             projectedPollution = fm.calcDecayPollution(d);
             purchaseInfo = "Money: +$" + projectedProfit;
             pollutionInfo = "Pollution: +" + projectedPollution;
           }
           else if (pushed == houseB) {
+            hc = hs.getIcon();
             projectedProfit = hs.calcActualProfit(d);
             projectedPollution = hs.calcDecayPollution(d);
             purchaseInfo = "Money: +$" + projectedProfit;
             pollutionInfo = "Pollution: +" + projectedPollution;
           }
           else if (pushed == forestB) {
+            hc = fo.getIcon();
             projectedProfit = fo.calcActualProfit(d);
             projectedPollution = fo.calcDecayPollution(d);
             purchaseInfo = "Money: -$" + abs(projectedProfit);
             pollutionInfo = "Pollution: -" + abs(projectedPollution);
           } else {                //Button not pressed
+            hc = #B6FAB1;
             purchaseInfo = "";   
             pollutionInfo = "";
           }
         }else {    //Over the river
+          hc = #B6FAB1;
           purchaseInfo = ""; 
           pollutionInfo = "";
         }
+    drawTile(pos[0], pos[1], hc , 100);
     }
     textFont(messageFont);
     fill(100);
@@ -200,7 +207,7 @@ class GUI {
     if (selected != null) {
       drawTile(selected.getX(), selected.getY(), 255, 130);
       noFill();
-      strokeWeight(1);
+      strokeWeight(1.5);
       stroke(245);
       rect(selected.getX()*tileWidth + xpos, selected.getY()*tileHeight + ypos, tileWidth, tileHeight);
       fill(0);  //Color of text 
@@ -338,6 +345,7 @@ class GUI {
  void showPollution() {
    for (Tile[] tileRow : WS.gameMap) {
       for (Tile t: tileRow) {
+        textFont(messageFont);
         textSize(10);
         fill(0);
         textAlign(LEFT, TOP);
@@ -349,6 +357,7 @@ class GUI {
  void showDecayPollution() {
    for (Tile[] tileRow : WS.gameMap) {
       for (Tile t: tileRow) {
+        textFont(messageFont);
         textSize(10);
         fill(0);
         textAlign(LEFT, TOP);
@@ -360,6 +369,7 @@ class GUI {
  void showDist() {
    for (Tile[] tileRow : WS.gameMap) {
       for (Tile t: tileRow) {
+        textFont(messageFont);
         textSize(10);
         fill(0);
         textAlign(LEFT, TOP);
@@ -371,6 +381,7 @@ class GUI {
  void showProfit() {
    for (Tile[] tileRow : WS.gameMap) {
       for (Tile t: tileRow) {
+        textFont(messageFont);
         textSize(10);
         fill(0);
         textAlign(LEFT, TOP);
