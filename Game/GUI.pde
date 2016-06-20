@@ -3,20 +3,20 @@ final int ypos = 40;
 final int tileWidth = 30;   //width of a tile in pixels
 final int tileHeight = 30;    //height of a tile in pixels
 final int xposB = xpos + sizeX*tileWidth + 40;    //Drawing dimensions. xpos and ypos are the coordinates of the top most button. 
-final int yposB = 100;    //All buttons scale with respect to these
+final int yposB = 90;    //All buttons scale with respect to these
 
 class GUI {
   final PFont axisFont = createFont("Calibri", 12);
   final PFont messageFont = createFont("Calibri", 13);
-  final PFont budgetFont = createFont("Calibri-Bold", 24);
-  final PFont numeralFont = createFont("Courier-Bold", 34);
+  final PFont budgetFont = createFont("Calibri-Bold", 20);
+  final PFont numeralFont = createFont("Courier", 30);
   
   GUI(int x, int y) {
     factoryB = new Button(xposB, yposB, tileWidth, tileHeight, factoryBrown, #73A29C, #EA7E2F, "Factory");
-    farmB = new Button(xposB, yposB + 50, tileWidth, tileHeight, farmYellow, #73A29C, #F0AD1D, "Farm");
-    houseB = new Button(xposB, yposB + 100, tileWidth, tileHeight, houseTurquoise, #73A29C, #90B3B4, "House");
-    forestB = new Button(xposB, yposB + 150, tileWidth, tileHeight, forestGreen, #73A29C, #02A002, "Forest");
-    demolishB = new Button(xposB, yposB+200, tileWidth, tileHeight, demolishBeige, #73A29C, #F5BB74, "Demolish");
+    farmB = new Button(xposB, yposB + 60, tileWidth, tileHeight, farmYellow, #73A29C, #F0AD1D, "Farm");
+    houseB = new Button(xposB, yposB + 120, tileWidth, tileHeight, houseTurquoise, #73A29C, #90B3B4, "House");
+    forestB = new Button(xposB, yposB + 180, tileWidth, tileHeight, forestGreen, #73A29C, #02A002, "Forest");
+    demolishB = new Button(xposB, yposB+240, tileWidth, tileHeight, demolishBeige, #73A29C, #F5BB74, "Demolish");
     resetB = new Button(xposB+20, ypos+tileHeight*sizeY+40, tileWidth + 5, tileHeight + 5, #FFFFFF, #989795, #171717, "RESET");
   }
   
@@ -38,6 +38,7 @@ class GUI {
     showFeedback();
     showSelectedTile();
     showActualProfits();
+    showScore();
     showPurchaseInfo();
     highlight();
     
@@ -255,12 +256,22 @@ class GUI {
   
   void showActualProfits() {
     int x = xpos + sizeX*tileWidth + 40;
-    int y = yposB + 520;
+    int y = yposB + 460;
     fill(0);
     textFont(budgetFont);
     text("Money: ", x, y);
     textFont(numeralFont);
-    text(nfc((WS.totalActualProfits),2), x, y+36);
+    text(nfc(WS.totalActualProfits,2), x, y+36);
+  }
+  
+  void showScore() {
+    int x = xpos + sizeX*tileWidth + 40;
+    int y = yposB + 550;
+    fill(0);
+    textFont(budgetFont);
+    text("Score: ", x, y);
+    textFont(numeralFont);
+    text(nfc(WS.score,2), x, y+36);
   }
   
   void showPollutionSlider() {
@@ -268,9 +279,9 @@ class GUI {
     color red = #FF3300;
     color extreme = #A72200;
     int x =  xpos + sizeX*tileWidth + 40;     //xposition of the slider
-    int y = yposB + 270;       //yposition of the slider
-    int w = 200;    //width of slider
-    int h = 25;  //height if slider
+    int y = yposB + 340;       //yposition of the slider
+    int w = 220;    //width of slider
+    int h = 33;  //height if slider
     colorMode(HSB);
     
     //Draws the Slidier
@@ -323,8 +334,9 @@ class GUI {
       pLevel = "Off the scale";
     }
     textFont(messageFont);
+    textSize(15);
     fill(0);
-    text("Pollution indicator: " + pLevel, x, y+60);
+    text("Pollution indicator: " + pLevel, x, y+65);
   }
 
   
@@ -609,7 +621,7 @@ class Button{
   
   // Updates the over field every frame
   void update() {
-    if ((mouseX >= x-1) && (mouseX <= x+bWidth+textWidth(label)+1) && 
+    if ((mouseX >= x-1) && (mouseX <= x+bWidth+textWidth(label)+8) && 
         (mouseY >= y-1) && (mouseY <= y+bHeight+1)) {
       over = true;
     } else {

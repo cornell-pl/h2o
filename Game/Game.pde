@@ -24,6 +24,7 @@ class Watershed {
   int totalPollution;
   float totalDecayPollution;
   float totalActualProfits;
+  float score;
   
   Watershed(int x, int y) {
     /* Constructor: Initializes a watershed of dimension x*y units */
@@ -131,7 +132,7 @@ class Watershed {
         totalPollution += t.getPollution();
       }
     }
-    //if (totalPollution < 0) totalPollution = 0;
+    if (totalPollution < 0) totalPollution = 0;
     return totalPollution;
   }
 
@@ -144,8 +145,8 @@ class Watershed {
           dPollutionTotal += t.getDecayPollution();
         }
      }
-   //if (ldPollutionTotal < 0.) ldPollutionTotal = 0.;
-    return dPollutionTotal;
+     if (dPollutionTotal < 0.) dPollutionTotal = 0.;
+     return dPollutionTotal;
   }
   
   float sumActualProfits() {
@@ -160,6 +161,11 @@ class Watershed {
     }
     return profit;
   }
+  
+  float calcScore() {
+    /* Returns the player's score */
+    return totalActualProfits/totalDecayPollution;
+  }
         
   
   void update() {
@@ -168,6 +174,7 @@ class Watershed {
     totalPollution = sumPollution();
     totalDecayPollution = sumDecayPollution();
     totalActualProfits = sumActualProfits();
+    score = calcScore();
   }
   
 
