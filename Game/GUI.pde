@@ -280,9 +280,9 @@ class GUI {
     int y = yposB + 650;
     fill(0);
     textFont(messageFont);
-    text("Factories: " + WS.factories, x,y);
-    text("Farms: " + WS.farms, x,y+20);
-    text("Houses: " + WS.houses, x,y+40);
+    text("Factories: " + WS.factories + " / " + factoryQuota, x,y);
+    text("Farms: " + WS.farms + " / " + farmQuota, x,y+20);
+    text("Houses: " + WS.houses + " / " + houseQuota, x,y+40);
   }
   
   void showPollutionSlider() {

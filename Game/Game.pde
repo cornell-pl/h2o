@@ -201,53 +201,63 @@ class Watershed {
   boolean addFactory(int x, int y) {
     /* Places a new Factory at Location <x, y> on the map. 
     Returns true if successful. False otherwise.  */
-    Tile t = gameMap[x][y];
-    if (! (t.getLandU() instanceof River)) {
-      Factory fc = new Factory();
-      t.changeLandUse(fc);
-      message2 = "Added a Factory at " + t;
-      println("Added a Factory at", t);
-      return true;      
-    }else {
-      message2 = "Cannot built factory in river. Nothing is added.";
-      println("Cannot built factory in river. Nothing is added");
-      return false;
-    }
+    if (factories < factoryQuota) {
+      Tile t = gameMap[x][y];
+      if (! (t.getLandU() instanceof River)) {
+        Factory fc = new Factory();
+        t.changeLandUse(fc);
+        message2 = "Added a Factory at " + t;
+        println("Added a Factory at", t);
+        sumLandUses();
+        return true;      
+      }else {
+        message2 = "Cannot built factory in river. Nothing is added.";
+        println("Cannot built factory in river. Nothing is added");
+        return false;
+      }
+    } else return false;
   }
   
   boolean addFarm(int x, int y) {
     /* Places a new Farm at Location <x, y> on the map. 
     Returns true if successful. False otherwise. */
-    Tile t = gameMap[x][y];
-    if (! (t.getLandU() instanceof River)) {
-      Farm fm = new Farm();
-      t.changeLandUse(fm); 
-      message2 = "Added a Farm at " + t;
-      println("Added a Farm at", t);
-      return true;
-    }else {
-      message2 = "Cannot built farm in river. Nothing is added.";
-      println("Cannot built farm in river. Nothing is added.");
-      return false;
-    }
+    if (farms < farmQuota) {
+      Tile t = gameMap[x][y];
+      if (! (t.getLandU() instanceof River)) {
+        Farm fm = new Farm();
+        t.changeLandUse(fm); 
+        message2 = "Added a Farm at " + t;
+        println("Added a Farm at", t);
+        sumLandUses();
+        return true;
+      }else {
+        message2 = "Cannot built farm in river. Nothing is added.";
+        println("Cannot built farm in river. Nothing is added.");
+        return false;
+      }
+    } else return false;
   }
   
   boolean addHouse(int x, int y) {
     /* Places a new House at Location <x, y> on the map. 
     Returns true if successful. False otherwise. */
-    Tile t = gameMap[x][y];
-    if (! (t.getLandU() instanceof River)) {
-      House hs = new House();
-      t.changeLandUse(hs); 
-      message2 = "Added a House at " + t;
-      println("Added a House at", t);
-      return true;
-    }else {
-      message2 = "Cannot built house in river. Nothing is added.";
-      println("Cannot built house in river. Nothing is added.");
-      return false;
-    }
-  }
+    if (houses < houseQuota) {
+      Tile t = gameMap[x][y];
+      if (! (t.getLandU() instanceof River)) {
+        House hs = new House();
+        t.changeLandUse(hs); 
+        message2 = "Added a House at " + t;
+        println("Added a House at", t);
+        sumLandUses();
+        return true;
+      }else {
+        message2 = "Cannot built house in river. Nothing is added.";
+        println("Cannot built house in river. Nothing is added.");
+        return false;
+      }
+    } else return false;
+  } 
+  
   boolean addForest(int x, int y) {
     /* Places a new Forest at Location <x, y> on the map. 
     Returns true if successful. False otherwise.  */
