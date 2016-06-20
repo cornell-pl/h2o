@@ -30,11 +30,11 @@ class Watershed {
     /* Constructor: Initializes a watershed of dimension x*y units */
     budget = 300000;
     graphics = new GUI(x, y);
-    initializeFixedForest();
+    initializeWithFixedForest();
     setTileVals();
   }     //<>//
   
-  void initializeFixedForest() {
+  void initializeWithFixedForest() {
     gameMap = new Tile[sizeX][sizeY];
     for (int j=0; j<sizeY; j++) {
       for (int i=0; i<sizeX; i++) { 
@@ -52,7 +52,7 @@ class Watershed {
   }
   
   
-  void initializeRandomForest() {
+  void initializeWithRandomForest() {
     gameMap = new Tile[sizeX][sizeY];
     for (int j=0; j<sizeY; j++) {
       for (int i=0; i<sizeX; i++) { 
@@ -78,7 +78,7 @@ class Watershed {
       for (Tile t: tileRow) {
         t.pollution = t.landU.getPollution();
         t.distToR = distToRiver(t.getX(),t.getY());
-        t.decayPollution = t.pollution/t.distToR;
+        t.decayPollution = t.landU.calcDecayPollution(t.distToR);
       }
     }
   }
@@ -139,7 +139,7 @@ class Watershed {
 
   float sumDecayPollution() {
     /* Linear decay model of pollution that enters the river.
-    Returns total pollution entering river from all sources according decay model defined in Tile*/
+    Returns total pollution entering river from all sources according decay model defined for each LandUse*/
     float dPollutionTotal = 0.;
     for (Tile[] tileRow : gameMap) {
       for (Tile t: tileRow) {   //Calculate pollution contribution from t after linear decay

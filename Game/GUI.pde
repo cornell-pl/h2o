@@ -29,7 +29,7 @@ class GUI {
       }
     }
     //showPollution();
-    //showDecayPollution();
+    showDecayPollution();
     //showDist();
     //showProfit();
     

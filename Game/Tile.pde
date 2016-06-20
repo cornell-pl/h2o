@@ -27,7 +27,7 @@ class Tile {
     /* Changes the LandUse held by the Tile to lu */
     landU = lu;
     pollution = lu.getPollution();
-    decayPollution = pollution/distToR;
+    decayPollution = lu.calcDecayPollution(distToR);
     actualProfit = lu.calcActualProfit(distToR);
   }
   

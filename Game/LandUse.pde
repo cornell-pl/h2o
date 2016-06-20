@@ -6,15 +6,32 @@ final color dirtBrown = #AF956A;
 final color houseTurquoise = #9CC2C4;
 final color demolishBeige = #F5DAB9;
 
+//Defining pollution as global variables
+int factoryPollution = 20;
+int farmPollution = 12;
+int housePollution = 5;
+int forestPollution = -5;
+int dirtPollution = 1;
+
 abstract class LandUse {
-  float pollution;
   color icon;
+  float pollution;
   int baseProfit;
   int cost;
+  
+  color getIcon() {
+    return icon;
+  }
   
   float getPollution() {
     /*Returns pollution of LandUse */
     return pollution;
+  }
+  
+  float calcDecayPollution(float distToRiver) {
+    /* Returns the pollution entering river acording to distance decay model.  */
+    float decayPollution = pollution/distToRiver;
+    return decayPollution;
   }
   
   int getBaseProfit() {
@@ -25,10 +42,6 @@ abstract class LandUse {
     return cost;
   }
     
-  color getIcon() {
-    return icon;
-  }
-  
   abstract float calcActualProfit(float distToR);
 }
 
@@ -36,13 +49,14 @@ abstract class LandUse {
 class Factory extends LandUse {
   /* Factory gives fixed profit no matter the location */
   Factory () {
-   pollution = 10;
+   pollution = factoryPollution;
    icon = factoryBrown;   //Color code for drawing on map
    cost = 2000;
    baseProfit = 5000;
    }
  
  float calcActualProfit(float distToRiver) {
+    /*Returns the actual profit made according to profit model  */
     return baseProfit;
   }
  
@@ -55,14 +69,15 @@ class Factory extends LandUse {
 class Farm extends LandUse {
   /* Farm gives less profit further from river  */
  Farm () {
-   pollution = 7;
+   pollution = farmPollution;
    icon = farmYellow;
    cost = 1000;
    baseProfit = 2000;
  }
   
   float calcActualProfit(float distToRiver) {
-    return baseProfit/sqrt(distToRiver);
+     /*Returns the actual profit made according to profit model  */
+    return baseProfit/(sq(distToRiver)/2+0.5);
   }
  
    @Override
@@ -73,13 +88,14 @@ class Farm extends LandUse {
 
 class House extends LandUse {
   House() {
-    pollution = 2;
+    pollution = housePollution;
     icon = houseTurquoise;
     baseProfit = 1000;
     cost = 1000;
   }
   
   float calcActualProfit(float distToRiver) {
+     /*Returns the actual profit made according to profit model  */
     return baseProfit/sqrt(distToRiver);
   }
   
@@ -91,14 +107,20 @@ class House extends LandUse {
 
 class Forest extends LandUse {
   Forest () {
-    pollution = -5;    
+    pollution = forestPollution;    
     icon = forestGreen;
     baseProfit = -100;
     cost = 500;
   }
   
+  @Override
+  float calcDecayPollution(float distToRiver) {   //Reduction of pullution from forest is a constant.
+    return pollution;
+  }
+  
   float calcActualProfit(float distToRiver) {
-    return -100;
+     /*Returns the actual profit made according to profit model  */
+    return -100;           //Cost of forest is a constant.
   }
   
   @Override
@@ -109,13 +131,14 @@ class Forest extends LandUse {
 
 class Dirt extends LandUse {
  Dirt() {
-   pollution = 0;
+   pollution = dirtPollution;
    icon = dirtBrown;
    baseProfit = 0;
    cost = 0;
  }
  
  float calcActualProfit(float distToRiver) {
+    /*Returns the actual profit made according to profit model  */
     return 0;
   }
  
@@ -130,6 +153,7 @@ class River extends LandUse {
     icon = riverBlue;
   }
   float calcActualProfit(float distToRiver) {
+     /*Returns the actual profit made according to profit model  */
     return 0;
   }
  
