@@ -37,7 +37,6 @@ class GUI {
     showPollutionSlider();
     showFeedback();
     showSelectedTile();
-    showBudget();
     showActualProfits();
     showPurchaseInfo();
     highlight();
@@ -253,18 +252,6 @@ class GUI {
     textAlign(LEFT);
   }
   
-  void showBudget() {
-    int x = xpos + sizeX*tileWidth + 40;
-    int y = yposB + 430;
-    String bu = "Budget: ";
-    fill(0);
-    textAlign(LEFT, TOP);
-    textFont(budgetFont);
-    text(bu, x, y);
-    textFont(numeralFont);
-    textAlign(LEFT, TOP);
-    text(nfc((WS.budget),2), x, y+36);
-  }
   
   void showActualProfits() {
     int x = xpos + sizeX*tileWidth + 40;

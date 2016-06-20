@@ -21,14 +21,12 @@ class Watershed {
   /* Contains all elements of the Game and implements the GUI. All user functions can be accessed from this class */
   Tile[][] gameMap; //2D Matrix of all grid Tiles on game map
   ArrayList<int[]> riverTiles = new ArrayList<int[]>();   //Records the coordinates of all river tiles on map;
-  int budget;
   int totalPollution;
   float totalDecayPollution;
   float totalActualProfits;
   
   Watershed(int x, int y) {
     /* Constructor: Initializes a watershed of dimension x*y units */
-    budget = 300000;
     graphics = new GUI(x, y);
     initializeWithFixedForest();
     setTileVals();
@@ -182,7 +180,6 @@ class Watershed {
     if (! (t.getLandU() instanceof River)) {
       Factory fc = new Factory();
       t.changeLandUse(fc);
-      budget -= fc.getCost();
       message2 = "Added a Factory at " + t;
       println("Added a Factory at", t);
       return true;      
@@ -200,7 +197,6 @@ class Watershed {
     if (! (t.getLandU() instanceof River)) {
       Farm fm = new Farm();
       t.changeLandUse(fm); 
-      budget -= fm.getCost();
       message2 = "Added a Farm at " + t;
       println("Added a Farm at", t);
       return true;
@@ -218,7 +214,6 @@ class Watershed {
     if (! (t.getLandU() instanceof River)) {
       House hs = new House();
       t.changeLandUse(hs); 
-      budget -= hs.getCost();
       message2 = "Added a House at " + t;
       println("Added a House at", t);
       return true;
@@ -235,7 +230,6 @@ class Watershed {
     if (! (t.getLandU() instanceof River)) {
       Forest fo = new Forest();
       t.changeLandUse(fo); 
-      budget -= fo.getCost();
       message2 = "Added a Forest at " + t;
       println("Added a Forest at", t);
       return true;
@@ -265,7 +259,6 @@ class Watershed {
         return false;
       }
       addDirt(x,y);
-      if (! (olu instanceof Forest)) budget += olu.getCost();    //Budget is kindly refunded upon demolition of property, but not for forests
       message2 = "Removed " + olu.toString() + " at " + t;
       println("Removed land use at", t);
       return true;

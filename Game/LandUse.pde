@@ -17,7 +17,6 @@ abstract class LandUse {
   color icon;
   float pollution;
   int baseProfit;
-  int cost;
   
   color getIcon() {
     return icon;
@@ -37,10 +36,6 @@ abstract class LandUse {
   int getBaseProfit() {
     return baseProfit;
   }
-  
-  int getCost() {
-    return cost;
-  }
     
   abstract float calcActualProfit(float distToR);
 }
@@ -51,7 +46,6 @@ class Factory extends LandUse {
   Factory () {
    pollution = factoryPollution;
    icon = factoryBrown;   //Color code for drawing on map
-   cost = 2000;
    baseProfit = 5000;
    }
  
@@ -71,7 +65,6 @@ class Farm extends LandUse {
  Farm () {
    pollution = farmPollution;
    icon = farmYellow;
-   cost = 1000;
    baseProfit = 2000;
  }
   
@@ -91,7 +84,6 @@ class House extends LandUse {
     pollution = housePollution;
     icon = houseTurquoise;
     baseProfit = 1000;
-    cost = 1000;
   }
   
   float calcActualProfit(float distToRiver) {
@@ -110,7 +102,6 @@ class Forest extends LandUse {
     pollution = forestPollution;    
     icon = forestGreen;
     baseProfit = -100;
-    cost = 500;
   }
   
   @Override
@@ -134,7 +125,6 @@ class Dirt extends LandUse {
    pollution = dirtPollution;
    icon = dirtBrown;
    baseProfit = 0;
-   cost = 0;
  }
  
  float calcActualProfit(float distToRiver) {

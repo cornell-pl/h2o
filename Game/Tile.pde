@@ -54,11 +54,6 @@ class Tile {
     return distToR;
   }
   
-  float getCost() {
-    /* Returns the cost of the landUse of this Tile */
-    return landU.getCost();
-  }
-  
   int getBaseProfit() {
     /* Returns the baseProfit of the landUse of this Tile */
     return landU.getBaseProfit();
