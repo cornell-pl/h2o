@@ -222,6 +222,7 @@ class GUI {
   }
   
    void showFeedback() {
+     /*Draws the feedback box and shows info */
     stroke(255);
     fill(255);
     rect(xpos, ypos + sizeY*tileHeight + 10, 430, 110);
@@ -230,7 +231,7 @@ class GUI {
     text(message, xpos + 20, ypos + sizeY*tileHeight + 30);   
     text(message2, xpos + 20, ypos + sizeY*tileHeight + 50);   
     text("Simple sum of all pollution: " + WS.totalPollution, xpos + 20, ypos + sizeY*tileHeight + 90);
-    text("Total pollution entering river after distance decay: " + WS.totalDecayPollution, xpos + 20, ypos + sizeY*tileHeight + 110);
+    text("Total pollution entering river after distance decay: " + nfc(WS.totalDecayPollution,2), xpos + 20, ypos + sizeY*tileHeight + 110);
   }
   
   void axisLabels() {
