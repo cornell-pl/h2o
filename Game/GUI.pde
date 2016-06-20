@@ -126,12 +126,12 @@ class GUI {
         drawTile(p[0], p[1], hc, 100);    //draws highlighted tile
       }
       if (pushed != null && pushed != demolishB) {
-        if (projectedProfit > 0) purchaseInfo = "Money: +$" + projectedProfit;
-        else purchaseInfo = "Money: -$" + abs(projectedProfit);
-        if (projectedPollution > 0)pollutionInfo = "Pollution: +" + projectedPollution;
-        else pollutionInfo = "Pollution: -" + abs(projectedPollution);
+        if (projectedProfit > 0) purchaseInfo = "Money: + $" + nfc(projectedProfit,2);
+        else purchaseInfo = "Money: - $" + nfc(abs(projectedProfit),2);
+        if (projectedPollution > 0)pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
+        else pollutionInfo = "Pollution: - " + nfc(abs(projectedPollution),2);
         textFont(messageFont);
-        fill(145);
+        fill(125);
         text(purchaseInfo, xpos+460, ypos + sizeY*tileHeight + 80);  
         text(pollutionInfo, xpos+460, ypos + sizeY*tileHeight + 100); 
       }
@@ -155,29 +155,29 @@ class GUI {
             hc = fa.getIcon();
             projectedProfit = fa.calcActualProfit(d);
             projectedPollution = fa.calcDecayPollution(d);
-            purchaseInfo = "Money: +$" + projectedProfit;
-            pollutionInfo = "Pollution: +" + projectedPollution;
+            purchaseInfo = "Money: +$" + nfc(projectedProfit,2);
+            pollutionInfo = "Pollution: +" + nfc(projectedPollution,2);
           }
           else if (pushed == farmB) {
             hc = fm.getIcon();
             projectedProfit = fm.calcActualProfit(d);
             projectedPollution = fm.calcDecayPollution(d);
-            purchaseInfo = "Money: +$" + projectedProfit;
-            pollutionInfo = "Pollution: +" + projectedPollution;
+            purchaseInfo = "Money: +$" + nfc(projectedProfit,2);
+            pollutionInfo = "Pollution: +" + nfc(projectedPollution,2);
           }
           else if (pushed == houseB) {
             hc = hs.getIcon();
             projectedProfit = hs.calcActualProfit(d);
             projectedPollution = hs.calcDecayPollution(d);
-            purchaseInfo = "Money: +$" + projectedProfit;
-            pollutionInfo = "Pollution: +" + projectedPollution;
+            purchaseInfo = "Money: +$" + nfc(projectedProfit,2);
+            pollutionInfo = "Pollution: +" + nfc(projectedPollution,2);
           }
           else if (pushed == forestB) {
             hc = fo.getIcon();
             projectedProfit = fo.calcActualProfit(d);
             projectedPollution = fo.calcDecayPollution(d);
-            purchaseInfo = "Money: -$" + abs(projectedProfit);
-            pollutionInfo = "Pollution: -" + abs(projectedPollution);
+            purchaseInfo = "Money: -$" + nfc(abs(projectedProfit),2);
+            pollutionInfo = "Pollution: -" + nfc(abs(projectedPollution),2);
           } else {                //Button not pressed
             hc = #B6FAB1;
             purchaseInfo = "";   
@@ -191,7 +191,7 @@ class GUI {
     drawTile(pos[0], pos[1], hc , 100);
     }
     textFont(messageFont);
-    fill(100);
+    fill(125);
     text(purchaseInfo, xpos+460, ypos + sizeY*tileHeight + 80);  
     text(pollutionInfo, xpos+460, ypos + sizeY*tileHeight + 100);
   }
@@ -262,7 +262,7 @@ class GUI {
     text(bu, x, y);
     textFont(numeralFont);
     textAlign(LEFT, TOP);
-    text(intToStr(WS.budget), x, y+36);
+    text(nfc((WS.budget),2), x, y+36);
   }
   
   void showActualProfits() {
@@ -272,7 +272,7 @@ class GUI {
     textFont(budgetFont);
     text("Money: ", x, y);
     textFont(numeralFont);
-    text(intToStr(round(WS.totalActualProfits)), x, y+36);
+    text(nfc((WS.totalActualProfits),2), x, y+36);
   }
   
   void showPollutionSlider() {
@@ -389,19 +389,6 @@ class GUI {
       }
    }
  }
- 
-  String intToStr(int n) {
-    /* Returns a String representation of the int */
-    String out = "";
-    while(n > 999){
-      String s = Integer.toString(n);
-      out = "," + s.substring(s.length()-3) + out;
-      n = n/1000;
-    }
-    String s = Integer.toString(n);
-    out = s + out;
-    return out;
-  }
 }
  
 

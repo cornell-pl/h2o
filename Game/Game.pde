@@ -150,9 +150,9 @@ class Watershed {
     return dPollutionTotal;
   }
   
-  int sumActualProfits() {
+  float sumActualProfits() {
     /* Returns the total actual profits made from all the property on the map */
-    int profit = 0;
+    float profit = 0;
     for (Tile[] tileRow : gameMap) {
       for (Tile t: tileRow) { 
         if (! (t.getLandU() instanceof River)){
