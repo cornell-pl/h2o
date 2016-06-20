@@ -277,12 +277,13 @@ class GUI {
   
   void showBuildQuota() {
     int x = xpos + sizeX*tileWidth + 40;
-    int y = yposB + 650;
+    int y = yposB + 690;
     fill(0);
     textFont(messageFont);
+    textSize(15);
     text("Factories: " + WS.factories + " / " + factoryQuota, x,y);
-    text("Farms: " + WS.farms + " / " + farmQuota, x,y+20);
-    text("Houses: " + WS.houses + " / " + houseQuota, x,y+40);
+    text("Farms: " + WS.farms + " / " + farmQuota, x,y+30);
+    text("Houses: " + WS.houses + " / " + houseQuota, x,y+60);
   }
   
   void showPollutionSlider() {
