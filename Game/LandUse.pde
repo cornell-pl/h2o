@@ -13,6 +13,12 @@ int housePollution = 5;
 int forestPollution = -5;
 int dirtPollution = 1;
 
+//Setting the build quota for each landUse
+final int factoryQuota = 50;
+final int farmQuota = 50;
+final int HouseQuota = 50;
+
+
 abstract class LandUse {
   color icon;
   float pollution;

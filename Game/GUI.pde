@@ -39,6 +39,7 @@ class GUI {
     showSelectedTile();
     showActualProfits();
     showScore();
+    showBuildQuota();
     showPurchaseInfo();
     highlight();
     
@@ -272,6 +273,16 @@ class GUI {
     text("Score: ", x, y);
     textFont(numeralFont);
     text(nfc(WS.score,2), x, y+36);
+  }
+  
+  void showBuildQuota() {
+    int x = xpos + sizeX*tileWidth + 40;
+    int y = yposB + 650;
+    fill(0);
+    textFont(messageFont);
+    text("Factories: " + WS.factories, x,y);
+    text("Farms: " + WS.farms, x,y+20);
+    text("Houses: " + WS.houses, x,y+40);
   }
   
   void showPollutionSlider() {

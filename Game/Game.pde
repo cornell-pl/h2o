@@ -21,6 +21,9 @@ class Watershed {
   /* Contains all elements of the Game and implements the GUI. All user functions can be accessed from this class */
   Tile[][] gameMap; //2D Matrix of all grid Tiles on game map
   ArrayList<int[]> riverTiles = new ArrayList<int[]>();   //Records the coordinates of all river tiles on map;
+  int factories = 0;
+  int farms = 0;
+  int houses = 0;
   int totalPollution;
   float totalDecayPollution;
   float totalActualProfits;
@@ -124,6 +127,20 @@ class Watershed {
   }
   
   //**** Methods to calculate pollution / money according various models  ****//  -----------------------------------------------
+  void sumLandUses() {
+    /* Sums the number of each landUse  */
+    factories = 0;
+    farms = 0;
+    houses = 0;
+    for (Tile[] tileRow : gameMap) {
+      for (Tile t: tileRow) {
+        if (t.getLandU() instanceof Factory) factories ++;
+        if (t.getLandU() instanceof Farm) farms++;
+        if (t.getLandU() instanceof House) houses ++;
+      }
+    }
+  }
+  
   int sumPollution() {
     /* Returns simple sum of pollution generated for all Tiles */
     int totalPollution = 0;
@@ -171,6 +188,7 @@ class Watershed {
   void update() {
     /* Updates the totalPollution and totalDecayPollution and totalActualProfit variables.
     * To be called in each frame */
+    sumLandUses();
     totalPollution = sumPollution();
     totalDecayPollution = sumDecayPollution();
     totalActualProfits = sumActualProfits();
