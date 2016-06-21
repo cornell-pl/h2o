@@ -203,8 +203,8 @@ class GUI {
     }
     textFont(messageFont);
     fill(125);
-    text(purchaseInfo, xpos+460, ypos + sizeY*tileHeight + 80);  
-    text(pollutionInfo, xpos+460, ypos + sizeY*tileHeight + 100);
+    text(purchaseInfo, xpos+460, ypos + sizeY*tileHeight + 90);  
+    text(pollutionInfo, xpos+460, ypos + sizeY*tileHeight + 110);
   }
   
   void showSelectedTile() {
