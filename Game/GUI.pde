@@ -16,9 +16,12 @@ class GUI {
     farmB = new Button(xposB, yposB + 60, tileWidth, tileHeight, farmYellow, #73A29C, #F0AD1D, "Farm");
     houseB = new Button(xposB, yposB + 120, tileWidth, tileHeight, houseTurquoise, #73A29C, #90B3B4, "House");
     forestB = new Button(xposB, yposB + 180, tileWidth, tileHeight, forestGreen, #73A29C, #02A002, "Forest");
-    demolishB = new Button(xposB, yposB+240, tileWidth, tileHeight, demolishBeige, #73A29C, #F5BB74, "Demolish");
+    demolishB = new Button(xposB, yposB + 240, tileWidth, tileHeight, demolishBeige, #73A29C, #F5BB74, "Demolish");
     resetB = new Button(xposB+20, ypos+tileHeight*sizeY+40, tileWidth + 5, tileHeight + 5, #FFFFFF, #989795, #171717, "RESET");
-    slider = new Slider(xposB+260, yposB, 0, 20);
+    factoryS = new Slider(xposB+260, yposB, 0, 20, factoryPollution, "Factory", factoryBrown);
+    farmS = new Slider(xposB+260, yposB + 60, 0, 20, farmPollution, "Farm", farmYellow);
+    houseS = new Slider(xposB+260, yposB + 120, 0, 20, housePollution, "House", houseTurquoise);
+    forestS = new Slider(xposB+260, yposB + 180, -10, 10, forestPollution, "House", forestGreen);
   }
   
   void render() {
@@ -50,7 +53,10 @@ class GUI {
     forestB.display();
     demolishB.display();
     resetB.display();
-    slider.display();
+    factoryS.display();
+    farmS.display();
+    houseS.display();
+    forestS.display();
   }
   
   
