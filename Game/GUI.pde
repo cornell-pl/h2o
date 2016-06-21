@@ -22,6 +22,11 @@ class GUI {
     farmS = new Slider(xposB+260, yposB + 60, 0, 20, farmPollution, "Farm", farmYellow);
     houseS = new Slider(xposB+260, yposB + 120, 0, 20, housePollution, "House", houseTurquoise);
     forestS = new Slider(xposB+260, yposB + 180, -10, 10, forestPollution, "House", forestGreen);
+    
+    fa = new Factory();     //T his would be resolved bty making calcActualProfit() static, but that will mess up Tile.changeLandU()
+    fm = new Farm();
+    hs = new House();
+    fo = new Forest();
   }
   
   void render() {
@@ -32,6 +37,11 @@ class GUI {
         drawTile(t.getX(), t.getY(), t.getLandU().getIcon(), 255);
       }
     }
+    fa.update();
+    fm.update();
+    hs.update();
+    fo.update();
+    
     //showPollution();
     //showDecayPollution();
     //showDist();
@@ -70,10 +80,11 @@ class GUI {
     fill(255);    //resets to white.
   }  
   
-  Factory fa = new Factory();     //This would be resolved bty making calcActualProfit() static, but that will mess up Tile.changeLandU()
-  Farm fm = new Farm();
-  House hs = new House();
-  Forest fo = new Forest();
+  
+   Factory fa;     //This would be resolved bty making calcActualProfit() static, but that will mess up Tile.changeLandU()
+   Farm fm;
+   House hs;
+   Forest fo;
   
   void highlight() {
     /* Highlights tiles during click and drag, and shows bulk purchase info */
@@ -143,8 +154,8 @@ class GUI {
         else pollutionInfo = "Pollution: - " + nfc(abs(projectedPollution),2);
         textFont(messageFont);
         fill(125);
-        text(purchaseInfo, xpos+460, ypos + sizeY*tileHeight + 80);  
-        text(pollutionInfo, xpos+460, ypos + sizeY*tileHeight + 100); 
+        text(purchaseInfo, xpos+460, ypos + sizeY*tileHeight + 90);  
+        text(pollutionInfo, xpos+460, ypos + sizeY*tileHeight + 110); 
       }
     }
   }
@@ -166,29 +177,29 @@ class GUI {
             hc = fa.getIcon();
             projectedProfit = fa.calcActualProfit(d);
             projectedPollution = fa.calcDecayPollution(d);
-            purchaseInfo = "Money: +$" + nfc(projectedProfit,2);
-            pollutionInfo = "Pollution: +" + nfc(projectedPollution,2);
+            purchaseInfo = "Money: + $" + nfc(projectedProfit,2);
+            pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
           }
           else if (pushed == farmB) {
             hc = fm.getIcon();
             projectedProfit = fm.calcActualProfit(d);
             projectedPollution = fm.calcDecayPollution(d);
-            purchaseInfo = "Money: +$" + nfc(projectedProfit,2);
-            pollutionInfo = "Pollution: +" + nfc(projectedPollution,2);
+            purchaseInfo = "Money: + $" + nfc(projectedProfit,2);
+            pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
           }
           else if (pushed == houseB) {
             hc = hs.getIcon();
             projectedProfit = hs.calcActualProfit(d);
             projectedPollution = hs.calcDecayPollution(d);
-            purchaseInfo = "Money: +$" + nfc(projectedProfit,2);
-            pollutionInfo = "Pollution: +" + nfc(projectedPollution,2);
+            purchaseInfo = "Money: + $" + nfc(projectedProfit,2);
+            pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
           }
           else if (pushed == forestB) {
             hc = fo.getIcon();
             projectedProfit = fo.calcActualProfit(d);
             projectedPollution = fo.calcDecayPollution(d);
-            purchaseInfo = "Money: -$" + nfc(abs(projectedProfit),2);
-            pollutionInfo = "Pollution: -" + nfc(abs(projectedPollution),2);
+            purchaseInfo = "Money: - $" + nfc(abs(projectedProfit),2);
+            pollutionInfo = "Pollution: - " + nfc(abs(projectedPollution),2);
           } else {                //Button not pressed
             hc = #B6FAB1;
             purchaseInfo = "";   
