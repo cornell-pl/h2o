@@ -78,7 +78,7 @@ class Watershed {
     * Called once after map is initialized */
     for (Tile[] tileRow : gameMap) {
       for (Tile t: tileRow) {
-        t.pollution = t.landU.getPollution();
+        t.pollution = getPollution(t.getLandUse());
         t.distToR = distToRiver(t.getX(),t.getY());
         t.decayPollution = t.landU.calcDecayPollution(t.distToR);
       }
@@ -134,9 +134,9 @@ class Watershed {
     houses = 0;
     for (Tile[] tileRow : gameMap) {
       for (Tile t: tileRow) {
-        if (t.getLandU() instanceof Factory) factories ++;
-        if (t.getLandU() instanceof Farm) farms++;
-        if (t.getLandU() instanceof House) houses ++;
+        if (t.getLandUse() instanceof Factory) factories ++;
+        if (t.getLandUse() instanceof Farm) farms++;
+        if (t.getLandUse() instanceof House) houses ++;
       }
     }
   }
@@ -146,10 +146,10 @@ class Watershed {
     int totalPollution = 0;
     for (Tile[] tileRow : gameMap) {
       for (Tile t: tileRow) {
-        totalPollution += t.getPollution();
+         totalPollution += t.getTilePollution();
       }
     }
-    if (totalPollution < 0) totalPollution = 0;
+    //if (totalPollution < 0) totalPollution = 0;
     return totalPollution;
   }
 
@@ -162,7 +162,7 @@ class Watershed {
           dPollutionTotal += t.getDecayPollution();
         }
      }
-     if (dPollutionTotal < 0.) dPollutionTotal = 1.;
+     //if (dPollutionTotal < 0.) dPollutionTotal = 1.;
      return dPollutionTotal;
   }
   
@@ -171,7 +171,7 @@ class Watershed {
     float profit = 0;
     for (Tile[] tileRow : gameMap) {
       for (Tile t: tileRow) { 
-        if (! (t.getLandU() instanceof River)){
+        if (! (t.getLandUse() instanceof River)){
         profit += t.getActualProfit();
         }
       }
@@ -212,7 +212,7 @@ class Watershed {
     Returns true if successful. False otherwise.  */
     if (factories < factoryQuota) {
       Tile t = gameMap[x][y];
-      if (! (t.getLandU() instanceof River)) {
+      if (! (t.getLandUse() instanceof River)) {
         Factory fc = new Factory();
         t.changeLandUse(fc);
         message2 = "Added a Factory at " + t;
@@ -232,7 +232,7 @@ class Watershed {
     Returns true if successful. False otherwise. */
     if (farms < farmQuota) {
       Tile t = gameMap[x][y];
-      if (! (t.getLandU() instanceof River)) {
+      if (! (t.getLandUse() instanceof River)) {
         Farm fm = new Farm();
         t.changeLandUse(fm); 
         message2 = "Added a Farm at " + t;
@@ -252,7 +252,7 @@ class Watershed {
     Returns true if successful. False otherwise. */
     if (houses < houseQuota) {
       Tile t = gameMap[x][y];
-      if (! (t.getLandU() instanceof River)) {
+      if (! (t.getLandUse() instanceof River)) {
         House hs = new House();
         t.changeLandUse(hs); 
         message2 = "Added a House at " + t;
@@ -271,7 +271,7 @@ class Watershed {
     /* Places a new Forest at Location <x, y> on the map. 
     Returns true if successful. False otherwise.  */
     Tile t = gameMap[x][y];
-    if (! (t.getLandU() instanceof River)) {
+    if (! (t.getLandUse() instanceof River)) {
       Forest fo = new Forest();
       t.changeLandUse(fo); 
       message2 = "Added a Forest at " + t;
@@ -296,8 +296,8 @@ class Watershed {
     /* Removes LandUse at Location <x, y> on the map. (changes them to Dirt) 
     Returns true if successful. False otherwise.*/
     Tile t = gameMap[x][y];
-    if (! (t.getLandU() instanceof River)) {
-      LandUse olu = t.getLandU();   //Original land use
+    if (! (t.getLandUse() instanceof River)) {
+      LandUse olu = t.getLandUse();   //Original land use
       if (olu instanceof Dirt) {
         message2 = "Nothing to remove";
         return false;
@@ -318,8 +318,8 @@ class Watershed {
   
   ArrayList<Tile> neighbors = new ArrayList<Tile>();
   void getNeighbors(Tile t) { 
-    if (!(t.getLandU() instanceof Forest)) {
-      String T = t.getLandU().toString();        //The String representing the name of the landUse;
+    if (!(t.getLandUse() instanceof Forest)) {
+      String T = t.getLandUse().toString();        //The String representing the name of the landUse;
       ArrayList<Tile> n = new ArrayList<Tile>();
           if(t.getX() > 0) {
             Tile left = gameMap[t.getX()-1][t.getY()];
@@ -354,7 +354,7 @@ class Watershed {
           }
 
         for (Tile x : n) {
-          if (x.getLandU().toString().equals(T) && !neighbors.contains(x)) {
+          if (x.getLandUse().toString().equals(T) && !neighbors.contains(x)) {
             neighbors.add(x);
             getNeighbors(x);
           }

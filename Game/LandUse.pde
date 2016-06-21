@@ -6,12 +6,7 @@ final color dirtBrown = #AF956A;
 final color houseTurquoise = #9CC2C4;
 final color demolishBeige = #F5DAB9;
 
-//Defining pollution as global variables
-final int factoryPollution = 20;
-final int farmPollution = 12;
-final int housePollution = 6;
-final int forestPollution = -2;
-final int dirtPollution = 0;
+
 
 //Setting the build quota for each landUse
 final int factoryQuota = 40;
@@ -29,11 +24,6 @@ abstract class LandUse {
     return icon;
   }
   
-  float getPollution() {
-    /*Returns pollution of LandUse */
-    return pollution;
-  }
-  
   float calcDecayPollution(float distToRiver) {
     /* Returns the pollution entering river acording to distance decay model.  */
     float decayPollution = pollution/(distToRiver/2+0.5);
@@ -46,7 +36,9 @@ abstract class LandUse {
   
   void update() {
     if (!(this instanceof River) && !(this instanceof Dirt)) {
+      try {
       pollution = round(s.getVal());
+      }catch(NullPointerException e){}
     }
   }
     

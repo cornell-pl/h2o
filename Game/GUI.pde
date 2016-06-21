@@ -34,7 +34,7 @@ class GUI {
     * Draws each frame   */    
     for (Tile[] tileRow : WS.gameMap) {
       for (Tile t: tileRow) {
-        drawTile(t.getX(), t.getY(), t.getLandU().getIcon(), 255);
+        drawTile(t.getX(), t.getY(), t.getLandUse().getIcon(), 255);
       }
     }
     fa.update();
@@ -109,7 +109,7 @@ class GUI {
       for (int[] p : highlighted) {
         Tile t = WS.gameMap[p[0]][p[1]];
         float d = t.getDistToRiver();
-        if (! (t.getLandU() instanceof River)) {
+        if (! (t.getLandUse() instanceof River)) {
           if  (pushed == factoryB) {    
             hc = factoryBrown;      //highlight color
             projectedProfit += fa.calcActualProfit(d);  
@@ -171,7 +171,7 @@ class GUI {
       int[] pos = converter(mouseX, mouseY);
       color hc;
       over = WS.gameMap[pos[0]][pos[1]];
-        if (!(over.getLandU() instanceof River)) {
+        if (!(over.getLandUse() instanceof River)) {
            float d = over.getDistToRiver();
           if (pushed == factoryB) {
             hc = fa.getIcon();
@@ -235,7 +235,7 @@ class GUI {
       fill(0);  //Color of text 
       textFont(messageFont);
       String text1 = selected.toString() + 
-                    "     Type: " + selected.getLandU().toString();
+                    "     Type: " + selected.getLandUse().toString();
       text(text1, xpos+460, ypos + sizeY*tileHeight + 30);   
       String text2 = "Money: " + nfc(selected.getActualProfit(),2) + 
                       "\nPollution: " + nfc(selected.getDecayPollution(),2);
@@ -376,7 +376,7 @@ class GUI {
         textSize(10);
         fill(0);
         textAlign(LEFT, TOP);
-        if(t.getPollution()!=0) text(round(t.getPollution()), t.getX()*tileWidth + xpos+2, t.getY()*tileHeight + ypos+1);
+        if(t.getTilePollution()!=0) text(round(t.getTilePollution()), t.getX()*tileWidth + xpos+2, t.getY()*tileHeight + ypos+1);
       }
    }
  }
