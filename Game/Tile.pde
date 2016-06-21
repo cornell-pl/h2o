@@ -64,6 +64,11 @@ class Tile {
     return actualProfit;
   }
   
+  void update() {
+    landU.update();
+    pollution = landU.getPollution();
+    decayPollution = landU.calcDecayPollution(distToR);
+  }
   
   
   // ----  Some geometry methods ---- //

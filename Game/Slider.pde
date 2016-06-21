@@ -71,11 +71,11 @@ class Slider {
     rect(spos, y-1, sWidth, sHeight+2);
     fill(0);
     textFont(sliderFont); 
-    text(round(getPos()), x + bWidth + 15, y+7);
+    text(round(getVal()), x + bWidth + 15, y+7);
     update();
   }
 
-  float getPos() {
+  float getVal() {
     // Convert spos to be values between minVal and maxVal
     return ((spos - x) * ratio) + minVal;
   }
