@@ -511,7 +511,7 @@ void mousePressed() {
     pushed = null;
     message = "";
   }
-  if (! mouseOverMap()) selected = null;    //Unselect when I click outside map
+  if (! mouseOverMap() && !factoryS.over && !farmS.over && !houseS.over && !forestS.over) selected = null;    //Unselect when I click outside map
 }
 
 void mouseReleased() {
