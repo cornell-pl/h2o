@@ -183,12 +183,21 @@ class Watershed {
     /* Returns the player's score */
     return totalActualProfits/totalDecayPollution;
   }
+  
+  void updatePol() {
+    for (Tile[] tileRow : gameMap) {
+      for (Tile t: tileRow) { 
+        t.update();
+      }
+    }
+  }
         
   
   void update() {
     /* Updates the totalPollution and totalDecayPollution and totalActualProfit variables.
     * To be called in each frame */
     sumLandUses();
+    updatePol();
     totalPollution = sumPollution();
     totalDecayPollution = sumDecayPollution();
     totalActualProfits = sumActualProfits();
