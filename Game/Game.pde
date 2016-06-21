@@ -8,6 +8,7 @@ void setup() {
   frameRate(30);
   size(1600, 1080);
   WS = new Watershed(sizeX, sizeY);   //Creates watershed of size 20*20
+  graphics = new GUI(sizeX, sizeY);
 }
 
 void draw() {  
@@ -31,7 +32,6 @@ class Watershed {
   
   Watershed(int x, int y) {
     /* Constructor: Initializes a watershed of dimension x*y units */
-    graphics = new GUI(x, y);
     initializeWithFixedForest();
     setTileVals();
   }     //<>//
