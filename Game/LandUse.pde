@@ -31,7 +31,9 @@ abstract class LandUse {
     try{ 
       return this.s.getVal();
     }catch(NullPointerException e){
-      return getPollution(this);
+      if (this instanceof Forest) {
+        return forestS.getVal();       //Hotfix for forest pollution not updating when first init
+      }return getPollution(this);
     }
   }
   

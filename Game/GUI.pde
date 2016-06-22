@@ -42,7 +42,7 @@ class GUI {
     //hs.update();
     //fo.update();
     
-    //showPollution();
+    showPollution();
     //showDecayPollution();
     //showDist();
     //showProfit();
