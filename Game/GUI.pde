@@ -43,7 +43,7 @@ class GUI {
     //fo.update();
     
     //showPollution();
-    showDecayPollution();
+    //showDecayPollution();
     //showDist();
     //showProfit();
     
@@ -389,7 +389,7 @@ class GUI {
         textSize(10);
         fill(0);
         textAlign(LEFT, TOP);
-        text(round(t.getDecayPollution()), t.getX()*tileWidth + xpos+2, t.getY()*tileHeight + ypos+1);
+        if(t.getTilePollution()!=0) text(nfc(t.getDecayPollution(),1), t.getX()*tileWidth + xpos+2, t.getY()*tileHeight + ypos+1);
         total += t.getDecayPollution();
       }
    }
@@ -403,7 +403,7 @@ class GUI {
         textSize(10);
         fill(0);
         textAlign(LEFT, TOP);
-        text(round(t.getDistToRiver()), t.getX()*tileWidth + xpos+2, t.getY()*tileHeight + ypos+1);
+        if (!(t.getLandUse() instanceof River)) text(nfc(t.getDistToRiver(),1), t.getX()*tileWidth + xpos+2, t.getY()*tileHeight + ypos+1);
       }
    }
  }
@@ -415,7 +415,7 @@ class GUI {
         textSize(10);
         fill(0);
         textAlign(LEFT, TOP);
-        if (round(t.getActualProfit())!=0) text(round(t.getActualProfit()), t.getX()*tileWidth + xpos+2, t.getY()*tileHeight + ypos+1);
+        if (round(t.getActualProfit())!=0) text(nfc(t.getActualProfit(),1), t.getX()*tileWidth + xpos+2, t.getY()*tileHeight + ypos+1);
       }
    }
  }
