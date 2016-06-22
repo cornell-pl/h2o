@@ -27,7 +27,9 @@ class Tile {
     /* Changes the LandUse held by the Tile to lu */
     landU = lu;
     pollution = getPollution(lu);
-    decayPollution = calcDecayPollution((int)pollution, distToRiver);
+    if (! (lu instanceof Forest) && !(lu instanceof River)) {
+      decayPollution = calcDecayPollution(pollution, distToRiver);
+    } else decayPollution = getPollution(lu);
     actualProfit = lu.calcActualProfit(distToRiver);
   }
   
@@ -67,7 +69,9 @@ class Tile {
   
   void update() {
     pollution = landU.getSliderPollution();
-    decayPollution = calcDecayPollution((int)pollution, distToRiver);
+    if (! (landU instanceof Forest) && !(landU instanceof River)) {
+      decayPollution = calcDecayPollution(pollution, distToRiver);
+    } else decayPollution = pollution;
   }
   
   

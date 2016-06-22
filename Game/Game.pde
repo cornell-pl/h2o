@@ -79,7 +79,7 @@ class Watershed {
       for (Tile t: tileRow) {
         t.pollution = getPollution(t.getLandUse());
         t.distToRiver = distToRiver(t.getX(),t.getY());
-        t.decayPollution = calcDecayPollution(t);
+        t.decayPollution = calcDecayPollution(t.pollution, t.distToRiver);
       }
     }
   }

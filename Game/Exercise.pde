@@ -16,7 +16,7 @@ int getPollution(LandUse lu) {
     else return 0;
 }
 
-float calcDecayPollution(int pollution, float distToRiver) {
+float calcDecayPollution(float pollution, float distToRiver) {
    /* Returns the pollution entering river of Tile t according to distance decay model.  */
      float decayPollution = pollution/(distToRiver/2+0.5);
      return decayPollution;
