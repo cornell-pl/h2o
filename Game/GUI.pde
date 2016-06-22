@@ -42,8 +42,8 @@ class GUI {
     //hs.update();
     //fo.update();
     
-    showPollution();
-    //showDecayPollution();
+    //showPollution();
+    showDecayPollution();
     //showDist();
     //showProfit();
     
@@ -118,7 +118,7 @@ class GUI {
           else if (pushed == farmB) {
             hc = farmYellow;
             projectedProfit += fm.calcActualProfit(d);
-            //projectedPollution += fm.calcDecayPollution(d);
+           // projectedPollution += fm.calcDecayPollution(d);
           }
           else if (pushed == houseB) {
             hc = houseTurquoise;
@@ -128,7 +128,7 @@ class GUI {
           else if (pushed == forestB) {
             hc = #1EC610;
             projectedProfit += fo.calcActualProfit(d);
-         //   projectedPollution += fo.calcDecayPollution(d);
+           // projectedPollution += fo.calcDecayPollution(d);
           }
           else if (pushed == demolishB){
             hc = demolishBeige;
