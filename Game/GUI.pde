@@ -17,11 +17,11 @@ class GUI {
     houseB = new Button(xposB, yposB + 120, tileWidth, tileHeight, houseTurquoise, #73A29C, #90B3B4, "House");
     forestB = new Button(xposB, yposB + 180, tileWidth, tileHeight, forestGreen, #73A29C, #02A002, "Forest");
     demolishB = new Button(xposB, yposB + 240, tileWidth, tileHeight, demolishBeige, #73A29C, #F5BB74, "Demolish");
-    resetB = new Button(xposB+20, ypos+tileHeight*sizeY+40, tileWidth + 5, tileHeight + 5, #FFFFFF, #989795, #171717, "RESET");
+    resetB = new Button(xposB+20, ypos+tileHeight*sizeY+40, tileWidth + 5, tileHeight + 5, #FFFFFF, #989795, #171717, "RESET MAP");
     factoryS = new Slider(xposB+260, yposB, 0, 20, factoryPollution, "Factory", factoryBrown);
     farmS = new Slider(xposB+260, yposB + 60, 0, 20, farmPollution, "Farm", farmYellow);
     houseS = new Slider(xposB+260, yposB + 120, 0, 20, housePollution, "House", houseTurquoise);
-    forestS = new Slider(xposB+260, yposB + 180, -10, 10, forestPollution, "House", forestGreen);
+    forestS = new Slider(xposB+260, yposB + 180, -10, 10, forestPollution, "Forest", forestGreen);
     
     fa = new Factory();     //T his would be resolved bty making calcActualProfit() static, but that will mess up Tile.changeLandU()
     fm = new Farm();
@@ -505,7 +505,7 @@ void mousePressed() {
       message2 = "";
     } else {
       pushed = resetB;
-      message = "Do you want to reset the game? Click button again to reset.";
+      message = "Do you want to reset the map? Click button again to reset.";
       message2 = "Click anywhere to cancel.";
     }
   }

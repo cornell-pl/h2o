@@ -6,7 +6,7 @@ final int forestPollution = -2;
 final int dirtPollution = 0;
 
 int getPollution(LandUse lu) {
-    /*Returns the default pollution value of each landUse
+    /*Returns the default pollution value of each landUse 
     *This method is used to set the default pollution values when game is initialized*/
     if (lu instanceof Factory) return factoryPollution;
     else if (lu instanceof Farm) return farmPollution;
