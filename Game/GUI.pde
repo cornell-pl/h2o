@@ -43,8 +43,8 @@ class GUI {
     //fo.update();
     
     //showPollution();
-    showDecayPollution();
-    //showDist();
+    //showDecayPollution();
+    showDist();
     //showProfit();
     
     axisLabels();
