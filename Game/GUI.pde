@@ -18,6 +18,12 @@ class GUI {
     forestB = new Button(xposB, yposB + 180, tileWidth, tileHeight, forestGreen, #73A29C, #02A002, "Forest");
     demolishB = new Button(xposB, yposB + 240, tileWidth, tileHeight, demolishBeige, #73A29C, #F5BB74, "Demolish");
     resetB = new Button(xposB+20, ypos+tileHeight*sizeY+40, tileWidth + 5, tileHeight + 5, #FFFFFF, #989795, #171717, "RESET MAP");
+    
+    showPolT = new Toggle(xposB+260, yposB+690, tileWidth, tileHeight, 0, #73A29C, #EA7E2F, "Show Pollution");
+    showDecayPolT = new Toggle(xposB+260, yposB+750, tileWidth, tileHeight, 0, #73A29C, #EA7E2F, "Show decayPollution");
+    showDistT = new Toggle(xposB+260, yposB+810, tileWidth, tileHeight, 0, #73A29C, #EA7E2F, "Show distToRiver");
+    showProfitT = new Toggle(xposB+260, yposB+870, tileWidth, tileHeight, 0, #73A29C, #EA7E2F, "Show Money");
+
     factoryS = new Slider(xposB+260, yposB, 0, 20, factoryPollution, "Factory", factoryBrown);
     farmS = new Slider(xposB+260, yposB + 60, 0, 20, farmPollution, "Farm", farmYellow);
     houseS = new Slider(xposB+260, yposB + 120, 0, 20, housePollution, "House", houseTurquoise);
@@ -52,13 +58,17 @@ class GUI {
     showBuildQuota();
     showPurchaseInfo();
     highlight();
-    
+    showPolT.display();
+    showDecayPolT.display();
+    showDistT.display();
+    showProfitT.display();
     factoryB.display();
     farmB.display();
     houseB.display();
     forestB.display();
     demolishB.display();
     resetB.display();
+    
     factoryS.display();
     farmS.display();
     houseS.display();
@@ -428,6 +438,11 @@ Button forestB;
 Button demolishB;
 Button resetB;
 
+Toggle showPolT;
+Toggle showDecayPolT;
+Toggle showDistT;
+Toggle showProfitT;
+
 Tile selected = null;
 Button pushed = null;   //The current button that is pushed. null if none is pushed.
 
@@ -522,7 +537,7 @@ void mousePressed() {
     pushed = null;
     message = "";
   }
-  if (! mouseOverMap() && !factoryS.over && !farmS.over && !houseS.over && !forestS.over) selected = null;    //Unselect when I click outside map
+  if (! mouseOverMap() && !factoryS.over && !farmS.over && !houseS.over && !forestS.over && !showPolT.over && !showDecayPolT.over && !showDistT.over && !showProfitT.over) selected = null;    //Unselect when I click outside map
 }
 
 void mouseReleased() {
@@ -652,6 +667,75 @@ class Button{
   void update() {
     if ((mouseX >= x-1) && (mouseX <= x+bWidth+textWidth(label)+8) && 
         (mouseY >= y-1) && (mouseY <= y+bHeight+1)) {
+      over = true;
+    } else {
+      over = false;
+    }
+  }
+}
+
+Toggle toggled = null;
+
+class Toggle {
+  int x, y;                 // The x- and y-coordinates of the Button in pixels
+  int tWidth;                 // Dimensions in pixels
+  int tHeight;
+  color baseColor;           // Default color value 
+  color overColor;           //Color when mouse over button
+  color selectedColor;        //Color when button is selected
+  String label;
+  PFont baseFont = createFont("Arial", 16);
+  PFont selectedFont = createFont("Arial-Black", 16);
+  
+  boolean over = false;     //true if mouse is over button
+  
+  Toggle(int xp, int yp, int w, int h, color c, color o, color s, String l) {
+    x = xp;
+    y = yp;
+    tWidth = w+5;
+    tHeight = h+5;
+    baseColor = c;          //Default color
+    overColor = o;           //Color when mouse over button
+    selectedColor = s; 
+    label = l;            //Color when button is in pushed state
+  }
+  
+  void display() {
+    ellipseMode(CORNER);
+    stroke(255);
+    strokeWeight(2);
+    fill(255);  //Color of text label
+    textAlign(LEFT,CENTER);
+    if (toggled == this) { 
+      stroke(135);
+      textFont(selectedFont);
+      text(label, x+tWidth+8, y+(tHeight/2.)-3);
+      fill(selectedColor);
+    }else if (over) {
+      textFont(baseFont);
+      text(label, x+tWidth+5, y+(tHeight/2.)-1);
+      fill(overColor);
+    }else {
+      textFont(baseFont);
+      text(label, x+tWidth+5, y+(tHeight/2.)-1);
+      fill(baseColor);
+    }
+    ellipse(x, y, tWidth, tHeight);
+    update();
+  }  
+  
+  // Updates the over field every frame
+  boolean overEvent() {
+    if (mouseX > x && mouseX < x+tWidth &&
+       mouseY > y && mouseY < y+tHeight) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
+  void update() {
+    if (overEvent()) {
       over = true;
     } else {
       over = false;
