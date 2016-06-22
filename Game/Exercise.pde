@@ -34,6 +34,19 @@ float distToRiver(int x, int y) {
    return minDist;
 }
 
+float sumDecayPollution() {
+  /* Linear decay model of pollution that enters the river.
+  Returns total pollution entering river from all sources according decay model defined for each LandUse*/
+  float dPollutionTotal = 0.;
+  for (Tile[] tileRow : WS.gameMap) {
+    for (Tile t: tileRow) {   //Calculate pollution contribution from t after linear decay
+        dPollutionTotal += t.getDecayPollution();
+      }
+   }
+   //if (dPollutionTotal < 0.) dPollutionTotal = 1.;
+   return dPollutionTotal;
+}
+
 
  
  

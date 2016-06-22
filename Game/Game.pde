@@ -121,19 +121,6 @@ class Watershed {
     //if (totalPollution < 0) totalPollution = 0;
     return totalPollution;
   }
-
-  float sumDecayPollution() {
-    /* Linear decay model of pollution that enters the river.
-    Returns total pollution entering river from all sources according decay model defined for each LandUse*/
-    float dPollutionTotal = 0.;
-    for (Tile[] tileRow : gameMap) {
-      for (Tile t: tileRow) {   //Calculate pollution contribution from t after linear decay
-          dPollutionTotal += t.getDecayPollution();
-        }
-     }
-     //if (dPollutionTotal < 0.) dPollutionTotal = 1.;
-     return dPollutionTotal;
-  }
   
   float sumActualProfits() {
     /* Returns the total actual profits made from all the property on the map */
@@ -344,5 +331,5 @@ void trialRun1() {
   WS.removeLandUse(5, 2);
   
   println("Simple sum of all pollution: ", WS.sumPollution());
-  println("Total pollution entering river after linear decay: ", WS.sumDecayPollution());
+  println("Total pollution entering river after linear decay: ", sumDecayPollution());
 }

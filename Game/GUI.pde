@@ -43,8 +43,8 @@ class GUI {
     //fo.update();
     
     //showPollution();
-    //showDecayPollution();
-    showDist();
+    showDecayPollution();
+    //showDist();
     //showProfit();
     
     axisLabels();
@@ -382,6 +382,7 @@ class GUI {
  }
  
  void showDecayPollution() {
+   float total = 0.;
    for (Tile[] tileRow : WS.gameMap) {
       for (Tile t: tileRow) {
         textFont(messageFont);
@@ -389,8 +390,10 @@ class GUI {
         fill(0);
         textAlign(LEFT, TOP);
         text(round(t.getDecayPollution()), t.getX()*tileWidth + xpos+2, t.getY()*tileHeight + ypos+1);
+        total += t.getDecayPollution();
       }
    }
+   text("Decay Pollution total " + total, 1300, 10);
  }
  
  void showDist() {
