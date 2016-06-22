@@ -16,33 +16,25 @@ final int houseQuota = 100;
 
 abstract class LandUse {
   color icon;
-  float pollution;
   int baseProfit;
   Slider s;
   
   color getIcon() {
     return icon;
   }
-  
-  float calcDecayPollution(float distToRiver) {
-    /* Returns the pollution entering river acording to distance decay model.  */
-    float decayPollution = pollution/(distToRiver/2+0.5);
-    return decayPollution;
-  }
-  
+   
   int getBaseProfit() {
     return baseProfit;
   }
   
-  void update() {
-    if (!(this instanceof River) && !(this instanceof Dirt)) {
-      try {
-      pollution = round(s.getVal());
-      }catch(NullPointerException e){}
+  int getSliderPollution() {
+    try{ 
+      return this.s.getVal();
+    }catch(NullPointerException e){
+      return getPollution(this);
     }
   }
-    
-    
+  
   abstract float calcActualProfit(float distToR);
 }
 
@@ -50,7 +42,6 @@ abstract class LandUse {
 class Factory extends LandUse {
   /* Factory gives fixed profit no matter the location */
   Factory () {
-   pollution = factoryPollution;
    icon = factoryBrown;   //Color code for drawing on map
    baseProfit = 5000;
    s = factoryS;
@@ -70,7 +61,6 @@ class Factory extends LandUse {
 class Farm extends LandUse {
   /* Farm gives less profit further from river  */
  Farm () {
-   pollution = farmPollution;
    icon = farmYellow;
    baseProfit = 2000;
    s = farmS;
@@ -89,7 +79,6 @@ class Farm extends LandUse {
 
 class House extends LandUse {
   House() {
-    pollution = housePollution;
     icon = houseTurquoise;
     baseProfit = 1000;
     s = houseS;
@@ -107,17 +96,12 @@ class House extends LandUse {
 }
 
 class Forest extends LandUse {
-  Forest () {
-    pollution = forestPollution;    
+  Forest () {  
     icon = forestGreen;
     baseProfit = -100;
     s = forestS;
   }
   
-  @Override
-  float calcDecayPollution(float distToRiver) {   //Reduction of pullution from forest is a constant.
-    return pollution;
-  }
   
   float calcActualProfit(float distToRiver) {
      /*Returns the actual profit made according to profit model  */
@@ -132,7 +116,6 @@ class Forest extends LandUse {
 
 class Dirt extends LandUse {
  Dirt() {
-   pollution = dirtPollution;
    icon = dirtBrown;
    baseProfit = 0;
  }

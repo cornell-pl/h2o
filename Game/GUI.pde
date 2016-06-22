@@ -37,10 +37,10 @@ class GUI {
         drawTile(t.getX(), t.getY(), t.getLandUse().getIcon(), 255);
       }
     }
-    fa.update();
-    fm.update();
-    hs.update();
-    fo.update();
+    //fa.update();
+    //fm.update();
+    //hs.update();
+    //fo.update();
     
     //showPollution();
     //showDecayPollution();
@@ -113,22 +113,22 @@ class GUI {
           if  (pushed == factoryB) {    
             hc = factoryBrown;      //highlight color
             projectedProfit += fa.calcActualProfit(d);  
-            projectedPollution += fa.calcDecayPollution(d);
+            //projectedPollution += fa.calcDecayPollution(d);
           } 
           else if (pushed == farmB) {
             hc = farmYellow;
             projectedProfit += fm.calcActualProfit(d);
-            projectedPollution += fm.calcDecayPollution(d);
+            //projectedPollution += fm.calcDecayPollution(d);
           }
           else if (pushed == houseB) {
             hc = houseTurquoise;
             projectedProfit += hs.calcActualProfit(d);
-            projectedPollution += hs.calcDecayPollution(d);
+           // projectedPollution += hs.calcDecayPollution(d);
           }
           else if (pushed == forestB) {
             hc = #1EC610;
             projectedProfit += fo.calcActualProfit(d);
-            projectedPollution += fo.calcDecayPollution(d);
+         //   projectedPollution += fo.calcDecayPollution(d);
           }
           else if (pushed == demolishB){
             hc = demolishBeige;
@@ -176,28 +176,28 @@ class GUI {
           if (pushed == factoryB) {
             hc = fa.getIcon();
             projectedProfit = fa.calcActualProfit(d);
-            projectedPollution = fa.calcDecayPollution(d);
+            //projectedPollution = fa.calcDecayPollution(d);
             purchaseInfo = "Money: + $" + nfc(projectedProfit,2);
             pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
           }
           else if (pushed == farmB) {
             hc = fm.getIcon();
             projectedProfit = fm.calcActualProfit(d);
-            projectedPollution = fm.calcDecayPollution(d);
+            //projectedPollution = fm.calcDecayPollution(d);
             purchaseInfo = "Money: + $" + nfc(projectedProfit,2);
             pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
           }
           else if (pushed == houseB) {
             hc = hs.getIcon();
             projectedProfit = hs.calcActualProfit(d);
-            projectedPollution = hs.calcDecayPollution(d);
+            //projectedPollution = hs.calcDecayPollution(d);
             purchaseInfo = "Money: + $" + nfc(projectedProfit,2);
             pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
           }
           else if (pushed == forestB) {
             hc = fo.getIcon();
             projectedProfit = fo.calcActualProfit(d);
-            projectedPollution = fo.calcDecayPollution(d);
+            //projectedPollution = fo.calcDecayPollution(d);
             purchaseInfo = "Money: - $" + nfc(abs(projectedProfit),2);
             pollutionInfo = "Pollution: - " + nfc(abs(projectedPollution),2);
           } else {                //Button not pressed

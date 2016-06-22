@@ -27,7 +27,7 @@ class Tile {
     /* Changes the LandUse held by the Tile to lu */
     landU = lu;
     pollution = getPollution(lu);
-    decayPollution = lu.calcDecayPollution(distToR);
+    decayPollution = calcDecayPollution(distToR);
     actualProfit = lu.calcActualProfit(distToR);
   }
   
@@ -41,6 +41,14 @@ class Tile {
     if (! (landU instanceof River)) {
       return pollution;
     }else return 0;
+  }
+  
+  float calcDecayPollution(float distToRiver) {
+    /* Returns the pollution entering river acording to distance decay model.  */
+    if (! (landU instanceof Forest) && !(landU instanceof River)){
+      float decayPollution = pollution/(distToRiver/2+0.5);
+      return decayPollution;
+    } else return pollution;
   }
   
   float getDecayPollution() {
@@ -65,9 +73,8 @@ class Tile {
   }
   
   void update() {
-    landU.update();
-    pollution = getPollution(landU);
-    decayPollution = landU.calcDecayPollution(distToR);
+    pollution = landU.getSliderPollution();
+    decayPollution = calcDecayPollution(distToR);
   }
   
   
