@@ -27,7 +27,7 @@ class Tile {
     /* Changes the LandUse held by the Tile to lu */
     landU = lu;
     pollution = getPollution(lu);
-    decayPollution = calcDecayPollution(this);
+    decayPollution = calcDecayPollution((int)pollution, distToRiver);
     actualProfit = lu.calcActualProfit(distToRiver);
   }
   
@@ -67,7 +67,7 @@ class Tile {
   
   void update() {
     pollution = landU.getSliderPollution();
-    decayPollution = calcDecayPollution(this);
+    decayPollution = calcDecayPollution((int)pollution, distToRiver);
   }
   
   

@@ -16,12 +16,10 @@ int getPollution(LandUse lu) {
     else return 0;
 }
 
-float calcDecayPollution(Tile t) {
+float calcDecayPollution(int pollution, float distToRiver) {
    /* Returns the pollution entering river of Tile t according to distance decay model.  */
-   if (! (t.getLandUse() instanceof Forest) && !(t.getLandUse() instanceof River)){
-     float decayPollution = t.getTilePollution()/(t.getDistToRiver()/2+0.5);
+     float decayPollution = pollution/(distToRiver/2+0.5);
      return decayPollution;
-   } else return t.getTilePollution();
 }
 
 float distToRiver(int x, int y) {
