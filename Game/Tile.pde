@@ -13,10 +13,10 @@ class Tile {
   float actualProfit = 0;  //Actual profit made by the landU at this tile
   
   
-  Tile(LandUse lu, int x, int y, int sl, int so) {
+  Tile(LandUse lu, int xp, int yp, int sl, int so) {
      /* Constructor: Initializes Tile with LandUse lu, and integer slope sl, soil so values */
-     X = x;
-     Y = y;
+     X = xp;
+     Y = yp;
      slope = sl;
      soil = so;
      landU = lu;     
@@ -88,6 +88,6 @@ class Tile {
   
   @Override
   public String toString() {
-    return "<" + str(XPOS) + ", " + str(ypos)+ ">";
+    return "<" + str(X) + ", " + str(Y)+ ">";
   }
 }
