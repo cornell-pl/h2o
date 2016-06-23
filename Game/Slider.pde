@@ -3,12 +3,12 @@ Slider farmS;
 Slider houseS;
 Slider forestS;
 
-class Slider {
+class Slider { 
+  final int BAR_WIDTH = 180;
+  final int BAR_HEIGHT = 20;    // width and height of bar 
+  final int S_WIDTH = 20;        //width and height of slider
+  final int S_HEIGHT = BAR_HEIGHT;
   int x, y;       // x and y position of bar
-  int bWidth = 180;
-  int bHeight = 20;    // width and height of bar 
-  int sWidth = 20;        //width and height of slider
-  int sHeight = bHeight;
   float spos;  // x position of slider
   int minVal;        //Min and max val of slider
   int maxVal;
@@ -28,15 +28,15 @@ class Slider {
     minVal = minV;
     maxVal = maxV;
     defaultVal = defaultV;
-    ratio = (maxVal - minVal)/((float)(bWidth-sWidth));
+    ratio = (maxVal - minVal)/((float)(BAR_WIDTH - S_WIDTH));
     spos = x + (defaultVal-minVal)/ratio;
     label = l;
     col = c ;
   }
   
   boolean overEvent() {
-    if (mouseX > x && mouseX < x+bWidth &&
-       mouseY > y && mouseY < y+bHeight) {
+    if (mouseX > x && mouseX < x+BAR_WIDTH &&
+       mouseY > y && mouseY < y+BAR_HEIGHT) {
       return true;
     } else {
       return false;
@@ -56,7 +56,7 @@ class Slider {
       locked = false;
     }
     if (locked) {
-      spos = constrain(mouseX, x+1, x+bWidth-sWidth);
+      spos = constrain(mouseX, x+1, x+BAR_WIDTH-S_WIDTH);
     }
   }
 
@@ -65,13 +65,13 @@ class Slider {
     strokeWeight(1);
     fill(col);
     rectMode(CORNER);
-    rect(x, y, bWidth, bHeight);
+    rect(x, y, BAR_WIDTH, BAR_HEIGHT);
     noStroke();
     fill(80);
-    rect(spos, y-1, sWidth, sHeight+2);
+    rect(spos, y-1, S_WIDTH, S_HEIGHT+2);
     fill(0);
     textFont(sliderFont); 
-    text(getVal(), x + bWidth + 15, y+7);
+    text(getVal(), x + BAR_WIDTH + 15, y+7);
     update();
   }
 
