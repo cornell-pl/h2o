@@ -37,10 +37,10 @@ class GUI {
     showDistT = new Toggle(xposB+260, yposB+810, "Show distToRiver");
     showProfitT = new Toggle(xposB+260, yposB+870, "Show Money");
 
-    factoryS = new Slider(xposB+260, yposB, 0, 20, factoryPollution, "Factory", factoryBrown);
-    farmS = new Slider(xposB+260, yposB + 60, 0, 20, farmPollution, "Farm", farmYellow);
-    houseS = new Slider(xposB+260, yposB + 120, 0, 20, housePollution, "House", houseTurquoise);
-    forestS = new Slider(xposB+260, yposB + 180, -10, 10, forestPollution, "Forest", forestGreen);
+    factoryS = new Slider(xposB+260, yposB, 0, 20, FACTORYPOLLUTION, "Factory", factoryBrown);
+    farmS = new Slider(xposB+260, yposB + 60, 0, 20, FARMPOLLUTION, "Farm", farmYellow);
+    houseS = new Slider(xposB+260, yposB + 120, 0, 20, HOUSEPOLLUTION, "House", houseTurquoise);
+    forestS = new Slider(xposB+260, yposB + 180, -10, 10, FORESTPOLLUTION, "Forest", forestGreen);
     
     fa = new Factory();     //T his would be resolved bty making calcActualProfit() static, but that will mess up Tile.changeLandU()
     fm = new Farm();
