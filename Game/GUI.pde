@@ -58,10 +58,13 @@ class GUI {
     showBuildQuota();
     showPurchaseInfo();
     highlight();
+    showToggleInfo();
+    
     showPolT.display();
     showDecayPolT.display();
     showDistT.display();
     showProfitT.display();
+    
     factoryB.display();
     farmB.display();
     houseB.display();
@@ -376,6 +379,18 @@ class GUI {
   
 
  //**** Some helper displays and functions  ****//  -----------------------------------------------
+ void showToggleInfo() {
+   if (toggled == showPolT) {
+     showPollution();
+   } else if (toggled == showDecayPolT) {
+     showDecayPollution();
+   } else if (toggled == showDistT) {
+     showDist();
+   }else if (toggled == showProfitT) {
+     showProfit();
+   }
+ }
+ 
  void showPollution() {
    for (Tile[] tileRow : WS.gameMap) {
       for (Tile t: tileRow) {
@@ -594,6 +609,23 @@ void mouseReleased() {
     selected = null;
   }
 }
+
+void mouseClicked() {
+  if (showPolT.over) {
+    if (toggled == showPolT) toggled = null;
+    else toggled = showPolT;
+  }else if (showDecayPolT.over) {
+    if (toggled == showDecayPolT) toggled = null;
+    else toggled = showDecayPolT;
+  }else if (showDistT.over) {
+    if (toggled == showDistT) toggled = null;
+    else toggled = showDistT;
+  }else if (showProfitT.over) {
+    if (toggled == showProfitT) toggled = null;
+    else toggled = showProfitT;
+  }
+}
+  
   
 
 boolean mouseOverMap(){
