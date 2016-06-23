@@ -2,8 +2,8 @@ class Tile {
   /*A Tile holds properties of the terrain */
   final int slope;   //Slope of tile
   final int soil;  
-  final int xpos;  //x-coordinate
-  final int ypos;  //y-coordinate
+  final int X;  //x-coordinate
+  final int Y;  //y-coordinate
   LandUse landU;
   
   //Every derived variable that is summed over all Tiles in WS is stored as constants, to avoid expensive calculation over each frame.
@@ -15,8 +15,8 @@ class Tile {
   
   Tile(LandUse lu, int x, int y, int sl, int so) {
      /* Constructor: Initializes Tile with LandUse lu, and integer slope sl, soil so values */
-     xpos = x;
-     ypos = y;
+     X = x;
+     Y = y;
      slope = sl;
      soil = so;
      landU = lu;     
@@ -77,17 +77,17 @@ class Tile {
   
   // ----  Some geometry methods ---- //
   int getX(){
-    /* Returns the xpos of the tile */
-    return xpos;
+    /* Returns the XPOS of the tile */
+    return X;
   }
   
   int getY(){
-    /* Returns the xpos of the tile */
-    return ypos;
+    /* Returns the XPOS of the tile */
+    return Y;
   }
   
   @Override
   public String toString() {
-    return "<" + str(xpos) + ", " + str(ypos)+ ">";
+    return "<" + str(XPOS) + ", " + str(ypos)+ ">";
   }
 }
