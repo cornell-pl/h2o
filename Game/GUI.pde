@@ -562,8 +562,8 @@ class Toggle {
   
   // Updates the over field every frame
   boolean overEvent() {
-    if (mouseX > x && mouseX < x+tWidth+textWidth(label)+7 &&
-       mouseY > y-3 && mouseY < y+tHeight+3) {
+    if (mouseX > x-3 && mouseX < x+tWidth+textWidth(label)+9 &&
+       mouseY > y-5 && mouseY < y+tHeight+5) {
       return true;
     } else {
       return false;
