@@ -7,10 +7,9 @@ final color DIRT_BROWN = #AF956A;
 final color DEMOLISH_BEIGE = #F5DAB9;
 
 //Setting the build quota for each landUse
-final int factoryQuota = 40;
-final int farmQuota = 60;
-final int houseQuota = 100;
-
+final int FACTORY_QUOTA = 40;
+final int FARM_QUOTA = 60;
+final int HOUSE_QUOTA = 100;
 
 abstract class LandUse {
   color icon;

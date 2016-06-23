@@ -166,7 +166,7 @@ class Watershed {
   boolean addFactory(int x, int y) {
     /* Places a new Factory at Location <x, y> on the map. 
     Returns true if successful. False otherwise.  */
-    if (factories < factoryQuota) {
+    if (factories < FACTORY_QUOTA) {
       Tile t = gameMap[x][y];
       if (! (t.getLandUse() instanceof River)) {
         Factory fc = new Factory();
@@ -186,7 +186,7 @@ class Watershed {
   boolean addFarm(int x, int y) {
     /* Places a new Farm at Location <x, y> on the map. 
     Returns true if successful. False otherwise. */
-    if (farms < farmQuota) {
+    if (farms < FARM_QUOTA) {
       Tile t = gameMap[x][y];
       if (! (t.getLandUse() instanceof River)) {
         Farm fm = new Farm();
@@ -206,7 +206,7 @@ class Watershed {
   boolean addHouse(int x, int y) {
     /* Places a new House at Location <x, y> on the map. 
     Returns true if successful. False otherwise. */
-    if (houses < houseQuota) {
+    if (houses < HOUSE_QUOTA) {
       Tile t = gameMap[x][y];
       if (! (t.getLandUse() instanceof River)) {
         House hs = new House();
