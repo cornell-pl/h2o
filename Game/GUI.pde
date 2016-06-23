@@ -25,11 +25,11 @@ class GUI {
   final PFont NUMERALFONT = createFont("Courier", 30);
   
   GUI(int x, int y) {
-    factoryB = new Button(XPOSB, YPOSB, TILEWIDTH, TILEHEIGHT, factoryBrown, #73A29C, #EA7E2F, "Factory");
-    farmB = new Button(XPOSB, YPOSB + 60, TILEWIDTH, TILEHEIGHT, farmYellow, #73A29C, #F0AD1D, "Farm");
-    houseB = new Button(XPOSB, YPOSB + 120, TILEWIDTH, TILEHEIGHT, houseTurquoise, #73A29C, #90B3B4, "House");
-    forestB = new Button(XPOSB, YPOSB + 180, TILEWIDTH, TILEHEIGHT, forestGreen, #73A29C, #02A002, "Forest");
-    demolishB = new Button(XPOSB, YPOSB + 240, TILEWIDTH, TILEHEIGHT, demolishBeige, #73A29C, #F5BB74, "Demolish");
+    factoryB = new Button(XPOSB, YPOSB, TILEWIDTH, TILEHEIGHT, FACTORY_BROWN, #73A29C, #EA7E2F, "Factory");
+    farmB = new Button(XPOSB, YPOSB + 60, TILEWIDTH, TILEHEIGHT, FARM_YELLOW, #73A29C, #F0AD1D, "Farm");
+    houseB = new Button(XPOSB, YPOSB + 120, TILEWIDTH, TILEHEIGHT, HOUSE_GRAY, #73A29C, #90B3B4, "House");
+    forestB = new Button(XPOSB, YPOSB + 180, TILEWIDTH, TILEHEIGHT, FOREST_GREEN, #73A29C, #02A002, "Forest");
+    demolishB = new Button(XPOSB, YPOSB + 240, TILEWIDTH, TILEHEIGHT, DEMOLISH_BEIGE, #73A29C, #F5BB74, "Demolish");
     resetB = new Button(XPOSB+20, YPOS+TILEHEIGHT*SIZEY+40, TILEWIDTH + 5, TILEHEIGHT + 5, #FFFFFF, #989795, #171717, "RESET MAP");
     
     showPolT = new Toggle(XPOSB+260, YPOSB+690, "Show Pollution");
@@ -37,10 +37,10 @@ class GUI {
     showDistT = new Toggle(XPOSB+260, YPOSB+810, "Show distToRiver");
     showProfitT = new Toggle(XPOSB+260, YPOSB+870, "Show Money");
 
-    factoryS = new Slider(XPOSB+260, YPOSB, 0, 20, FACTORYPOLLUTION, "Factory", factoryBrown);
-    farmS = new Slider(XPOSB+260, YPOSB + 60, 0, 20, FARMPOLLUTION, "Farm", farmYellow);
-    houseS = new Slider(XPOSB+260, YPOSB + 120, 0, 20, HOUSEPOLLUTION, "House", houseTurquoise);
-    forestS = new Slider(XPOSB+260, YPOSB + 180, -10, 10, FORESTPOLLUTION, "Forest", forestGreen);
+    factoryS = new Slider(XPOSB+260, YPOSB, 0, 20, FACTORYPOLLUTION, "Factory", FACTORY_BROWN);
+    farmS = new Slider(XPOSB+260, YPOSB + 60, 0, 20, FARMPOLLUTION, "Farm", FARM_YELLOW);
+    houseS = new Slider(XPOSB+260, YPOSB + 120, 0, 20, HOUSEPOLLUTION, "House", HOUSE_GRAY);
+    forestS = new Slider(XPOSB+260, YPOSB + 180, -10, 10, FORESTPOLLUTION, "Forest", FOREST_GREEN);
     
     fa = new Factory();     //T his would be resolved bty making calcActualProfit() static, but that will mess up Tile.changeLandU()
     fm = new Farm();
@@ -235,17 +235,17 @@ class GUI {
         float d = t.getDistToRiver();
         if (! (t.getLandUse() instanceof River)) {
           if  (pushed == factoryB) {    
-            hc = factoryBrown;      //highlight color
+            hc = FACTORY_BROWN;      //highlight color
             projectedProfit += fa.calcActualProfit(d);  
             projectedPollution += calcDecayPollution(fa.s.getVal(), d);
           } 
           else if (pushed == farmB) {
-            hc = farmYellow;
+            hc = FARM_YELLOW;
             projectedProfit += fm.calcActualProfit(d);
             projectedPollution += calcDecayPollution(fm.s.getVal(), d);
           }
           else if (pushed == houseB) {
-            hc = houseTurquoise;
+            hc = HOUSE_GRAY;
             projectedProfit += hs.calcActualProfit(d);
             projectedPollution += calcDecayPollution(hs.s.getVal(), d);
           }
@@ -255,7 +255,7 @@ class GUI {
             projectedPollution += calcDecayPollution(fo.s.getVal(), d);
           }
           else if (pushed == demolishB){
-            hc = demolishBeige;
+            hc = DEMOLISH_BEIGE;
             purchaseInfo = "";   
             pollutionInfo = "";
           }

@@ -1,12 +1,10 @@
-final color riverBlue = #3CA1E3;
-final color factoryBrown = #EA9253; 
-final color farmYellow = #F0D446;
-final color forestGreen = #5DD65E;
-final color dirtBrown = #AF956A;
-final color houseTurquoise = #9CC2C4;
-final color demolishBeige = #F5DAB9;
-
-
+final color RIVER_BLUE = #3CA1E3;
+final color FACTORY_BROWN = #EA9253; 
+final color FARM_YELLOW = #F0D446;
+final color FOREST_GREEN = #5DD65E;
+final color HOUSE_GRAY = #9CC2C4;
+final color DIRT_BROWN = #AF956A;
+final color DEMOLISH_BEIGE = #F5DAB9;
 
 //Setting the build quota for each landUse
 final int factoryQuota = 40;
@@ -44,7 +42,7 @@ abstract class LandUse {
 class Factory extends LandUse {
   /* Factory gives fixed profit no matter the location */
   Factory () {
-   icon = factoryBrown;   //Color code for drawing on map
+   icon = FACTORY_BROWN;   //Color code for drawing on map
    baseProfit = 5000;
    s = factoryS;
    }
@@ -63,7 +61,7 @@ class Factory extends LandUse {
 class Farm extends LandUse {
   /* Farm gives less profit further from river  */
  Farm () {
-   icon = farmYellow;
+   icon = FARM_YELLOW;
    baseProfit = 2000;
    s = farmS;
  }
@@ -81,7 +79,7 @@ class Farm extends LandUse {
 
 class House extends LandUse {
   House() {
-    icon = houseTurquoise;
+    icon = HOUSE_GRAY;
     baseProfit = 1000;
     s = houseS;
   }
@@ -99,7 +97,7 @@ class House extends LandUse {
 
 class Forest extends LandUse {
   Forest () {  
-    icon = forestGreen;
+    icon = FOREST_GREEN;
     baseProfit = -100;
     s = forestS;
   }
@@ -118,7 +116,7 @@ class Forest extends LandUse {
 
 class Dirt extends LandUse {
  Dirt() {
-   icon = dirtBrown;
+   icon = DIRT_BROWN;
    baseProfit = 0;
  }
  
@@ -135,7 +133,7 @@ class Dirt extends LandUse {
 
 class River extends LandUse {
   River(){
-    icon = riverBlue;
+    icon = RIVER_BLUE;
   }
   float calcActualProfit(float distToRiver) {
      /*Returns the actual profit made according to profit model  */
