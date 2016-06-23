@@ -19,10 +19,10 @@ Toggle showProfitT;
 
 
 class GUI {
-  final PFont axisFont = createFont("Calibri", 12);
-  final PFont messageFont = createFont("Calibri", 13);
-  final PFont budgetFont = createFont("Calibri-Bold", 20);
-  final PFont numeralFont = createFont("Courier", 30);
+  final PFont AXISFONT = createFont("Calibri", 12);
+  final PFont MESSAGEFONT = createFont("Calibri", 13);
+  final PFont BIGFONT = createFont("Calibri-Bold", 20);
+  final PFont NUMERALFONT = createFont("Courier", 30);
   
   GUI(int x, int y) {
     factoryB = new Button(XPOSB, YPOSB, TILEWIDTH, TILEHEIGHT, factoryBrown, #73A29C, #EA7E2F, "Factory");
@@ -104,7 +104,7 @@ class GUI {
   
   void axisLabels() {
     /* Draws axis labels. */
-    textFont(axisFont);
+    textFont(AXISFONT);
     textAlign(CENTER, BOTTOM);
     fill(255);
     int xcount = 0;  
@@ -141,7 +141,7 @@ class GUI {
       stroke(245);
       rect(selected.getX()*TILEWIDTH + XPOS, selected.getY()*TILEHEIGHT + YPOS, TILEWIDTH, TILEHEIGHT);
       fill(0);  //Color of text 
-      textFont(messageFont);
+      textFont(MESSAGEFONT);
       String text1 = selected.toString() + 
                     "     Type: " + selected.getLandUse().toString();
       text(text1, XPOS+460, YPOS + SIZEY*TILEHEIGHT + 30);   
@@ -204,7 +204,7 @@ class GUI {
         }
     drawTile(pos[0], pos[1], hc , 100);
     }
-    textFont(messageFont);
+    textFont(MESSAGEFONT);
     fill(125);
     text(purchaseInfo, XPOS+460, YPOS + SIZEY*TILEHEIGHT + 90);  
     text(pollutionInfo, XPOS+460, YPOS + SIZEY*TILEHEIGHT + 110);
@@ -276,7 +276,7 @@ class GUI {
         else purchaseInfo = "Money: - $" + nfc(abs(projectedProfit),2);
         if (projectedPollution > 0)pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
         else pollutionInfo = "Pollution: - " + nfc(abs(projectedPollution),2);
-        textFont(messageFont);
+        textFont(MESSAGEFONT);
         fill(125);
         text(purchaseInfo, XPOS+460, YPOS + SIZEY*TILEHEIGHT + 90);  
         text(pollutionInfo, XPOS+460, YPOS + SIZEY*TILEHEIGHT + 110); 
@@ -290,7 +290,7 @@ class GUI {
     fill(255);
     rect(XPOS, YPOS + SIZEY*TILEHEIGHT + 10, 430, 110);
     fill(0);  //Color of text 
-    textFont(messageFont);
+    textFont(MESSAGEFONT);
     text(message, XPOS + 20, YPOS + SIZEY*TILEHEIGHT + 30);   
     text(message2, XPOS + 20, YPOS + SIZEY*TILEHEIGHT + 50);   
     text("Simple sum of all pollution: " + WS.totalPollution, XPOS + 20, YPOS + SIZEY*TILEHEIGHT + 90);
@@ -302,9 +302,9 @@ class GUI {
     int x = XPOS + SIZEX*TILEWIDTH + 40;
     int y = YPOSB + 460;
     fill(0);
-    textFont(budgetFont);
+    textFont(BIGFONT);
     text("Money: ", x, y);
-    textFont(numeralFont);
+    textFont(NUMERALFONT);
     text(nfc(WS.totalActualProfits,2), x, y+36);
   }
   
@@ -313,9 +313,9 @@ class GUI {
     int x = XPOS + SIZEX*TILEWIDTH + 40;
     int y = YPOSB + 550;
     fill(0);
-    textFont(budgetFont);
+    textFont(BIGFONT);
     text("Score: ", x, y);
-    textFont(numeralFont);
+    textFont(NUMERALFONT);
     text(nfc(WS.score,2), x, y+36);
   }
   
@@ -324,7 +324,7 @@ class GUI {
     int x = XPOS + SIZEX*TILEWIDTH + 40;
     int y = YPOSB + 690;
     fill(0);
-    textFont(messageFont);
+    textFont(MESSAGEFONT);
     textSize(15);
     text("Factories: " + WS.factories + " / " + factoryQuota, x,y);
     text("Farms: " + WS.farms + " / " + farmQuota, x,y+30);
@@ -385,7 +385,7 @@ class GUI {
     } else {
       pLevel = "Off the scale";
     }
-    textFont(messageFont);
+    textFont(MESSAGEFONT);
     textSize(15);
     fill(0);
     text("Pollution indicator: " + pLevel, x, y+65);
@@ -407,7 +407,7 @@ class GUI {
  void showPollution() {
    for (Tile[] tileRow : WS.gameMap) {
       for (Tile t: tileRow) {
-        textFont(messageFont);
+        textFont(MESSAGEFONT);
         textSize(10);
         fill(0);
         textAlign(LEFT, TOP);
@@ -420,7 +420,7 @@ class GUI {
    float total = 0.;
    for (Tile[] tileRow : WS.gameMap) {
       for (Tile t: tileRow) {
-        textFont(messageFont);
+        textFont(MESSAGEFONT);
         textSize(10);
         fill(0);
         textAlign(LEFT, TOP);
@@ -434,7 +434,7 @@ class GUI {
  void showDist() {
    for (Tile[] tileRow : WS.gameMap) {
       for (Tile t: tileRow) {
-        textFont(messageFont);
+        textFont(MESSAGEFONT);
         textSize(10);
         fill(0);
         textAlign(LEFT, TOP);
@@ -446,7 +446,7 @@ class GUI {
  void showProfit() {
    for (Tile[] tileRow : WS.gameMap) {
       for (Tile t: tileRow) {
-        textFont(messageFont);
+        textFont(MESSAGEFONT);
         textSize(10);
         fill(0);
         textAlign(LEFT, TOP);
@@ -458,6 +458,8 @@ class GUI {
 
  
 class Button{ 
+  final PFont BASEFONT = createFont("Arial", 16);
+  final PFont SELECTEDFONT = createFont("Arial-Black", 16);
   int x, y;                 // The x- and y-coordinates of the Button in pixels
   int bWidth;                 // Dimensions in pixels
   int bHeight;
@@ -465,9 +467,6 @@ class Button{
   color overColor;           //Color when mouse over button
   color selectedColor;        //Color when button is selected
   String label;
-  PFont baseFont = createFont("Arial", 16);
-  PFont selectedFont = createFont("Arial-Black", 16);
-  
   boolean over = false;     //true if mouse is over button
   
   Button(int xp, int yp, int w, int h, color c, color o, color s, String l) {
@@ -488,15 +487,15 @@ class Button{
     textAlign(LEFT,CENTER);
     if (pushed == this) { 
       stroke(135);
-      textFont(selectedFont);
+      textFont(SELECTEDFONT);
       text(label, x+bWidth+8, y+(bHeight/2.)-3);
       fill(selectedColor);
     }else if (over) {
-      textFont(baseFont);
+      textFont(BASEFONT);
       text(label, x+bWidth+5, y+(bHeight/2.)-1);
       fill(overColor);
     }else {
-      textFont(baseFont);
+      textFont(BASEFONT);
       text(label, x+bWidth+5, y+(bHeight/2.)-1);
       fill(baseColor);
     }
@@ -524,7 +523,7 @@ class Toggle {
   color overColor;           //Color when mouse over button
   color selectedColor;        //Color when button is selected
   String label;
-  PFont baseFont = createFont("Arial", 14);
+  PFont BASEFONT = createFont("Arial", 14);
   
   boolean over = false;     //true if mouse is over button
   
@@ -543,7 +542,7 @@ class Toggle {
     ellipseMode(CORNER);
     stroke(255);
     strokeWeight(2);
-    textFont(baseFont);
+    textFont(BASEFONT);
     fill(255);  //Color of text label
     textAlign(LEFT,CENTER);
     if (toggled == this) { 
