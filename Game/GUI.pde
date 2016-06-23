@@ -1,8 +1,8 @@
 final int XPOS = 40;   //XPOS and ypos determines the position of the top left corner of the map, in pixels
 final int YPOS = 40;
-final int TILEWIDTH = 30;   //width of a tile in pixels
-final int TILEHEIGHT = 30;    //height of a tile in pixels
-final int XPOSB = XPOS + SIZEX*TILEWIDTH + 40;    //Drawing dimensions. XPOS and ypos are the coordinates of the top most button. 
+final int TILE_WIDTH = 30;   //width of a tile in pixels
+final int TILE_HEIGHT = 30;    //height of a tile in pixels
+final int XPOSB = XPOS + SIZE_X*TILE_WIDTH + 40;    //Drawing dimensions. XPOS and ypos are the coordinates of the top most button. 
 final int YPOSB = 90;    //All buttons scale with respect to these
 
 Button factoryB;
@@ -25,22 +25,22 @@ class GUI {
   final PFont NUMERALFONT = createFont("Courier", 30);
   
   GUI(int x, int y) {
-    factoryB = new Button(XPOSB, YPOSB, TILEWIDTH, TILEHEIGHT, FACTORY_BROWN, #73A29C, #EA7E2F, "Factory");
-    farmB = new Button(XPOSB, YPOSB + 60, TILEWIDTH, TILEHEIGHT, FARM_YELLOW, #73A29C, #F0AD1D, "Farm");
-    houseB = new Button(XPOSB, YPOSB + 120, TILEWIDTH, TILEHEIGHT, HOUSE_GRAY, #73A29C, #90B3B4, "House");
-    forestB = new Button(XPOSB, YPOSB + 180, TILEWIDTH, TILEHEIGHT, FOREST_GREEN, #73A29C, #02A002, "Forest");
-    demolishB = new Button(XPOSB, YPOSB + 240, TILEWIDTH, TILEHEIGHT, DEMOLISH_BEIGE, #73A29C, #F5BB74, "Demolish");
-    resetB = new Button(XPOSB+20, YPOS+TILEHEIGHT*SIZEY+40, TILEWIDTH + 5, TILEHEIGHT + 5, #FFFFFF, #989795, #171717, "RESET MAP");
+    factoryB = new Button(XPOSB, YPOSB, TILE_WIDTH, TILE_HEIGHT, FACTORY_BROWN, #73A29C, #EA7E2F, "Factory");
+    farmB = new Button(XPOSB, YPOSB + 60, TILE_WIDTH, TILE_HEIGHT, FARM_YELLOW, #73A29C, #F0AD1D, "Farm");
+    houseB = new Button(XPOSB, YPOSB + 120, TILE_WIDTH, TILE_HEIGHT, HOUSE_GRAY, #73A29C, #90B3B4, "House");
+    forestB = new Button(XPOSB, YPOSB + 180, TILE_WIDTH, TILE_HEIGHT, FOREST_GREEN, #73A29C, #02A002, "Forest");
+    demolishB = new Button(XPOSB, YPOSB + 240, TILE_WIDTH, TILE_HEIGHT, DEMOLISH_BEIGE, #73A29C, #F5BB74, "Demolish");
+    resetB = new Button(XPOSB+20, YPOS+TILE_HEIGHT*SIZE_Y+40, TILE_WIDTH + 5, TILE_HEIGHT + 5, #FFFFFF, #989795, #171717, "RESET MAP");
     
     showPolT = new Toggle(XPOSB+260, YPOSB+690, "Show Pollution");
     showDecayPolT = new Toggle(XPOSB+260, YPOSB+750, "Show decayPollution");
     showDistT = new Toggle(XPOSB+260, YPOSB+810, "Show distToRiver");
     showProfitT = new Toggle(XPOSB+260, YPOSB+870, "Show Money");
 
-    factoryS = new Slider(XPOSB+260, YPOSB, 0, 20, FACTORYPOLLUTION, "Factory", FACTORY_BROWN);
-    farmS = new Slider(XPOSB+260, YPOSB + 60, 0, 20, FARMPOLLUTION, "Farm", FARM_YELLOW);
-    houseS = new Slider(XPOSB+260, YPOSB + 120, 0, 20, HOUSEPOLLUTION, "House", HOUSE_GRAY);
-    forestS = new Slider(XPOSB+260, YPOSB + 180, -10, 10, FORESTPOLLUTION, "Forest", FOREST_GREEN);
+    factoryS = new Slider(XPOSB+260, YPOSB, 0, 20, FACTORY_POLLUTION, "Factory", FACTORY_BROWN);
+    farmS = new Slider(XPOSB+260, YPOSB + 60, 0, 20, FARM_POLLUTION, "Farm", FARM_YELLOW);
+    houseS = new Slider(XPOSB+260, YPOSB + 120, 0, 20, HOUSE_POLLUTION, "House", HOUSE_GRAY);
+    forestS = new Slider(XPOSB+260, YPOSB + 180, -10, 10, FOREST_POLLUTION, "Forest", FOREST_GREEN);
     
     fa = new Factory();     //T his would be resolved bty making calcActualProfit() static, but that will mess up Tile.changeLandU()
     fm = new Farm();
@@ -89,7 +89,7 @@ class GUI {
     stroke(240);
     strokeWeight(0.5);
     fill(c, t);
-    rect(x*TILEWIDTH + XPOS, y*TILEHEIGHT + YPOS, TILEWIDTH, TILEHEIGHT);
+    rect(x*TILE_WIDTH + XPOS, y*TILE_HEIGHT + YPOS, TILE_WIDTH, TILE_HEIGHT);
     fill(255);    //resets to white.
   } 
   
@@ -108,14 +108,14 @@ class GUI {
     textAlign(CENTER, BOTTOM);
     fill(255);
     int xcount = 0;  
-    for (int x=XPOS; x < SIZEX*TILEWIDTH+XPOS; x+=TILEWIDTH){
-      text(xcount, x+(TILEWIDTH/2), YPOS-3);
+    for (int x=XPOS; x < SIZE_X*TILE_WIDTH+XPOS; x+=TILE_WIDTH){
+      text(xcount, x+(TILE_WIDTH/2), YPOS-3);
       xcount ++;
     }
     textAlign(RIGHT,CENTER);
     int ycount = 0;
-    for (int y=YPOS; y < SIZEY*TILEHEIGHT+YPOS; y+=TILEHEIGHT){
-      text(ycount, XPOS-7, y+(TILEHEIGHT/2));
+    for (int y=YPOS; y < SIZE_Y*TILE_HEIGHT+YPOS; y+=TILE_HEIGHT){
+      text(ycount, XPOS-7, y+(TILE_HEIGHT/2));
       ycount ++;
     }
     textAlign(LEFT);
@@ -131,7 +131,7 @@ class GUI {
     //Draws the box
     stroke(255);
     fill(255);
-    rect(XPOS+450, YPOS + SIZEY*TILEHEIGHT + 10, 190, 110);
+    rect(XPOS+450, YPOS + SIZE_Y*TILE_HEIGHT + 10, 190, 110);
     
     //Displays info
     if (selected != null) {
@@ -139,16 +139,16 @@ class GUI {
       noFill();
       strokeWeight(1.5);
       stroke(245);
-      rect(selected.getX()*TILEWIDTH + XPOS, selected.getY()*TILEHEIGHT + YPOS, TILEWIDTH, TILEHEIGHT);
+      rect(selected.getX()*TILE_WIDTH + XPOS, selected.getY()*TILE_HEIGHT + YPOS, TILE_WIDTH, TILE_HEIGHT);
       fill(0);  //Color of text 
       textFont(MESSAGEFONT);
       String text1 = selected.toString() + 
                     "     Type: " + selected.getLandUse().toString();
-      text(text1, XPOS+460, YPOS + SIZEY*TILEHEIGHT + 30);   
+      text(text1, XPOS+460, YPOS + SIZE_Y*TILE_HEIGHT + 30);   
       String text2 = "Money: " + nfc(selected.getActualProfit(),2) + 
                       "\nPollution: " + nfc(selected.getDecayPollution(),2) + 
                       "\nDistToRiver: " + nfc(selected.getDistToRiver(),2);
-      text(text2, XPOS+460, YPOS + SIZEY*TILEHEIGHT + 50);
+      text(text2, XPOS+460, YPOS + SIZE_Y*TILE_HEIGHT + 50);
     }
   }
   
@@ -206,8 +206,8 @@ class GUI {
     }
     textFont(MESSAGEFONT);
     fill(125);
-    text(purchaseInfo, XPOS+460, YPOS + SIZEY*TILEHEIGHT + 90);  
-    text(pollutionInfo, XPOS+460, YPOS + SIZEY*TILEHEIGHT + 110);
+    text(purchaseInfo, XPOS+460, YPOS + SIZE_Y*TILE_HEIGHT + 90);  
+    text(pollutionInfo, XPOS+460, YPOS + SIZE_Y*TILE_HEIGHT + 110);
   }
   
   void highlightBulk() {
@@ -216,7 +216,7 @@ class GUI {
       int[] posP = converter(mousePX, mousePY);   //tile coordinate when mouse is pressed
       int[] posC = converter(mouseX, mouseY);     //current tile coordinate
       ArrayList<int[]> highlighted = new ArrayList<int[]>();
-      if ((posP[0] >= 0 && posP[0] <SIZEX) && (posP[1] >= 0 && posP[1] < SIZEY)) {
+      if ((posP[0] >= 0 && posP[0] <SIZE_X) && (posP[1] >= 0 && posP[1] < SIZE_Y)) {
         for (int x = min(posP[0], posC[0]); x <= max(posP[0], posC[0]); x++) {
           for (int y = min(posP[1], posC[1]); y <= max(posP[1], posC[1]); y++) {
             highlighted.add(new int[] {x, y});
@@ -278,8 +278,8 @@ class GUI {
         else pollutionInfo = "Pollution: - " + nfc(abs(projectedPollution),2);
         textFont(MESSAGEFONT);
         fill(125);
-        text(purchaseInfo, XPOS+460, YPOS + SIZEY*TILEHEIGHT + 90);  
-        text(pollutionInfo, XPOS+460, YPOS + SIZEY*TILEHEIGHT + 110); 
+        text(purchaseInfo, XPOS+460, YPOS + SIZE_Y*TILE_HEIGHT + 90);  
+        text(pollutionInfo, XPOS+460, YPOS + SIZE_Y*TILE_HEIGHT + 110); 
       }
     }
   }
@@ -288,18 +288,18 @@ class GUI {
      /*Draws the feedback box and shows info */
     stroke(255);
     fill(255);
-    rect(XPOS, YPOS + SIZEY*TILEHEIGHT + 10, 430, 110);
+    rect(XPOS, YPOS + SIZE_Y*TILE_HEIGHT + 10, 430, 110);
     fill(0);  //Color of text 
     textFont(MESSAGEFONT);
-    text(message, XPOS + 20, YPOS + SIZEY*TILEHEIGHT + 30);   
-    text(message2, XPOS + 20, YPOS + SIZEY*TILEHEIGHT + 50);   
-    text("Simple sum of all pollution: " + WS.totalPollution, XPOS + 20, YPOS + SIZEY*TILEHEIGHT + 90);
-    text("Total pollution entering river after distance decay: " + nfc(WS.totalDecayPollution,2), XPOS + 20, YPOS + SIZEY*TILEHEIGHT + 110);
+    text(message, XPOS + 20, YPOS + SIZE_Y*TILE_HEIGHT + 30);   
+    text(message2, XPOS + 20, YPOS + SIZE_Y*TILE_HEIGHT + 50);   
+    text("Simple sum of all pollution: " + WS.totalPollution, XPOS + 20, YPOS + SIZE_Y*TILE_HEIGHT + 90);
+    text("Total pollution entering river after distance decay: " + nfc(WS.totalDecayPollution,2), XPOS + 20, YPOS + SIZE_Y*TILE_HEIGHT + 110);
   }
   
   void showActualProfits() {
     /* Displays the money */
-    int x = XPOS + SIZEX*TILEWIDTH + 40;
+    int x = XPOS + SIZE_X*TILE_WIDTH + 40;
     int y = YPOSB + 460;
     fill(0);
     textFont(BIGFONT);
@@ -310,7 +310,7 @@ class GUI {
   
   void showScore() {
     /* Displays the score */
-    int x = XPOS + SIZEX*TILEWIDTH + 40;
+    int x = XPOS + SIZE_X*TILE_WIDTH + 40;
     int y = YPOSB + 550;
     fill(0);
     textFont(BIGFONT);
@@ -321,7 +321,7 @@ class GUI {
   
   void showBuildQuota() {
     /* Displays the build quota */
-    int x = XPOS + SIZEX*TILEWIDTH + 40;
+    int x = XPOS + SIZE_X*TILE_WIDTH + 40;
     int y = YPOSB + 690;
     fill(0);
     textFont(MESSAGEFONT);
@@ -336,7 +336,7 @@ class GUI {
     color green = #4BDE4A;
     color red = #FF3300;
     color extreme = #A72200;
-    int x =  XPOS + SIZEX*TILEWIDTH + 40;     //xposition of the slider
+    int x =  XPOS + SIZE_X*TILE_WIDTH + 40;     //xposition of the slider
     int y = YPOSB + 340;       //YPOSition of the slider
     int w = 220;    //width of slider
     int h = 33;  //height if slider
@@ -411,7 +411,7 @@ class GUI {
         textSize(10);
         fill(0);
         textAlign(LEFT, TOP);
-        if(t.getTilePollution()!=0) text(round(t.getTilePollution()), t.getX()*TILEWIDTH + XPOS+2, t.getY()*TILEHEIGHT + YPOS+1);
+        if(t.getTilePollution()!=0) text(round(t.getTilePollution()), t.getX()*TILE_WIDTH + XPOS+2, t.getY()*TILE_HEIGHT + YPOS+1);
       }
    }
  }
@@ -424,7 +424,7 @@ class GUI {
         textSize(10);
         fill(0);
         textAlign(LEFT, TOP);
-        if(t.getTilePollution()!=0) text(nfc(t.getDecayPollution(),1), t.getX()*TILEWIDTH + XPOS+2, t.getY()*TILEHEIGHT + YPOS+1);
+        if(t.getTilePollution()!=0) text(nfc(t.getDecayPollution(),1), t.getX()*TILE_WIDTH + XPOS+2, t.getY()*TILE_HEIGHT + YPOS+1);
         total += t.getDecayPollution();
       }
    }
@@ -438,7 +438,7 @@ class GUI {
         textSize(10);
         fill(0);
         textAlign(LEFT, TOP);
-        if (!(t.getLandUse() instanceof River)) text(nfc(t.getDistToRiver(),1), t.getX()*TILEWIDTH + XPOS+2, t.getY()*TILEHEIGHT + YPOS+1);
+        if (!(t.getLandUse() instanceof River)) text(nfc(t.getDistToRiver(),1), t.getX()*TILE_WIDTH + XPOS+2, t.getY()*TILE_HEIGHT + YPOS+1);
       }
    }
  }
@@ -450,7 +450,7 @@ class GUI {
         textSize(10);
         fill(0);
         textAlign(LEFT, TOP);
-        if (round(t.getActualProfit())!=0) text(nfc(t.getActualProfit(),1), t.getX()*TILEWIDTH + XPOS+2, t.getY()*TILEHEIGHT + YPOS+1);
+        if (round(t.getActualProfit())!=0) text(nfc(t.getActualProfit(),1), t.getX()*TILE_WIDTH + XPOS+2, t.getY()*TILE_HEIGHT + YPOS+1);
       }
    }
  }
@@ -595,8 +595,8 @@ int mouseRY;
 
 boolean mouseOverMap(){
   /* Helper function: Returns true if the mouse position is over the Watershed map. false otherwise. */
-  int[] xRange = {XPOS, XPOS + SIZEX*TILEWIDTH};
-  int[] yRange = {YPOS, YPOS + SIZEY*TILEHEIGHT};
+  int[] xRange = {XPOS, XPOS + SIZE_X*TILE_WIDTH};
+  int[] yRange = {YPOS, YPOS + SIZE_Y*TILE_HEIGHT};
   return ((mouseX > xRange[0] && mouseX < xRange[1]) && (mouseY > yRange[0] && mouseY < yRange[1]));
 }
 
@@ -605,8 +605,8 @@ int[] converter(int xraw, int yraw) {
   if (mouseOverMap()){
     int xloc = 0;
     int yloc = 0;
-    xloc = (xraw-XPOS)/TILEWIDTH;
-    yloc = (yraw-YPOS)/TILEHEIGHT;
+    xloc = (xraw-XPOS)/TILE_WIDTH;
+    yloc = (yraw-YPOS)/TILE_HEIGHT;
     int[] out = {xloc, yloc};
     return out;
   } else return new int[] {0,0};
@@ -668,7 +668,7 @@ void mousePressed() {
     if (pushed == resetB) {
       message = "Restarting game";
       message2 = "";
-      WS = new Watershed(SIZEX, SIZEY);
+      WS = new Watershed(SIZE_X, SIZE_Y);
       pushed = null;
       selected = null;
       message = "Game is reset";

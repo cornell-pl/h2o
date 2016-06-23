@@ -10,7 +10,6 @@ class Tile {
   float decayPollution;      //Pollution entering river from this tile after decay
   float actualProfit = 0;  //Actual profit made by the landU at this tile
   
-  
   Tile(LandUse lu, int xp, int yp) {
      /* Constructor: Initializes Tile with LandUse lu, and integer slope sl, soil so values */
      X = xp;

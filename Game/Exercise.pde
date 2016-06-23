@@ -1,18 +1,18 @@
 //Defining pollution as global variables
-final int FACTORYPOLLUTION = 10;
-final int FARMPOLLUTION = 12;
-final int HOUSEPOLLUTION = 6;
-final int FORESTPOLLUTION = -2;
-final int DIRTPOLLUTION = 0;
+final int FACTORY_POLLUTION = 10;
+final int FARM_POLLUTION = 12;
+final int HOUSE_POLLUTION = 6;
+final int FOREST_POLLUTION = -2;
+final int DIRT_POLLUTION = 0;
 
 int getPollution(LandUse lu) {
     /*Returns the default pollution value of each landUse 
     *This method is used to set the default pollution values when game is initialized*/
-    if (lu instanceof Factory) return FACTORYPOLLUTION;
-    else if (lu instanceof Farm) return FARMPOLLUTION;
-    else if (lu instanceof House) return HOUSEPOLLUTION;
-    else if (lu instanceof Forest) return FORESTPOLLUTION;
-    else if (lu instanceof Dirt) return DIRTPOLLUTION;
+    if (lu instanceof Factory) return FACTORY_POLLUTION;
+    else if (lu instanceof Farm) return FARM_POLLUTION;
+    else if (lu instanceof House) return HOUSE_POLLUTION;
+    else if (lu instanceof Forest) return FOREST_POLLUTION;
+    else if (lu instanceof Dirt) return DIRT_POLLUTION;
     else return 0;
 }
 
@@ -25,7 +25,7 @@ float calcDecayPollution(float pollution, float distToRiver) {
 float distToRiver(int x, int y) {
     /* Helper: Returns the distance of location <x, y> to closest River Tile. */
     float minDist = (float) Integer.MAX_VALUE;
-    for (int[] rCoords: RIVERTILES) {
+    for (int[] rCoords: RIVER_TILES) {
       float d = dist(x, y, rCoords[0], rCoords[1]);
       if (d < minDist) minDist = d;
    }
