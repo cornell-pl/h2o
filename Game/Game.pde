@@ -12,7 +12,7 @@ void setup() {
 }
 
 void draw() {  
-  background(204);
+  background(165);
   WS.update();
   graphics.render();
 }
