@@ -1,14 +1,14 @@
 Watershed WS;
 GUI graphics;
-final int sizeX = 30;    //Dimensions of the watershed in tiles
-final int sizeY = 30;
+final int SIZEX = 30;    //Dimensions of the watershed in tiles
+final int SIZEY = 30;
 int[][] riverTiles = { { 5 , 5 },  { 5 , 19 },  { 5 , 20 },  { 5 , 21 },  { 6 , 5 },  { 6 , 21 },  { 7 , 5 },  { 7 , 6 },  { 7 , 21 },  { 8 , 6 },  { 8 , 21 },  { 8 , 22 },  { 9 , 6 },  { 9 , 22 },  { 10 , 6 },  { 10 , 7 },  { 10 , 22 },  { 11 , 6 },  { 11 , 7 },  { 11 , 8 },  { 11 , 9 },  { 11 , 14 },  { 11 , 15 },  { 11 , 16 },  { 11 , 22 },  { 12 , 7 },  { 12 , 8 },  { 12 , 9 },  { 12 , 10 },  { 12 , 11 },  { 12 , 12 },  { 12 , 13 },  { 12 , 14 },  { 12 , 15 },  { 12 , 16 },  { 12 , 17 },  { 12 , 18 },  { 12 , 19 },  { 12 , 20 },  { 12 , 21 },  { 12 , 22 },  { 13 , 9 },  { 13 , 10 },  { 13 , 11 },  { 13 , 12 },  { 13 , 13 },  { 13 , 14 },  { 13 , 16 },  { 13 , 17 },  { 13 , 18 },  { 13 , 19 },  { 13 , 20 },  { 13 , 21 },  { 13 , 22 },  { 13 , 23 },  { 13 , 24 },  { 13 , 25 },  { 14 , 7 },  { 14 , 8 },  { 14 , 9 },  { 14 , 11 },  { 14 , 12 },  { 14 , 18 },  { 14 , 19 },  { 14 , 22 },  { 14 , 23 },  { 14 , 24 },  { 14 , 25 },  { 14 , 26 },  { 14 , 27 },  { 14 , 28 },  { 14 , 29 },  { 15 , 6 },  { 15 , 11 },  { 15 , 17 },  { 15 , 18 },  { 15 , 24 },  { 15 , 25 },  { 15 , 26 },  { 15 , 27 },  { 15 , 28 },  { 15 , 29 },  { 16 , 5 },  { 16 , 11 },  { 16 , 16 },  { 16 , 17 },  { 16 , 26 },  { 16 , 27 },  { 16 , 28 },  { 16 , 29 },  { 17 , 4 },  { 17 , 10 },  { 17 , 11 },  { 17 , 16 },  { 17 , 27 },  { 17 , 28 },  { 17 , 29 },  { 18 , 9 },  { 18 , 10 },  { 18 , 16 },  { 18 , 17 },  { 19 , 8 },  { 19 , 9 },  { 20 , 7 },  { 20 , 8 },  { 21 , 7 },  { 22 , 7 },  { 23 , 6 },  { 23 , 7 },  { 23 , 8 },  { 24 , 7 },  { 24 , 8 },  { 25 , 7 } };
 
 void setup() {
   frameRate(30);
   size(1600, 1080);
-  WS = new Watershed(sizeX, sizeY);   //Creates watershed of size 20*20
-  graphics = new GUI(sizeX, sizeY);
+  WS = new Watershed(SIZEX, SIZEY);   //Creates watershed of size 20*20
+  graphics = new GUI(SIZEX, SIZEY);
 }
 
 void draw() {  
@@ -36,9 +36,9 @@ class Watershed {
   }     //<>//
   
   void initializeWithFixedForest() {
-    gameMap = new Tile[sizeX][sizeY];
-    for (int j=0; j<sizeY; j++) {
-      for (int i=0; i<sizeX; i++) { 
+    gameMap = new Tile[SIZEX][SIZEY];
+    for (int j=0; j<SIZEY; j++) {
+      for (int i=0; i<SIZEX; i++) { 
          Dirt di = new Dirt();
          Tile t = new Tile(di, i, j, 0, 0); //Default zero values for slope and soil
          gameMap[i][j] = t;
@@ -54,9 +54,9 @@ class Watershed {
   
   
   void initializeWithRandomForest() {
-    gameMap = new Tile[sizeX][sizeY];
-    for (int j=0; j<sizeY; j++) {
-      for (int i=0; i<sizeX; i++) { 
+    gameMap = new Tile[SIZEX][SIZEY];
+    for (int j=0; j<SIZEY; j++) {
+      for (int i=0; i<SIZEX; i++) { 
          float r = random(0,1);
          if (r > 0.9) {
            Forest fo = new Forest();
@@ -284,19 +284,19 @@ class Watershed {
               Tile topLeft = gameMap[t.getX()-1][t.getY()-1];
               n.add(topLeft);
             }
-            if (t.getY() < sizeY-1) {
+            if (t.getY() < SIZEY-1) {
               Tile bottomLeft = gameMap[t.getX()-1][t.getY()+1];
               n.add(bottomLeft);
             }
           }
-          if (t.getX() < sizeX -1) {
+          if (t.getX() < SIZEX -1) {
             Tile right = gameMap[t.getX()+1][t.getY()];
             n.add(right);
             if (t.getY() > 0) {
               Tile topRight = gameMap[t.getX()+1][t.getY()-1];
               n.add(topRight);
             }
-            if (t.getY() < sizeY -1) {
+            if (t.getY() < SIZEY -1) {
               Tile bottomRight = gameMap[t.getX()+1][t.getY()+1];
               n.add(bottomRight);
           }
@@ -304,7 +304,7 @@ class Watershed {
             Tile up = gameMap[t.getX()][t.getY()-1];
             n.add(up);
           }
-          if (t.getY() < sizeY -1) {
+          if (t.getY() < SIZEY -1) {
             Tile down = gameMap[t.getX()][t.getY()+1];
             n.add(down);
           }

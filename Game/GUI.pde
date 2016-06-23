@@ -2,7 +2,7 @@ final int xpos = 40;   //xpos and ypos determines the position of the top left c
 final int ypos = 40;
 final int tileWidth = 30;   //width of a tile in pixels
 final int tileHeight = 30;    //height of a tile in pixels
-final int xposB = xpos + sizeX*tileWidth + 40;    //Drawing dimensions. xpos and ypos are the coordinates of the top most button. 
+final int xposB = xpos + SIZEX*tileWidth + 40;    //Drawing dimensions. xpos and ypos are the coordinates of the top most button. 
 final int yposB = 90;    //All buttons scale with respect to these
 
 Button factoryB;
@@ -30,7 +30,7 @@ class GUI {
     houseB = new Button(xposB, yposB + 120, tileWidth, tileHeight, houseTurquoise, #73A29C, #90B3B4, "House");
     forestB = new Button(xposB, yposB + 180, tileWidth, tileHeight, forestGreen, #73A29C, #02A002, "Forest");
     demolishB = new Button(xposB, yposB + 240, tileWidth, tileHeight, demolishBeige, #73A29C, #F5BB74, "Demolish");
-    resetB = new Button(xposB+20, ypos+tileHeight*sizeY+40, tileWidth + 5, tileHeight + 5, #FFFFFF, #989795, #171717, "RESET MAP");
+    resetB = new Button(xposB+20, ypos+tileHeight*SIZEY+40, tileWidth + 5, tileHeight + 5, #FFFFFF, #989795, #171717, "RESET MAP");
     
     showPolT = new Toggle(xposB+260, yposB+690, "Show Pollution");
     showDecayPolT = new Toggle(xposB+260, yposB+750, "Show decayPollution");
@@ -108,13 +108,13 @@ class GUI {
     textAlign(CENTER, BOTTOM);
     fill(255);
     int xcount = 0;  
-    for (int x=xpos; x < sizeX*tileWidth+xpos; x+=tileWidth){
+    for (int x=xpos; x < SIZEX*tileWidth+xpos; x+=tileWidth){
       text(xcount, x+(tileWidth/2), ypos-3);
       xcount ++;
     }
     textAlign(RIGHT,CENTER);
     int ycount = 0;
-    for (int y=ypos; y < sizeY*tileHeight+ypos; y+=tileHeight){
+    for (int y=ypos; y < SIZEY*tileHeight+ypos; y+=tileHeight){
       text(ycount, xpos-7, y+(tileHeight/2));
       ycount ++;
     }
@@ -131,7 +131,7 @@ class GUI {
     //Draws the box
     stroke(255);
     fill(255);
-    rect(xpos+450, ypos + sizeY*tileHeight + 10, 190, 110);
+    rect(xpos+450, ypos + SIZEY*tileHeight + 10, 190, 110);
     
     //Displays info
     if (selected != null) {
@@ -144,11 +144,11 @@ class GUI {
       textFont(messageFont);
       String text1 = selected.toString() + 
                     "     Type: " + selected.getLandUse().toString();
-      text(text1, xpos+460, ypos + sizeY*tileHeight + 30);   
+      text(text1, xpos+460, ypos + SIZEY*tileHeight + 30);   
       String text2 = "Money: " + nfc(selected.getActualProfit(),2) + 
                       "\nPollution: " + nfc(selected.getDecayPollution(),2) + 
                       "\nDistToRiver: " + nfc(selected.getDistToRiver(),2);
-      text(text2, xpos+460, ypos + sizeY*tileHeight + 50);
+      text(text2, xpos+460, ypos + SIZEY*tileHeight + 50);
     }
   }
   
@@ -206,8 +206,8 @@ class GUI {
     }
     textFont(messageFont);
     fill(125);
-    text(purchaseInfo, xpos+460, ypos + sizeY*tileHeight + 90);  
-    text(pollutionInfo, xpos+460, ypos + sizeY*tileHeight + 110);
+    text(purchaseInfo, xpos+460, ypos + SIZEY*tileHeight + 90);  
+    text(pollutionInfo, xpos+460, ypos + SIZEY*tileHeight + 110);
   }
   
   void highlightBulk() {
@@ -216,7 +216,7 @@ class GUI {
       int[] posP = converter(mousePX, mousePY);   //tile coordinate when mouse is pressed
       int[] posC = converter(mouseX, mouseY);     //current tile coordinate
       ArrayList<int[]> highlighted = new ArrayList<int[]>();
-      if ((posP[0] >= 0 && posP[0] <sizeX) && (posP[1] >= 0 && posP[1] < sizeY)) {
+      if ((posP[0] >= 0 && posP[0] <SIZEX) && (posP[1] >= 0 && posP[1] < SIZEY)) {
         for (int x = min(posP[0], posC[0]); x <= max(posP[0], posC[0]); x++) {
           for (int y = min(posP[1], posC[1]); y <= max(posP[1], posC[1]); y++) {
             highlighted.add(new int[] {x, y});
@@ -278,8 +278,8 @@ class GUI {
         else pollutionInfo = "Pollution: - " + nfc(abs(projectedPollution),2);
         textFont(messageFont);
         fill(125);
-        text(purchaseInfo, xpos+460, ypos + sizeY*tileHeight + 90);  
-        text(pollutionInfo, xpos+460, ypos + sizeY*tileHeight + 110); 
+        text(purchaseInfo, xpos+460, ypos + SIZEY*tileHeight + 90);  
+        text(pollutionInfo, xpos+460, ypos + SIZEY*tileHeight + 110); 
       }
     }
   }
@@ -288,18 +288,18 @@ class GUI {
      /*Draws the feedback box and shows info */
     stroke(255);
     fill(255);
-    rect(xpos, ypos + sizeY*tileHeight + 10, 430, 110);
+    rect(xpos, ypos + SIZEY*tileHeight + 10, 430, 110);
     fill(0);  //Color of text 
     textFont(messageFont);
-    text(message, xpos + 20, ypos + sizeY*tileHeight + 30);   
-    text(message2, xpos + 20, ypos + sizeY*tileHeight + 50);   
-    text("Simple sum of all pollution: " + WS.totalPollution, xpos + 20, ypos + sizeY*tileHeight + 90);
-    text("Total pollution entering river after distance decay: " + nfc(WS.totalDecayPollution,2), xpos + 20, ypos + sizeY*tileHeight + 110);
+    text(message, xpos + 20, ypos + SIZEY*tileHeight + 30);   
+    text(message2, xpos + 20, ypos + SIZEY*tileHeight + 50);   
+    text("Simple sum of all pollution: " + WS.totalPollution, xpos + 20, ypos + SIZEY*tileHeight + 90);
+    text("Total pollution entering river after distance decay: " + nfc(WS.totalDecayPollution,2), xpos + 20, ypos + SIZEY*tileHeight + 110);
   }
   
   void showActualProfits() {
     /* Displays the money */
-    int x = xpos + sizeX*tileWidth + 40;
+    int x = xpos + SIZEX*tileWidth + 40;
     int y = yposB + 460;
     fill(0);
     textFont(budgetFont);
@@ -310,7 +310,7 @@ class GUI {
   
   void showScore() {
     /* Displays the score */
-    int x = xpos + sizeX*tileWidth + 40;
+    int x = xpos + SIZEX*tileWidth + 40;
     int y = yposB + 550;
     fill(0);
     textFont(budgetFont);
@@ -321,7 +321,7 @@ class GUI {
   
   void showBuildQuota() {
     /* Displays the build quota */
-    int x = xpos + sizeX*tileWidth + 40;
+    int x = xpos + SIZEX*tileWidth + 40;
     int y = yposB + 690;
     fill(0);
     textFont(messageFont);
@@ -336,7 +336,7 @@ class GUI {
     color green = #4BDE4A;
     color red = #FF3300;
     color extreme = #A72200;
-    int x =  xpos + sizeX*tileWidth + 40;     //xposition of the slider
+    int x =  xpos + SIZEX*tileWidth + 40;     //xposition of the slider
     int y = yposB + 340;       //yposition of the slider
     int w = 220;    //width of slider
     int h = 33;  //height if slider
@@ -596,8 +596,8 @@ int mouseRY;
 
 boolean mouseOverMap(){
   /* Helper function: Returns true if the mouse position is over the Watershed map. false otherwise. */
-  int[] xRange = {xpos, xpos + sizeX*tileWidth};
-  int[] yRange = {ypos, ypos + sizeY*tileHeight};
+  int[] xRange = {xpos, xpos + SIZEX*tileWidth};
+  int[] yRange = {ypos, ypos + SIZEY*tileHeight};
   return ((mouseX > xRange[0] && mouseX < xRange[1]) && (mouseY > yRange[0] && mouseY < yRange[1]));
 }
 
@@ -669,7 +669,7 @@ void mousePressed() {
     if (pushed == resetB) {
       message = "Restarting game";
       message2 = "";
-      WS = new Watershed(sizeX, sizeY);
+      WS = new Watershed(SIZEX, SIZEY);
       pushed = null;
       selected = null;
       message = "Game is reset";
