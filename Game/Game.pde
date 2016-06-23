@@ -40,7 +40,7 @@ class Watershed {
     for (int j=0; j<SIZEY; j++) {
       for (int i=0; i<SIZEX; i++) { 
          Dirt di = new Dirt();
-         Tile t = new Tile(di, i, j, 0, 0); //Default zero values for slope and soil
+         Tile t = new Tile(di, i, j);
          gameMap[i][j] = t;
         }
       }
@@ -60,11 +60,11 @@ class Watershed {
          float r = random(0,1);
          if (r > 0.9) {
            Forest fo = new Forest();
-           Tile t = new Tile(fo, i, j, 0, 0); //Default zero values for slope and soil
+           Tile t = new Tile(fo, i, j);
            gameMap[i][j] = t;
          }else{
            Dirt di = new Dirt();
-           Tile t = new Tile(di, i, j, 0, 0); //Default zero values for slope and soil
+           Tile t = new Tile(di, i, j);
            gameMap[i][j] = t;
          }
       }

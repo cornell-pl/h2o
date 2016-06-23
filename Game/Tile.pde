@@ -1,7 +1,5 @@
 class Tile {
   /*A Tile holds properties of the terrain */
-  final int slope;   //Slope of tile
-  final int soil;  
   final int X;  //x-coordinate
   final int Y;  //y-coordinate
   LandUse landU;
@@ -13,12 +11,10 @@ class Tile {
   float actualProfit = 0;  //Actual profit made by the landU at this tile
   
   
-  Tile(LandUse lu, int xp, int yp, int sl, int so) {
+  Tile(LandUse lu, int xp, int yp) {
      /* Constructor: Initializes Tile with LandUse lu, and integer slope sl, soil so values */
      X = xp;
      Y = yp;
-     slope = sl;
-     soil = so;
      landU = lu;     
   }
  
