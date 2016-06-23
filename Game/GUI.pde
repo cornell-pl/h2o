@@ -5,6 +5,19 @@ final int tileHeight = 30;    //height of a tile in pixels
 final int xposB = xpos + sizeX*tileWidth + 40;    //Drawing dimensions. xpos and ypos are the coordinates of the top most button. 
 final int yposB = 90;    //All buttons scale with respect to these
 
+Button factoryB;
+Button farmB;
+Button houseB;
+Button forestB;
+Button demolishB;
+Button resetB;
+
+Toggle showPolT;
+Toggle showDecayPolT;
+Toggle showDistT;
+Toggle showProfitT;
+
+
 class GUI {
   final PFont axisFont = createFont("Calibri", 12);
   final PFont messageFont = createFont("Calibri", 13);
@@ -19,10 +32,10 @@ class GUI {
     demolishB = new Button(xposB, yposB + 240, tileWidth, tileHeight, demolishBeige, #73A29C, #F5BB74, "Demolish");
     resetB = new Button(xposB+20, ypos+tileHeight*sizeY+40, tileWidth + 5, tileHeight + 5, #FFFFFF, #989795, #171717, "RESET MAP");
     
-    showPolT = new Toggle(xposB+260, yposB+690, tileWidth, tileHeight, 0, #73A29C, #EA7E2F, "Show Pollution");
-    showDecayPolT = new Toggle(xposB+260, yposB+750, tileWidth, tileHeight, 0, #73A29C, #EA7E2F, "Show decayPollution");
-    showDistT = new Toggle(xposB+260, yposB+810, tileWidth, tileHeight, 0, #73A29C, #EA7E2F, "Show distToRiver");
-    showProfitT = new Toggle(xposB+260, yposB+870, tileWidth, tileHeight, 0, #73A29C, #EA7E2F, "Show Money");
+    showPolT = new Toggle(xposB+260, yposB+690, "Show Pollution");
+    showDecayPolT = new Toggle(xposB+260, yposB+750, "Show decayPollution");
+    showDistT = new Toggle(xposB+260, yposB+810, "Show distToRiver");
+    showProfitT = new Toggle(xposB+260, yposB+870, "Show Money");
 
     factoryS = new Slider(xposB+260, yposB, 0, 20, factoryPollution, "Factory", factoryBrown);
     farmS = new Slider(xposB+260, yposB + 60, 0, 20, farmPollution, "Farm", farmYellow);
@@ -36,29 +49,20 @@ class GUI {
   }
   
   void render() {
-    /* Single function for all graphics.
-    * Draws each frame   */    
-    for (Tile[] tileRow : WS.gameMap) {
-      for (Tile t: tileRow) {
-        drawTile(t.getX(), t.getY(), t.getLandUse().getIcon(), 255);
-      }
-    }
-
-    //showPollution();
-    //showDecayPollution();
-    //showDist();
-    //showProfit();
-    
+    /* Draws all the graphics elements of each frame */    
+    drawGameBoard();
     axisLabels();
-    showPollutionSlider();
+    showSelectedTile();     //For unknown reasons, this MUST be called before the two highlight functions or they all break
+    highlightSingle();
+    highlightBulk();
+    
     showFeedback();
-    showSelectedTile();
     showActualProfits();
     showScore();
     showBuildQuota();
-    showPurchaseInfo();
-    highlight();
-    showToggleInfo();
+    showPollutionSlider();
+    
+    showToggleInfo();    
     
     showPolT.display();
     showDecayPolT.display();
@@ -87,15 +91,126 @@ class GUI {
     fill(c, t);
     rect(x*tileWidth + xpos, y*tileHeight + ypos, tileWidth, tileHeight);
     fill(255);    //resets to white.
-  }  
+  } 
   
+  void drawGameBoard(){
+    /* Draws the game board */
+    for (Tile[] tileRow : WS.gameMap) {
+      for (Tile t: tileRow) {
+        drawTile(t.getX(), t.getY(), t.getLandUse().getIcon(), 255);
+      }
+    }
+  }
   
+  void axisLabels() {
+    /* Draws axis labels. */
+    textFont(axisFont);
+    textAlign(CENTER, BOTTOM);
+    fill(255);
+    int xcount = 0;  
+    for (int x=xpos; x < sizeX*tileWidth+xpos; x+=tileWidth){
+      text(xcount, x+(tileWidth/2), ypos-3);
+      xcount ++;
+    }
+    textAlign(RIGHT,CENTER);
+    int ycount = 0;
+    for (int y=ypos; y < sizeY*tileHeight+ypos; y+=tileHeight){
+      text(ycount, xpos-7, y+(tileHeight/2));
+      ycount ++;
+    }
+    textAlign(LEFT);
+  }
+    
    Factory fa;     //This would be resolved bty making calcActualProfit() static, but that will mess up Tile.changeLandU()
    Farm fm;
    House hs;
    Forest fo;
   
-  void highlight() {
+  void showSelectedTile() {    
+    /* Accents the selected tile, displays tile information */
+    //Draws the box
+    stroke(255);
+    fill(255);
+    rect(xpos+450, ypos + sizeY*tileHeight + 10, 190, 110);
+    
+    //Displays info
+    if (selected != null) {
+      drawTile(selected.getX(), selected.getY(), 255, 130);
+      noFill();
+      strokeWeight(1.5);
+      stroke(245);
+      rect(selected.getX()*tileWidth + xpos, selected.getY()*tileHeight + ypos, tileWidth, tileHeight);
+      fill(0);  //Color of text 
+      textFont(messageFont);
+      String text1 = selected.toString() + 
+                    "     Type: " + selected.getLandUse().toString();
+      text(text1, xpos+460, ypos + sizeY*tileHeight + 30);   
+      String text2 = "Money: " + nfc(selected.getActualProfit(),2) + 
+                      "\nPollution: " + nfc(selected.getDecayPollution(),2) + 
+                      "\nDistToRiver: " + nfc(selected.getDistToRiver(),2);
+      text(text2, xpos+460, ypos + sizeY*tileHeight + 50);
+    }
+  }
+  
+  void highlightSingle() {
+    /* Accents the Tile mouse is over, displays purchase information if in purchase mode */
+    Tile over = null;   //The Tile mouse is over
+    String purchaseInfo = "";
+    String pollutionInfo = "";
+    float projectedProfit = 0;
+    float projectedPollution = 0;
+    if (mouseOverMap() && !mousePressed) {   //Highlight tile mouse is over
+      int[] pos = converter(mouseX, mouseY);
+      color hc;
+      over = WS.gameMap[pos[0]][pos[1]];
+        if (!(over.getLandUse() instanceof River)) {
+           float d = over.getDistToRiver();
+          if (pushed == factoryB) {
+            hc = fa.getIcon();
+            projectedProfit = fa.calcActualProfit(d);
+            projectedPollution = calcDecayPollution(fa.s.getVal(), d);
+            purchaseInfo = "Money: + $" + nfc(projectedProfit,2);
+            pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
+          }
+          else if (pushed == farmB) {
+            hc = fm.getIcon();
+            projectedProfit = fm.calcActualProfit(d);
+            projectedPollution = calcDecayPollution(fm.s.getVal(), d);
+            purchaseInfo = "Money: + $" + nfc(projectedProfit,2);
+            pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
+          }
+          else if (pushed == houseB) {
+            hc = hs.getIcon();
+            projectedProfit = hs.calcActualProfit(d);
+            projectedPollution = calcDecayPollution(hs.s.getVal(), d);
+            purchaseInfo = "Money: + $" + nfc(projectedProfit,2);
+            pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
+          }
+          else if (pushed == forestB) {
+            hc = fo.getIcon();
+            projectedProfit = fo.calcActualProfit(d);
+            projectedPollution = calcDecayPollution(fo.s.getVal(), d);
+            purchaseInfo = "Money: - $" + nfc(abs(projectedProfit),2);
+            pollutionInfo = "Pollution: - " + nfc(abs(projectedPollution),2);
+          } else {                //Button not pressed
+            hc = #B6FAB1;
+            purchaseInfo = "";   
+            pollutionInfo = "";
+          }
+        }else {    //Over the river
+          hc = #B6FAB1;
+          purchaseInfo = ""; 
+          pollutionInfo = "";
+        }
+    drawTile(pos[0], pos[1], hc , 100);
+    }
+    textFont(messageFont);
+    fill(125);
+    text(purchaseInfo, xpos+460, ypos + sizeY*tileHeight + 90);  
+    text(pollutionInfo, xpos+460, ypos + sizeY*tileHeight + 110);
+  }
+  
+  void highlightBulk() {
     /* Highlights tiles during click and drag, and shows bulk purchase info */
     if (mousePressed && mouseOverMap()) {
       int[] posP = converter(mousePX, mousePY);   //tile coordinate when mouse is pressed
@@ -169,90 +284,6 @@ class GUI {
     }
   }
   
-  void showPurchaseInfo() {
-    /* Accents the Tile mouse is over, displays purchase information if in purchase mode */
-    Tile over = null;   //The Tile mouse is over
-    String purchaseInfo = "";
-    String pollutionInfo = "";
-    float projectedProfit = 0;
-    float projectedPollution = 0;
-    if (mouseOverMap() && !mousePressed) {   //Highlight tile mouse is over
-      int[] pos = converter(mouseX, mouseY);
-      color hc;
-      over = WS.gameMap[pos[0]][pos[1]];
-        if (!(over.getLandUse() instanceof River)) {
-           float d = over.getDistToRiver();
-          if (pushed == factoryB) {
-            hc = fa.getIcon();
-            projectedProfit = fa.calcActualProfit(d);
-            projectedPollution = calcDecayPollution(fa.s.getVal(), d);
-            purchaseInfo = "Money: + $" + nfc(projectedProfit,2);
-            pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
-          }
-          else if (pushed == farmB) {
-            hc = fm.getIcon();
-            projectedProfit = fm.calcActualProfit(d);
-            projectedPollution = calcDecayPollution(fm.s.getVal(), d);
-            purchaseInfo = "Money: + $" + nfc(projectedProfit,2);
-            pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
-          }
-          else if (pushed == houseB) {
-            hc = hs.getIcon();
-            projectedProfit = hs.calcActualProfit(d);
-            projectedPollution = calcDecayPollution(hs.s.getVal(), d);
-            purchaseInfo = "Money: + $" + nfc(projectedProfit,2);
-            pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
-          }
-          else if (pushed == forestB) {
-            hc = fo.getIcon();
-            projectedProfit = fo.calcActualProfit(d);
-            projectedPollution = calcDecayPollution(fo.s.getVal(), d);
-            purchaseInfo = "Money: - $" + nfc(abs(projectedProfit),2);
-            pollutionInfo = "Pollution: - " + nfc(abs(projectedPollution),2);
-          } else {                //Button not pressed
-            hc = #B6FAB1;
-            purchaseInfo = "";   
-            pollutionInfo = "";
-          }
-        }else {    //Over the river
-          hc = #B6FAB1;
-          purchaseInfo = ""; 
-          pollutionInfo = "";
-        }
-    drawTile(pos[0], pos[1], hc , 100);
-    }
-    textFont(messageFont);
-    fill(125);
-    text(purchaseInfo, xpos+460, ypos + sizeY*tileHeight + 90);  
-    text(pollutionInfo, xpos+460, ypos + sizeY*tileHeight + 110);
-  }
-  
-  void showSelectedTile() {
-    /* Accents the selected tile, displays tile information */
-    //Draws the box
-    stroke(255);
-    fill(255);
-    rect(xpos+450, ypos + sizeY*tileHeight + 10, 190, 110);
-    
-    //Display info
-    if (selected != null) {
-      drawTile(selected.getX(), selected.getY(), 255, 130);
-      noFill();
-      strokeWeight(1.5);
-      stroke(245);
-      rect(selected.getX()*tileWidth + xpos, selected.getY()*tileHeight + ypos, tileWidth, tileHeight);
-      fill(0);  //Color of text 
-      textFont(messageFont);
-      String text1 = selected.toString() + 
-                    "     Type: " + selected.getLandUse().toString();
-      text(text1, xpos+460, ypos + sizeY*tileHeight + 30);   
-      String text2 = "Money: " + nfc(selected.getActualProfit(),2) + 
-                      "\nPollution: " + nfc(selected.getDecayPollution(),2) + 
-                      "\nDistToRiver: " + nfc(selected.getDistToRiver(),2);
-      text(text2, xpos+460, ypos + sizeY*tileHeight + 50);
-    }
-  }
-  
    void showFeedback() {
      /*Draws the feedback box and shows info */
     stroke(255);
@@ -266,27 +297,8 @@ class GUI {
     text("Total pollution entering river after distance decay: " + nfc(WS.totalDecayPollution,2), xpos + 20, ypos + sizeY*tileHeight + 110);
   }
   
-  void axisLabels() {
-    /* Draw axis labels. */
-    textFont(axisFont);
-    textAlign(CENTER, BOTTOM);
-    fill(255);
-    int xcount = 0;  
-    for (int x=xpos; x < sizeX*tileWidth+xpos; x+=tileWidth){
-      text(xcount, x+(tileWidth/2), ypos-3);
-      xcount ++;
-    }
-    textAlign(RIGHT,CENTER);
-    int ycount = 0;
-    for (int y=ypos; y < sizeY*tileHeight+ypos; y+=tileHeight){
-      text(ycount, xpos-7, y+(tileHeight/2));
-      ycount ++;
-    }
-    textAlign(LEFT);
-  }
-  
-  
   void showActualProfits() {
+    /* Displays the money */
     int x = xpos + sizeX*tileWidth + 40;
     int y = yposB + 460;
     fill(0);
@@ -297,6 +309,7 @@ class GUI {
   }
   
   void showScore() {
+    /* Displays the score */
     int x = xpos + sizeX*tileWidth + 40;
     int y = yposB + 550;
     fill(0);
@@ -307,6 +320,7 @@ class GUI {
   }
   
   void showBuildQuota() {
+    /* Displays the build quota */
     int x = xpos + sizeX*tileWidth + 40;
     int y = yposB + 690;
     fill(0);
@@ -318,6 +332,7 @@ class GUI {
   }
   
   void showPollutionSlider() {
+    /* Displays the pollution slider and indicator */
     color green = #4BDE4A;
     color red = #FF3300;
     color extreme = #A72200;
@@ -376,9 +391,7 @@ class GUI {
     text("Pollution indicator: " + pLevel, x, y+65);
   }
 
-  
-
- //**** Some helper displays and functions  ****//  -----------------------------------------------
+ //**** Some helper displays ****//  -----------------------------------------------
  void showToggleInfo() {
    if (toggled == showPolT) {
      showPollution();
@@ -442,24 +455,137 @@ class GUI {
    }
  }
 }
+
+ 
+class Button{ 
+  int x, y;                 // The x- and y-coordinates of the Button in pixels
+  int bWidth;                 // Dimensions in pixels
+  int bHeight;
+  color baseColor;           // Default color value 
+  color overColor;           //Color when mouse over button
+  color selectedColor;        //Color when button is selected
+  String label;
+  PFont baseFont = createFont("Arial", 16);
+  PFont selectedFont = createFont("Arial-Black", 16);
+  
+  boolean over = false;     //true if mouse is over button
+  
+  Button(int xp, int yp, int w, int h, color c, color o, color s, String l) {
+    x = xp;
+    y = yp;
+    bWidth = w+5;
+    bHeight = h+5;
+    baseColor = c;          //Default color
+    overColor = o;           //Color when mouse over button
+    selectedColor = s; 
+    label = l;            //Color when button is in pushed state
+  }
+  
+  void display() {
+    stroke(255);
+    strokeWeight(2);
+    fill(255);  //Color of text label
+    textAlign(LEFT,CENTER);
+    if (pushed == this) { 
+      stroke(135);
+      textFont(selectedFont);
+      text(label, x+bWidth+8, y+(bHeight/2.)-3);
+      fill(selectedColor);
+    }else if (over) {
+      textFont(baseFont);
+      text(label, x+bWidth+5, y+(bHeight/2.)-1);
+      fill(overColor);
+    }else {
+      textFont(baseFont);
+      text(label, x+bWidth+5, y+(bHeight/2.)-1);
+      fill(baseColor);
+    }
+    rect(x, y, bWidth, bHeight);
+    update();
+  }  
+  
+  // Updates the over field every frame
+  void update() {
+    if ((mouseX >= x-1) && (mouseX <= x+bWidth+textWidth(label)+8) && 
+        (mouseY >= y-1) && (mouseY <= y+bHeight+1)) {
+      over = true;
+    } else {
+      over = false;
+    }
+  }
+} 
+
+
+class Toggle {
+  int x, y;                 // The x- and y-coordinates of the Button in pixels
+  int tWidth;                 // Dimensions in pixels
+  int tHeight;
+  color baseColor;           // Default color value 
+  color overColor;           //Color when mouse over button
+  color selectedColor;        //Color when button is selected
+  String label;
+  PFont baseFont = createFont("Arial", 14);
+  
+  boolean over = false;     //true if mouse is over button
+  
+  Toggle(int xp, int yp, String l) {
+    x = xp;
+    y = yp;
+    tWidth = 15;
+    tHeight = 15;
+    baseColor = 255;          //Default color
+    overColor = 204;           //Color when mouse over button
+    selectedColor = 0; 
+    label = l;            //Color when button is in pushed state
+  }
+  
+  void display() {
+    ellipseMode(CORNER);
+    stroke(255);
+    strokeWeight(2);
+    textFont(baseFont);
+    fill(255);  //Color of text label
+    textAlign(LEFT,CENTER);
+    if (toggled == this) { 
+      text(label, x+tWidth+5, y+(tHeight/2.)-1);
+      fill(selectedColor);
+    }else if (over) {
+      text(label, x+tWidth+5, y+(tHeight/2.)-1);
+      fill(overColor);
+    }else {
+      text(label, x+tWidth+5, y+(tHeight/2.)-1);
+      fill(baseColor);
+    }
+    ellipse(x, y, tWidth, tHeight);
+    update();
+  }  
+  
+  // Updates the over field every frame
+  boolean overEvent() {
+    if (mouseX > x && mouseX < x+tWidth+textWidth(label)+7 &&
+       mouseY > y-3 && mouseY < y+tHeight+3) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
+  void update() {
+    if (overEvent()) {
+      over = true;
+    } else {
+      over = false;
+    }
+  }
+}
+
+
  
 
-//**** Buttons and mouse interaction  ****//  -----------------------------------------------
-
-Button factoryB;
-Button farmB;
-Button houseB;
-Button forestB;
-Button demolishB;
-Button resetB;
-
-Toggle showPolT;
-Toggle showDecayPolT;
-Toggle showDistT;
-Toggle showProfitT;
-
-Tile selected = null;
+//**** MOUSE INTERACTION  ****//  -----------------------------------------------
+Tile selected = null;    //The current Tile that is selected. null if no Tile selected
 Button pushed = null;   //The current button that is pushed. null if none is pushed.
+Toggle toggled = null;   //The current toggle. null if none toggled
 
 String message = "";
 String message2 = "";
@@ -467,8 +593,26 @@ int mousePX;    // Mouse press positions
 int mousePY;
 int mouseRX;   //Mouse release positions
 int mouseRY;
-int mouseCX = mouseX;     //Current mouse positions
-int mouseCY = mouseY;
+
+boolean mouseOverMap(){
+  /* Helper function: Returns true if the mouse position is over the Watershed map. false otherwise. */
+  int[] xRange = {xpos, xpos + sizeX*tileWidth};
+  int[] yRange = {ypos, ypos + sizeY*tileHeight};
+  return ((mouseX > xRange[0] && mouseX < xRange[1]) && (mouseY > yRange[0] && mouseY < yRange[1]));
+}
+
+int[] converter(int xraw, int yraw) {
+  /*Helper function: converts raw coordinates x and y in frame to tile locations   */
+  if (mouseOverMap()){
+    int xloc = 0;
+    int yloc = 0;
+    xloc = (xraw-xpos)/tileWidth;
+    yloc = (yraw-ypos)/tileHeight;
+    int[] out = {xloc, yloc};
+    return out;
+  } else return new int[] {0,0};
+}
+
 
 void mousePressed() {  
   if (factoryB.over) {      //When factory button is clicked on
@@ -623,154 +767,5 @@ void mouseClicked() {
   }else if (showProfitT.over) {
     if (toggled == showProfitT) toggled = null;
     else toggled = showProfitT;
-  }
-}
-  
-  
-
-boolean mouseOverMap(){
-  /* Helper function: Returns true if the mouse position is over the Watershed map. false otherwise. */
-  int[] xRange = {xpos, xpos + sizeX*tileWidth};
-  int[] yRange = {ypos, ypos + sizeY*tileHeight};
-  return ((mouseX > xRange[0] && mouseX < xRange[1]) && (mouseY > yRange[0] && mouseY < yRange[1]));
-}
-
-int[] converter(int xraw, int yraw) {
-  /*Helper function: converts raw coordinates x and y in frame to tile locations   */
-  if (mouseOverMap()){
-    int xloc = 0;
-    int yloc = 0;
-    xloc = (xraw-xpos)/tileWidth;
-    yloc = (yraw-ypos)/tileHeight;
-    int[] out = {xloc, yloc};
-    return out;
-  } else return new int[] {0,0};
-}
-
-
-class Button{ 
-  int x, y;                 // The x- and y-coordinates of the Button in pixels
-  int bWidth;                 // Dimensions in pixels
-  int bHeight;
-  color baseColor;           // Default color value 
-  color overColor;           //Color when mouse over button
-  color selectedColor;        //Color when button is selected
-  String label;
-  PFont baseFont = createFont("Arial", 16);
-  PFont selectedFont = createFont("Arial-Black", 16);
-  
-  boolean over = false;     //true if mouse is over button
-  
-  Button(int xp, int yp, int w, int h, color c, color o, color s, String l) {
-    x = xp;
-    y = yp;
-    bWidth = w+5;
-    bHeight = h+5;
-    baseColor = c;          //Default color
-    overColor = o;           //Color when mouse over button
-    selectedColor = s; 
-    label = l;            //Color when button is in pushed state
-  }
-  
-  void display() {
-    stroke(255);
-    strokeWeight(2);
-    fill(255);  //Color of text label
-    textAlign(LEFT,CENTER);
-    if (pushed == this) { 
-      stroke(135);
-      textFont(selectedFont);
-      text(label, x+bWidth+8, y+(bHeight/2.)-3);
-      fill(selectedColor);
-    }else if (over) {
-      textFont(baseFont);
-      text(label, x+bWidth+5, y+(bHeight/2.)-1);
-      fill(overColor);
-    }else {
-      textFont(baseFont);
-      text(label, x+bWidth+5, y+(bHeight/2.)-1);
-      fill(baseColor);
-    }
-    rect(x, y, bWidth, bHeight);
-    update();
-  }  
-  
-  // Updates the over field every frame
-  void update() {
-    if ((mouseX >= x-1) && (mouseX <= x+bWidth+textWidth(label)+8) && 
-        (mouseY >= y-1) && (mouseY <= y+bHeight+1)) {
-      over = true;
-    } else {
-      over = false;
-    }
-  }
-}
-
-Toggle toggled = null;
-
-class Toggle {
-  int x, y;                 // The x- and y-coordinates of the Button in pixels
-  int tWidth;                 // Dimensions in pixels
-  int tHeight;
-  color baseColor;           // Default color value 
-  color overColor;           //Color when mouse over button
-  color selectedColor;        //Color when button is selected
-  String label;
-  PFont baseFont = createFont("Arial", 16);
-  PFont selectedFont = createFont("Arial-Black", 16);
-  
-  boolean over = false;     //true if mouse is over button
-  
-  Toggle(int xp, int yp, int w, int h, color c, color o, color s, String l) {
-    x = xp;
-    y = yp;
-    tWidth = w+5;
-    tHeight = h+5;
-    baseColor = c;          //Default color
-    overColor = o;           //Color when mouse over button
-    selectedColor = s; 
-    label = l;            //Color when button is in pushed state
-  }
-  
-  void display() {
-    ellipseMode(CORNER);
-    stroke(255);
-    strokeWeight(2);
-    fill(255);  //Color of text label
-    textAlign(LEFT,CENTER);
-    if (toggled == this) { 
-      stroke(135);
-      textFont(selectedFont);
-      text(label, x+tWidth+8, y+(tHeight/2.)-3);
-      fill(selectedColor);
-    }else if (over) {
-      textFont(baseFont);
-      text(label, x+tWidth+5, y+(tHeight/2.)-1);
-      fill(overColor);
-    }else {
-      textFont(baseFont);
-      text(label, x+tWidth+5, y+(tHeight/2.)-1);
-      fill(baseColor);
-    }
-    ellipse(x, y, tWidth, tHeight);
-    update();
-  }  
-  
-  // Updates the over field every frame
-  boolean overEvent() {
-    if (mouseX > x && mouseX < x+tWidth &&
-       mouseY > y && mouseY < y+tHeight) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-  
-  void update() {
-    if (overEvent()) {
-      over = true;
-    } else {
-      over = false;
-    }
   }
 }
