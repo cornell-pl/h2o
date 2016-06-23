@@ -25,7 +25,7 @@ float calcDecayPollution(float pollution, float distToRiver) {
 float distToRiver(int x, int y) {
     /* Helper: Returns the distance of location <x, y> to closest River Tile. */
     float minDist = (float) Integer.MAX_VALUE;
-    for (int[] rCoords: riverTiles) {
+    for (int[] rCoords: RIVERTILES) {
       float d = dist(x, y, rCoords[0], rCoords[1]);
       if (d < minDist) minDist = d;
    }
