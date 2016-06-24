@@ -56,7 +56,7 @@ abstract class LandUse {
   
 class Factory extends LandUse {
   /* Factory gives fixed profit no matter the location */
-  final LUType type = LUType.FACTORY;
+  final LUType TYPE = LUType.FACTORY;
   
   Factory () {
    s = factoryS;
@@ -70,7 +70,7 @@ class Factory extends LandUse {
   }
   
   LUType getType() {
-    return type;
+    return TYPE;
   }
  
    @Override
@@ -81,7 +81,7 @@ class Factory extends LandUse {
 
 class Farm extends LandUse {
   /* Farm gives less profit further from river  */
-  final LUType type = LUType.FARM;
+  final LUType TYPE = LUType.FARM;
   Farm () {
     icon = FARM_YELLOW;
     baseProfit = 2000;
@@ -94,7 +94,7 @@ class Farm extends LandUse {
   }
   
   LUType getType() {
-    return type;
+    return TYPE;
   }
  
    @Override
@@ -104,7 +104,7 @@ class Farm extends LandUse {
 }
 
 class House extends LandUse {
-  final LUType type = LUType.HOUSE;
+  final LUType TYPE = LUType.HOUSE;
   House() {
     icon = HOUSE_GRAY;
     baseProfit = 1000;
@@ -117,7 +117,7 @@ class House extends LandUse {
   }
   
   LUType getType() {
-    return type;
+    return TYPE;
   }
   
   @Override
@@ -127,7 +127,7 @@ class House extends LandUse {
 }
 
 class Forest extends LandUse {
-  final LUType type = LUType.FOREST;
+  final LUType TYPE = LUType.FOREST;
   Forest () {  
     icon = FOREST_GREEN;
     baseProfit = -100;
@@ -141,7 +141,7 @@ class Forest extends LandUse {
   }
   
   LUType getType() {
-    return type;
+    return TYPE;
   }
   
   @Override
@@ -151,7 +151,7 @@ class Forest extends LandUse {
 }
 
 class Dirt extends LandUse {
-  final LUType type = LUType.DIRT;
+  final LUType TYPE = LUType.DIRT;
   Dirt() {
     icon = DIRT_BROWN;
     baseProfit = 0;
@@ -163,7 +163,7 @@ class Dirt extends LandUse {
   }
   
   LUType getType() {
-    return type;
+    return TYPE;
   }
  
   @Override
@@ -173,7 +173,7 @@ class Dirt extends LandUse {
 }
 
 class River extends LandUse {
-  final LUType type = LUType.FACTORY;
+  final LUType TYPE = LUType.FACTORY;
   River(){
     icon = RIVER_BLUE;
   }
@@ -183,7 +183,7 @@ class River extends LandUse {
   }
   
   LUType getType() {
-    return type;
+    return TYPE;
   }
  
   @Override
