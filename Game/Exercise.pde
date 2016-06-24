@@ -8,11 +8,11 @@ final int DIRT_POLLUTION = 0;
 int getPollution(LandUse lu) {
     /*Returns the default pollution value of each landUse 
     *This method is used to set the default pollution values when game is initialized*/
-    if (lu.getType() == LUType.FOREST) return FACTORY_POLLUTION;
-    else if (lu instanceof Farm) return FARM_POLLUTION;
-    else if (lu instanceof House) return HOUSE_POLLUTION;
-    else if (lu instanceof Forest) return FOREST_POLLUTION;
-    else if (lu instanceof Dirt) return DIRT_POLLUTION;
+    if (lu.getType() == LUType.FACTORY) return FACTORY_POLLUTION;     //Processing doesn't handle enums well. can only be used as enum.THING
+    else if (lu.getType() == LUType.FARM) return FARM_POLLUTION;
+    else if (lu.getType() == LUType.HOUSE) return HOUSE_POLLUTION;
+    else if (lu.getType() == LUType.FOREST) return FOREST_POLLUTION;
+    else if (lu.getType() == LUType.DIRT) return DIRT_POLLUTION;
     else return 0;
 }
 
