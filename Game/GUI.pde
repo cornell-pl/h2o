@@ -146,7 +146,7 @@ class GUI {
                     "     Type: " + selected.getLandUse().toString();
       text(text1, XPOS+460, YPOS + SIZE_Y*TILE_HEIGHT + 30);   
       String text2 = "Money: " + nfc(selected.getActualProfit(),2) + 
-                      "\nPollution: " + nfc(selected.getDecayPollution(),2) + 
+                      "\ndecayPollution: " + nfc(selected.getDecayPollution(),2) + 
                       "\nDistToRiver: " + nfc(selected.getDistToRiver(),2);
       text(text2, XPOS+460, YPOS + SIZE_Y*TILE_HEIGHT + 50);
     }
