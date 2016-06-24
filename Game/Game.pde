@@ -33,7 +33,7 @@ class Watershed {
     /* Constructor: Initializes a watershed of dimension x*y units */
     initializeWithFixedForest();
     setTileVals();
-  }     //<>// //<>//
+  }     //<>//
   
   void initializeWithFixedForest() {
     gameMap = new Tile[SIZE_X][SIZE_Y];
@@ -96,6 +96,19 @@ class Watershed {
   }
   
   //**** Methods to calculate pollution / money according various models  ****//  -----------------------------------------------
+  Tile[] getAllTiles(){
+    Tile[] allTiles = new Tile[(SIZE_X+1)*(SIZE_Y+1)];
+    int i = 0;
+    for (Tile[] tileRow : gameMap) {
+      for (Tile t: tileRow) {
+        allTiles[i] = t;
+        i++;
+      }
+    }
+    return allTiles;
+  }
+  
+  
   void sumLandUses() {
     /* Sums the number of each landUse  */
     factories = 0;
