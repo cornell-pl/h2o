@@ -97,7 +97,7 @@ class Watershed {
   
   //**** Methods to calculate pollution / money according various models  ****//  -----------------------------------------------
   Tile[] getAllTiles(){
-    Tile[] allTiles = new Tile[(SIZE_X+1)*(SIZE_Y+1)];
+    Tile[] allTiles = new Tile[(SIZE_X)*(SIZE_Y)];
     int i = 0;
     for (Tile[] tileRow : gameMap) {
       for (Tile t: tileRow) {

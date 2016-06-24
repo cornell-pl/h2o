@@ -24,7 +24,7 @@ float calcDecayPollution(float pollution, float distToRiver) {
 
 float distToRiver(int x, int y) {
     /* Helper: Returns the distance of location <x, y> to closest River Tile. */
-    float minDist = (float) Integer.MAX_VALUE;
+    float minDist = Float.MAX_VALUE;
     for (int[] rCoords: RIVER_TILES) {
       float d = dist(x, y, rCoords[0], rCoords[1]);
       if (d < minDist) minDist = d;
@@ -36,11 +36,10 @@ float sumDecayPollution() {
   /* Linear decay model of pollution that enters the river.
   Returns total pollution entering river from all sources according decay model defined for each LandUse*/
   float dPollutionTotal = 0.;
-  for (Tile[] tileRow : WS.gameMap) {
-    for (Tile t: tileRow) {   //Calculate pollution contribution from t after linear decay
-        dPollutionTotal += t.getDecayPollution();
-      }
-   }
+  Tile[] allTiles = WS.getAllTiles();
+  for (Tile t: allTiles) {   //Calculate pollution contribution from t after linear decay
+     dPollutionTotal += t.getDecayPollution();
+  }
    //if (dPollutionTotal < 0.) dPollutionTotal = 1.;
    return dPollutionTotal;
 }
