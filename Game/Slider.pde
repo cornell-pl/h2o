@@ -1,7 +1,4 @@
-Slider factoryS;
-Slider farmS;
-Slider houseS;
-Slider forestS;
+
 
 class Slider { 
   final int BAR_WIDTH = 180;

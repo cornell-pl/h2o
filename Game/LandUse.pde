@@ -49,9 +49,9 @@ abstract class LandUse {
 class Factory extends LandUse {
   /* Factory gives fixed profit no matter the location */
   final LUType type = LUType.FACTORY;
-  s = factoryS;
   
   Factory () {
+   s = factoryS;
    icon = FACTORY_BROWN;   //Color code for drawing on map
    baseProfit = 5000;
    }

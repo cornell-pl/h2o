@@ -17,6 +17,11 @@ Toggle showDecayPolT;
 Toggle showDistT;
 Toggle showProfitT;
 
+Slider factoryS;
+Slider farmS;
+Slider houseS;
+Slider forestS;
+
 final Factory fa = new Factory();     //T his would be resolved bty making calcActualProfit() static, but that will mess up Tile.changeLandU()
 final Farm fm = new Farm();
 final House hs = new House();

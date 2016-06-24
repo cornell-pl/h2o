@@ -33,7 +33,7 @@ class Watershed {
     /* Constructor: Initializes a watershed of dimension x*y units */
     initializeWithFixedForest();
     setTileVals();
-  }     //<>//
+  }     //<>// //<>//
   
   void initializeWithFixedForest() {
     gameMap = new Tile[SIZE_X][SIZE_Y];
