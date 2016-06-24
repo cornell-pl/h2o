@@ -16,6 +16,7 @@ Toggle showPolT;
 Toggle showDecayPolT;
 Toggle showDistT;
 Toggle showProfitT;
+Toggle sliderT;
 
 Slider factoryS;
 Slider farmS;
@@ -45,6 +46,7 @@ class GUI {
     showDecayPolT = new Toggle(XPOSB+260, YPOSB+750, "Show decayPollution");
     showDistT = new Toggle(XPOSB+260, YPOSB+810, "Show distToRiver");
     showProfitT = new Toggle(XPOSB+260, YPOSB+870, "Show Money");
+    sliderT = new Toggle(XPOSB+260, YPOSB+240, "Show sliders");
 
     factoryS = new Slider(XPOSB+260, YPOSB, 0, 20, getPollution(fa), "Factory", FACTORY_BROWN);
     farmS = new Slider(XPOSB+260, YPOSB + 60, 0, 20, getPollution(fm), "Farm", FARM_YELLOW);
@@ -78,6 +80,7 @@ class GUI {
     showDecayPolT.display();
     showDistT.display();
     showProfitT.display();
+    sliderT.display();
     
     factoryB.display();
     farmB.display();
@@ -86,10 +89,12 @@ class GUI {
     demolishB.display();
     resetB.display();
     
-    factoryS.display();
-    farmS.display();
-    houseS.display();
-    forestS.display();
+    if (showSlider == true) {
+      factoryS.display();
+      farmS.display();
+      houseS.display();
+      forestS.display();
+    }
   }
   
   
@@ -549,9 +554,10 @@ class Toggle {
     textFont(BASEFONT);
     fill(255);  //Color of text label
     textAlign(LEFT,CENTER);
-    if (toggled == this) { 
+    if ((toggled == this) || (this.label.equals("Show sliders") && showSlider == true)) { 
       text(label, x+tWidth+5, y+(tHeight/2.)-1);
       fill(selectedColor);
+      if (this.label.equals("Show sliders")) fill(#B72416);
     }else if (over) {
       text(label, x+tWidth+5, y+(tHeight/2.)-1);
       fill(overColor);
@@ -589,6 +595,7 @@ class Toggle {
 Tile selected = null;    //The current Tile that is selected. null if no Tile selected
 Button pushed = null;   //The current button that is pushed. null if none is pushed.
 Toggle toggled = null;   //The current toggle. null if none toggled
+boolean showSlider = false;
 
 String message = "";
 String message2 = "";
@@ -770,5 +777,9 @@ void mouseClicked() {
   }else if (showProfitT.over) {
     if (toggled == showProfitT) toggled = null;
     else toggled = showProfitT;
+  }
+  else if (sliderT.over) {
+    if (showSlider == true) showSlider = false;
+    else showSlider = true;
   }
 }
