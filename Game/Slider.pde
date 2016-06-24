@@ -1,5 +1,3 @@
-
-
 class Slider { 
   final int BAR_WIDTH = 180;
   final int BAR_HEIGHT = 20;    // width and height of bar 

@@ -27,13 +27,20 @@ abstract class LandUse {
   }
   
   int getSliderPollution() {
-    try{ 
+    try{
       return this.s.getVal();
-    }catch(NullPointerException e){
-      if (this instanceof Forest) {
-        return forestS.getVal();       //Hotfix for forest pollution not updating when first init
-      }return getPollution(this);
-    }
+    } catch(NullPointerException e){     //This is when those first forests(Game) and example types(GUI) initialized has s field pointed to null
+      if (this instanceof Factory) {
+        this.s = factoryS;
+      } else if (this instanceof Farm){
+        this.s = farmS;
+      } else if (this instanceof House){
+        this.s = houseS;
+      } else if (this instanceof Forest){
+        this.s = forestS;
+      }
+      return getPollution(this);
+    }      
   }
   
   boolean equals(Class c){
