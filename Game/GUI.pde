@@ -17,6 +17,10 @@ Toggle showDecayPolT;
 Toggle showDistT;
 Toggle showProfitT;
 
+final Factory fa = new Factory();     //T his would be resolved bty making calcActualProfit() static, but that will mess up Tile.changeLandU()
+final Farm fm = new Farm();
+final House hs = new House();
+final Forest fo = new Forest();
 
 class GUI {
   final PFont AXISFONT = createFont("Calibri", 12);
@@ -37,15 +41,16 @@ class GUI {
     showDistT = new Toggle(XPOSB+260, YPOSB+810, "Show distToRiver");
     showProfitT = new Toggle(XPOSB+260, YPOSB+870, "Show Money");
 
-    factoryS = new Slider(XPOSB+260, YPOSB, 0, 20, FACTORY_POLLUTION, "Factory", FACTORY_BROWN);
-    farmS = new Slider(XPOSB+260, YPOSB + 60, 0, 20, FARM_POLLUTION, "Farm", FARM_YELLOW);
-    houseS = new Slider(XPOSB+260, YPOSB + 120, 0, 20, HOUSE_POLLUTION, "House", HOUSE_GRAY);
-    forestS = new Slider(XPOSB+260, YPOSB + 180, -10, 10, FOREST_POLLUTION, "Forest", FOREST_GREEN);
+    factoryS = new Slider(XPOSB+260, YPOSB, 0, 20, getPollution(fa), "Factory", FACTORY_BROWN);
+    farmS = new Slider(XPOSB+260, YPOSB + 60, 0, 20, getPollution(fm), "Farm", FARM_YELLOW);
+    houseS = new Slider(XPOSB+260, YPOSB + 120, 0, 20, getPollution(hs), "House", HOUSE_GRAY);
+    forestS = new Slider(XPOSB+260, YPOSB + 180, -10, 10, getPollution(fo), "Forest", FOREST_GREEN);
     
-    fa = new Factory();     //T his would be resolved bty making calcActualProfit() static, but that will mess up Tile.changeLandU()
-    fm = new Farm();
-    hs = new House();
-    fo = new Forest();
+    fa.s = factoryS;
+    fm.s = farmS;
+    hs.s = houseS;
+    fo.s = forestS;
+    
   }
   
   void render() {
@@ -121,11 +126,6 @@ class GUI {
     textAlign(LEFT);
   }
     
-   Factory fa;     //This would be resolved bty making calcActualProfit() static, but that will mess up Tile.changeLandU()
-   Farm fm;
-   House hs;
-   Forest fo;
-  
   void showSelectedTile() {    
     /* Accents the selected tile, displays tile information */
     //Draws the box
