@@ -110,7 +110,7 @@ class GUI {
   
   void drawGameBoard(){
     /* Draws the game board */
-    for (Tile[] tileRow : WS.gameMap) {
+    for (Tile[] tileRow : WS.GAME_MAP) {
       for (Tile t: tileRow) {
         drawTile(t.getX(), t.getY(), t.getLandUse().getIcon(), 255);
       }
@@ -172,7 +172,7 @@ class GUI {
     if (mouseOverMap() && !mousePressed) {   //Highlight tile mouse is over
       int[] pos = converter(mouseX, mouseY);
       color hc;
-      over = WS.gameMap[pos[0]][pos[1]];
+      over = WS.GAME_MAP[pos[0]][pos[1]];
         if (!(over.getLandUse() instanceof River)) {
            float d = over.getDistToRiver();
           if (pushed == factoryB) {
@@ -241,7 +241,7 @@ class GUI {
       projectedProfit = 0;     //calculate purchase info
       projectedPollution = 0;
       for (int[] p : highlighted) {
-        Tile t = WS.gameMap[p[0]][p[1]];
+        Tile t = WS.GAME_MAP[p[0]][p[1]];
         float d = t.getDistToRiver();
         if (! (t.getLandUse() instanceof River)) {
           if  (pushed == factoryB) {    
@@ -415,7 +415,7 @@ class GUI {
  }
  
  void showPollution() {
-   for (Tile[] tileRow : WS.gameMap) {
+   for (Tile[] tileRow : WS.GAME_MAP) {
       for (Tile t: tileRow) {
         textFont(MESSAGEFONT);
         textSize(10);
@@ -428,7 +428,7 @@ class GUI {
  
  void showDecayPollution() {
    float total = 0.;
-   for (Tile[] tileRow : WS.gameMap) {
+   for (Tile[] tileRow : WS.GAME_MAP) {
       for (Tile t: tileRow) {
         textFont(MESSAGEFONT);
         textSize(10);
@@ -441,7 +441,7 @@ class GUI {
  }
  
  void showDist() {
-   for (Tile[] tileRow : WS.gameMap) {
+   for (Tile[] tileRow : WS.GAME_MAP) {
       for (Tile t: tileRow) {
         textFont(MESSAGEFONT);
         textSize(10);
@@ -453,7 +453,7 @@ class GUI {
  }
  
  void showProfit() {
-   for (Tile[] tileRow : WS.gameMap) {
+   for (Tile[] tileRow : WS.GAME_MAP) {
       for (Tile t: tileRow) {
         textFont(MESSAGEFONT);
         textSize(10);
@@ -714,7 +714,7 @@ void mouseReleased() {
     mouseRY = mouseY;
     int[] posP = converter(mousePX, mousePY);
     int[] posR = converter(mouseRX, mouseRY);
-    selected = WS.gameMap[posR[0]][posR[1]];
+    selected = WS.GAME_MAP[posR[0]][posR[1]];
     int count = 0;
     String thing = "";
     boolean s = false;
@@ -747,7 +747,7 @@ void mouseReleased() {
       }
     }
     if (pushed == null) {
-      selected = WS.gameMap[posR[0]][posR[1]];     //Select tile if no button is pushed and clicked inside map
+      selected = WS.GAME_MAP[posR[0]][posR[1]];     //Select tile if no button is pushed and clicked inside map
     } 
     if (pushed != null) selected = null;     //Remove selection when building things
     

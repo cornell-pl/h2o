@@ -21,7 +21,7 @@ void draw() {
 
 class Watershed {
   /* Contains all elements of the Game and implements the GUI. All user functions can be accessed from this class */
-  Tile[][] gameMap; //2D Matrix of all grid Tiles on game map
+  final Tile[][] GAME_MAP = new Tile[SIZE_X][SIZE_Y]; //2D Matrix of all grid Tiles on game map
   int factories = 0;
   int farms = 0;
   int houses = 0;
@@ -38,36 +38,34 @@ class Watershed {
   }     //<>//
   
   void initializeWithFixedForest() {
-    gameMap = new Tile[SIZE_X][SIZE_Y];
     for (int j=0; j<SIZE_Y; j++) {
       for (int i=0; i<SIZE_X; i++) { 
          Dirt di = new Dirt();
          Tile t = new Tile(di, i, j);
-         gameMap[i][j] = t;
+         GAME_MAP[i][j] = t;
         }
       }
     int[][] fCoords = { { 1 , 1 },  { 1 , 2 },  { 1 , 5 },  { 1 , 18 },  { 1 , 19 },  { 2 , 2 },  { 2 , 3 },  { 2 , 4 },  { 2 , 17 },  { 2 , 18 },  { 2 , 19 },  { 2 , 20 },  { 3 , 2 },  { 3 , 3 },  { 3 , 4 },  { 3 , 5 },  { 3 , 16 },  { 3 , 17 },  { 3 , 18 },  { 3 , 19 },  { 4 , 2 },  { 4 , 3 },  { 4 , 4 },  { 4 , 15 },  { 4 , 16 },  { 4 , 17 },  { 4 , 18 },  { 5 , 4 },  { 5 , 17 },  { 5 , 25 },  { 6 , 16 },  { 6 , 17 },  { 6 , 18 },  { 7 , 2 },  { 7 , 17 },  { 7 , 18 },  { 7 , 19 },  { 8 , 17 },  { 8 , 18 },  { 10 , 24 },  { 11 , 23 },  { 11 , 24 },  { 11 , 25 },  { 12 , 23 },  { 12 , 24 },  { 12 , 25 },  { 14 , 20 },  { 14 , 21 },  { 15 , 19 },  { 15 , 20 },  { 15 , 21 },  { 15 , 22 },  { 15 , 23 },  { 16 , 2 },  { 16 , 18 },  { 16 , 19 },  { 16 , 20 },  { 16 , 21 },  { 17 , 18 },  { 17 , 19 },  { 17 , 20 },  { 18 , 4 },  { 21 , 20 },  { 21 , 22 },  { 21 , 23 },  { 22 , 3 },  { 22 , 4 },  { 22 , 9 },  { 22 , 19 },  { 22 , 20 },  { 22 , 21 },  { 22 , 22 },  { 22 , 23 },  { 23 , 2 },  { 23 , 3 },  { 23 , 4 },  { 23 , 18 },  { 23 , 19 },  { 23 , 20 },  { 23 , 21 },  { 23 , 22 },  { 23 , 23 },  { 24 , 1 },  { 24 , 2 },  { 24 , 3 },  { 24 , 4 },  { 24 , 5 },  { 24 , 19 },  { 24 , 20 },  { 24 , 21 },  { 24 , 22 },  { 24 , 23 },  { 25 , 2 },  { 25 , 3 },  { 25 , 4 },  { 25 , 5 },  { 25 , 12 },  { 25 , 13 },  { 25 , 20 },  { 25 , 21 },  { 25 , 22 },  { 26 , 3 },  { 26 , 4 },  { 26 , 5 },  { 26 , 6 },  { 26 , 12 },  { 26 , 13 },  { 26 , 23 },  { 26 , 24 },  { 26 , 25 },  { 27 , 4 },  { 27 , 12 },  { 27 , 24 },  { 27 , 25 },  { 27 , 26 },  { 28 , 25 },  { 28 , 26 } };
     for (int[] c: fCoords) { 
       Forest fo = new Forest();
-      gameMap[c[0]][c[1]].landU = fo;
+      GAME_MAP[c[0]][c[1]].landU = fo;
     }
     initializeRiver2();    //Creates the river
   }
   
   
   void initializeWithRandomForest() {
-    gameMap = new Tile[SIZE_X][SIZE_Y];
     for (int j=0; j<SIZE_Y; j++) {
       for (int i=0; i<SIZE_X; i++) { 
          float r = random(0,1);
          if (r > 0.9) {
            Forest fo = new Forest();
            Tile t = new Tile(fo, i, j);
-           gameMap[i][j] = t;
+           GAME_MAP[i][j] = t;
          }else{
            Dirt di = new Dirt();
            Tile t = new Tile(di, i, j);
-           gameMap[i][j] = t;
+           GAME_MAP[i][j] = t;
          }
       }
     }
@@ -77,7 +75,7 @@ class Watershed {
   void setTileVals() {
     /* Sets the pollution, ld pollution and distToRiver for each tile.
     * Called once after map is initialized */
-    for (Tile[] tileRow : gameMap) {
+    for (Tile[] tileRow : GAME_MAP) {
       for (Tile t: tileRow) {
         t.pollution = getPollution(t.getLandUse());
         t.distToRiver = distToRiver(t.getX(),t.getY());
@@ -93,8 +91,8 @@ class Watershed {
     *River design 2 used. (See Excel sheet)*/
     for (int[] c: RIVER_TILES) { 
       River r = new River();
-      gameMap[c[0]][c[1]].landU = r;
-      riverTiles.add(gameMap[c[0]][c[1]]);
+      GAME_MAP[c[0]][c[1]].landU = r;
+      riverTiles.add(GAME_MAP[c[0]][c[1]]);
     }
   }
   
@@ -102,7 +100,7 @@ class Watershed {
   Tile[] getAllTiles(){
     Tile[] allTiles = new Tile[(SIZE_X)*(SIZE_Y)];
     int i = 0;
-    for (Tile[] tileRow : gameMap) {
+    for (Tile[] tileRow : GAME_MAP) {
       for (Tile t: tileRow) {
         allTiles[i] = t;
         i++;
@@ -117,7 +115,7 @@ class Watershed {
     factories = 0;
     farms = 0;
     houses = 0;
-    for (Tile[] tileRow : gameMap) {
+    for (Tile[] tileRow : GAME_MAP) {
       for (Tile t: tileRow) {
         if (t.getLandUse() instanceof Factory) factories ++;
         if (t.getLandUse() instanceof Farm) farms++;
@@ -129,7 +127,7 @@ class Watershed {
   int sumPollution() {
     /* Returns simple sum of pollution generated for all Tiles */
     int totalPollution = 0;
-    for (Tile[] tileRow : gameMap) {
+    for (Tile[] tileRow : GAME_MAP) {
       for (Tile t: tileRow) {
          totalPollution += t.getTilePollution();
       }
@@ -141,7 +139,7 @@ class Watershed {
   float sumActualProfits() {
     /* Returns the total actual profits made from all the property on the map */
     float profit = 0;
-    for (Tile[] tileRow : gameMap) {
+    for (Tile[] tileRow : GAME_MAP) {
       for (Tile t: tileRow) { 
         if (! (t.getLandUse() instanceof River)){
         profit += t.getActualProfit();
@@ -157,7 +155,7 @@ class Watershed {
   }
   
   void updatePol() {
-    for (Tile[] tileRow : gameMap) {
+    for (Tile[] tileRow : GAME_MAP) {
       for (Tile t: tileRow) { 
         t.update();
       }
@@ -183,7 +181,7 @@ class Watershed {
     /* Places a new Factory at Location <x, y> on the map. 
     Returns true if successful. False otherwise.  */
     if (factories < FACTORY_QUOTA) {
-      Tile t = gameMap[x][y];
+      Tile t = GAME_MAP[x][y];
       if (! (t.getLandUse() instanceof River)) {
         Factory fc = new Factory();
         t.changeLandUse(fc);
@@ -203,7 +201,7 @@ class Watershed {
     /* Places a new Farm at Location <x, y> on the map. 
     Returns true if successful. False otherwise. */
     if (farms < FARM_QUOTA) {
-      Tile t = gameMap[x][y];
+      Tile t = GAME_MAP[x][y];
       if (! (t.getLandUse() instanceof River)) {
         Farm fm = new Farm();
         t.changeLandUse(fm); 
@@ -223,7 +221,7 @@ class Watershed {
     /* Places a new House at Location <x, y> on the map. 
     Returns true if successful. False otherwise. */
     if (houses < HOUSE_QUOTA) {
-      Tile t = gameMap[x][y];
+      Tile t = GAME_MAP[x][y];
       if (! (t.getLandUse() instanceof River)) {
         House hs = new House();
         t.changeLandUse(hs); 
@@ -242,7 +240,7 @@ class Watershed {
   boolean addForest(int x, int y) {
     /* Places a new Forest at Location <x, y> on the map. 
     Returns true if successful. False otherwise.  */
-    Tile t = gameMap[x][y];
+    Tile t = GAME_MAP[x][y];
     if (! (t.getLandUse() instanceof River)) {
       Forest fo = new Forest();
       t.changeLandUse(fo); 
@@ -258,7 +256,7 @@ class Watershed {
   
   boolean addDirt(int x, int y) {
     /* Places a new Dirt at Location <x, y> on the map. */
-    Tile t = gameMap[x][y];
+    Tile t = GAME_MAP[x][y];
     Dirt di = new Dirt();
     t.changeLandUse(di); 
     return true;
@@ -267,7 +265,7 @@ class Watershed {
   boolean removeLandUse(int x, int y) {
     /* Removes LandUse at Location <x, y> on the map. (changes them to Dirt) 
     Returns true if successful. False otherwise.*/
-    Tile t = gameMap[x][y];
+    Tile t = GAME_MAP[x][y];
     if (! (t.getLandUse() instanceof River)) {
       LandUse olu = t.getLandUse();   //Original land use
       if (olu instanceof Dirt) {
@@ -294,34 +292,34 @@ class Watershed {
       String T = t.getLandUse().toString();        //The String representing the name of the landUse;
       ArrayList<Tile> n = new ArrayList<Tile>();
           if(t.getX() > 0) {
-            Tile left = gameMap[t.getX()-1][t.getY()];
+            Tile left = GAME_MAP[t.getX()-1][t.getY()];
             n.add(left);
             if (t.getY() > 0) {
-              Tile topLeft = gameMap[t.getX()-1][t.getY()-1];
+              Tile topLeft = GAME_MAP[t.getX()-1][t.getY()-1];
               n.add(topLeft);
             }
             if (t.getY() < SIZE_Y-1) {
-              Tile bottomLeft = gameMap[t.getX()-1][t.getY()+1];
+              Tile bottomLeft = GAME_MAP[t.getX()-1][t.getY()+1];
               n.add(bottomLeft);
             }
           }
           if (t.getX() < SIZE_X -1) {
-            Tile right = gameMap[t.getX()+1][t.getY()];
+            Tile right = GAME_MAP[t.getX()+1][t.getY()];
             n.add(right);
             if (t.getY() > 0) {
-              Tile topRight = gameMap[t.getX()+1][t.getY()-1];
+              Tile topRight = GAME_MAP[t.getX()+1][t.getY()-1];
               n.add(topRight);
             }
             if (t.getY() < SIZE_Y -1) {
-              Tile bottomRight = gameMap[t.getX()+1][t.getY()+1];
+              Tile bottomRight = GAME_MAP[t.getX()+1][t.getY()+1];
               n.add(bottomRight);
           }
           if (t.getY() > 0) {
-            Tile up = gameMap[t.getX()][t.getY()-1];
+            Tile up = GAME_MAP[t.getX()][t.getY()-1];
             n.add(up);
           }
           if (t.getY() < SIZE_Y -1) {
-            Tile down = gameMap[t.getX()][t.getY()+1];
+            Tile down = GAME_MAP[t.getX()][t.getY()+1];
             n.add(down);
           }
 
