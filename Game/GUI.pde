@@ -5,6 +5,11 @@ final int TILE_HEIGHT = 30;    //height of a tile in pixels
 final int XPOSB = XPOS + SIZE_X*TILE_WIDTH + 40;    //Drawing dimensions. XPOS and ypos are the coordinates of the top most button. 
 final int YPOSB = 90;    //All buttons scale with respect to these
 
+final Factory FA = new Factory();     //a bunch of land types to retrieve their fields in GUI
+final Farm FM = new Farm();
+final House HS = new House();
+final Forest FO = new Forest();
+
 Button factoryB;
 Button farmB;
 Button houseB;
@@ -23,10 +28,7 @@ Slider farmS;
 Slider houseS;
 Slider forestS;
 
-final Factory fa = new Factory();     //T his would be resolved bty making calcActualProfit() static, but that will mess up Tile.changeLandU()
-final Farm fm = new Farm();
-final House hs = new House();
-final Forest fo = new Forest();
+
 
 class GUI {
   final PFont AXISFONT = createFont("Calibri", 12);
@@ -48,15 +50,15 @@ class GUI {
     showProfitT = new Toggle(XPOSB+260, YPOSB+870, "Show Money");
     sliderT = new Toggle(XPOSB+260, YPOSB+240, "Show sliders");
 
-    factoryS = new Slider(XPOSB+260, YPOSB, 0, 20, getPollution(fa), "Factory", FACTORY_BROWN);
-    farmS = new Slider(XPOSB+260, YPOSB + 60, 0, 20, getPollution(fm), "Farm", FARM_YELLOW);
-    houseS = new Slider(XPOSB+260, YPOSB + 120, 0, 20, getPollution(hs), "House", HOUSE_GRAY);
-    forestS = new Slider(XPOSB+260, YPOSB + 180, -10, 10, getPollution(fo), "Forest", FOREST_GREEN);
+    factoryS = new Slider(XPOSB+260, YPOSB, 0, 20, getPollution(FA), "Factory", FACTORY_BROWN);
+    farmS = new Slider(XPOSB+260, YPOSB + 60, 0, 20, getPollution(FM), "Farm", FARM_YELLOW);
+    houseS = new Slider(XPOSB+260, YPOSB + 120, 0, 20, getPollution(HS), "House", HOUSE_GRAY);
+    forestS = new Slider(XPOSB+260, YPOSB + 180, -10, 10, getPollution(FO), "Forest", FOREST_GREEN);
     
-    fa.s = factoryS;
-    fm.s = farmS;
-    hs.s = houseS;
-    fo.s = forestS;
+    FA.s = factoryS;
+    FM.s = farmS;
+    HS.s = houseS;
+    FO.s = forestS;
     
   }
   
@@ -176,30 +178,30 @@ class GUI {
         if (!(over.getLandUse() instanceof River)) {
            float d = over.getDistToRiver();
           if (pushed == factoryB) {
-            hc = fa.getIcon();
-            projectedProfit = fa.calcActualProfit(d);
-            projectedPollution = calcDecayPollution(fa.s.getVal(), d);
+            hc = FA.getIcon();
+            projectedProfit = FA.calcActualProfit(d);
+            projectedPollution = calcDecayPollution(FA.s.getVal(), d);
             purchaseInfo = "Money: + $" + nfc(projectedProfit,2);
             pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
           }
           else if (pushed == farmB) {
-            hc = fm.getIcon();
-            projectedProfit = fm.calcActualProfit(d);
-            projectedPollution = calcDecayPollution(fm.s.getVal(), d);
+            hc = FM.getIcon();
+            projectedProfit = FM.calcActualProfit(d);
+            projectedPollution = calcDecayPollution(FM.s.getVal(), d);
             purchaseInfo = "Money: + $" + nfc(projectedProfit,2);
             pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
           }
           else if (pushed == houseB) {
-            hc = hs.getIcon();
-            projectedProfit = hs.calcActualProfit(d);
-            projectedPollution = calcDecayPollution(hs.s.getVal(), d);
+            hc = HS.getIcon();
+            projectedProfit = HS.calcActualProfit(d);
+            projectedPollution = calcDecayPollution(HS.s.getVal(), d);
             purchaseInfo = "Money: + $" + nfc(projectedProfit,2);
             pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
           }
           else if (pushed == forestB) {
-            hc = fo.getIcon();
-            projectedProfit = fo.calcActualProfit(d);
-            projectedPollution = calcDecayPollution(fo.s.getVal(), d);
+            hc = FO.getIcon();
+            projectedProfit = FO.calcActualProfit(d);
+            projectedPollution = calcDecayPollution(FO.s.getVal(), d);
             purchaseInfo = "Money: - $" + nfc(abs(projectedProfit),2);
             pollutionInfo = "Pollution: - " + nfc(abs(projectedPollution),2);
           } else {                //Button not pressed
@@ -246,23 +248,23 @@ class GUI {
         if (! (t.getLandUse() instanceof River)) {
           if  (pushed == factoryB) {    
             hc = FACTORY_BROWN;      //highlight color
-            projectedProfit += fa.calcActualProfit(d);  
-            projectedPollution += calcDecayPollution(fa.s.getVal(), d);
+            projectedProfit += FA.calcActualProfit(d);  
+            projectedPollution += calcDecayPollution(FA.s.getVal(), d);
           } 
           else if (pushed == farmB) {
             hc = FARM_YELLOW;
-            projectedProfit += fm.calcActualProfit(d);
-            projectedPollution += calcDecayPollution(fm.s.getVal(), d);
+            projectedProfit += FM.calcActualProfit(d);
+            projectedPollution += calcDecayPollution(FM.s.getVal(), d);
           }
           else if (pushed == houseB) {
             hc = HOUSE_GRAY;
-            projectedProfit += hs.calcActualProfit(d);
-            projectedPollution += calcDecayPollution(hs.s.getVal(), d);
+            projectedProfit += HS.calcActualProfit(d);
+            projectedPollution += calcDecayPollution(HS.s.getVal(), d);
           }
           else if (pushed == forestB) {
             hc = #1EC610;
-            projectedProfit += fo.calcActualProfit(d);
-            projectedPollution += calcDecayPollution(fo.s.getVal(), d);
+            projectedProfit += FO.calcActualProfit(d);
+            projectedPollution += calcDecayPollution(FO.s.getVal(), d);
           }
           else if (pushed == demolishB){
             hc = DEMOLISH_BEIGE;
