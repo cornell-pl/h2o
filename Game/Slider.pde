@@ -8,6 +8,8 @@ class Slider {
   final int BAR_HEIGHT = 20;    // width and height of bar 
   final int S_WIDTH = 20;        //width and height of slider
   final int S_HEIGHT = BAR_HEIGHT;
+  final PFont sliderFont = createFont("Calibri", 14);
+  
   int x, y;       // x and y position of bar
   float spos;  // x position of slider
   int minVal;        //Min and max val of slider
@@ -19,8 +21,6 @@ class Slider {
   boolean locked;
   String label;
   color col;
-  
-  PFont sliderFont = createFont("Calibri", 14);
   
   Slider(int xp, int yp, int minV, int maxV, float defaultV, String l, color c) {
     x = xp;

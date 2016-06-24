@@ -516,6 +516,7 @@ class Button{
 
 
 class Toggle {
+  final PFont BASEFONT = createFont("Arial", 14);  
   int x, y;                 // The x- and y-coordinates of the Button in pixels
   int tWidth;                 // Dimensions in pixels
   int tHeight;
@@ -523,8 +524,6 @@ class Toggle {
   color overColor;           //Color when mouse over button
   color selectedColor;        //Color when button is selected
   String label;
-  PFont BASEFONT = createFont("Arial", 14);
-  
   boolean over = false;     //true if mouse is over button
   
   Toggle(int xp, int yp, String l) {
