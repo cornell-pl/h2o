@@ -5,7 +5,7 @@ final color FOREST_GREEN = #5DD65E;
 final color HOUSE_GRAY = #9CC2C4;
 final color DIRT_BROWN = #AF956A;
 final color DEMOLISH_BEIGE = #F5DAB9;
-
+int count = 0;
 //Setting the build quota for each landUse
 final int FACTORY_QUOTA = 40;
 final int FARM_QUOTA = 60;
@@ -28,16 +28,17 @@ abstract class LandUse {
   
   int getSliderPollution() {
     try{
-      return this.s.getVal();
+      return s.getVal();
     } catch(NullPointerException e){     //This is when those first forests(Game) and example types(GUI) initialized has s field pointed to null
+      count++;
       if (this instanceof Factory) {
-        this.s = factoryS;
+        s = factoryS;
       } else if (this instanceof Farm){
-        this.s = farmS;
+        s = farmS;
       } else if (this instanceof House){
-        this.s = houseS;
+        s = houseS;
       } else if (this instanceof Forest){
-        this.s = forestS;
+        s = forestS;
       }
       return getPollution(this);
     }      

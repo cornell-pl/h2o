@@ -63,7 +63,9 @@ class Tile {
   }
   
   void update() {
-    pollution = landU.getSliderPollution();
+    if (! (landU instanceof Dirt) && !(landU instanceof River)){
+      pollution = landU.getSliderPollution();
+    }
     if (! (landU instanceof Forest) && !(landU instanceof River)) {
       decayPollution = calcDecayPollution(pollution, distToRiver);
     } else decayPollution = pollution;
