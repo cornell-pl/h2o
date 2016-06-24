@@ -438,7 +438,6 @@ class GUI {
         total += t.getDecayPollution();
       }
    }
-   text("Decay Pollution total " + total, 1300, 10);
  }
  
  void showDist() {
