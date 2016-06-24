@@ -33,11 +33,11 @@ class Watershed {
   
   Watershed(int x, int y) {
     /* Constructor: Initializes a watershed of dimension x*y units */
-    initializeWithFixedForest();
+    initializeWithForest();
     setTileVals();
   }     //<>//
   
-  void initializeWithFixedForest() {
+  void initializeWithForest() {
     for (int j=0; j<SIZE_Y; j++) {
       for (int i=0; i<SIZE_X; i++) { 
          Dirt di = new Dirt();
@@ -49,25 +49,6 @@ class Watershed {
     for (int[] c: fCoords) { 
       Forest fo = new Forest();
       GAME_MAP[c[0]][c[1]].landU = fo;
-    }
-    initializeRiver2();    //Creates the river
-  }
-  
-  
-  void initializeWithRandomForest() {
-    for (int j=0; j<SIZE_Y; j++) {
-      for (int i=0; i<SIZE_X; i++) { 
-         float r = random(0,1);
-         if (r > 0.9) {
-           Forest fo = new Forest();
-           Tile t = new Tile(fo, i, j);
-           GAME_MAP[i][j] = t;
-         }else{
-           Dirt di = new Dirt();
-           Tile t = new Tile(di, i, j);
-           GAME_MAP[i][j] = t;
-         }
-      }
     }
     initializeRiver2();    //Creates the river
   }
@@ -282,68 +263,4 @@ class Watershed {
       return false;
     }
   }
-  
-  
-  //**** Heat map methods  ****//  -----------------------------------------------
-  
-  ArrayList<Tile> neighbors = new ArrayList<Tile>();
-  void getNeighbors(Tile t) { 
-    if (!(t.getLandUse() instanceof Forest)) {
-      String T = t.getLandUse().toString();        //The String representing the name of the landUse;
-      ArrayList<Tile> n = new ArrayList<Tile>();
-          if(t.getX() > 0) {
-            Tile left = GAME_MAP[t.getX()-1][t.getY()];
-            n.add(left);
-            if (t.getY() > 0) {
-              Tile topLeft = GAME_MAP[t.getX()-1][t.getY()-1];
-              n.add(topLeft);
-            }
-            if (t.getY() < SIZE_Y-1) {
-              Tile bottomLeft = GAME_MAP[t.getX()-1][t.getY()+1];
-              n.add(bottomLeft);
-            }
-          }
-          if (t.getX() < SIZE_X -1) {
-            Tile right = GAME_MAP[t.getX()+1][t.getY()];
-            n.add(right);
-            if (t.getY() > 0) {
-              Tile topRight = GAME_MAP[t.getX()+1][t.getY()-1];
-              n.add(topRight);
-            }
-            if (t.getY() < SIZE_Y -1) {
-              Tile bottomRight = GAME_MAP[t.getX()+1][t.getY()+1];
-              n.add(bottomRight);
-          }
-          if (t.getY() > 0) {
-            Tile up = GAME_MAP[t.getX()][t.getY()-1];
-            n.add(up);
-          }
-          if (t.getY() < SIZE_Y -1) {
-            Tile down = GAME_MAP[t.getX()][t.getY()+1];
-            n.add(down);
-          }
-
-        for (Tile x : n) {
-          if (x.getLandUse().toString().equals(T) && !neighbors.contains(x)) {
-            neighbors.add(x);
-            getNeighbors(x);
-          }
-        }
-       }
-    }
-  }
-}
-  
-void trialRun1() {
-  /* Trial run of game for testing. Factory added at <14, 2> and <0, 7>, 
-  Farm added at <11, 5>; includes test of removeLandUse() */
-  WS = new Watershed(20, 20);
-  WS.addFactory(14, 2);
-  WS.addFactory(0, 7);
-  WS.addFarm(11, 5);
-  WS.addFactory(5, 2);
-  WS.removeLandUse(5, 2);
-  
-  println("Simple sum of all pollution: ", WS.sumPollution());
-  println("Total pollution entering river after linear decay: ", sumDecayPollution());
 }
