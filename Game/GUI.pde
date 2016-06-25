@@ -348,6 +348,7 @@ class GUI {
     int y = YPOSB + 340;       //YPOSition of the slider
     int w = 220;    //width of slider
     int h = 33;  //height if slider
+    int polMax = 1200;  // The maximum pollution the slider can handle
     colorMode(HSB);
     
     //Draws the Slidier
@@ -371,25 +372,25 @@ class GUI {
     //Draws the needle
     stroke(50);
     strokeWeight(4);
-    float scaleC = 1.5;    //Scaling constant that scales decayPollution number to pixel coordinates of slider
+    float scaleC = polMax/(float)w;    //Scaling constant that scales decayPollution number to pixel coordinates of slider
     float sliderX = x;    //xposition of the slider in pixels;
-    sliderX = constrain(sliderX + scaleC*WS.totalDecayPollution, x, x+w);
+    sliderX = constrain(sliderX + WS.totalDecayPollution/scaleC, x, x+w);
     line(sliderX, y-5, sliderX, y+h+5);
     
     //Gives a text indicator:
     String pLevel;
-    if (sliderX - x < w*0.2) {
+    if ((sliderX - x)*scaleC < polMax*0.2) {
       pLevel = "Healthy";
-    } else if (sliderX - x < w*0.34){
+    } else if ((sliderX - x)*scaleC < polMax*0.34){
       pLevel = "Okay";
-    } else if (sliderX -x < w*0.55) {
+    } else if ((sliderX - x)*scaleC < polMax*0.52) {
       pLevel = "Moderate";
-    } else if (sliderX-x < w*0.72) {
+    } else if ((sliderX - x)*scaleC < polMax*0.70) {
       pLevel = "Unhealthy";
-    } else if (sliderX-x < w*0.89) {
+    } else if ((sliderX - x)*scaleC < polMax*0.89) {
       pLevel = "Severe"; 
-    } else if (sliderX-x < w){
-      pLevel = "Extreme" ;
+    } else if ((sliderX - x)*scaleC < polMax){
+      pLevel = "Dangerous" ;
     } else {
       pLevel = "Off the scale";
     }

@@ -1,7 +1,7 @@
 //Defining pollution as global variables
 final int FACTORY_POLLUTION = 20;
 final int FARM_POLLUTION = 12;
-final int HOUSE_POLLUTION = 6;
+final int HOUSE_POLLUTION = 4;
 final int FOREST_POLLUTION = -2;
 final int DIRT_POLLUTION = 0;
 
