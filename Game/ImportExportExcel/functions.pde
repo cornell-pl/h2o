@@ -15,7 +15,7 @@ String[][] importExcel(String filepath) {
   }
   catch(Exception e) {
   }
-  Sheet sheet = wb.getSheetAt(1);
+  Sheet sheet = wb.getSheetAt(2);     //THE SHEET IN THE EXCEL FILE
   int sizeX = sheet.getLastRowNum();
   int sizeY = 100;
   for (int i=0;i<sizeX;++i) {
