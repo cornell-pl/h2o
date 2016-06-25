@@ -66,7 +66,7 @@ class Factory extends LandUse {
  
  float calcActualProfit(float distToRiver) {
     /*Returns the actual profit made according to profit model  */
-    return baseProfit;
+    return baseProfit/(sqrt(distToRiver)/4 + 0.75);
   }
   
   LUType getType() {
@@ -90,7 +90,7 @@ class Farm extends LandUse {
   
   float calcActualProfit(float distToRiver) {
      /*Returns the actual profit made according to profit model  */
-    return baseProfit/(sq(distToRiver)/2+0.5);
+    return baseProfit/(distToRiver/5+0.8);
   }
   
   LUType getType() {
@@ -113,7 +113,7 @@ class House extends LandUse {
   
   float calcActualProfit(float distToRiver) {
      /*Returns the actual profit made according to profit model  */
-    return baseProfit/sqrt(distToRiver);
+    return baseProfit/(sqrt(distToRiver)/2+0.5);
   }
   
   LUType getType() {

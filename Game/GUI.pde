@@ -330,11 +330,13 @@ class GUI {
     int x = XPOS + SIZE_X*TILE_WIDTH + 40;
     int y = YPOSB + 690;
     fill(0);
+    textFont(BIGFONT);
+    text("Quota: ", x, y);
     textFont(MESSAGEFONT);
-    textSize(15);
-    text("Factories: " + WS.factories + " / " + FACTORY_QUOTA, x,y);
-    text("Farms: " + WS.farms + " / " + FARM_QUOTA, x,y+30);
-    text("Houses: " + WS.houses + " / " + HOUSE_QUOTA, x,y+60);
+    textSize(16);
+    text("Factories: " + WS.factories + " / " + FACTORY_QUOTA, x,y+30);
+    text("Farms: " + WS.farms + " / " + FARM_QUOTA, x,y+60);
+    text("Houses: " + WS.houses + " / " + HOUSE_QUOTA, x,y+90);
   }
   
   void showPollutionSlider() {
