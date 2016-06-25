@@ -151,7 +151,7 @@ class GUI {
       String text1 = selected.toString() + 
                     "     Type: " + selected.getLandUse().toString();
       text(text1, XPOS+460, YPOS + SIZE_Y*TILE_HEIGHT + 30);   
-      String text2 = "Money: " + nfc(selected.getActualProfit(),2) + 
+      String text2 = "Money: " + round(selected.getActualProfit()) + 
                       "\ndecayPollution: " + nfc(selected.getDecayPollution(),2) + 
                       "\nDistToRiver: " + nfc(selected.getDistToRiver(),2);
       text(text2, XPOS+460, YPOS + SIZE_Y*TILE_HEIGHT + 50);
@@ -311,7 +311,7 @@ class GUI {
     textFont(BIGFONT);
     text("Money: ", x, y);
     textFont(NUMERALFONT);
-    text(nfc(WS.totalActualProfits,2), x, y+36);
+    text("$"+nfc(round(WS.totalActualProfits)), x, y+36);
   }
   
   void showScore() {
@@ -322,7 +322,7 @@ class GUI {
     textFont(BIGFONT);
     text("Score: ", x, y);
     textFont(NUMERALFONT);
-    text(nfc(WS.score,2), x, y+36);
+    text(nfc(round(WS.score)), x, y+36);
   }
   
   void showBuildQuota() {
@@ -455,7 +455,7 @@ class GUI {
         textSize(10);
         fill(0);
         textAlign(LEFT, TOP);
-        if (round(t.getActualProfit())!=0) text(nfc(t.getActualProfit(),1), t.getX()*TILE_WIDTH + XPOS+2, t.getY()*TILE_HEIGHT + YPOS+1);
+        if (round(t.getActualProfit())!=0) text(round(t.getActualProfit()), t.getX()*TILE_WIDTH + XPOS+2, t.getY()*TILE_HEIGHT + YPOS+1);
       }
    }
  }
