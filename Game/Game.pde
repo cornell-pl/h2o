@@ -16,6 +16,8 @@ void draw() {
   background(165);
   WS.update();
   graphics.render();
+  pollutionIterator(522, 4);
+  stop();
 }
 
 
