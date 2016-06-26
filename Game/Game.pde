@@ -16,8 +16,8 @@ void draw() {
   background(165);
   WS.update();
   graphics.render();
-  //pollutionIterator(522, 4);
-  //stop();
+  pollutionIterator(522, 1);
+  stop();
 }
 
 
@@ -35,8 +35,8 @@ class Watershed {
   
   Watershed(int x, int y) {
     /* Constructor: Initializes a watershed of dimension x*y units */
-    initializeWithForest();
-    //initializeWithAll();
+    //initializeWithForest();
+    initializeWithAll();
     setTileVals();
   }     //<>//
   
