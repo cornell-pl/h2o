@@ -7,7 +7,7 @@ ArrayList<Tile> riverTiles = new ArrayList<Tile>(200);
 
 void setup() {
   frameRate(30);
-  size(1600, 1080);
+  size(1600, 950);
   WS = new Watershed(SIZE_X, SIZE_Y);   //Creates watershed of size 20*20
   graphics = new GUI(SIZE_X, SIZE_Y);
 }
@@ -16,8 +16,8 @@ void draw() {
   background(165);
   WS.update();
   graphics.render();
-  pollutionIterator(522, 4);
-  stop();
+  //pollutionIterator(522, 4);
+  //stop();
 }
 
 
@@ -35,7 +35,8 @@ class Watershed {
   
   Watershed(int x, int y) {
     /* Constructor: Initializes a watershed of dimension x*y units */
-    initializeWithAll();
+    initializeWithForest();
+    //initializeWithAll();
     setTileVals();
   }     //<>//
   

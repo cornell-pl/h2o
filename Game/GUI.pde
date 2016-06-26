@@ -1,7 +1,7 @@
 final int XPOS = 40;   //XPOS and ypos determines the position of the top left corner of the map, in pixels
 final int YPOS = 40;
-final int TILE_WIDTH = 30;   //width of a tile in pixels
-final int TILE_HEIGHT = 30;    //height of a tile in pixels
+final int TILE_WIDTH = 26;   //width of a tile in pixels
+final int TILE_HEIGHT = 26;    //height of a tile in pixels
 final int XPOSB = XPOS + SIZE_X*TILE_WIDTH + 40;    //Drawing dimensions. XPOS and ypos are the coordinates of the top most button. 
 final int YPOSB = 90;    //All buttons scale with respect to these
 
@@ -32,7 +32,7 @@ Slider forestS;
 
 class GUI {
   final PFont AXISFONT = createFont("Calibri", 12);
-  final PFont MESSAGEFONT = createFont("Calibri", 13);
+  final PFont MESSAGEFONT = createFont("Calibri", 14);
   final PFont BIGFONT = createFont("Calibri-Bold", 20);
   final PFont NUMERALFONT = createFont("Courier", 30);
   
@@ -137,7 +137,7 @@ class GUI {
     //Draws the box
     stroke(255);
     fill(255);
-    rect(XPOS+450, YPOS + SIZE_Y*TILE_HEIGHT + 10, 190, 110);
+    rect(XPOS+455, YPOS + SIZE_Y*TILE_HEIGHT + 10, 200, 110);
     
     //Displays info
     if (selected != null) {
@@ -294,7 +294,7 @@ class GUI {
      /*Draws the feedback box and shows info */
     stroke(255);
     fill(255);
-    rect(XPOS, YPOS + SIZE_Y*TILE_HEIGHT + 10, 430, 110);
+    rect(XPOS, YPOS + SIZE_Y*TILE_HEIGHT + 10, 440, 110);
     fill(0);  //Color of text 
     textFont(MESSAGEFONT);
     text(message, XPOS + 20, YPOS + SIZE_Y*TILE_HEIGHT + 30);   

@@ -1,15 +1,15 @@
 //Defining pollution as global variables
-//final int FACTORY_POLLUTION = 20;
-//final int FARM_POLLUTION = 12;
-//final int HOUSE_POLLUTION = 4;
-//final int FOREST_POLLUTION = -2;
-//final int DIRT_POLLUTION = 0;
+final int FACTORY_POLLUTION = 20;
+final int FARM_POLLUTION = 12;
+final int HOUSE_POLLUTION = 4;
+final int FOREST_POLLUTION = -2;
+final int DIRT_POLLUTION = 0;
 
-int FACTORY_POLLUTION = 0;
-int FARM_POLLUTION = 0;
-int HOUSE_POLLUTION = 0;
-int FOREST_POLLUTION = 0;
-int DIRT_POLLUTION = 0;
+//int FACTORY_POLLUTION = 0;
+//int FARM_POLLUTION = 0;
+//int HOUSE_POLLUTION = 0;
+//int FOREST_POLLUTION = 0;
+//int DIRT_POLLUTION = 0;
 
 int getPollution(LandUse lu) {
     /*Returns the default pollution value of each landUse 
@@ -50,26 +50,26 @@ float sumDecayPollution() {
    return dPollutionTotal;
 }
 
-void pollutionIterator(int targetPollution, float precision) {
-  println("Iterating...");
-  for (FACTORY_POLLUTION = 18; FACTORY_POLLUTION <=20; FACTORY_POLLUTION ++){
-    for (FARM_POLLUTION = 10; FARM_POLLUTION <= 13; FARM_POLLUTION ++){
-      for (HOUSE_POLLUTION = 3; HOUSE_POLLUTION <= 5; HOUSE_POLLUTION ++){
-        for (FOREST_POLLUTION = -1; FOREST_POLLUTION > -3 ; FOREST_POLLUTION --){
-          WS.update();
-          println(WS.totalDecayPollution);
-          if (WS.totalDecayPollution > targetPollution-precision && sumDecayPollution() < targetPollution+precision) {
-            println("factoryPollution: ", FACTORY_POLLUTION);
-            println("farmPollution: ", FARM_POLLUTION);
-            println("housePollution: ", HOUSE_POLLUTION);
-            println("forestPollution: ", FOREST_POLLUTION);
-          }
-        }
-      }
-    }
-  }
-  println("Done");
-}
+//void pollutionIterator(int targetPollution, float precision) {
+//  println("Iterating...");
+//  for (FACTORY_POLLUTION = 18; FACTORY_POLLUTION <=20; FACTORY_POLLUTION ++){
+//    for (FARM_POLLUTION = 10; FARM_POLLUTION <= 13; FARM_POLLUTION ++){
+//      for (HOUSE_POLLUTION = 3; HOUSE_POLLUTION <= 5; HOUSE_POLLUTION ++){
+//        for (FOREST_POLLUTION = -1; FOREST_POLLUTION > -3 ; FOREST_POLLUTION --){
+//          WS.update();
+//          println(WS.totalDecayPollution);
+//          if (WS.totalDecayPollution > targetPollution-precision && sumDecayPollution() < targetPollution+precision) {
+//            println("factoryPollution: ", FACTORY_POLLUTION);
+//            println("farmPollution: ", FARM_POLLUTION);
+//            println("housePollution: ", HOUSE_POLLUTION);
+//            println("forestPollution: ", FOREST_POLLUTION);
+//          }
+//        }
+//      }
+//    }
+//  }
+//  println("Done");
+//}
   
   
 
