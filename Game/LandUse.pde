@@ -61,7 +61,7 @@ class Factory extends LandUse {
   Factory () {
    s = factoryS;
    icon = FACTORY_BROWN;   //Color code for drawing on map
-   baseProfit = 5000;
+   baseProfit = 2000;
    }
  
  float calcActualProfit(float distToRiver) {
@@ -84,7 +84,7 @@ class Farm extends LandUse {
   final LUType TYPE = LUType.FARM;
   Farm () {
     icon = FARM_YELLOW;
-    baseProfit = 2000;
+    baseProfit = 1000;
     s = farmS;
  }
   
@@ -107,7 +107,7 @@ class House extends LandUse {
   final LUType TYPE = LUType.HOUSE;
   House() {
     icon = HOUSE_GRAY;
-    baseProfit = 1000;
+    baseProfit = 700;
     s = houseS;
   }
   
@@ -130,7 +130,7 @@ class Forest extends LandUse {
   final LUType TYPE = LUType.FOREST;
   Forest () {  
     icon = FOREST_GREEN;
-    baseProfit = -100;
+    baseProfit = -300;
     s = forestS;
   }
   

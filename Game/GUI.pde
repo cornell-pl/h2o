@@ -42,13 +42,13 @@ class GUI {
     houseB = new Button(XPOSB, YPOSB + 120, TILE_WIDTH, TILE_HEIGHT, HOUSE_GRAY, #73A29C, #90B3B4, "House");
     forestB = new Button(XPOSB, YPOSB + 180, TILE_WIDTH, TILE_HEIGHT, FOREST_GREEN, #73A29C, #02A002, "Forest");
     demolishB = new Button(XPOSB, YPOSB + 240, TILE_WIDTH, TILE_HEIGHT, DEMOLISH_BEIGE, #73A29C, #F5BB74, "Demolish");
-    resetB = new Button(XPOSB+20, YPOS+TILE_HEIGHT*SIZE_Y+40, TILE_WIDTH + 5, TILE_HEIGHT + 5, #FFFFFF, #989795, #171717, "RESET MAP");
+    resetB = new Button(XPOSB+290, YPOS+TILE_HEIGHT*SIZE_Y+40, TILE_WIDTH + 5, TILE_HEIGHT + 5, #FFFFFF, #989795, #171717, "RESET MAP");
     
-    showPolT = new Toggle(XPOSB+260, YPOSB+690, "Show Pollution");
-    showDecayPolT = new Toggle(XPOSB+260, YPOSB+750, "Show decayPollution");
-    showDistT = new Toggle(XPOSB+260, YPOSB+810, "Show distToRiver");
-    showProfitT = new Toggle(XPOSB+260, YPOSB+870, "Show Money");
-    sliderT = new Toggle(XPOSB+260, YPOSB+240, "Show sliders");
+    showPolT = new Toggle(XPOSB+290, YPOSB+450, "Show Pollution");
+    showDecayPolT = new Toggle(XPOSB+290, YPOSB+500, "Show decayPollution");
+    showDistT = new Toggle(XPOSB+290, YPOSB+550, "Show distToRiver");
+    showProfitT = new Toggle(XPOSB+290, YPOSB+600, "Show Money");
+    sliderT = new Toggle(XPOSB+290, YPOSB+240, "Show sliders");
 
     factoryS = new Slider(XPOSB+260, YPOSB, 0, 20, getPollution(FA), "Factory", FACTORY_BROWN);
     farmS = new Slider(XPOSB+260, YPOSB + 60, 0, 20, getPollution(FM), "Farm", FARM_YELLOW);
@@ -150,11 +150,11 @@ class GUI {
       textFont(MESSAGEFONT);
       String text1 = selected.toString() + 
                     "     Type: " + selected.getLandUse().toString();
-      text(text1, XPOS+460, YPOS + SIZE_Y*TILE_HEIGHT + 30);   
+      text(text1, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 30);   
       String text2 = "Money: " + round(selected.getActualProfit()) + 
                       "\ndecayPollution: " + nfc(selected.getDecayPollution(),2) + 
                       "\nDistToRiver: " + nfc(selected.getDistToRiver(),2);
-      text(text2, XPOS+460, YPOS + SIZE_Y*TILE_HEIGHT + 50);
+      text(text2, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 50);
     }
   }
   
@@ -175,28 +175,28 @@ class GUI {
             hc = FA.getIcon();
             projectedProfit = FA.calcActualProfit(d);
             projectedPollution = calcDecayPollution(FA.getSliderPollution(), d);
-            purchaseInfo = "Money: + $" + nfc(projectedProfit,2);
+            purchaseInfo = "Money: + $" + nfc(round(projectedProfit));
             pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
           }
           else if (pushed == farmB) {
             hc = FM.getIcon();
             projectedProfit = FM.calcActualProfit(d);
             projectedPollution = calcDecayPollution(FM.getSliderPollution(), d);
-            purchaseInfo = "Money: + $" + nfc(projectedProfit,2);
+            purchaseInfo = "Money: + $" + nfc(round(projectedProfit));
             pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
           }
           else if (pushed == houseB) {
             hc = HS.getIcon();
             projectedProfit = HS.calcActualProfit(d);
             projectedPollution = calcDecayPollution(HS.getSliderPollution(), d);
-            purchaseInfo = "Money: + $" + nfc(projectedProfit,2);
+            purchaseInfo = "Money: + $" + nfc(round(projectedProfit));
             pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
           }
           else if (pushed == forestB) {
             hc = FO.getIcon();
             projectedProfit = FO.calcActualProfit(d);
             projectedPollution = calcDecayPollution(FO.getSliderPollution(), d);
-            purchaseInfo = "Money: - $" + nfc(abs(projectedProfit),2);
+            purchaseInfo = "Money: - $" + nfc(round(projectedProfit));
             pollutionInfo = "Pollution: - " + nfc(abs(projectedPollution),2);
           } else {                //Button not pressed
             hc = #B6FAB1;
@@ -278,7 +278,7 @@ class GUI {
         drawTile(p[0], p[1], hc, 100);    //draws highlighted tile
       }
       if (pushed != null && pushed != demolishB) {
-        if (projectedProfit > 0) purchaseInfo = "Money: + $" + nfc(projectedProfit,2);
+        if (projectedProfit > 0) purchaseInfo = "Money: + $" + nfc(round(projectedProfit));
         else purchaseInfo = "Money: - $" + nfc(abs(projectedProfit),2);
         if (projectedPollution > 0)pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
         else pollutionInfo = "Pollution: - " + nfc(abs(projectedPollution),2);
@@ -328,15 +328,15 @@ class GUI {
   void showBuildQuota() {
     /* Displays the build quota */
     int x = XPOS + SIZE_X*TILE_WIDTH + 40;
-    int y = YPOSB + 690;
+    int y = YPOSB + 640;
     fill(0);
     textFont(BIGFONT);
     text("Quota: ", x, y);
     textFont(MESSAGEFONT);
     textSize(16);
-    text("Factories: " + WS.factories + " / " + FACTORY_QUOTA, x,y+30);
-    text("Farms: " + WS.farms + " / " + FARM_QUOTA, x,y+60);
-    text("Houses: " + WS.houses + " / " + HOUSE_QUOTA, x,y+90);
+    text("  Factories: " + WS.factories + " / " + FACTORY_QUOTA, x,y+30);
+    text("  Farms: " + WS.farms + " / " + FARM_QUOTA, x,y+60);
+    text("  Houses: " + WS.houses + " / " + HOUSE_QUOTA, x,y+90);
   }
   
   void showPollutionSlider() {
@@ -455,7 +455,7 @@ class GUI {
    for (Tile[] tileRow : WS.GAME_MAP) {
       for (Tile t: tileRow) {
         textFont(MESSAGEFONT);
-        textSize(10);
+        textSize(9);
         fill(0);
         textAlign(LEFT, TOP);
         if (round(t.getActualProfit())!=0) text(round(t.getActualProfit()), t.getX()*TILE_WIDTH + XPOS+2, t.getY()*TILE_HEIGHT + YPOS+1);
