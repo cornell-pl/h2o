@@ -1,5 +1,5 @@
 final int XPOS = 40;   //XPOS and ypos determines the position of the top left corner of the map, in pixels
-final int YPOS = 40;
+final int YPOS = 30;
 final int TILE_WIDTH = 26;   //width of a tile in pixels
 final int TILE_HEIGHT = 26;    //height of a tile in pixels
 final int XPOSB = XPOS + SIZE_X*TILE_WIDTH + 40;    //Drawing dimensions. XPOS and ypos are the coordinates of the top most button. 
@@ -42,18 +42,18 @@ class GUI {
     houseB = new Button(XPOSB, YPOSB + 120, TILE_WIDTH, TILE_HEIGHT, HOUSE_GRAY, #73A29C, #90B3B4, "House");
     forestB = new Button(XPOSB, YPOSB + 180, TILE_WIDTH, TILE_HEIGHT, FOREST_GREEN, #73A29C, #02A002, "Forest");
     demolishB = new Button(XPOSB, YPOSB + 240, TILE_WIDTH, TILE_HEIGHT, DEMOLISH_BEIGE, #73A29C, #F5BB74, "Demolish");
-    resetB = new Button(XPOSB+290, YPOS+TILE_HEIGHT*SIZE_Y+40, TILE_WIDTH + 5, TILE_HEIGHT + 5, #FFFFFF, #989795, #171717, "RESET MAP");
+    resetB = new Button(XPOSB+220, YPOS+TILE_HEIGHT*SIZE_Y+40, TILE_WIDTH + 5, TILE_HEIGHT + 5, #FFFFFF, #989795, #171717, "RESET MAP");
     
-    showPolT = new Toggle(XPOSB+290, YPOSB+450, "Show Pollution");
-    showDecayPolT = new Toggle(XPOSB+290, YPOSB+500, "Show decayPollution");
-    showDistT = new Toggle(XPOSB+290, YPOSB+550, "Show distToRiver");
-    showProfitT = new Toggle(XPOSB+290, YPOSB+600, "Show Money");
-    sliderT = new Toggle(XPOSB+290, YPOSB+240, "Show sliders");
+    showPolT = new Toggle(XPOSB+190, YPOSB+450, "Show Pollution");
+    showDecayPolT = new Toggle(XPOSB+190, YPOSB+500, "Show decayPollution");
+    showDistT = new Toggle(XPOSB+190, YPOSB+550, "Show distToRiver");
+    showProfitT = new Toggle(XPOSB+190, YPOSB+600, "Show Money");
+    sliderT = new Toggle(XPOSB+190, YPOSB+240, "Show sliders");
 
-    factoryS = new Slider(XPOSB+260, YPOSB, 0, 20, getPollution(FA), "Factory", FACTORY_BROWN);
-    farmS = new Slider(XPOSB+260, YPOSB + 60, 0, 20, getPollution(FM), "Farm", FARM_YELLOW);
-    houseS = new Slider(XPOSB+260, YPOSB + 120, 0, 20, getPollution(HS), "House", HOUSE_GRAY);
-    forestS = new Slider(XPOSB+260, YPOSB + 180, -10, 10, getPollution(FO), "Forest", FOREST_GREEN);
+    factoryS = new Slider(XPOSB+150, YPOSB, 0, 20, getPollution(FA), "Factory", FACTORY_BROWN);
+    farmS = new Slider(XPOSB+150, YPOSB + 60, 0, 20, getPollution(FM), "Farm", FARM_YELLOW);
+    houseS = new Slider(XPOSB+150, YPOSB + 120, 0, 20, getPollution(HS), "House", HOUSE_GRAY);
+    forestS = new Slider(XPOSB+150, YPOSB + 180, -10, 10, getPollution(FO), "Forest", FOREST_GREEN);
   }
   
   void render() {
@@ -99,8 +99,9 @@ class GUI {
   void drawDividers(){ 
     noFill();
     stroke(204);
-    rect(XPOSB-20, YPOSB-30, 490, 860);
-    line(XPOSB-20, YPOSB+TILE_HEIGHT+5+270, XPOSB+470, YPOSB+TILE_HEIGHT+5+270);
+    strokeWeight(1);
+    rect(XPOSB-20, YPOSB-30, 392, 860);
+    line(XPOSB-20, YPOSB+TILE_HEIGHT+5+270, XPOSB-20+392, YPOSB+TILE_HEIGHT+5+270);
   }
     
   void drawTile(int x, int y, color c, int t) {
