@@ -103,6 +103,7 @@ Conditionally executes the first block of code if both \texttt{a} and \texttt{b}
 %
   Returns \texttt{b} as the value of the current method.
 \end{description}
+\medskip
 
 \medskip
 
@@ -145,7 +146,6 @@ Creates an new array objects of type \texttt{A} of length
 \item{\texttt{A[] = \{ v1, ... vk \};}} \\[.25em] 
 Creates a new array initialized with elements \texttt{v1} through \texttt{vk}. 
 
-
 \item{\texttt{a.length}} \\[.25em]
 The length of array \texttt{a}. 
 
@@ -158,46 +158,25 @@ Stores \texttt{v} as the \texttt{i}\textsuperscript{th} element of array \texttt
 \item{\texttt{for(int i = 0; i < a.length; i++) \{ ... \}}} \\[.25em]
   Iterates through the elements of array \texttt{a}. In each iteration
   of the loop, the element can be accessed using index \texttt{i}.
+  
 \end{description}
 
-
-\noindent\textbf{\large Loops}
+\noindent\textbf{\large Files}
 \begin{description}
+\item{\texttt{Exercise}}\ \\[.25em]
+Your code goes here.
 
-\item{\texttt{if(b) \{ ... \} else \{ ... \}}}\ \\[.25em] 
-% 
-Conditionally executes the first block of code if \texttt{b} evaluates to
-\texttt{true}, and the second block of code if it evaluates to \texttt{false}.
+\item{\texttt{Game}}\ \\[.25em] 
+Defines the Watershed data structure and all gameplay functionality.
 
-\item{\texttt{if( (a)\&\&(b) ) \{ ... \} else \{ ... \}}}\ \\[.25em] 
-% 
-Conditionally executes the first block of code if both \texttt{a} and \texttt{b} evaluates to
-\texttt{true}, and the second block of code if either evaluates to \texttt{false}.
+\item{\texttt{GUI}}\ \\[.25em] 
+The Graphical User Interface. This defines the main \texttt{draw} method, which is invoked every time the screen refreshes, and is responsible for everything you see in the frame.
 
-\item{\texttt{return b}} \ \\[.25em]
-%
-  Returns \texttt{b} as the value of the current method.
-\end{description}
+\item{\texttt{LandUse}}\ \\[.25em] 
+Defines the \texttt{LandUse} data structure.
 
-\noindent{\textbf{Files}
-\begin{description}
-\item{\texttt{Drops}}\ \\[.25em]
-The ``main'' file. Your code goes here.
-
-\item{\texttt{Constants}}\ \\[.25em] 
-Defines constants that determine the basic parameters of the game.
-
-\item{\texttt{Globals}}\ \\[.25em] 
-Declares global variables that store the game state.
-
-\item{\texttt{Draw}}\ \\[.25em] 
-Defines the main \texttt{draw} method, which is invoked every time the screen refreshes.
-
-\item{\texttt{Drop}}\ \\[.25em] 
-Defines the \texttt{Drop} data structure.
-
-\item{\texttt{Setup}}\ \\[.25em] 
-Defines the main \texttt{setup} method, which is invoked once when the application begins.
+\item{\texttt{Tile}}\ \\[.25em] 
+Defines the \texttt{Tile} data structure.
 
 \end{description}
 
