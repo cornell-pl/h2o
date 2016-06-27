@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016) (preloaded format=xelatex 2016.5.22)  27 JUN 2016 17:25
+This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016) (preloaded format=xelatex 2016.5.22)  27 JUN 2016 18:05
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -551,20 +551,24 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <7> on input line 54.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <5> on input line 54.
+
+Underfull \hbox (badness 2088) in paragraph at lines 135--137
+\EU1/TimesNewRoman(0)/m/n/10 Returns the distance between the points [] and
+ []
+
 LaTeX Font Info:    Font shape `EU1/TimesNewRoman(0)/m/n' will be
-(Font)              scaled to size 6.74547pt on input line 153.
- [1
+(Font)              scaled to size 6.74547pt on input line 139.
+[1
 
 
-] [2]
-(./WatershedRef.aux) ) 
+] [2] (./WatershedRef.aux) ) 
 Here is how much of TeX's memory you used:
  14058 strings out of 493591
  280386 string characters out of 6143546
- 295102 words of memory out of 5000000
+ 290102 words of memory out of 5000000
  17409 multiletter control sequences out of 15000+600000
  3816 words of font info for 36 fonts, out of 8000000 for 9000
  1347 hyphenation exceptions out of 8191
- 48i,4n,105p,10411b,241s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 48i,4n,105p,10411b,236s stack positions out of 5000i,500n,10000p,200000b,80000s
 
 Output written on WatershedRef.pdf (2 pages).

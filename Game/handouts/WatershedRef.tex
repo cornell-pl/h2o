@@ -13,7 +13,7 @@
 \thispagestyle{empty}
 
 \twocolumn[
-\centerline{\LARGE \bf  Reference Sheet}
+\centerline{\LARGE \bf  River Pollution Game Reference Sheet}
 
 \medskip
 \hrule
@@ -97,7 +97,7 @@ Conditionally executes the first block of code if \texttt{b} evaluates to
 \item{\texttt{if( (a)\&\&(b) ) \{ ... \} else \{ ... \}}}\ \\[.25em] 
 % 
 Conditionally executes the first block of code if both \texttt{a} and \texttt{b} evaluates to
-\texttt{true}, and the second block of code if either evaluates to \texttt{false}.
+\texttt{true}, and the second block of code if either \texttt{a} or \texttt{b} evaluates to \texttt{false}.
 
 \item{\texttt{return b}} \ \\[.25em]
 %
@@ -107,31 +107,37 @@ Conditionally executes the first block of code if both \texttt{a} and \texttt{b}
 
 \medskip
 
-\balance
 
 \noindent\textbf{\large Assignment and Arithmetic}
 \begin{description}
 
 \item{\texttt{x = n}} \ \\[.25em]
-  Assigns variable \texttt{x} to the value \texttt{v}.
+ Assigns variable \texttt{x} to the value \texttt{v}.
 
 \item{\texttt{n1 + n2}} \ \\[.25em]
-  Adds \texttt{n1} to \texttt{n2}. 
+ Adds \texttt{n1} to \texttt{n2}. 
 
 \item{\texttt{n1 - n2}} \ \\[.25em]
-  Subtracts \texttt{n1} from \texttt{n2}. 
+ Subtracts \texttt{n1} from \texttt{n2}. 
 
 \item{\texttt{n1 * n2}} \ \\[.25em]
-  Multiplies \texttt{n1} by \texttt{n2}. 
+ Multiplies \texttt{n1} by \texttt{n2}. 
 
 \item{\texttt{n1 / n2}} \ \\[.25em]
-  Divides \texttt{n1} by \texttt{n2} (with no remainder).
+ Divides \texttt{n1} by \texttt{n2} (with no remainder).
   
  \item{\texttt{n1 > n2}} \ \\[.25em]
 Returns \texttt{true} if \texttt{n1} is strictly greater than \texttt{n2}. Otherwise returns \texttt{false}.
 
  \item{\texttt{n1 < n2}} \ \\[.25em]
 Returns \texttt{true} if \texttt{n1} is strictly less than \texttt{n2}.Otherwise returns \texttt{false}.
+
+ \item{\texttt{dist(x1, y1, x2, y2)}} \ \\[.25em]
+Returns the distance between the points \mbox{\texttt{(x1, y1)}} and \mbox{\texttt{(x2, y2)}}.
+
+ \item{\texttt{Float.MAX\_VALUE}} \ \\[.25em]
+The largest possible floating point number: 3.402823x10\textsuperscript{38}.
+
 \end{description}
 
 \medskip
@@ -161,6 +167,32 @@ Stores \texttt{v} as the \texttt{i}\textsuperscript{th} element of array \texttt
   
 \end{description}
 
+\begin{description}
+\item{\texttt{new A[n]}} \\[.25em]
+Creates an new array objects of type \texttt{A} of length
+\texttt{n}. 
+
+\item{\texttt{A[] = \{ v1, ... vk \};}} \\[.25em] 
+Creates a new array initialized with elements \texttt{v1} through \texttt{vk}. 
+
+\item{\texttt{a.length}} \\[.25em]
+The length of array \texttt{a}. 
+
+\item{\texttt{a[i]}} \\[.25em]
+The \texttt{i}\textsuperscript{th} element of array \texttt{a}. 
+
+\item{\texttt{a[i] = v}} \\[.25em]
+Stores \texttt{v} as the \texttt{i}\textsuperscript{th} element of array \texttt{a}. 
+
+\item{\texttt{for(int i = 0; i < a.length; i++) \{ ... \}}} \\[.25em]
+  Iterates through the elements of array \texttt{a}. In each iteration
+  of the loop, the element can be accessed using index \texttt{i}.
+  
+\end{description}
+
+\medskip
+\balance
+
 \noindent\textbf{\large Files}
 \begin{description}
 \item{\texttt{Exercise}}\ \\[.25em]
@@ -182,7 +214,7 @@ Defines the \texttt{Tile} data structure.
 
 \medskip
 
-\noindent\textbf{Advanced Graphics}
+\noindent\textbf{\large Advanced Graphics}
 \begin{description}
 \item{\texttt{background(c)}}\ \\[.25em]
 %
