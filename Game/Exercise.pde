@@ -50,7 +50,9 @@ float sumDecayPollution() {
    return dPollutionTotal;
 }
 
-void pollutionIterator(int targetPollution, float precision) {
+void pollutionIterator(float targetPollution, float precision) {
+  /*CALIBRATION TASK: Iterate through ranges of values for the pollution of each land use type (FACTORY, FARM, HOUSE, FOREST)
+  * Print out all possible solutions) */
   int i = 0;
   println("Iterating...");
   for (FACTORY_POLLUTION = 0; FACTORY_POLLUTION <=20; FACTORY_POLLUTION ++){
@@ -58,7 +60,7 @@ void pollutionIterator(int targetPollution, float precision) {
       for (HOUSE_POLLUTION = 0; HOUSE_POLLUTION <= 20; HOUSE_POLLUTION ++){
         for (FOREST_POLLUTION = -1; FOREST_POLLUTION > -10 ; FOREST_POLLUTION --){
           WS.update();
-          if (WS.totalDecayPollution > targetPollution-precision && sumDecayPollution() < targetPollution+precision) {
+          if (WS.totalDecayPollution > targetPollution-precision && WS.totalDecayPollution < targetPollution+precision) {
             println("Solution: ", i, WS.totalDecayPollution);
             println("factoryPollution: ", FACTORY_POLLUTION);
             println("farmPollution: ", FARM_POLLUTION);
