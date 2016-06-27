@@ -46,7 +46,7 @@ float sumDecayPollution() {
   for (Tile t: allTiles) {   //Calculate pollution contribution from t after linear decay
      dPollutionTotal += t.getDecayPollution();
   }
-   //if (dPollutionTotal < 0.) dPollutionTotal = 1.;
+   if (dPollutionTotal < 0.) dPollutionTotal = 1.;
    return dPollutionTotal;
 }
 

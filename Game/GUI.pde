@@ -137,7 +137,7 @@ class GUI {
     //Draws the box
     stroke(255);
     fill(255);
-    rect(XPOS+455, YPOS + SIZE_Y*TILE_HEIGHT + 10, 200, 110);
+    rect(XPOS+455, YPOS + SIZE_Y*TILE_HEIGHT + 10, 200, 115);
     
     //Displays info
     if (selected != null) {
@@ -151,7 +151,7 @@ class GUI {
       String text1 = selected.toString() + 
                     "     Type: " + selected.getLandUse().toString();
       text(text1, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 30);   
-      String text2 = "Money: " + round(selected.getActualProfit()) + 
+      String text2 = "Money: $" + round(selected.getActualProfit()) + 
                       "\ndecayPollution: " + nfc(selected.getDecayPollution(),2) + 
                       "\nDistToRiver: " + nfc(selected.getDistToRiver(),2);
       text(text2, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 50);
@@ -294,7 +294,7 @@ class GUI {
      /*Draws the feedback box and shows info */
     stroke(255);
     fill(255);
-    rect(XPOS, YPOS + SIZE_Y*TILE_HEIGHT + 10, 440, 110);
+    rect(XPOS, YPOS + SIZE_Y*TILE_HEIGHT + 10, 440, 115);
     fill(0);  //Color of text 
     textFont(MESSAGEFONT);
     text(message, XPOS + 20, YPOS + SIZE_Y*TILE_HEIGHT + 30);   

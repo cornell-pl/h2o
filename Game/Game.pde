@@ -7,7 +7,7 @@ ArrayList<Tile> riverTiles = new ArrayList<Tile>(200);
 
 void setup() {
   frameRate(30);
-  size(1600, 950);
+  size(1600, 960);
   WS = new Watershed(SIZE_X, SIZE_Y);   //Creates watershed of size 20*20
   graphics = new GUI(SIZE_X, SIZE_Y);
 }
