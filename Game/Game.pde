@@ -10,14 +10,14 @@ void setup() {
   size(1600, 950);
   WS = new Watershed(SIZE_X, SIZE_Y);   //Creates watershed of size 20*20
   graphics = new GUI(SIZE_X, SIZE_Y);
+  WS.update();
+  pollutionIterator(522.81, 0.1);
 }
 
 void draw() {  
   background(165);
   WS.update();
   graphics.render();
-  pollutionIterator(522, 1);
-  stop();
 }
 
 
