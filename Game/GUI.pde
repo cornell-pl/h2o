@@ -57,7 +57,8 @@ class GUI {
   }
   
   void render() {
-    /* Draws all the graphics elements of each frame */    
+    /* Draws all the graphics elements of each frame */   
+    drawDividers();
     drawGameBoard();
     axisLabels();
     showSelectedTile();     //For unknown reasons, this MUST be called before the two highlight functions or they all break
@@ -95,6 +96,13 @@ class GUI {
   
   
   //**** Draws elements of the game map  ****//  -----------------------------------------------
+  void drawDividers(){ 
+    noFill();
+    stroke(204);
+    rect(XPOSB-20, YPOSB-30, 490, 860);
+    line(XPOSB-20, YPOSB+TILE_HEIGHT+5+270, XPOSB+470, YPOSB+TILE_HEIGHT+5+270);
+  }
+    
   void drawTile(int x, int y, color c, int t) {
     /* Draws a tile at Location <x, y> on game map, fill color c, transparency t */
     stroke(240);
