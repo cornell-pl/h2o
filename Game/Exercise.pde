@@ -51,6 +51,8 @@ float sumDecayPollution() {
 }
 
 //void pollutionIterator(int targetPollution, float precision) {
+  /* Use this with the initializeWithAll() in the Watershed constructor. 
+ The target pollution would be 522.81 */ 
 //  println("Iterating...");
 //  for (FACTORY_POLLUTION = 0; FACTORY_POLLUTION <=20; FACTORY_POLLUTION ++){
 //    for (FARM_POLLUTION = 0; FARM_POLLUTION <= 20; FARM_POLLUTION ++){
@@ -70,9 +72,3 @@ float sumDecayPollution() {
 //  }
 //  println("Done");
 //}
-  
-  
-
- 
- 
- 

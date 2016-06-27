@@ -10,6 +10,7 @@ void setup() {
   size(1250, 950);
   WS = new Watershed(SIZE_X, SIZE_Y);   //Creates watershed of size 20*20
   graphics = new GUI(SIZE_X, SIZE_Y);
+  //pollutionIterator(522.81, 0.01);
 }
 
 void draw() {  
@@ -17,7 +18,6 @@ void draw() {
   WS.update();
   graphics.render();
 }
-
 
 class Watershed {
   /* Contains all elements of the Game and implements the GUI. All user functions can be accessed from this class */
