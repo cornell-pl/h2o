@@ -1,0 +1,243 @@
+\documentclass[10pt,twocolumn]{article}
+
+\usepackage[no-math]{fontspec}
+\defaultfontfeatures{Scale=MatchLowercase,Mapping=tex-text}
+\setmainfont{Times New Roman}
+\setsansfont{Courier}
+\usepackage{balance}
+
+\usepackage[margin=.5in]{geometry}
+\setlength{\columnsep}{1cm}
+\begin{document}
+
+\thispagestyle{empty}
+
+\twocolumn[
+\centerline{\LARGE \bf  Reference Sheet}
+
+\medskip
+\hrule
+\medskip
+
+]
+
+
+\noindent\textbf{\large Watershed}
+\begin{description}
+
+\item{}
+Watershed contains all the Tiles of the game map.
+
+\item{\texttt{WS.getAllTiles()}}\ \\[.25em]
+%
+  Returns an array containing all the Tiles in the game map.
+
+\item{\texttt{WS.update()}}\ \\[.25em]
+%
+  Updates all the land uses of the game map to have the current pollution values.
+  Also computes and updates the total pollution in the watershed using current pollution values.
+
+\item{\texttt{WS.totalDecayPollution}}\ \\[.25em]
+%
+  The total amount of pollution that reaches the river after distance decay.
+
+\end{description}
+
+\noindent\textbf{\large Tile}
+\begin{description}
+
+\item{}
+A Tile is one square on the game map. It contains the tiles position on the game grid and its land use. 
+
+\item{\texttt{t.getX()}}\ \\[.25em]
+%
+  Returns the $x$ coordinate of \texttt{t} on the canvas. 
+
+\item{\texttt{t.getY()}}\ \\[.25em]
+%
+  Returns the $y$ coordinate of \texttt{t} on the canvas. 
+
+item{\texttt{t.getDecayPollution()}}\ \\[.25em]
+%
+  Returns the pollution that reaches the river after distance decay of \texttt{t}.
+
+\end{description}
+
+\noindent\textbf{\large Landuse}
+\begin{description}
+
+\item{}
+Each tile on the game map has one of six landuses: Factory, Farm, House, Forest, Dirt or River.
+
+\item{\texttt{lu.getType()}}\ \\[.25em]
+%
+  Returns the land use of \texttt{lu}. There are six possible values:
+  \begin{enumerate}
+  \item\texttt{LUType.FACTORY}
+  \item\texttt{LUType.FARM}
+  \item\texttt{LUType.HOUSE}
+  \item\texttt{LUType.FOREST}
+  \item\texttt{LUType.DIRT}
+  \item\texttt{LUType.RIVER}
+  \end{enumerate}
+
+\end{description}
+
+
+\medskip
+
+\noindent\textbf{\large Conditionals and Return}
+\begin{description}
+
+\item{\texttt{if(b) \{ ... \} else \{ ... \}}}\ \\[.25em] 
+% 
+Conditionally executes the first block of code if \texttt{b} evaluates to
+\texttt{true}, and the second block of code if it evaluates to \texttt{false}.
+
+\item{\texttt{if( (a)\&\&(b) ) \{ ... \} else \{ ... \}}}\ \\[.25em] 
+% 
+Conditionally executes the first block of code if both \texttt{a} and \texttt{b} evaluates to
+\texttt{true}, and the second block of code if either evaluates to \texttt{false}.
+
+\item{\texttt{return b}} \ \\[.25em]
+%
+  Returns \texttt{b} as the value of the current method.
+\end{description}
+
+\medskip
+
+\balance
+
+\noindent\textbf{\large Assignment and Arithmetic}
+\begin{description}
+
+\item{\texttt{x = n}} \ \\[.25em]
+  Assigns variable \texttt{x} to the value \texttt{v}.
+
+\item{\texttt{n1 + n2}} \ \\[.25em]
+  Adds \texttt{n1} to \texttt{n2}. 
+
+\item{\texttt{n1 - n2}} \ \\[.25em]
+  Subtracts \texttt{n1} from \texttt{n2}. 
+
+\item{\texttt{n1 * n2}} \ \\[.25em]
+  Multiplies \texttt{n1} by \texttt{n2}. 
+
+\item{\texttt{n1 / n2}} \ \\[.25em]
+  Divides \texttt{n1} by \texttt{n2} (with no remainder).
+  
+ \item{\texttt{n1 > n2}} \ \\[.25em]
+Returns \texttt{true} if \texttt{n1} is strictly greater than \texttt{n2}. Otherwise returns \texttt{false}.
+
+ \item{\texttt{n1 < n2}} \ \\[.25em]
+Returns \texttt{true} if \texttt{n1} is strictly less than \texttt{n2}.Otherwise returns \texttt{false}.
+\end{description}
+
+\medskip
+
+\noindent\textbf{\large Arrays}
+
+\begin{description}
+\item{\texttt{new A[n]}} \\[.25em]
+Creates an new array objects of type \texttt{A} of length
+\texttt{n}. 
+
+\item{\texttt{A[] = \{ v1, ... vk \};}} \\[.25em] 
+Creates a new array initialized with elements \texttt{v1} through \texttt{vk}. 
+
+
+\item{\texttt{a.length}} \\[.25em]
+The length of array \texttt{a}. 
+
+\item{\texttt{a[i]}} \\[.25em]
+The \texttt{i}\textsuperscript{th} element of array \texttt{a}. 
+
+\item{\texttt{a[i] = v}} \\[.25em]
+Stores \texttt{v} as the \texttt{i}\textsuperscript{th} element of array \texttt{a}. 
+
+\item{\texttt{for(int i = 0; i < a.length; i++) \{ ... \}}} \\[.25em]
+  Iterates through the elements of array \texttt{a}. In each iteration
+  of the loop, the element can be accessed using index \texttt{i}.
+\end{description}
+
+
+\noindent\textbf{\large Loops}
+\begin{description}
+
+\item{\texttt{if(b) \{ ... \} else \{ ... \}}}\ \\[.25em] 
+% 
+Conditionally executes the first block of code if \texttt{b} evaluates to
+\texttt{true}, and the second block of code if it evaluates to \texttt{false}.
+
+\item{\texttt{if( (a)\&\&(b) ) \{ ... \} else \{ ... \}}}\ \\[.25em] 
+% 
+Conditionally executes the first block of code if both \texttt{a} and \texttt{b} evaluates to
+\texttt{true}, and the second block of code if either evaluates to \texttt{false}.
+
+\item{\texttt{return b}} \ \\[.25em]
+%
+  Returns \texttt{b} as the value of the current method.
+\end{description}
+
+\noindent{\textbf{Files}
+\begin{description}
+\item{\texttt{Drops}}\ \\[.25em]
+The ``main'' file. Your code goes here.
+
+\item{\texttt{Constants}}\ \\[.25em] 
+Defines constants that determine the basic parameters of the game.
+
+\item{\texttt{Globals}}\ \\[.25em] 
+Declares global variables that store the game state.
+
+\item{\texttt{Draw}}\ \\[.25em] 
+Defines the main \texttt{draw} method, which is invoked every time the screen refreshes.
+
+\item{\texttt{Drop}}\ \\[.25em] 
+Defines the \texttt{Drop} data structure.
+
+\item{\texttt{Setup}}\ \\[.25em] 
+Defines the main \texttt{setup} method, which is invoked once when the application begins.
+
+\end{description}
+
+\medskip
+
+\noindent\textbf{Advanced Graphics}
+\begin{description}
+\item{\texttt{background(c)}}\ \\[.25em]
+%
+Sets the background color to \texttt{c}. There are many ways to describe colors: 
+\begin{itemize}
+\item \texttt{n}: a single number between \texttt{0} (black) and \texttt{255} (white) describes a shade of grey. 
+\item \texttt{(r,g,b)}: a triple of numbers each ranging from
+  \texttt{0} to \texttt{255}, describe a color in terms of the
+  relative amounts of red, green, and blue.
+\end{itemize}
+
+\item{\texttt{fill(c)}}\ \\[.25em]
+Sets the current fill color to \texttt{c}. 
+
+\item{\texttt{ellipse(x,y,w,h)}}\ \\[.25em]
+Draws an ellipse at coordinates \texttt{x} and \texttt{y} with witdth \texttt{w} and height \texttt{h}. 
+
+\item{\texttt{rect(x,y,w,h)}}\ \\[.25em]
+Draws a rectangle at coordinates \texttt{x} and \texttt{y} with witdth \texttt{w} and height \texttt{h}. 
+
+\item{\texttt{mouseX}}\ \\[.25em]
+%
+The current $x$ coordinate of the mouse pointer.
+
+\item{\texttt{mouseY}}\ \\[.25em]
+%
+The current $y$ coordinate of the mouse pointer.
+
+\item{\texttt{mouseClicked()}}\ \\[.25em]
+Invoked each time the mouse button is clicked.
+
+\item{\texttt{keyPressed()}}\ \\[.25em] 
+Invoked each time any key is pressed. The key pressed can be accessed
+from \texttt{key}.
+\end{description}
+
+\end{document}
