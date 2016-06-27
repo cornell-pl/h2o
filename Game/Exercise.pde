@@ -52,13 +52,13 @@ float sumDecayPollution() {
 
 //void pollutionIterator(int targetPollution, float precision) {
 //  println("Iterating...");
-//  for (FACTORY_POLLUTION = 18; FACTORY_POLLUTION <=20; FACTORY_POLLUTION ++){
-//    for (FARM_POLLUTION = 10; FARM_POLLUTION <= 13; FARM_POLLUTION ++){
-//      for (HOUSE_POLLUTION = 3; HOUSE_POLLUTION <= 5; HOUSE_POLLUTION ++){
-//        for (FOREST_POLLUTION = -1; FOREST_POLLUTION > -3 ; FOREST_POLLUTION --){
+//  for (FACTORY_POLLUTION = 0; FACTORY_POLLUTION <=20; FACTORY_POLLUTION ++){
+//    for (FARM_POLLUTION = 0; FARM_POLLUTION <= 20; FARM_POLLUTION ++){
+//      for (HOUSE_POLLUTION = 0; HOUSE_POLLUTION <= 20; HOUSE_POLLUTION ++){
+//        for (FOREST_POLLUTION = 0; FOREST_POLLUTION > -20 ; FOREST_POLLUTION --){
 //          WS.update();
 //          println(WS.totalDecayPollution);
-//          if (WS.totalDecayPollution > targetPollution-precision && sumDecayPollution() < targetPollution+precision) {
+//          if (WS.totalDecayPollution > targetPollution-precision && WS.totalDecayPollution < targetPollution+precision) {
 //            println("factoryPollution: ", FACTORY_POLLUTION);
 //            println("farmPollution: ", FARM_POLLUTION);
 //            println("housePollution: ", HOUSE_POLLUTION);
