@@ -498,11 +498,12 @@ class Button{
   
   void display() {
     stroke(255);
-    strokeWeight(2);
+    strokeWeight(1.5);
     fill(255);  //Color of text label
     textAlign(LEFT,CENTER);
     if (pushed == this) { 
-      stroke(135);
+      stroke(90);
+      strokeWeight(2.5);
       textFont(SELECTEDFONT);
       text(label, x+bWidth+8, y+(bHeight/2.)-3);
       fill(selectedColor);
