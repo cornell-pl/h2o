@@ -32,7 +32,7 @@ Slider forestS;
 
 class GUI {
   final PFont AXISFONT = createFont("Calibri", 12);
-  final PFont MESSAGEFONT = createFont("Calibri", 13);
+  final PFont MESSAGEFONT = createFont("Calibri", 14);
   final PFont BIGFONT = createFont("Calibri-Bold", 20);
   final PFont NUMERALFONT = createFont("Courier", 30);
   
