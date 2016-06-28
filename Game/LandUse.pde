@@ -173,7 +173,7 @@ class Dirt extends LandUse {
 }
 
 class River extends LandUse {
-  final LUType TYPE = LUType.FACTORY;
+  final LUType TYPE = LUType.RIVER;
   River(){
     icon = RIVER_BLUE;
   }
