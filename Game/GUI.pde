@@ -3,7 +3,7 @@ final int YPOS = 30;
 final int TILE_WIDTH = 26;   //width of a tile in pixels
 final int TILE_HEIGHT = 26;    //height of a tile in pixels
 final int XPOSB = XPOS + SIZE_X*TILE_WIDTH + 40;    //Drawing dimensions. XPOS and ypos are the coordinates of the top most button. 
-final int YPOSB = 90;    //All buttons scale with respect to these
+final int YPOSB = 60;    //All buttons scale with respect to these
 
 final Factory FA = new Factory();     //a bunch of land types to retrieve their fields in GUI
 final Farm FM = new Farm();
@@ -32,7 +32,7 @@ Slider forestS;
 
 class GUI {
   final PFont AXISFONT = createFont("Calibri", 12);
-  final PFont MESSAGEFONT = createFont("Calibri", 14);
+  final PFont MESSAGEFONT = createFont("Calibri", 13);
   final PFont BIGFONT = createFont("Calibri-Bold", 20);
   final PFont NUMERALFONT = createFont("Courier", 30);
   
@@ -42,7 +42,7 @@ class GUI {
     houseB = new Button(XPOSB, YPOSB + 120, TILE_WIDTH, TILE_HEIGHT, HOUSE_GRAY, #73A29C, #90B3B4, "House");
     forestB = new Button(XPOSB, YPOSB + 180, TILE_WIDTH, TILE_HEIGHT, FOREST_GREEN, #73A29C, #02A002, "Forest");
     demolishB = new Button(XPOSB, YPOSB + 240, TILE_WIDTH, TILE_HEIGHT, DEMOLISH_BEIGE, #73A29C, #F5BB74, "Demolish");
-    resetB = new Button(XPOSB+220, YPOS+TILE_HEIGHT*SIZE_Y+40, TILE_WIDTH + 5, TILE_HEIGHT + 5, #FFFFFF, #989795, #171717, "RESET MAP");
+    resetB = new Button(XPOSB+220, YPOS+TILE_HEIGHT*SIZE_Y-57, TILE_WIDTH + 5, TILE_HEIGHT + 5, #FFFFFF, #989795, #171717, "RESET MAP");
     
     showPolT = new Toggle(XPOSB+180, YPOSB+450, "Show Pollution");
     showDecayPolT = new Toggle(XPOSB+180, YPOSB+500, "Show decayPollution");
@@ -100,7 +100,7 @@ class GUI {
     noFill();
     stroke(204);
     strokeWeight(1);
-    rect(XPOSB-20, YPOSB-30, 392, 860);
+    rect(XPOSB-20, YPOS, 392, TILE_HEIGHT*SIZE_Y);
     line(XPOSB-20, YPOSB+TILE_HEIGHT+5+270, XPOSB-20+392, YPOSB+TILE_HEIGHT+5+270);
   }
     
