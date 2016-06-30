@@ -2,6 +2,14 @@ Watershed WS;
 GUI graphics;
 final int SIZE_X = 30;    //Dimensions of the watershed in tiles
 final int SIZE_Y = 30;
+
+//Defining pollution as global variables
+final int FACTORY_POLLUTION = 20;
+final int FARM_POLLUTION = 12;
+final int HOUSE_POLLUTION = 4;
+final int FOREST_POLLUTION = -2;
+final int DIRT_POLLUTION = 0;
+
 final int[][] RIVER_TILES = { { 5 , 5 },  { 5 , 19 },  { 5 , 20 },  { 5 , 21 },  { 6 , 5 },  { 6 , 21 },  { 7 , 5 },  { 7 , 6 },  { 7 , 21 },  { 8 , 6 },  { 8 , 21 },  { 8 , 22 },  { 9 , 6 },  { 9 , 22 },  { 10 , 6 },  { 10 , 7 },  { 10 , 22 },  { 11 , 6 },  { 11 , 7 },  { 11 , 8 },  { 11 , 9 },  { 11 , 14 },  { 11 , 15 },  { 11 , 16 },  { 11 , 22 },  { 12 , 7 },  { 12 , 8 },  { 12 , 9 },  { 12 , 10 },  { 12 , 11 },  { 12 , 12 },  { 12 , 13 },  { 12 , 14 },  { 12 , 15 },  { 12 , 16 },  { 12 , 17 },  { 12 , 18 },  { 12 , 19 },  { 12 , 20 },  { 12 , 21 },  { 12 , 22 },  { 13 , 9 },  { 13 , 10 },  { 13 , 11 },  { 13 , 12 },  { 13 , 13 },  { 13 , 14 },  { 13 , 16 },  { 13 , 17 },  { 13 , 18 },  { 13 , 19 },  { 13 , 20 },  { 13 , 21 },  { 13 , 22 },  { 13 , 23 },  { 13 , 24 },  { 13 , 25 },  { 14 , 7 },  { 14 , 8 },  { 14 , 9 },  { 14 , 11 },  { 14 , 12 },  { 14 , 18 },  { 14 , 19 },  { 14 , 22 },  { 14 , 23 },  { 14 , 24 },  { 14 , 25 },  { 14 , 26 },  { 14 , 27 },  { 14 , 28 },  { 14 , 29 },  { 15 , 6 },  { 15 , 11 },  { 15 , 17 },  { 15 , 18 },  { 15 , 24 },  { 15 , 25 },  { 15 , 26 },  { 15 , 27 },  { 15 , 28 },  { 15 , 29 },  { 16 , 5 },  { 16 , 11 },  { 16 , 16 },  { 16 , 17 },  { 16 , 26 },  { 16 , 27 },  { 16 , 28 },  { 16 , 29 },  { 17 , 4 },  { 17 , 10 },  { 17 , 11 },  { 17 , 16 },  { 17 , 27 },  { 17 , 28 },  { 17 , 29 },  { 18 , 9 },  { 18 , 10 },  { 18 , 16 },  { 18 , 17 },  { 19 , 8 },  { 19 , 9 },  { 20 , 7 },  { 20 , 8 },  { 21 , 7 },  { 22 , 7 },  { 23 , 6 },  { 23 , 7 },  { 23 , 8 },  { 24 , 7 },  { 24 , 8 },  { 25 , 7 } };
 ArrayList<Tile> riverTiles = new ArrayList<Tile>(200);
 
@@ -10,7 +18,7 @@ void setup() {
   size(1250, 950);
   WS = new Watershed(SIZE_X, SIZE_Y);   //Creates watershed of size 20*20
   graphics = new GUI(SIZE_X, SIZE_Y);
-  //pollutionIterator(522.81, 0.01);
+  optimize();
 }
 
 void draw() {  
@@ -32,9 +40,7 @@ class Watershed {
   Tile[] rTiles = new Tile[113];
   
   Watershed(int x, int y) {
-    /* Constructor: Initializes a watershed of dimension x*y units */
     initializeWithForest();
-    //initializeWithAll();
     setTileVals();
   }     //<>//
   
@@ -88,12 +94,10 @@ class Watershed {
   void setTileVals() {
     /* Sets the pollution, ld pollution and distToRiver for each tile.
     * Called once after map is initialized */
-    for (Tile[] tileRow : GAME_MAP) {
-      for (Tile t: tileRow) {
-        t.pollution = getPollution(t.getLandUse());
-        t.distToRiver = distToRiver(t.getX(),t.getY());
-        t.decayPollution = calcDecayPollution(t.pollution, t.distToRiver);
-      }
+    for (Tile t : getAllTiles()) {
+      t.pollution = getPollution(t.getLandUse());
+      t.distToRiver = distToRiver(t.getX(),t.getY());
+      t.decayPollution = calcDecayPollution(t.pollution, t.distToRiver);
     }
   }
 
@@ -145,19 +149,14 @@ class Watershed {
          totalPollution += t.getTilePollution();
       }
     }
-    //if (totalPollution < 0) totalPollution = 0;
     return totalPollution;
   }
   
   float sumActualProfits() {
     /* Returns the total actual profits made from all the property on the map */
     float profit = 0;
-    for (Tile[] tileRow : GAME_MAP) {
-      for (Tile t: tileRow) { 
-        if (! (t.getLandUse() instanceof River)){
+    for (Tile t: getAllTiles()) { 
         profit += t.getActualProfit();
-        }
-      }
     }
     return profit;
   }
@@ -168,17 +167,13 @@ class Watershed {
   }
   
   void updatePol() {
-    for (Tile[] tileRow : GAME_MAP) {
-      for (Tile t: tileRow) { 
-        t.update();
-      }
+    for (Tile t : getAllTiles()) {
+      t.update();
     }
   }
         
   
   void update() {
-    /* Updates the totalPollution and totalDecayPollution and totalActualProfit variables.
-    * To be called in each frame */
     sumLandUses();
     updatePol();
     totalPollution = sumPollution();
@@ -295,4 +290,46 @@ class Watershed {
       return false;
     }
   }
+}
+
+
+int getPollution(LandUse lu) {
+    /*Returns the default pollution value of each landUse 
+    *This method is used to set the default pollution values when game is initialized*/
+    if (lu.getType() == LUType.FACTORY) return FACTORY_POLLUTION;     //Processing doesn't handle enums well. can only be used as enum.THING
+    else if (lu.getType() == LUType.FARM) return FARM_POLLUTION;
+    else if (lu.getType() == LUType.HOUSE) return HOUSE_POLLUTION;
+    else if (lu.getType() == LUType.FOREST) return FOREST_POLLUTION;
+    else if (lu.getType() == LUType.DIRT) return DIRT_POLLUTION;
+    else return 0;
+}
+
+float calcDecayPollution(float pollution, float distToRiver) {
+   /* Returns the pollution entering river of Tile t according to distance decay model.  */
+     float decayPollution = pollution/(distToRiver/2+0.5);
+     return decayPollution;
+}
+
+float distToRiver(int x, int y) {
+    /* Helper: Returns the distance of location <x, y> to closest River Tile. */
+    float minDist = Float.MAX_VALUE;
+    for (Tile t: riverTiles) {
+      float d = dist(x, y, t.getX(), t.getY());
+      if (d < minDist) minDist = d;
+   }
+   return minDist;
+}
+
+float rawSumDecayPollution() {
+  /* Linear decay model of pollution that enters the river.
+  Returns total pollution entering river from all sources according decay model defined for each LandUse*/
+  float dPollutionTotal = 0.;
+  for (Tile t: WS.getAllTiles()) {   //Calculate pollution contribution from t after linear decay
+     dPollutionTotal += t.getDecayPollution();
+  }
+  return dPollutionTotal;  
+}
+
+float sumDecayPollution() {
+  return max(1.0,rawSumDecayPollution());
 }

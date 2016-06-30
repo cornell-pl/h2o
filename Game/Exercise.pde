@@ -1,74 +1,104 @@
-//Defining pollution as global variables
-final int FACTORY_POLLUTION = 20;
-final int FARM_POLLUTION = 12;
-final int HOUSE_POLLUTION = 4;
-final int FOREST_POLLUTION = -2;
-final int DIRT_POLLUTION = 0;
-
-//int FACTORY_POLLUTION = 0;
-//int FARM_POLLUTION = 0;
-//int HOUSE_POLLUTION = 0;
-//int FOREST_POLLUTION = 0;
-//int DIRT_POLLUTION = 0;
-
-int getPollution(LandUse lu) {
-    /*Returns the default pollution value of each landUse 
-    *This method is used to set the default pollution values when game is initialized*/
-    if (lu.getType() == LUType.FACTORY) return FACTORY_POLLUTION;     //Processing doesn't handle enums well. can only be used as enum.THING
-    else if (lu.getType() == LUType.FARM) return FARM_POLLUTION;
-    else if (lu.getType() == LUType.HOUSE) return HOUSE_POLLUTION;
-    else if (lu.getType() == LUType.FOREST) return FOREST_POLLUTION;
-    else if (lu.getType() == LUType.DIRT) return DIRT_POLLUTION;
-    else return 0;
+boolean isDirt(LandUse lu) {
+  return lu.getType() == LUType.DIRT;
+}
+boolean isDirt(Tile t) {
+  return isDirt(t.getLandUse());
+}
+boolean isForest(LandUse lu) {
+  return lu.getType() == LUType.FOREST;
+}
+boolean isForest(Tile t) {
+  return isForest(t.getLandUse());
+}
+boolean isFactory(LandUse lu) {
+  return lu.getType() == LUType.FACTORY;
+}
+boolean isFactory(Tile t) {
+  return isFactory(t.getLandUse());
+}
+boolean isFarm(LandUse lu) {
+  return lu.getType() == LUType.FARM;
+}
+boolean isFarm(Tile t) {
+  return isFarm(t.getLandUse());
+}
+boolean isHouse(LandUse lu) {
+  return lu.getType() == LUType.HOUSE;
+}
+boolean isHouse(Tile t) {
+  return isHouse(t.getLandUse());
 }
 
-float calcDecayPollution(float pollution, float distToRiver) {
-   /* Returns the pollution entering river of Tile t according to distance decay model.  */
-     float decayPollution = pollution/(distToRiver/2+0.5);
-     return decayPollution;
+float profit(LandUse lu, float dist) {
+  return lu.calcActualProfit(dist);
 }
 
-float distToRiver(int x, int y) {
-    /* Helper: Returns the distance of location <x, y> to closest River Tile. */
-    float minDist = Float.MAX_VALUE;
-    for (Tile t: riverTiles) {
-      float d = dist(x, y, t.getX(), t.getY());
-      if (d < minDist) minDist = d;
+float pollution(LandUse lu, float dist) {
+  return calcDecayPollution(getPollution(lu), dist);
+}
+
+boolean fullyBuilt() {
+  return (WS.factories == FACTORY_QUOTA &&
+          WS.farms == FARM_QUOTA &&
+          WS.houses == HOUSE_QUOTA);
+}
+
+boolean buildOk(LandUse lu) {
+  if(isFactory(lu))
+    return WS.factories < FACTORY_QUOTA;
+  if(isFarm(lu))
+    return WS.farms < FARM_QUOTA;
+  if(isHouse(lu))
+    return WS.houses < HOUSE_QUOTA;
+  if (isForest(lu))
+    return WS.totalDecayPollution > 1.0;
+  return false;    
+}
+
+int dirtTiles() {
+  int d = 0;
+  for(Tile t : WS.getAllTiles()) {
+     if(isDirt(t)) {
+       d++;
+     }    
    }
-   return minDist;
+   return d;
 }
 
-float sumDecayPollution() {
-  /* Linear decay model of pollution that enters the river.
-  Returns total pollution entering river from all sources according decay model defined for each LandUse*/
-  float dPollutionTotal = 0.;
-  Tile[] allTiles = WS.getAllTiles();
-  for (Tile t: allTiles) {   //Calculate pollution contribution from t after linear decay
-     dPollutionTotal += t.getDecayPollution();
+void optimize() {
+  println("Starting optimization..."); 
+  while(!fullyBuilt()) {
+    float bestScore = 0.0;
+    Tile bestTile = null;
+    LandUse bestLandUse = null;
+    LandUse[] landUses = { new Factory(), new Farm(), new House() };
+    for(Tile t : WS.getAllTiles()) {
+      if(isDirt(t)) {
+        float dist = t.distToRiver;
+        for(LandUse lu : landUses) {
+          if(buildOk(lu)) {
+            float luProfit = profit(lu, dist);
+            float luPollution = pollution(lu, dist); 
+            float luScore = luProfit / max(1.0, luPollution - 6.75);
+            if(luScore > bestScore) {
+              bestTile = t;
+              bestLandUse = lu;
+              bestScore = luScore;
+            }
+          } // if allowed to build this land use type
+        } // for each land use
+      } // if legal to build here
+    } // for each tile
+    println("Changing " + bestTile + " to " + bestLandUse);
+    bestTile.changeLandUse(bestLandUse); //<>//
+    WS.update();
+  } // while not fully built
+  for(Tile t : WS.getAllTiles()) {
+    LandUse lu = new Forest();
+    if(isDirt(t) && buildOk(lu)) {
+      t.changeLandUse(lu);
+      WS.update();
+    }
   }
-   if (dPollutionTotal < 0.) dPollutionTotal = 1.;
-   return dPollutionTotal;
+  println("Done!");
 }
-
-//void pollutionIterator(int targetPollution, float precision) {
-  /* Use this with the initializeWithAll() in the Watershed constructor. 
- The target pollution would be 522.81 */ 
-//  println("Iterating...");
-//  for (FACTORY_POLLUTION = 0; FACTORY_POLLUTION <=20; FACTORY_POLLUTION ++){
-//    for (FARM_POLLUTION = 0; FARM_POLLUTION <= 20; FARM_POLLUTION ++){
-//      for (HOUSE_POLLUTION = 0; HOUSE_POLLUTION <= 20; HOUSE_POLLUTION ++){
-//        for (FOREST_POLLUTION = 0; FOREST_POLLUTION > -20 ; FOREST_POLLUTION --){
-//          WS.update();
-//          println(WS.totalDecayPollution);
-//          if (WS.totalDecayPollution > targetPollution-precision && WS.totalDecayPollution < targetPollution+precision) {
-//            println("factoryPollution: ", FACTORY_POLLUTION);
-//            println("farmPollution: ", FARM_POLLUTION);
-//            println("housePollution: ", HOUSE_POLLUTION);
-//            println("forestPollution: ", FOREST_POLLUTION);
-//          }
-//        }
-//      }
-//    }
-//  }
-//  println("Done");
-//}
