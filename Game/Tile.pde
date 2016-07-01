@@ -64,15 +64,15 @@ class Tile {
   
   void update() {
     if (showSlider == true) {
-      if (! (landU instanceof Dirt) && !(landU instanceof River)){
+      if (! (landU == DIRT) && !(landU == RIVER)){
         pollution = landU.getSliderPollution();
       }
-      if (! (landU instanceof Forest) && !(landU instanceof River)) {
+      if (! (landU == FOREST) && !(landU == RIVER)) {
         decayPollution = calcDecayPollution(pollution, distToRiver);
       } else decayPollution = pollution;
     }else{
       pollution = getPollution(landU);
-      if (! (landU instanceof Forest) && !(landU instanceof River)) {
+      if (! (landU == FOREST) && !(landU == RIVER)) {
         decayPollution = calcDecayPollution(pollution, distToRiver);
       } else decayPollution = pollution;
     }

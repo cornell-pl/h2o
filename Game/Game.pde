@@ -1,9 +1,7 @@
-Watershed WS;
-GUI graphics;
+
 final int SIZE_X = 30;    //Dimensions of the watershed in tiles
 final int SIZE_Y = 30;
 
-//Defining pollution as global variables
 final int FACTORY_POLLUTION = 20;
 final int FARM_POLLUTION = 12;
 final int HOUSE_POLLUTION = 4;
@@ -13,12 +11,23 @@ final int DIRT_POLLUTION = 0;
 final int[][] RIVER_TILES = { { 5 , 5 },  { 5 , 19 },  { 5 , 20 },  { 5 , 21 },  { 6 , 5 },  { 6 , 21 },  { 7 , 5 },  { 7 , 6 },  { 7 , 21 },  { 8 , 6 },  { 8 , 21 },  { 8 , 22 },  { 9 , 6 },  { 9 , 22 },  { 10 , 6 },  { 10 , 7 },  { 10 , 22 },  { 11 , 6 },  { 11 , 7 },  { 11 , 8 },  { 11 , 9 },  { 11 , 14 },  { 11 , 15 },  { 11 , 16 },  { 11 , 22 },  { 12 , 7 },  { 12 , 8 },  { 12 , 9 },  { 12 , 10 },  { 12 , 11 },  { 12 , 12 },  { 12 , 13 },  { 12 , 14 },  { 12 , 15 },  { 12 , 16 },  { 12 , 17 },  { 12 , 18 },  { 12 , 19 },  { 12 , 20 },  { 12 , 21 },  { 12 , 22 },  { 13 , 9 },  { 13 , 10 },  { 13 , 11 },  { 13 , 12 },  { 13 , 13 },  { 13 , 14 },  { 13 , 16 },  { 13 , 17 },  { 13 , 18 },  { 13 , 19 },  { 13 , 20 },  { 13 , 21 },  { 13 , 22 },  { 13 , 23 },  { 13 , 24 },  { 13 , 25 },  { 14 , 7 },  { 14 , 8 },  { 14 , 9 },  { 14 , 11 },  { 14 , 12 },  { 14 , 18 },  { 14 , 19 },  { 14 , 22 },  { 14 , 23 },  { 14 , 24 },  { 14 , 25 },  { 14 , 26 },  { 14 , 27 },  { 14 , 28 },  { 14 , 29 },  { 15 , 6 },  { 15 , 11 },  { 15 , 17 },  { 15 , 18 },  { 15 , 24 },  { 15 , 25 },  { 15 , 26 },  { 15 , 27 },  { 15 , 28 },  { 15 , 29 },  { 16 , 5 },  { 16 , 11 },  { 16 , 16 },  { 16 , 17 },  { 16 , 26 },  { 16 , 27 },  { 16 , 28 },  { 16 , 29 },  { 17 , 4 },  { 17 , 10 },  { 17 , 11 },  { 17 , 16 },  { 17 , 27 },  { 17 , 28 },  { 17 , 29 },  { 18 , 9 },  { 18 , 10 },  { 18 , 16 },  { 18 , 17 },  { 19 , 8 },  { 19 , 9 },  { 20 , 7 },  { 20 , 8 },  { 21 , 7 },  { 22 , 7 },  { 23 , 6 },  { 23 , 7 },  { 23 , 8 },  { 24 , 7 },  { 24 , 8 },  { 25 , 7 } };
 ArrayList<Tile> riverTiles = new ArrayList<Tile>(200);
 
+final Factory FACTORY = new Factory();
+final Farm FARM = new Farm();
+final House HOUSE = new House();
+final Forest FOREST = new Forest();
+final Dirt DIRT = new Dirt();
+final River RIVER = new River();
+
+
+Watershed WS;
+GUI graphics;
+
 void setup() {
   frameRate(30);
   size(1250, 950);
   WS = new Watershed(SIZE_X, SIZE_Y);   //Creates watershed of size 20*20
   graphics = new GUI(SIZE_X, SIZE_Y);
-  optimize();
+  //optimize();
 }
 
 void draw() {  
@@ -47,15 +56,13 @@ class Watershed {
   void initializeWithForest() {
     for (int j=0; j<SIZE_Y; j++) {
       for (int i=0; i<SIZE_X; i++) { 
-         Dirt di = new Dirt();
-         Tile t = new Tile(di, i, j);
+         Tile t = new Tile(DIRT, i, j);
          GAME_MAP[i][j] = t;
         }
       }
     int[][] fCoords = { { 1 , 1 },  { 1 , 2 },  { 1 , 5 },  { 1 , 18 },  { 1 , 19 },  { 2 , 2 },  { 2 , 3 },  { 2 , 4 },  { 2 , 17 },  { 2 , 18 },  { 2 , 19 },  { 2 , 20 },  { 3 , 2 },  { 3 , 3 },  { 3 , 4 },  { 3 , 5 },  { 3 , 16 },  { 3 , 17 },  { 3 , 18 },  { 3 , 19 },  { 4 , 2 },  { 4 , 3 },  { 4 , 4 },  { 4 , 15 },  { 4 , 16 },  { 4 , 17 },  { 4 , 18 },  { 5 , 4 },  { 5 , 17 },  { 6 , 16 },  { 6 , 17 },  { 6 , 18 },  { 7 , 2 },  { 7 , 17 },  { 7 , 18 },  { 7 , 19 },  { 8 , 17 },  { 8 , 18 },  { 10 , 24 },  { 11 , 24 },  { 11 , 25 },  { 14 , 20 },  { 14 , 21 },  { 15 , 19 },  { 15 , 20 },  { 15 , 21 },  { 15 , 22 },  { 15 , 23 },  { 16 , 18 },  { 16 , 19 },  { 16 , 20 },  { 16 , 21 },  { 17 , 18 },  { 17 , 19 },  { 17 , 20 },  { 21 , 20 },  { 21 , 22 },  { 21 , 23 },  { 22 , 3 },  { 22 , 4 },  { 22 , 19 },  { 22 , 20 },  { 22 , 21 },  { 22 , 22 },  { 22 , 23 },  { 23 , 2 },  { 23 , 3 },  { 23 , 4 },  { 23 , 18 },  { 23 , 19 },  { 23 , 20 },  { 23 , 21 },  { 23 , 22 },  { 23 , 23 },  { 24 , 1 },  { 24 , 2 },  { 24 , 3 },  { 24 , 4 },  { 24 , 5 },  { 24 , 19 },  { 24 , 20 },  { 24 , 21 },  { 24 , 22 },  { 24 , 23 },  { 25 , 2 },  { 25 , 3 },  { 25 , 4 },  { 25 , 5 },  { 25 , 12 },  { 25 , 13 },  { 25 , 20 },  { 25 , 21 },  { 25 , 22 },  { 26 , 3 },  { 26 , 4 },  { 26 , 5 },  { 26 , 6 },  { 26 , 12 },  { 26 , 13 },  { 26 , 23 },  { 26 , 24 },  { 26 , 25 },  { 27 , 4 },  { 27 , 12 },  { 27 , 24 },  { 27 , 25 },  { 27 , 26 },  { 28 , 25 },  { 28 , 26 } };
     for (int[] c: fCoords) { 
-      Forest fo = new Forest();
-      GAME_MAP[c[0]][c[1]].landU = fo;
+      GAME_MAP[c[0]][c[1]].landU = FOREST;
     }
     initializeRiver2();    //Creates the river
   }
@@ -73,20 +80,18 @@ class Watershed {
     int[][] fmCoords = { { 9 , 11 },  { 10 , 9 },  { 10 , 10 },  { 17 , 14 },  { 18 , 12 },  { 18 , 14 },  { 18 , 15 },  { 19 , 4 },  { 19 , 5 },  { 19 , 13 },  { 20 , 3 },  { 20 , 4 },  { 20 , 5 },  { 20 , 6 },  { 20 , 10 },  { 20 , 13 },  { 20 , 14 },  { 20 , 15 },  { 21 , 3 },  { 21 , 4 },  { 21 , 5 },  { 21 , 8 },  { 21 , 9 },  { 21 , 10 },  { 21 , 11 },  { 21 , 14 },  { 22 , 5 },  { 22 , 8 },  { 22 , 10 },  { 23 , 9 },  { 23 , 10 },  { 24 , 6 },  { 24 , 9 },  { 24 , 10 },  { 25 , 5 },  { 25 , 6 },  { 25 , 8 },  { 25 , 9 },  { 26 , 5 },  { 26 , 6 },  { 26 , 7 } };
     int[][] hsCoords = { { 10 , 11 },  { 11 , 10 },  { 11 , 11 },  { 11 , 12 },  { 11 , 13 },  { 14 , 10 },  { 14 , 13 },  { 14 , 15 },  { 14 , 20 },  { 15 , 7 },  { 15 , 8 },  { 15 , 9 },  { 15 , 10 },  { 15 , 12 },  { 15 , 13 },  { 15 , 14 },  { 15 , 15 },  { 15 , 16 },  { 15 , 19 },  { 16 , 7 },  { 16 , 8 },  { 16 , 9 },  { 16 , 10 },  { 16 , 12 },  { 16 , 13 },  { 16 , 14 },  { 16 , 15 },  { 17 , 8 },  { 17 , 9 },  { 17 , 12 },  { 18 , 7 },  { 18 , 8 },  { 18 , 11 },  { 18 , 13 },  { 19 , 6 },  { 19 , 7 },  { 19 , 10 },  { 19 , 14 },  { 20 , 9 },  { 22 , 9 },  { 23 , 5 } };
     for (int[] c: fCoords) { 
-      Forest fo = new Forest();
-      GAME_MAP[c[0]][c[1]].landU = fo;
+      GAME_MAP[c[0]][c[1]].landU = FOREST;
     }
     for (int[] c: fcCoords) { 
-      Factory fc = new Factory();
-      GAME_MAP[c[0]][c[1]].landU = fc;
+      GAME_MAP[c[0]][c[1]].landU = FACTORY;
     }
     for (int[] c: fmCoords) { 
       Farm fm = new Farm();
-      GAME_MAP[c[0]][c[1]].landU = fm;
+      GAME_MAP[c[0]][c[1]].landU = FARM;
     }
     for (int[] c: hsCoords) { 
       House hs = new House();
-      GAME_MAP[c[0]][c[1]].landU = hs;
+      GAME_MAP[c[0]][c[1]].landU = HOUSE;
     }
     initializeRiver2();    //Creates the river
   }
@@ -95,9 +100,9 @@ class Watershed {
     /* Sets the pollution, ld pollution and distToRiver for each tile.
     * Called once after map is initialized */
     for (Tile t : getAllTiles()) {
-      t.pollution = getPollution(t.getLandUse());
-      t.distToRiver = distToRiver(t.getX(),t.getY());
-      t.decayPollution = calcDecayPollution(t.pollution, t.distToRiver);
+      //t.pollution = getPollution(t.getLandUse());
+      t.distToRiver = distToRiver(t.getX(),t.getY());      //I dont have to set all these pollution stuff because they are updated each frame.
+      ///t.decayPollution = calcDecayPollution(t.pollution, t.distToRiver);
     }
   }
 
@@ -107,8 +112,7 @@ class Watershed {
     *Adds River Tiles at designated locations
     *River design 2 used. (See Excel sheet)*/
     for (int[] c: RIVER_TILES) { 
-      River r = new River();
-      GAME_MAP[c[0]][c[1]].landU = r;
+      GAME_MAP[c[0]][c[1]].landU = RIVER;
       riverTiles.add(GAME_MAP[c[0]][c[1]]);
     }
   }
