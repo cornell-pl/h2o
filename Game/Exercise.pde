@@ -1,33 +1,4 @@
-boolean isDirt(LandUse lu) {
-  return lu.getType() == LUType.DIRT;
-}
-boolean isDirt(Tile t) {
-  return isDirt(t.getLandUse());
-}
-boolean isForest(LandUse lu) {
-  return lu.getType() == LUType.FOREST;
-}
-boolean isForest(Tile t) {
-  return isForest(t.getLandUse());
-}
-boolean isFactory(LandUse lu) {
-  return lu.getType() == LUType.FACTORY;
-}
-boolean isFactory(Tile t) {
-  return isFactory(t.getLandUse());
-}
-boolean isFarm(LandUse lu) {
-  return lu.getType() == LUType.FARM;
-}
-boolean isFarm(Tile t) {
-  return isFarm(t.getLandUse());
-}
-boolean isHouse(LandUse lu) {
-  return lu.getType() == LUType.HOUSE;
-}
-boolean isHouse(Tile t) {
-  return isHouse(t.getLandUse());
-}
+public enum LUType {FACTORY, FOREST, FARM, HOUSE, DIRT, RIVER};
 
 float profit(LandUse lu, float dist) {
   return lu.calcActualProfit(dist);
@@ -44,13 +15,13 @@ boolean fullyBuilt() {
 }
 
 boolean buildOk(LandUse lu) {
-  if(isFactory(lu))
+  if(lu.isFactory())
     return WS.factories < FACTORY_QUOTA;
-  if(isFarm(lu))
+  if(lu.isFarm())
     return WS.farms < FARM_QUOTA;
-  if(isHouse(lu))
+  if(lu.isHouse())
     return WS.houses < HOUSE_QUOTA;
-  if (isForest(lu))
+  if (lu.isForest())
     return WS.totalDecayPollution > 1.0;
   return false;    
 }
@@ -58,7 +29,7 @@ boolean buildOk(LandUse lu) {
 int dirtTiles() {
   int d = 0;
   for(Tile t : WS.getAllTiles()) {
-     if(isDirt(t)) {
+     if(t.isDirt()){
        d++;
      }    
    }
@@ -71,9 +42,9 @@ void optimize() {
     float bestScore = 0.0;
     Tile bestTile = null;
     LandUse bestLandUse = null;
-    LandUse[] landUses = { new Factory(), new Farm(), new House() };
+    LandUse[] landUses = { FACTORY, FARM, HOUSE };
     for(Tile t : WS.getAllTiles()) {
-      if(isDirt(t)) {
+      if(t.isDirt()) {
         float dist = t.distToRiver;
         for(LandUse lu : landUses) {
           if(buildOk(lu)) {
@@ -94,8 +65,8 @@ void optimize() {
     WS.update();
   } // while not fully built
   for(Tile t : WS.getAllTiles()) {
-    LandUse lu = new Forest();
-    if(isDirt(t) && buildOk(lu)) {
+    LandUse lu = FOREST;
+    if(t.isDirt() && buildOk(lu)) {
       t.changeLandUse(lu);
       WS.update();
     }

@@ -10,10 +10,6 @@ final int FACTORY_QUOTA = 40;
 final int FARM_QUOTA = 60;
 final int HOUSE_QUOTA = 100;
 
-public enum LUType {FACTORY, FARM, HOUSE, FOREST, DIRT, RIVER}
-
-
-
 abstract class LandUse {
   color icon;
   int baseProfit;
@@ -31,21 +27,36 @@ abstract class LandUse {
     try{
       return s.getVal();
     } catch(NullPointerException e){     //This is when those first forests(Game) and example types(GUI) initialized has s field pointed to null
-      if (this instanceof Factory) {
+      if (this == FACTORY) {
         s = factoryS;
-      } else if (this instanceof Farm){
+      } else if (this == FARM){
         s = farmS;
-      } else if (this instanceof House){
+      } else if (this == HOUSE){
         s = houseS;
-      } else if (this instanceof Forest){
+      } else if (this == FOREST){
         s = forestS;
       }
       return getPollution(this);
     }      
   }
   
-  boolean equals(Class c){
-    return true;
+  boolean isDirt() {
+    return (this == DIRT);
+  }
+  boolean isForest() {
+    return (this == FOREST);
+  }
+  boolean isFactory() {
+    return (this == FACTORY);
+  }
+  boolean isFarm() {
+    return (this == FARM);
+  }
+  boolean isHouse() {
+    return (this == HOUSE);
+  }
+  boolean isRiver() {
+    return (this == RIVER);
   }
   
   abstract LUType getType();

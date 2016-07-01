@@ -27,7 +27,7 @@ void setup() {
   size(1250, 950);
   WS = new Watershed(SIZE_X, SIZE_Y);   //Creates watershed of size 20*20
   graphics = new GUI(SIZE_X, SIZE_Y);
-  //optimize();
+  optimize();
 }
 
 void draw() {  
@@ -300,11 +300,11 @@ class Watershed {
 int getPollution(LandUse lu) {
     /*Returns the default pollution value of each landUse 
     *This method is used to set the default pollution values when game is initialized*/
-    if (lu.getType() == LUType.FACTORY) return FACTORY_POLLUTION;     //Processing doesn't handle enums well. can only be used as enum.THING
-    else if (lu.getType() == LUType.FARM) return FARM_POLLUTION;
-    else if (lu.getType() == LUType.HOUSE) return HOUSE_POLLUTION;
-    else if (lu.getType() == LUType.FOREST) return FOREST_POLLUTION;
-    else if (lu.getType() == LUType.DIRT) return DIRT_POLLUTION;
+    if (lu == FACTORY) return FACTORY_POLLUTION;     //Processing doesn't handle enums well. can only be used as enum.THING
+    else if (lu ==FARM) return FARM_POLLUTION;
+    else if (lu == HOUSE) return HOUSE_POLLUTION;
+    else if (lu == FOREST) return FOREST_POLLUTION;
+    else if (lu == DIRT) return DIRT_POLLUTION;
     else return 0;
 }
 

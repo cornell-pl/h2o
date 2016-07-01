@@ -16,7 +16,25 @@ class Tile {
      Y = yp;
      landU = lu;     
   }
- 
+
+  boolean isDirt() {
+    return (landU.isDirt());
+  }
+  boolean isForest() {
+    return (landU.isForest());
+  }
+  boolean isFactory() {
+    return (landU.isFactory());
+  }
+  boolean isFarm() {
+    return (landU.isFarm());
+  }
+  boolean isHouse() {
+    return (landU.isHouse());
+  }
+  boolean isRiver() {
+    return (landU.isRiver());
+  }
   
   void changeLandUse(LandUse lu) {
     /* Changes the LandUse held by the Tile to lu */
