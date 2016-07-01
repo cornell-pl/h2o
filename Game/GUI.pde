@@ -51,10 +51,10 @@ class GUI {
     showProfitT = new Toggle(XPOSB+180, YPOSB+600, "Show Money");
     sliderT = new Toggle(XPOSB+160, YPOSB+240, "Show sliders");
 
-    factoryS = new Slider(XPOSB+140, YPOSB, 0, 20, getPollution(FACTORY), "Factory", FACTORY_BROWN);
-    farmS = new Slider(XPOSB+140, YPOSB + 60, 0, 20, getPollution(FARM), "Farm", FARM_YELLOW);
-    houseS = new Slider(XPOSB+140, YPOSB + 120, 0, 20, getPollution(HOUSE), "House", HOUSE_GRAY);
-    forestS = new Slider(XPOSB+140, YPOSB + 180, -10, 10, getPollution(FOREST), "Forest", FOREST_GREEN);
+    factoryS = new Slider(XPOSB+140, YPOSB, 0, 20, FACTORY.basePollution, FACTORY, FACTORY_BROWN);
+    farmS = new Slider(XPOSB+140, YPOSB + 60, 0, 20, FARM.basePollution, FARM, FARM_YELLOW);
+    houseS = new Slider(XPOSB+140, YPOSB + 120, 0, 20, HOUSE.basePollution, HOUSE, HOUSE_GRAY);
+    forestS = new Slider(XPOSB+140, YPOSB + 180, -10, 10, FOREST.basePollution, FOREST, FOREST_GREEN);
   }
   
   void render() {
@@ -606,10 +606,11 @@ class Slider {
  
   boolean over;           // is the mouse over the slider?
   boolean locked;
-  String label;
   color col;
   
-  Slider(int xp, int yp, int minV, int maxV, float defaultV, String l, color c) {
+  LandUse lu;
+  
+  Slider(int xp, int yp, int minV, int maxV, float defaultV, LandUse l, color c) {
     x = xp;
     y = yp;
     minVal = minV;
@@ -617,7 +618,7 @@ class Slider {
     defaultVal = defaultV;
     ratio = (maxVal - minVal)/((float)(BAR_WIDTH - S_WIDTH));
     spos = x + (defaultVal-minVal)/ratio;
-    label = l;
+    lu = l;
     col = c ;
   }
   
@@ -645,6 +646,7 @@ class Slider {
     if (locked) {
       spos = constrain(mouseX, x+1, x+BAR_WIDTH-S_WIDTH);
     }
+    lu.updatePollution(getVal());
   }
 
   void display() {

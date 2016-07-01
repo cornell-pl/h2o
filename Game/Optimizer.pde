@@ -65,18 +65,6 @@ void optimize() {
   println("Done!");
 }
 
-int getPollution(LandUse lu) {
-    /*Returns the default pollution value of each landUse 
-    *This method is used to set the default pollution values when game is initialized*/
-    if (lu.isFactory()) return DEFAULT_FACTORY_POLLUTION;     //Processing doesn't handle enums well. can only be used as enum.THING
-    else if (lu.isFarm()) return DEFAULT_FARM_POLLUTION;
-    else if (lu.isHouse()) return DEFAULT_HOUSE_POLLUTION;
-    else if (lu.isForest()) return DEFAULT_FOREST_POLLUTION;
-    else if (lu.isDirt()) return DEFAULT_DIRT_POLLUTION;
-    else return 0;
-}
-
-
 
 float distToRiver(int x, int y) {
     /* Helper: Returns the distance of location <x, y> to closest River Tile. */

@@ -15,7 +15,6 @@ final int DEFAULT_DIRT_POLLUTION = 0;
 
 
 abstract class LandUse {
-  Slider s;
   color icon;
   int basePollution;
   int baseProfit;
@@ -47,21 +46,8 @@ abstract class LandUse {
     return baseProfit;
   }
   
-  int getSliderPollution() {
-    try{
-      return s.getVal();
-    } catch(NullPointerException e){     //Because landUse protptypes have s field pointed to null
-        println("error");
-        if (this.isFactory()) 
-          s = factoryS;
-        else if (this.isFarm())
-          s = farmS;
-        else if (this.isHouse())
-          s = houseS;
-        else if (this.isForest())
-          s = forestS;
-      return getPollution(this);
-    }      
+  void updatePollution(int newPollution){
+    basePollution = newPollution;
   }
  
   abstract float calcActualProfit(float distToR);      //Placing pollution and profit calculators at this level allows for 
@@ -78,7 +64,6 @@ class Factory extends LandUse {
   /* Factory gives fixed profit no matter the location */
   
   Factory () {
-    s = factoryS;
     icon = FACTORY_BROWN;   //Color code for drawing on map
     basePollution = DEFAULT_FACTORY_POLLUTION;
     baseProfit = 2000;
@@ -99,7 +84,6 @@ class Factory extends LandUse {
 class Farm extends LandUse {
   /* Farm gives less profit further from river  */
   Farm () {
-    s = farmS;
     icon = FARM_YELLOW;
     basePollution = DEFAULT_FARM_POLLUTION;
     baseProfit = 1000;
@@ -119,7 +103,6 @@ class Farm extends LandUse {
 
 class House extends LandUse {
   House() {
-    s = houseS;
     icon = HOUSE_GRAY;
     basePollution = DEFAULT_HOUSE_POLLUTION;
     baseProfit = 700;
@@ -139,7 +122,6 @@ class House extends LandUse {
 
 class Forest extends LandUse {
   Forest () {  
-    s = forestS;
     icon = FOREST_GREEN;
     basePollution = DEFAULT_FOREST_POLLUTION;
     baseProfit = -300;

@@ -39,10 +39,10 @@ class Tile {
   void changeLandUse(LandUse lu) {
     /* Changes the LandUse held by the Tile to lu */
     landU = lu;
-    pollution = getPollution(lu);
+    pollution = lu.basePollution;
     if (! (lu.isForest()) && !(lu.isRiver())) {
       decayPollution = lu.calcDecayPollution(distToRiver);
-    } else decayPollution = getPollution(lu);
+    } else decayPollution = lu.basePollution;
     actualProfit = lu.calcActualProfit(distToRiver);
   }
   
@@ -83,13 +83,13 @@ class Tile {
   void update() {
     if (showSlider == true) {
       if (! (this.isDirt()) && !(this.isRiver())){
-        pollution = landU.getSliderPollution();
+        pollution = landU.basePollution;
       }
       if (! (this.isForest()) && !(this.isRiver())) {
         decayPollution = landU.calcDecayPollution(distToRiver);
       } else decayPollution = pollution;
     }else{
-      pollution = getPollution(landU);
+      pollution = landU.basePollution;
       if (! (this.isForest()) && !(this.isRiver())) {
         decayPollution = landU.calcDecayPollution(distToRiver);
       } else decayPollution = pollution;
