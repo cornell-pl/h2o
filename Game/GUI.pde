@@ -306,8 +306,8 @@ class GUI {
     textFont(MESSAGEFONT);
     text(message, XPOS + 20, YPOS + SIZE_Y*TILE_HEIGHT + 30);   
     text(message2, XPOS + 20, YPOS + SIZE_Y*TILE_HEIGHT + 50);   
-    text("Simple sum of all pollution: " + waterS.totalPollution, XPOS + 20, YPOS + SIZE_Y*TILE_HEIGHT + 90);
-    text("Total pollution entering river after distance decay: " + nfc(waterS.totalDecayPollution,2), XPOS + 20, YPOS + SIZE_Y*TILE_HEIGHT + 110);
+    text("Simple sum of all pollution: " + waterS.sumTotalPollution(), XPOS + 20, YPOS + SIZE_Y*TILE_HEIGHT + 90);
+    text("Total pollution entering river after distance decay: " + nfc(waterS.sumDecayPollution(),2), XPOS + 20, YPOS + SIZE_Y*TILE_HEIGHT + 110);
   }
   
   void showActualProfits() {
@@ -381,7 +381,7 @@ class GUI {
     strokeWeight(4);
     float scaleC = polMax/(float)w;    //Scaling constant that scales decayPollution number to pixel coordinates of slider
     float sliderX = x;    //xposition of the slider in pixels;
-    sliderX = constrain(sliderX + waterS.totalDecayPollution/scaleC, x, x+w);
+    sliderX = constrain(sliderX + waterS.sumDecayPollution()/scaleC, x, x+w);
     line(sliderX, y-5, sliderX, y+h+5);
     
     //Gives a text indicator:

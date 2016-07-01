@@ -26,7 +26,7 @@ void setup() {
   size(1250, 950);
   WS = new Watershed(SIZE_X, SIZE_Y);   //Creates watershed of size 20*20
   graphics = new GUI(SIZE_X, SIZE_Y, WS);
-  //optimize();
+  optimize();
 }
 
 void draw() {  
@@ -38,8 +38,6 @@ void draw() {
 class Watershed{
   /* Contains all elements of the Game and implements the GUI. All user functions can be accessed from this class */
   final Tile[][] GAME_MAP = new Tile[SIZE_X][SIZE_Y]; //2D Matrix of all grid Tiles on game map
-  int totalPollution;
-  float totalDecayPollution;
   float totalActualProfits;
   float score;
   
@@ -165,13 +163,24 @@ class Watershed{
     return houses;
   }
   
-  int sumPollution() {
+  int sumTotalPollution() {
     /* Returns simple sum of pollution generated for all Tiles */
     int totalPollution = 0;
     for (Tile t: getAllTiles()) 
        totalPollution += t.getTilePollution();
     return totalPollution;
   }
+  
+  float sumDecayPollution() {
+  /* Linear decay model of pollution that enters the river.
+  Returns total pollution entering river from all sources according decay model defined for each LandUse*/
+  float totalDecayPollution = 0.;
+  for (Tile t: getAllTiles()) {   //Calculate pollution contribution from t after linear decay
+    totalDecayPollution += t.getDecayPollution();
+  }
+  return max(1.0, totalDecayPollution);
+}
+  
   
   float sumActualProfits() {
     /* Returns the total actual profits made from all the property on the map */
@@ -183,7 +192,7 @@ class Watershed{
   
   float calcScore() {
     /* Returns the player's score */
-    return totalActualProfits/totalDecayPollution;
+    return totalActualProfits/sumDecayPollution();
   }
   
   void updatePol() {
@@ -194,8 +203,6 @@ class Watershed{
   
   void update() {
     updatePol();
-    totalPollution = sumPollution();
-    totalDecayPollution = sumDecayPollution();
     totalActualProfits = sumActualProfits();
     score = calcScore();
   }

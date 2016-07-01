@@ -22,7 +22,7 @@ boolean buildOk(LandUse lu) {
   if(lu.isHouse())
     return WS.countHouses() < HOUSE_QUOTA;
   if (lu.isForest())
-    return WS.totalDecayPollution > 1.0;
+    return WS.sumDecayPollution() > 1.0;
   return false;    
 }
 
@@ -90,18 +90,4 @@ float distToRiver(int x, int y) {
       if (d < minDist) minDist = d;
    }
    return minDist;
-}
-
-float rawSumDecayPollution() {
-  /* Linear decay model of pollution that enters the river.
-  Returns total pollution entering river from all sources according decay model defined for each LandUse*/
-  float dPollutionTotal = 0.;
-  for (Tile t: WS.getAllTiles()) {   //Calculate pollution contribution from t after linear decay
-     dPollutionTotal += t.getDecayPollution();
-  }
-  return dPollutionTotal;  
-}
-
-float sumDecayPollution() {
-  return max(1.0,rawSumDecayPollution());
 }
