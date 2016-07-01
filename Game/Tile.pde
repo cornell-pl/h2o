@@ -41,7 +41,7 @@ class Tile {
     landU = lu;
     pollution = getPollution(lu);
     if (! (lu.isForest()) && !(lu.isRiver())) {
-      decayPollution = calcDecayPollution(pollution, distToRiver);
+      decayPollution = lu.calcDecayPollution(distToRiver);
     } else decayPollution = getPollution(lu);
     actualProfit = lu.calcActualProfit(distToRiver);
   }
@@ -86,12 +86,12 @@ class Tile {
         pollution = landU.getSliderPollution();
       }
       if (! (this.isForest()) && !(this.isRiver())) {
-        decayPollution = calcDecayPollution(pollution, distToRiver);
+        decayPollution = landU.calcDecayPollution(distToRiver);
       } else decayPollution = pollution;
     }else{
       pollution = getPollution(landU);
       if (! (this.isForest()) && !(this.isRiver())) {
-        decayPollution = calcDecayPollution(pollution, distToRiver);
+        decayPollution = landU.calcDecayPollution(distToRiver);
       } else decayPollution = pollution;
     }
   }

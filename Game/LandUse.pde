@@ -5,42 +5,21 @@ final color FOREST_GREEN = #5DD65E;
 final color HOUSE_GRAY = #9CC2C4;
 final color DIRT_BROWN = #AF956A;
 final color DEMOLISH_BEIGE = #F5DAB9;
-//Setting the build quota for each landUse
-final int FACTORY_QUOTA = 40;
-final int FARM_QUOTA = 60;
-final int HOUSE_QUOTA = 100;
+
+//Default pollution values that the game is initialized with
+final int DEFAULT_FACTORY_POLLUTION = 20;    
+final int DEFAULT_FARM_POLLUTION = 12;
+final int DEFAULT_HOUSE_POLLUTION = 4;
+final int DEFAULT_FOREST_POLLUTION = -2;
+final int DEFAULT_DIRT_POLLUTION = 0;
+
 
 abstract class LandUse {
-  color icon;
-  int baseProfit;
   Slider s;
-  
-  color getIcon() {
-    return icon;
-  }
-   
-  int getBaseProfit() {
-    return baseProfit;
-  }
-  
-  int getSliderPollution() {
-    try{
-      return s.getVal();
-    } catch(NullPointerException e){     //This is when those first forests(Game) and example types(GUI) initialized has s field pointed to null
-        println("error");
-        if (this == FACTORY) {
-        s = factoryS;
-      } else if (this == FARM){
-        s = farmS;
-      } else if (this == HOUSE){
-        s = houseS;
-      } else if (this == FOREST){
-        s = forestS;
-      }
-      return getPollution(this);
-    }      
-  }
-  
+  color icon;
+  int basePollution;
+  int baseProfit;
+
   boolean isDirt() {
     return (this == DIRT);
   }
@@ -60,44 +39,70 @@ abstract class LandUse {
     return (this == RIVER);
   }
   
-  abstract LUType getType();
+  color getIcon() {
+    return icon;
+  }
+   
+  int getBaseProfit() {
+    return baseProfit;
+  }
   
-  abstract float calcActualProfit(float distToR);
+  int getSliderPollution() {
+    try{
+      return s.getVal();
+    } catch(NullPointerException e){     //Because landUse protptypes have s field pointed to null
+        println("error");
+        if (this.isFactory()) 
+          s = factoryS;
+        else if (this.isFarm())
+          s = farmS;
+        else if (this.isHouse())
+          s = houseS;
+        else if (this.isForest())
+          s = forestS;
+      return getPollution(this);
+    }      
+  }
+ 
+  abstract float calcActualProfit(float distToR);      //Placing pollution and profit calculators at this level allows for 
+                                                        //customized functions for each landuse
+  float calcDecayPollution(float distToRiver) {
+   /* Returns the pollution entering river of Tile t according to distance decay model.  */
+     float decayPollution = basePollution/(distToRiver/2+0.5);
+     return decayPollution;
+  }
 }
 
   
 class Factory extends LandUse {
   /* Factory gives fixed profit no matter the location */
-  final LUType TYPE = LUType.FACTORY;
   
   Factory () {
-   s = factoryS;
-   icon = FACTORY_BROWN;   //Color code for drawing on map
-   baseProfit = 2000;
-   }
+    s = factoryS;
+    icon = FACTORY_BROWN;   //Color code for drawing on map
+    basePollution = DEFAULT_FACTORY_POLLUTION;
+    baseProfit = 2000;
+  }
  
  float calcActualProfit(float distToRiver) {
     /*Returns the actual profit made according to profit model  */
     return baseProfit/(sqrt(distToRiver)/4 + 0.75);
   }
   
-  LUType getType() {
-    return TYPE;
-  }
- 
    @Override
   public String toString() {
     return "Factory";
   }
 }
 
+
 class Farm extends LandUse {
   /* Farm gives less profit further from river  */
-  final LUType TYPE = LUType.FARM;
   Farm () {
-    icon = FARM_YELLOW;
-    baseProfit = 1000;
     s = farmS;
+    icon = FARM_YELLOW;
+    basePollution = DEFAULT_FARM_POLLUTION;
+    baseProfit = 1000;
  }
   
   float calcActualProfit(float distToRiver) {
@@ -105,55 +110,44 @@ class Farm extends LandUse {
     return baseProfit/(distToRiver/5+0.8);
   }
   
-  LUType getType() {
-    return TYPE;
-  }
- 
    @Override
   public String toString() {
     return "Farm";
   }
 }
 
+
 class House extends LandUse {
-  final LUType TYPE = LUType.HOUSE;
   House() {
-    icon = HOUSE_GRAY;
-    baseProfit = 700;
     s = houseS;
+    icon = HOUSE_GRAY;
+    basePollution = DEFAULT_HOUSE_POLLUTION;
+    baseProfit = 700;
   }
   
   float calcActualProfit(float distToRiver) {
      /*Returns the actual profit made according to profit model  */
     return baseProfit/(sqrt(distToRiver)/2+0.5);
   }
-  
-  LUType getType() {
-    return TYPE;
-  }
-  
+
   @Override
   public String toString() {
     return "House";
   }
 }
 
+
 class Forest extends LandUse {
-  final LUType TYPE = LUType.FOREST;
   Forest () {  
-    icon = FOREST_GREEN;
-    baseProfit = -300;
     s = forestS;
+    icon = FOREST_GREEN;
+    basePollution = DEFAULT_FOREST_POLLUTION;
+    baseProfit = -300;
   }
-  
   
   float calcActualProfit(float distToRiver) {
      /*Returns the actual profit made according to profit model  */
     return -100;           //Cost of forest is a constant.
-  }
-  
-  LUType getType() {
-    return TYPE;
   }
   
   @Override
@@ -162,20 +156,17 @@ class Forest extends LandUse {
   }
 }
 
+
 class Dirt extends LandUse {
-  final LUType TYPE = LUType.DIRT;
   Dirt() {
     icon = DIRT_BROWN;
+    basePollution = DEFAULT_DIRT_POLLUTION;
     baseProfit = 0;
  }
  
   float calcActualProfit(float distToRiver) {
     /*Returns the actual profit made according to profit model  */
     return 0;
-  }
-  
-  LUType getType() {
-    return TYPE;
   }
  
   @Override
@@ -185,17 +176,12 @@ class Dirt extends LandUse {
 }
 
 class River extends LandUse {
-  final LUType TYPE = LUType.RIVER;
   River(){
     icon = RIVER_BLUE;
   }
   float calcActualProfit(float distToRiver) {
      /*Returns the actual profit made according to profit model  */
     return 0;
-  }
-  
-  LUType getType() {
-    return TYPE;
   }
  
   @Override

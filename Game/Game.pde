@@ -1,14 +1,9 @@
-
 final int SIZE_X = 30;    //Dimensions of the watershed in tiles
 final int SIZE_Y = 30;
 
-final int FACTORY_POLLUTION = 20;
-final int FARM_POLLUTION = 12;
-final int HOUSE_POLLUTION = 4;
-final int FOREST_POLLUTION = -2;
-final int DIRT_POLLUTION = 0;
-
-ArrayList<Tile> riverTiles = new ArrayList<Tile>(200);
+final int FACTORY_QUOTA = 40;
+final int FARM_QUOTA = 60;
+final int HOUSE_QUOTA = 100;
 
 final Factory FACTORY = new Factory();
 final Farm FARM = new Farm();
@@ -17,9 +12,12 @@ final Forest FOREST = new Forest();
 final Dirt DIRT = new Dirt();
 final River RIVER = new River();
 
+ArrayList<Tile> riverTiles = new ArrayList<Tile>(200);
 
 Watershed WS;
 GUI graphics;
+
+//-------------------------------------------------------------------------------------------------//
 
 void setup() {
   frameRate(30);
@@ -34,6 +32,8 @@ void draw() {
   WS.update();
   graphics.render();
 }
+
+//-------------------------------------------------------------------------------------------------//
 
 class Watershed{
   /* Contains all elements of the Game and implements the GUI. All user functions can be accessed from this class */
@@ -192,14 +192,10 @@ class Watershed{
     return sumActualProfits()/sumDecayPollution();
   }
   
-  void updatePol() {
+
+  void update() {
     for (Tile t : getAllTiles())
       t.update();
-  }
-        
-  
-  void update() {
-    updatePol();
   }
   
 

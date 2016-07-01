@@ -1,11 +1,11 @@
-public enum LUType {FACTORY, FOREST, FARM, HOUSE, DIRT, RIVER};
+
 
 float profit(LandUse lu, float dist) {
   return lu.calcActualProfit(dist);
 }
 
 float pollution(LandUse lu, float dist) {
-  return calcDecayPollution(getPollution(lu), dist);
+  return lu.calcDecayPollution(dist);
 }
 
 boolean fullyBuilt() {
@@ -68,19 +68,15 @@ void optimize() {
 int getPollution(LandUse lu) {
     /*Returns the default pollution value of each landUse 
     *This method is used to set the default pollution values when game is initialized*/
-    if (lu.isFactory()) return FACTORY_POLLUTION;     //Processing doesn't handle enums well. can only be used as enum.THING
-    else if (lu.isFarm()) return FARM_POLLUTION;
-    else if (lu.isHouse()) return HOUSE_POLLUTION;
-    else if (lu.isForest()) return FOREST_POLLUTION;
-    else if (lu.isDirt()) return DIRT_POLLUTION;
+    if (lu.isFactory()) return DEFAULT_FACTORY_POLLUTION;     //Processing doesn't handle enums well. can only be used as enum.THING
+    else if (lu.isFarm()) return DEFAULT_FARM_POLLUTION;
+    else if (lu.isHouse()) return DEFAULT_HOUSE_POLLUTION;
+    else if (lu.isForest()) return DEFAULT_FOREST_POLLUTION;
+    else if (lu.isDirt()) return DEFAULT_DIRT_POLLUTION;
     else return 0;
 }
 
-float calcDecayPollution(float pollution, float distToRiver) {
-   /* Returns the pollution entering river of Tile t according to distance decay model.  */
-     float decayPollution = pollution/(distToRiver/2+0.5);
-     return decayPollution;
-}
+
 
 float distToRiver(int x, int y) {
     /* Helper: Returns the distance of location <x, y> to closest River Tile. */
