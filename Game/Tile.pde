@@ -46,6 +46,16 @@ class Tile {
     actualProfit = lu.calcActualProfit(distToRiver);
   }
   
+  float distToRiver() {
+    /* Helper: Returns the distance of location this to closest River Tile. */
+    float minDist = Float.MAX_VALUE;
+    for (Tile t: riverTiles) {
+      float d = dist(X, Y, t.getX(), t.getY());
+      if (d < minDist) minDist = d;
+   }
+   return minDist;
+}
+  
   LandUse getLandUse() {
     /* Returns the LandUse object of the Tile */
     return landU;
