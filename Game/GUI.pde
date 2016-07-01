@@ -318,7 +318,7 @@ class GUI {
     textFont(BIGFONT);
     text("Money: ", x, y);
     textFont(NUMERALFONT);
-    text("$"+nfc(round(waterS.totalActualProfits)), x, y+36);
+    text("$"+nfc(round(waterS.sumActualProfits())), x, y+36);
   }
   
   void showScore() {
@@ -329,7 +329,7 @@ class GUI {
     textFont(BIGFONT);
     text("Score: ", x, y);
     textFont(NUMERALFONT);
-    text(nfc(round(waterS.score)), x, y+36);
+    text(nfc(round(waterS.calcScore())), x, y+36);
   }
   
   void showBuildQuota() {
