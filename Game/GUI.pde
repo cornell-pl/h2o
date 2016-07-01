@@ -175,7 +175,7 @@ class GUI {
     if (mouseOverMap() && !mousePressed) {   //Highlight tile mouse is over
       int[] pos = converter(mouseX, mouseY);
       color hc;
-      over = WS.GAME_MAP[pos[0]][pos[1]];
+      over = waterS.getTile(pos[0], pos[1]);
         if (!(over.getLandUse() instanceof River)) {
            float d = over.getDistToRiver();
           if (pushed == factoryB) {
@@ -244,7 +244,7 @@ class GUI {
       projectedProfit = 0;     //calculate purchase info
       projectedPollution = 0;
       for (int[] p : highlighted) {
-        Tile t = WS.GAME_MAP[p[0]][p[1]];
+        Tile t = waterS.getTile(p[0], p[1]);
         float d = t.getDistToRiver();
         if (! (t.getLandUse() instanceof River)) {
           if  (pushed == factoryB) {    
@@ -306,8 +306,8 @@ class GUI {
     textFont(MESSAGEFONT);
     text(message, XPOS + 20, YPOS + SIZE_Y*TILE_HEIGHT + 30);   
     text(message2, XPOS + 20, YPOS + SIZE_Y*TILE_HEIGHT + 50);   
-    text("Simple sum of all pollution: " + WS.totalPollution, XPOS + 20, YPOS + SIZE_Y*TILE_HEIGHT + 90);
-    text("Total pollution entering river after distance decay: " + nfc(WS.totalDecayPollution,2), XPOS + 20, YPOS + SIZE_Y*TILE_HEIGHT + 110);
+    text("Simple sum of all pollution: " + waterS.totalPollution, XPOS + 20, YPOS + SIZE_Y*TILE_HEIGHT + 90);
+    text("Total pollution entering river after distance decay: " + nfc(waterS.totalDecayPollution,2), XPOS + 20, YPOS + SIZE_Y*TILE_HEIGHT + 110);
   }
   
   void showActualProfits() {
@@ -318,7 +318,7 @@ class GUI {
     textFont(BIGFONT);
     text("Money: ", x, y);
     textFont(NUMERALFONT);
-    text("$"+nfc(round(WS.totalActualProfits)), x, y+36);
+    text("$"+nfc(round(waterS.totalActualProfits)), x, y+36);
   }
   
   void showScore() {
@@ -329,7 +329,7 @@ class GUI {
     textFont(BIGFONT);
     text("Score: ", x, y);
     textFont(NUMERALFONT);
-    text(nfc(round(WS.score)), x, y+36);
+    text(nfc(round(waterS.score)), x, y+36);
   }
   
   void showBuildQuota() {
@@ -341,9 +341,9 @@ class GUI {
     text("Quota: ", x, y);
     textFont(MESSAGEFONT);
     textSize(16);
-    text("  Factories: " + WS.countFactories() + " / " + FACTORY_QUOTA, x,y+30);
-    text("  Farms: " + WS.countFarms() + " / " + FARM_QUOTA, x,y+60);
-    text("  Houses: " + WS.countHouses() + " / " + HOUSE_QUOTA, x,y+90);
+    text("  Factories: " + waterS.countFactories() + " / " + FACTORY_QUOTA, x,y+30);
+    text("  Farms: " + waterS.countFarms() + " / " + FARM_QUOTA, x,y+60);
+    text("  Houses: " + waterS.countHouses() + " / " + HOUSE_QUOTA, x,y+90);
   }
   
   void showPollutionSlider() {
@@ -381,7 +381,7 @@ class GUI {
     strokeWeight(4);
     float scaleC = polMax/(float)w;    //Scaling constant that scales decayPollution number to pixel coordinates of slider
     float sliderX = x;    //xposition of the slider in pixels;
-    sliderX = constrain(sliderX + WS.totalDecayPollution/scaleC, x, x+w);
+    sliderX = constrain(sliderX + waterS.totalDecayPollution/scaleC, x, x+w);
     line(sliderX, y-5, sliderX, y+h+5);
     
     //Gives a text indicator:
@@ -796,7 +796,7 @@ void mouseReleased() {
     mouseRY = mouseY;
     int[] posP = converter(mousePX, mousePY);
     int[] posR = converter(mouseRX, mouseRY);
-    selected = WS.GAME_MAP[posR[0]][posR[1]];
+    selected = WS.getTile(posR[0], posR[1]);
     int count = 0;
     String thing = "";
     boolean s = false;
@@ -829,7 +829,7 @@ void mouseReleased() {
       }
     }
     if (pushed == null) {
-      selected = WS.GAME_MAP[posR[0]][posR[1]];     //Select tile if no button is pushed and clicked inside map
+      selected = WS.getTile(posR[0],posR[1]);     //Select tile if no button is pushed and clicked inside map
     } 
     if (pushed != null) selected = null;     //Remove selection when building things
     
