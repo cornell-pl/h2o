@@ -339,9 +339,9 @@ class GUI {
     text("Quota: ", x, y);
     textFont(MESSAGEFONT);
     textSize(16);
-    text("  Factories: " + WS.factories + " / " + FACTORY_QUOTA, x,y+30);
-    text("  Farms: " + WS.farms + " / " + FARM_QUOTA, x,y+60);
-    text("  Houses: " + WS.houses + " / " + HOUSE_QUOTA, x,y+90);
+    text("  Factories: " + WS.countFactories() + " / " + FACTORY_QUOTA, x,y+30);
+    text("  Farms: " + WS.countFarms() + " / " + FARM_QUOTA, x,y+60);
+    text("  Houses: " + WS.countHouses() + " / " + HOUSE_QUOTA, x,y+90);
   }
   
   void showPollutionSlider() {

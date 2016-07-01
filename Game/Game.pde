@@ -27,7 +27,7 @@ void setup() {
   size(1250, 950);
   WS = new Watershed(SIZE_X, SIZE_Y);   //Creates watershed of size 20*20
   graphics = new GUI(SIZE_X, SIZE_Y);
-  optimize();
+  //optimize();
 }
 
 void draw() {  
@@ -39,9 +39,6 @@ void draw() {
 class Watershed {
   /* Contains all elements of the Game and implements the GUI. All user functions can be accessed from this class */
   final Tile[][] GAME_MAP = new Tile[SIZE_X][SIZE_Y]; //2D Matrix of all grid Tiles on game map
-  int factories = 0;
-  int farms = 0;
-  int houses = 0;
   int totalPollution;
   float totalDecayPollution;
   float totalActualProfits;
@@ -128,18 +125,37 @@ class Watershed {
   }
   
   
-  void sumLandUses() {
+  int countFactories() {
     /* Sums the number of each landUse  */
-    factories = 0;
-    farms = 0;
-    houses = 0;
+    int factories = 0;
     for (Tile[] tileRow : GAME_MAP) {
       for (Tile t: tileRow) {
         if (t.isFactory()) factories ++;
-        if (t.isFarm()) farms++;
+      }
+    }
+    return factories;
+  }
+  
+    int countFarms() {
+    /* Sums the number of each landUse  */
+    int farms = 0;
+    for (Tile[] tileRow : GAME_MAP) {
+      for (Tile t: tileRow) {
+        if (t.isFarm()) farms ++;
+      }
+    }
+    return farms;
+  }
+  
+    int countHouses() {
+    /* Sums the number of each landUse  */
+    int houses = 0;
+    for (Tile[] tileRow : GAME_MAP) {
+      for (Tile t: tileRow) {
         if (t.isHouse()) houses ++;
       }
     }
+    return houses;
   }
   
   int sumPollution() {
@@ -175,7 +191,6 @@ class Watershed {
         
   
   void update() {
-    sumLandUses();
     updatePol();
     totalPollution = sumPollution();
     totalDecayPollution = sumDecayPollution();
@@ -189,13 +204,12 @@ class Watershed {
   boolean addFactory(int x, int y) {
     /* Places a new Factory at Location <x, y> on the map. 
     Returns true if successful. False otherwise.  */
-    if (factories < FACTORY_QUOTA) {
+    if (countFactories() < FACTORY_QUOTA) {
       Tile t = GAME_MAP[x][y];
       if (! (t.isRiver())) {
         t.changeLandUse(FACTORY);
         message2 = "Added a Factory at " + t;
         println("Added a Factory at", t);
-        sumLandUses();
         return true;      
       }else {
         message2 = "Cannot built factory in river. Nothing is added.";
@@ -208,13 +222,12 @@ class Watershed {
   boolean addFarm(int x, int y) {
     /* Places a new Farm at Location <x, y> on the map. 
     Returns true if successful. False otherwise. */
-    if (farms < FARM_QUOTA) {
+    if (countFarms() < FARM_QUOTA) {
       Tile t = GAME_MAP[x][y];
       if (! (t.isRiver())) {
         t.changeLandUse(FARM); 
         message2 = "Added a Farm at " + t;
         println("Added a Farm at", t);
-        sumLandUses();
         return true;
       }else {
         message2 = "Cannot built farm in river. Nothing is added.";
@@ -227,13 +240,12 @@ class Watershed {
   boolean addHouse(int x, int y) {
     /* Places a new House at Location <x, y> on the map. 
     Returns true if successful. False otherwise. */
-    if (houses < HOUSE_QUOTA) {
+    if (countHouses() < HOUSE_QUOTA) {
       Tile t = GAME_MAP[x][y];
       if (! (t.isRiver())) {
         t.changeLandUse(HOUSE); 
         message2 = "Added a House at " + t;
         println("Added a House at", t);
-        sumLandUses();
         return true;
       }else {
         message2 = "Cannot built house in river. Nothing is added.";
@@ -286,46 +298,4 @@ class Watershed {
       return false;
     }
   }
-}
-
-
-int getPollution(LandUse lu) {
-    /*Returns the default pollution value of each landUse 
-    *This method is used to set the default pollution values when game is initialized*/
-    if (lu.isFactory()) return FACTORY_POLLUTION;     //Processing doesn't handle enums well. can only be used as enum.THING
-    else if (lu.isFarm()) return FARM_POLLUTION;
-    else if (lu.isHouse()) return HOUSE_POLLUTION;
-    else if (lu.isForest()) return FOREST_POLLUTION;
-    else if (lu.isDirt()) return DIRT_POLLUTION;
-    else return 0;
-}
-
-float calcDecayPollution(float pollution, float distToRiver) {
-   /* Returns the pollution entering river of Tile t according to distance decay model.  */
-     float decayPollution = pollution/(distToRiver/2+0.5);
-     return decayPollution;
-}
-
-float distToRiver(int x, int y) {
-    /* Helper: Returns the distance of location <x, y> to closest River Tile. */
-    float minDist = Float.MAX_VALUE;
-    for (Tile t: riverTiles) {
-      float d = dist(x, y, t.getX(), t.getY());
-      if (d < minDist) minDist = d;
-   }
-   return minDist;
-}
-
-float rawSumDecayPollution() {
-  /* Linear decay model of pollution that enters the river.
-  Returns total pollution entering river from all sources according decay model defined for each LandUse*/
-  float dPollutionTotal = 0.;
-  for (Tile t: WS.getAllTiles()) {   //Calculate pollution contribution from t after linear decay
-     dPollutionTotal += t.getDecayPollution();
-  }
-  return dPollutionTotal;  
-}
-
-float sumDecayPollution() {
-  return max(1.0,rawSumDecayPollution());
 }
