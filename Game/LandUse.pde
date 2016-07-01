@@ -27,7 +27,8 @@ abstract class LandUse {
     try{
       return s.getVal();
     } catch(NullPointerException e){     //This is when those first forests(Game) and example types(GUI) initialized has s field pointed to null
-      if (this == FACTORY) {
+        println("error");
+        if (this == FACTORY) {
         s = factoryS;
       } else if (this == FARM){
         s = farmS;

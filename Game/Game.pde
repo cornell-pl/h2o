@@ -27,7 +27,7 @@ void setup() {
   size(1250, 950);
   WS = new Watershed(SIZE_X, SIZE_Y);   //Creates watershed of size 20*20
   graphics = new GUI(SIZE_X, SIZE_Y);
-  optimize();
+  //optimize();
 }
 
 void draw() {  
@@ -138,9 +138,9 @@ class Watershed {
     houses = 0;
     for (Tile[] tileRow : GAME_MAP) {
       for (Tile t: tileRow) {
-        if (t.getLandUse() instanceof Factory) factories ++;
-        if (t.getLandUse() instanceof Farm) farms++;
-        if (t.getLandUse() instanceof House) houses ++;
+        if (t.isFactory()) factories ++;
+        if (t.isFarm()) farms++;
+        if (t.isHouse()) houses ++;
       }
     }
   }
@@ -194,7 +194,7 @@ class Watershed {
     Returns true if successful. False otherwise.  */
     if (factories < FACTORY_QUOTA) {
       Tile t = GAME_MAP[x][y];
-      if (! (t.getLandUse() instanceof River)) {
+      if (! (t.isRiver())) {
         Factory fc = new Factory();
         t.changeLandUse(fc);
         message2 = "Added a Factory at " + t;
@@ -214,7 +214,7 @@ class Watershed {
     Returns true if successful. False otherwise. */
     if (farms < FARM_QUOTA) {
       Tile t = GAME_MAP[x][y];
-      if (! (t.getLandUse() instanceof River)) {
+      if (! (t.isRiver())) {
         Farm fm = new Farm();
         t.changeLandUse(fm); 
         message2 = "Added a Farm at " + t;
@@ -234,7 +234,7 @@ class Watershed {
     Returns true if successful. False otherwise. */
     if (houses < HOUSE_QUOTA) {
       Tile t = GAME_MAP[x][y];
-      if (! (t.getLandUse() instanceof River)) {
+      if (! (t.isRiver())) {
         House hs = new House();
         t.changeLandUse(hs); 
         message2 = "Added a House at " + t;
@@ -253,7 +253,7 @@ class Watershed {
     /* Places a new Forest at Location <x, y> on the map. 
     Returns true if successful. False otherwise.  */
     Tile t = GAME_MAP[x][y];
-    if (! (t.getLandUse() instanceof River)) {
+    if (! (t.isRiver())) {
       Forest fo = new Forest();
       t.changeLandUse(fo); 
       message2 = "Added a Forest at " + t;
@@ -278,9 +278,9 @@ class Watershed {
     /* Removes LandUse at Location <x, y> on the map. (changes them to Dirt) 
     Returns true if successful. False otherwise.*/
     Tile t = GAME_MAP[x][y];
-    if (! (t.getLandUse() instanceof River)) {
+    if (! (t.isRiver())) {
       LandUse olu = t.getLandUse();   //Original land use
-      if (olu instanceof Dirt) {
+      if (olu.isDirt()) {
         message2 = "Nothing to remove";
         return false;
       }
@@ -300,11 +300,11 @@ class Watershed {
 int getPollution(LandUse lu) {
     /*Returns the default pollution value of each landUse 
     *This method is used to set the default pollution values when game is initialized*/
-    if (lu == FACTORY) return FACTORY_POLLUTION;     //Processing doesn't handle enums well. can only be used as enum.THING
-    else if (lu ==FARM) return FARM_POLLUTION;
-    else if (lu == HOUSE) return HOUSE_POLLUTION;
-    else if (lu == FOREST) return FOREST_POLLUTION;
-    else if (lu == DIRT) return DIRT_POLLUTION;
+    if (lu.isFactory()) return FACTORY_POLLUTION;     //Processing doesn't handle enums well. can only be used as enum.THING
+    else if (lu.isFarm()) return FARM_POLLUTION;
+    else if (lu.isHouse()) return HOUSE_POLLUTION;
+    else if (lu.isForest()) return FOREST_POLLUTION;
+    else if (lu.isDirt()) return DIRT_POLLUTION;
     else return 0;
 }
 
