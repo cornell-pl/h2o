@@ -27,7 +27,7 @@ void setup() {
   size(1250, 950);
   WS = new Watershed(SIZE_X, SIZE_Y);   //Creates watershed of size 20*20
   graphics = new GUI(SIZE_X, SIZE_Y);
-  //optimize();
+  optimize();
 }
 
 void draw() {  
@@ -70,8 +70,7 @@ class Watershed {
   void initializeWithAll() {
     for (int j=0; j<SIZE_Y; j++) {
       for (int i=0; i<SIZE_X; i++) { 
-         Dirt di = new Dirt();
-         Tile t = new Tile(di, i, j);
+         Tile t = new Tile(DIRT, i, j);
          GAME_MAP[i][j] = t;
         }
       }
@@ -86,11 +85,9 @@ class Watershed {
       GAME_MAP[c[0]][c[1]].landU = FACTORY;
     }
     for (int[] c: fmCoords) { 
-      Farm fm = new Farm();
       GAME_MAP[c[0]][c[1]].landU = FARM;
     }
     for (int[] c: hsCoords) { 
-      House hs = new House();
       GAME_MAP[c[0]][c[1]].landU = HOUSE;
     }
     initializeRiver2();    //Creates the river
@@ -195,8 +192,7 @@ class Watershed {
     if (factories < FACTORY_QUOTA) {
       Tile t = GAME_MAP[x][y];
       if (! (t.isRiver())) {
-        Factory fc = new Factory();
-        t.changeLandUse(fc);
+        t.changeLandUse(FACTORY);
         message2 = "Added a Factory at " + t;
         println("Added a Factory at", t);
         sumLandUses();
@@ -215,8 +211,7 @@ class Watershed {
     if (farms < FARM_QUOTA) {
       Tile t = GAME_MAP[x][y];
       if (! (t.isRiver())) {
-        Farm fm = new Farm();
-        t.changeLandUse(fm); 
+        t.changeLandUse(FARM); 
         message2 = "Added a Farm at " + t;
         println("Added a Farm at", t);
         sumLandUses();
@@ -235,8 +230,7 @@ class Watershed {
     if (houses < HOUSE_QUOTA) {
       Tile t = GAME_MAP[x][y];
       if (! (t.isRiver())) {
-        House hs = new House();
-        t.changeLandUse(hs); 
+        t.changeLandUse(HOUSE); 
         message2 = "Added a House at " + t;
         println("Added a House at", t);
         sumLandUses();
@@ -254,8 +248,7 @@ class Watershed {
     Returns true if successful. False otherwise.  */
     Tile t = GAME_MAP[x][y];
     if (! (t.isRiver())) {
-      Forest fo = new Forest();
-      t.changeLandUse(fo); 
+      t.changeLandUse(FOREST); 
       message2 = "Added a Forest at " + t;
       println("Added a Forest at", t);
       return true;
@@ -269,8 +262,7 @@ class Watershed {
   boolean addDirt(int x, int y) {
     /* Places a new Dirt at Location <x, y> on the map. */
     Tile t = GAME_MAP[x][y];
-    Dirt di = new Dirt();
-    t.changeLandUse(di); 
+    t.changeLandUse(DIRT); 
     return true;
   }
   
