@@ -32,7 +32,12 @@ class GUI {
   final PFont BIGFONT = createFont("Calibri-Bold", 20);
   final PFont NUMERALFONT = createFont("Courier", 30);
   
-  GUI(int x, int y) {
+  Watershed waterS;
+  
+  GUI(int x, int y, Watershed WS) {
+    
+    waterS = WS;
+    
     factoryB = new Button(XPOSB, YPOSB, TILE_WIDTH, TILE_HEIGHT, FACTORY_BROWN, #73A29C, #EA7E2F, "Factory");
     farmB = new Button(XPOSB, YPOSB + 60, TILE_WIDTH, TILE_HEIGHT, FARM_YELLOW, #73A29C, #F0AD1D, "Farm");
     houseB = new Button(XPOSB, YPOSB + 120, TILE_WIDTH, TILE_HEIGHT, HOUSE_GRAY, #73A29C, #90B3B4, "House");
@@ -111,11 +116,8 @@ class GUI {
   
   void drawGameBoard(){
     /* Draws the game board */
-    for (Tile[] tileRow : WS.GAME_MAP) {
-      for (Tile t: tileRow) {
-        drawTile(t.getX(), t.getY(), t.getLandUse().getIcon(), 255);
-      }
-    }
+    for (Tile t: waterS.getAllTiles()) 
+      drawTile(t.getX(), t.getY(), t.getLandUse().getIcon(), 255);
   }
   
   void axisLabels() {
@@ -419,52 +421,48 @@ class GUI {
  }
  
  void showPollution() {
-   for (Tile[] tileRow : WS.GAME_MAP) {
-      for (Tile t: tileRow) {
-        textFont(MESSAGEFONT);
-        textSize(10);
-        fill(0);
-        textAlign(LEFT, TOP);
-        if(t.getTilePollution()!=0) text(round(t.getTilePollution()), t.getX()*TILE_WIDTH + XPOS+2, t.getY()*TILE_HEIGHT + YPOS+1);
-      }
+    for (Tile t: waterS.getAllTiles()) {
+      textFont(MESSAGEFONT);
+      textSize(10);
+      fill(0);
+      textAlign(LEFT, TOP);
+      if(t.getTilePollution()!=0) 
+        text(round(t.getTilePollution()), t.getX()*TILE_WIDTH + XPOS+2, t.getY()*TILE_HEIGHT + YPOS+1);
    }
  }
  
  void showDecayPollution() {
    float total = 0.;
-   for (Tile[] tileRow : WS.GAME_MAP) {
-      for (Tile t: tileRow) {
-        textFont(MESSAGEFONT);
-        textSize(10);
-        fill(0);
-        textAlign(LEFT, TOP);
-        if(t.getTilePollution()!=0) text(nfc(t.getDecayPollution(),1), t.getX()*TILE_WIDTH + XPOS+2, t.getY()*TILE_HEIGHT + YPOS+1);
-        total += t.getDecayPollution();
-      }
+    for (Tile t: waterS.getAllTiles()) {
+      textFont(MESSAGEFONT);
+      textSize(10);
+      fill(0);
+      textAlign(LEFT, TOP);
+      if(t.getTilePollution()!=0) 
+        text(nfc(t.getDecayPollution(),1), t.getX()*TILE_WIDTH + XPOS+2, t.getY()*TILE_HEIGHT + YPOS+1);
+      total += t.getDecayPollution();
    }
  }
  
  void showDist() {
-   for (Tile[] tileRow : WS.GAME_MAP) {
-      for (Tile t: tileRow) {
-        textFont(MESSAGEFONT);
-        textSize(10);
-        fill(0);
-        textAlign(LEFT, TOP);
-        if (!(t.getLandUse() instanceof River)) text(nfc(t.getDistToRiver(),1), t.getX()*TILE_WIDTH + XPOS+2, t.getY()*TILE_HEIGHT + YPOS+1);
-      }
+    for (Tile t: waterS.getAllTiles()) {
+      textFont(MESSAGEFONT);
+      textSize(10);
+      fill(0);
+      textAlign(LEFT, TOP);
+      if (!(t.getLandUse() instanceof River)) 
+        text(nfc(t.getDistToRiver(),1), t.getX()*TILE_WIDTH + XPOS+2, t.getY()*TILE_HEIGHT + YPOS+1);
    }
  }
  
  void showProfit() {
-   for (Tile[] tileRow : WS.GAME_MAP) {
-      for (Tile t: tileRow) {
-        textFont(MESSAGEFONT);
-        textSize(9);
-        fill(0);
-        textAlign(LEFT, TOP);
-        if (round(t.getActualProfit())!=0) text(round(t.getActualProfit()), t.getX()*TILE_WIDTH + XPOS+2, t.getY()*TILE_HEIGHT + YPOS+1);
-      }
+    for (Tile t: waterS.getAllTiles()) {
+      textFont(MESSAGEFONT);
+      textSize(9);
+      fill(0);
+      textAlign(LEFT, TOP);
+      if (round(t.getActualProfit())!=0) 
+        text(round(t.getActualProfit()), t.getX()*TILE_WIDTH + XPOS+2, t.getY()*TILE_HEIGHT + YPOS+1);
    }
  }
 }
@@ -761,7 +759,8 @@ void mousePressed() {
     if (pushed == resetB) {
       message = "Restarting game";
       message2 = "";
-      WS = new Watershed(SIZE_X, SIZE_Y);
+      WS = new Watershed(SIZE_X, SIZE_Y);      //
+      graphics.waterS = WS;                
       pushed = null;
       selected = null;
       message = "Game is reset";

@@ -26,15 +26,6 @@ boolean buildOk(LandUse lu) {
   return false;    
 }
 
-int dirtTiles() {
-  int d = 0;
-  for(Tile t : WS.getAllTiles()) {
-     if(t.isDirt()){
-       d++;
-     }    
-   }
-   return d;
-}
 
 void optimize() {
   println("Starting optimization..."); 
@@ -61,7 +52,7 @@ void optimize() {
       } // if legal to build here
     } // for each tile
     println("Changing " + bestTile + " to " + bestLandUse);
-    bestTile.changeLandUse(bestLandUse); //<>//
+    bestTile.changeLandUse(bestLandUse);
     WS.update();
   } // while not fully built
   for(Tile t : WS.getAllTiles()) {

@@ -26,7 +26,7 @@ void setup() {
   frameRate(30);
   size(1250, 950);
   WS = new Watershed(SIZE_X, SIZE_Y);   //Creates watershed of size 20*20
-  graphics = new GUI(SIZE_X, SIZE_Y);
+  graphics = new GUI(SIZE_X, SIZE_Y, WS);
   //optimize();
 }
 
@@ -43,7 +43,6 @@ class Watershed {
   float totalDecayPollution;
   float totalActualProfits;
   float score;
-  Tile[] rTiles = new Tile[113];
   
   Watershed(int x, int y) {
     initializeWithForest();
@@ -113,6 +112,8 @@ class Watershed {
   
   //**** Methods to calculate pollution / money according various models  ****//  -----------------------------------------------
   Tile[] getAllTiles(){
+    /* Returns an array of all the tiles on the game map
+    * Hides gameMap internal structure*/
     Tile[] allTiles = new Tile[(SIZE_X)*(SIZE_Y)];
     int i = 0;
     for (Tile[] tileRow : GAME_MAP) {
@@ -128,10 +129,9 @@ class Watershed {
   int countFactories() {
     /* Sums the number of each landUse  */
     int factories = 0;
-    for (Tile[] tileRow : GAME_MAP) {
-      for (Tile t: tileRow) {
-        if (t.isFactory()) factories ++;
-      }
+    for (Tile t: getAllTiles()){
+      if (t.isFactory()) 
+        factories ++;
     }
     return factories;
   }
@@ -139,10 +139,9 @@ class Watershed {
     int countFarms() {
     /* Sums the number of each landUse  */
     int farms = 0;
-    for (Tile[] tileRow : GAME_MAP) {
-      for (Tile t: tileRow) {
-        if (t.isFarm()) farms ++;
-      }
+    for (Tile t: getAllTiles()) {
+      if (t.isFarm()) 
+        farms ++;
     }
     return farms;
   }
@@ -150,10 +149,9 @@ class Watershed {
     int countHouses() {
     /* Sums the number of each landUse  */
     int houses = 0;
-    for (Tile[] tileRow : GAME_MAP) {
-      for (Tile t: tileRow) {
-        if (t.isHouse()) houses ++;
-      }
+    for (Tile t: getAllTiles()) {
+      if (t.isHouse()) 
+        houses ++;
     }
     return houses;
   }
@@ -161,20 +159,16 @@ class Watershed {
   int sumPollution() {
     /* Returns simple sum of pollution generated for all Tiles */
     int totalPollution = 0;
-    for (Tile[] tileRow : GAME_MAP) {
-      for (Tile t: tileRow) {
-         totalPollution += t.getTilePollution();
-      }
-    }
+    for (Tile t: getAllTiles()) 
+       totalPollution += t.getTilePollution();
     return totalPollution;
   }
   
   float sumActualProfits() {
     /* Returns the total actual profits made from all the property on the map */
     float profit = 0;
-    for (Tile t: getAllTiles()) { 
-        profit += t.getActualProfit();
-    }
+    for (Tile t: getAllTiles()) 
+      profit += t.getActualProfit();
     return profit;
   }
   
@@ -184,9 +178,8 @@ class Watershed {
   }
   
   void updatePol() {
-    for (Tile t : getAllTiles()) {
+    for (Tile t : getAllTiles())
       t.update();
-    }
   }
         
   
