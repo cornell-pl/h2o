@@ -136,6 +136,12 @@ class Forest extends LandUse {
     return baseProfit;      //Cost of forest is a constant.
   }
   
+  @Override
+  float calcDecayPollution(float distToRiver) {
+    /* Forest pollution does not decay */
+    return basePollution;
+  }
+  
   @Override 
   void updatePollution(int newPollution){
     basePollution = newPollution;
@@ -151,8 +157,6 @@ class Forest extends LandUse {
 class PrimaryForest extends Forest {
   /* PrimaryForests have zero cost */
   PrimaryForest () {  
-    icon = FOREST_GREEN;
-    basePollution = DEFAULT_FOREST_POLLUTION;
     baseProfit = 0;
   }
   
