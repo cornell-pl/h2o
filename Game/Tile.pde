@@ -52,9 +52,9 @@ class Tile {
     for (Tile t: riverTiles) {
       float d = dist(X, Y, t.getX(), t.getY());
       if (d < minDist) minDist = d;
-   }
-   return minDist;
-}
+    }
+    return minDist;
+  }
   
   LandUse getLandUse() {
     /* Returns the LandUse object of the Tile */

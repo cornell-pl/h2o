@@ -114,7 +114,8 @@ void mousePressed() {
     pushed = null;
     message = "";
   }
-  if (! mouseOverMap() && !factoryS.over && !farmS.over && !houseS.over && !forestS.over && !showPolT.over && !showDecayPolT.over && !showDistT.over && !showProfitT.over) selected = null;    //Unselect when I click outside map
+  if (! mouseOverMap() && !factoryS.over && !farmS.over && !houseS.over && !forestS.over && !showPolT.over && !showDecayPolT.over && !showDistT.over && !showProfitT.over)
+    selected = null;    //Unselect when I click outside map
 }
 
 void mouseReleased() {
