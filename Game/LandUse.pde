@@ -46,6 +46,10 @@ abstract class LandUse {
     return baseProfit;
   }
   
+  int getBasePollution() {
+    return basePollution;
+  }
+  
   void updatePollution(int newPollution){
     basePollution = newPollution;
   }
