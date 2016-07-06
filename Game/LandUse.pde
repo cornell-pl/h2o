@@ -133,7 +133,37 @@ class Forest extends LandUse {
   
   float calcActualProfit(float distToRiver) {
      /*Returns the actual profit made according to profit model  */
-    return -100;           //Cost of forest is a constant.
+    return baseProfit;      //Cost of forest is a constant.
+  }
+  
+  @Override 
+  void updatePollution(int newPollution){
+    basePollution = newPollution;
+    PFOREST.updatePollution(newPollution);
+  }
+  
+  @Override
+  public String toString() {
+    return "Forest";
+  }
+}
+
+class PrimaryForest extends Forest {
+  /* PrimaryForests have zero cost */
+  PrimaryForest () {  
+    icon = FOREST_GREEN;
+    basePollution = DEFAULT_FOREST_POLLUTION;
+    baseProfit = 0;
+  }
+  
+  float calcActualProfit(float distToRiver) {
+    /*Returns the actual profit made according to profit model  */
+    return baseProfit; 
+  }
+  
+  @Override 
+  void updatePollution(int newPollution){
+    basePollution = newPollution;
   }
   
   @Override
