@@ -31,6 +31,12 @@ class GUI {
   
   GUI(int x, int y, Watershed ws) {
     BPanel = new ButtonPanel(XPOSB, YPOSB, TILE_WIDTH+5, TILE_HEIGHT+5, 30);
+    BPanel.makeButton(FACTORY_BROWN, #73A29C, #EA7E2F, "Factory");
+    BPanel.makeButton(FARM_YELLOW, #73A29C, #F0AD1D, "Farm");
+    BPanel.makeButton(HOUSE_GRAY, #73A29C, #90B3B4, "House");
+    BPanel.makeButton(FOREST_GREEN, #73A29C, #02A002, "Forest");
+    
+    
     waterS = ws;
     
     showPolT = new Toggle(XPOSB+180, YPOSB+450, "Show Pollution");

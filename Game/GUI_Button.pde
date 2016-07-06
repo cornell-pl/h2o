@@ -8,9 +8,11 @@ Button resetB;
 class ButtonPanel {
   /* Creates and draws a vertical panel of Buttons  */
   int x, y;     //Position of the panel in pixels
-  int bWidth;      //The dimension of the Buttons in pixels
+  int bWidth;      //The dimension of each Button in pixels
   int bHeight;    
   int interval;     //The vertical spacing between two buttons
+  int nexty;   //The yposition of the next button to be added
+  ArrayList<Button> Buttons = new ArrayList<Button>();
   
   ButtonPanel(int xp, int yp, int bw, int bh, int i){
     x = xp;
@@ -18,26 +20,30 @@ class ButtonPanel {
     bWidth = bw;
     bHeight = bh;
     interval = bHeight + i;
-    
-    factoryB = new Button(x, y, bWidth, bHeight, FACTORY_BROWN, #73A29C, #EA7E2F, "Factory");
-    farmB = new Button(x, y+interval, bWidth, bHeight, FARM_YELLOW, #73A29C, #F0AD1D, "Farm");
-    houseB = new Button(x, y+2*interval, bWidth, bHeight, HOUSE_GRAY, #73A29C, #90B3B4, "House");
-    forestB = new Button(x, y+3*interval, bWidth, bHeight, FOREST_GREEN, #73A29C, #02A002, "Forest");
-    demolishB = new Button(x, y+4*interval, bWidth, bHeight, DEMOLISH_BEIGE, #73A29C, #F5BB74, "Demolish");
-    resetB = new Button(x+220, YPOS+TILE_HEIGHT*SIZE_Y-57, bWidth + 5, bHeight + 5, #FFFFFF, #989795, #171717, "RESET MAP");
+    nexty = y;
+   
+    //demolishB = new Button(x, y+4*interval, bWidth, bHeight, DEMOLISH_BEIGE, #73A29C, #F5BB74, "Demolish");
+    //resetB = new Button(x+220, YPOS+TILE_HEIGHT*SIZE_Y-57, bWidth + 5, bHeight + 5, #FFFFFF, #989795, #171717, "RESET MAP");
   }
   
-  Button[] getButtons() {
-    return new Button[] {factoryB, farmB, houseB, forestB, demolishB, resetB};
+  void makeButton(color c, color over, color selected, String l) {
+    Buttons.add(new Button(x, nexty, bWidth, bHeight, c, over, selected, l));
+    nexty += interval;
+  }
+  
+  void makeButton(int x, int y, int bw, int bh, color c, color over, color selected, String l) {
+    Buttons.add(new Button(x, y, bw, bh, c, over, selected, l));
+    nexty += interval;
+  }
+  
+  ArrayList<Button> getButtons() {
+    return Buttons;
   }
   
   void display(){
-    factoryB.display();
-    farmB.display();
-    houseB.display();
-    forestB.display();
-    demolishB.display();
-    resetB.display();
+    for (Button b: Buttons) {
+      b.display();
+    }
   }
 }
   
