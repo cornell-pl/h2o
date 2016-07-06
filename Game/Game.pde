@@ -29,7 +29,6 @@ void setup() {
 
 void draw() {  
   background(165);
-  WS.update();
   graphics.render();
 }
 
@@ -173,12 +172,6 @@ class Watershed{
   float calcScore() {
     /* Returns the player's score */
     return sumActualProfits()/sumDecayPollution();
-  }
-  
-
-  void update() {
-    for (Tile t : getAllTiles())
-      t.update();
   }
   
 

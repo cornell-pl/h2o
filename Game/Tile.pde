@@ -5,7 +5,6 @@ class Tile {
   LandUse landU;
   
   //Every derived variable that is summed over all Tiles in WS is stored as constants, to avoid expensive calculation over each frame.
-  float decayPollution;      //Pollution entering river from this tile after decay
   float actualProfit = 0;  //Actual profit made by the landU at this tile
   
   Tile(LandUse lu, int xp, int yp) {
@@ -37,10 +36,7 @@ class Tile {
   void changeLandUse(LandUse lu) {
     /* Changes the LandUse held by the Tile to lu */
     landU = lu;
-    if (! (lu.isForest()) && !(lu.isRiver())) {
-      decayPollution = lu.calcDecayPollution(distToRiver());
-    } else decayPollution = lu.basePollution;
-    actualProfit = lu.calcActualProfit(distToRiver());
+    actualProfit = landU.calcActualProfit(distToRiver());
   }
   
   float distToRiver() {
@@ -66,9 +62,7 @@ class Tile {
   }
   
   float getDecayPollution() {
-    if (! (this.isRiver())) {
-      return decayPollution;
-    }else return 0;
+      return landU.calcDecayPollution(distToRiver());
   }
     
   int getBaseProfit() {
@@ -79,12 +73,6 @@ class Tile {
   float getActualProfit() {
     /* Returns the actual profit gained at this tile */
     return actualProfit;
-  }
-  
-  void update() {
-    if (! (this.isForest()) && !(this.isRiver()))
-       decayPollution = landU.calcDecayPollution(distToRiver());
-    else decayPollution = landU.getBasePollution();
   }
   
   int getX(){

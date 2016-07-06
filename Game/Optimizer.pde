@@ -53,13 +53,11 @@ void optimize() {
     } // for each tile
     println("Changing " + bestTile + " to " + bestLandUse);
     bestTile.changeLandUse(bestLandUse);
-    WS.update();
   } // while not fully built
   for(Tile t : WS.getAllTiles()) {
     LandUse lu = FOREST;
     if(t.isDirt() && buildOk(lu)) {
       t.changeLandUse(lu);
-      WS.update();
     }
   }
   println("Done!");
