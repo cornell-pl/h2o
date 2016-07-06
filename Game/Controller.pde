@@ -32,57 +32,8 @@ int[] converter(int xraw, int yraw) {
 
 
 void mousePressed() {  
-  if (factoryB.over) {      //When factory button is clicked on
-    if (pushed == factoryB) {
-        message = "";
-        pushed = null;
-      } else {
-    pushed = factoryB;
-    message = "Add factory mode is selected";
-    message2 = "";
-      }
-  }
-  else if (farmB.over) {      //When farm button is clicked on
-    if (pushed == farmB) {
-        message = "";
-        pushed = null;
-      }else {
-    pushed = farmB;
-    message = "Add farm mode is selected";
-    message2 = "";
-      }
-  }
-  else if (houseB.over) {      //When house button is clicked on
-    if (pushed == houseB) {
-        message = "";
-        pushed = null;
-      } else {
-    pushed = houseB;
-    message = "Add house mode is selected";
-    message2 = "";
-      }
-  }
-  else if (forestB.over) {      //When forest button is clicked on
-    if (pushed == forestB) {
-        message = "";
-        pushed = null;
-      }else {
-    pushed = forestB;
-    message = "Add forest mode is selected";
-    message2 = "";
-      }
-  }
-  else if(demolishB.over) {   //When demolish button is clicked on
-    if (pushed == demolishB) {
-        message = "";
-        pushed = null;
-      } else {
-    pushed = demolishB;
-    message = "Demolish mode is selected";
-    message2 = "";
-      }
-  }
-  else if(resetB.over) {  //When reset button is clicked on
+ 
+  if(resetB.over) {  //When reset button is clicked on
     if (pushed == resetB) {
       message = "Restarting game";
       message2 = "";
@@ -174,6 +125,10 @@ void mouseReleased() {
 }
 
 void mouseClicked() {
+  for (Button b: graphics.BPanel.getButtons()){
+    b.press();
+    println("pressed " + pushed);
+  }
   if (showPolT.over) {
     if (toggled == showPolT) toggled = null;
     else toggled = showPolT;

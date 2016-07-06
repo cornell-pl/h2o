@@ -43,10 +43,11 @@ class Watershed{
   Watershed(int x, int y) {
     populateGameMap();
     initializeRiver();
-    buildAll();
+    buildForests();
   }   //<>//
   
   void populateGameMap(){
+    /* Populates GAME_MAP with tiles */
     for (int j=0; j<SIZE_Y; j++) {
       for (int i=0; i<SIZE_X; i++) { 
          GAME_MAP[i][j] = new Tile(DIRT, i, j);
@@ -93,8 +94,6 @@ class Watershed{
   }
   
   
-  
-
   Tile[] getAllTiles(){
     /* Returns an array of all the tiles on the game map (hides gameMap internal structure) */
     Tile[] allTiles = new Tile[(SIZE_X)*(SIZE_Y)];

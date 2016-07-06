@@ -6,13 +6,6 @@ final int XPOSB = XPOS + SIZE_X*TILE_WIDTH + 40;    //Drawing dimensions. XPOS a
 final int YPOSB = 60;    //All buttons scale with respect to these
 
 
-Button factoryB;
-Button farmB;
-Button houseB;
-Button forestB;
-Button demolishB;
-Button resetB;
-
 Toggle showPolT;
 Toggle showDecayPolT;
 Toggle showDistT;
@@ -32,18 +25,13 @@ class GUI {
   final PFont BIGFONT = createFont("Calibri-Bold", 20);
   final PFont NUMERALFONT = createFont("Courier", 30);
   
+  ButtonPanel BPanel;
+  
   Watershed waterS;
   
-  GUI(int x, int y, Watershed WS) {
-    
-    waterS = WS;
-    
-    factoryB = new Button(XPOSB, YPOSB, TILE_WIDTH, TILE_HEIGHT, FACTORY_BROWN, #73A29C, #EA7E2F, "Factory");
-    farmB = new Button(XPOSB, YPOSB + 60, TILE_WIDTH, TILE_HEIGHT, FARM_YELLOW, #73A29C, #F0AD1D, "Farm");
-    houseB = new Button(XPOSB, YPOSB + 120, TILE_WIDTH, TILE_HEIGHT, HOUSE_GRAY, #73A29C, #90B3B4, "House");
-    forestB = new Button(XPOSB, YPOSB + 180, TILE_WIDTH, TILE_HEIGHT, FOREST_GREEN, #73A29C, #02A002, "Forest");
-    demolishB = new Button(XPOSB, YPOSB + 240, TILE_WIDTH, TILE_HEIGHT, DEMOLISH_BEIGE, #73A29C, #F5BB74, "Demolish");
-    resetB = new Button(XPOSB+220, YPOS+TILE_HEIGHT*SIZE_Y-57, TILE_WIDTH + 5, TILE_HEIGHT + 5, #FFFFFF, #989795, #171717, "RESET MAP");
+  GUI(int x, int y, Watershed ws) {
+    BPanel = new ButtonPanel(XPOSB, YPOSB, TILE_WIDTH+5, TILE_HEIGHT+5, 30);
+    waterS = ws;
     
     showPolT = new Toggle(XPOSB+180, YPOSB+450, "Show Pollution");
     showDecayPolT = new Toggle(XPOSB+180, YPOSB+500, "Show decayPollution");
@@ -59,10 +47,12 @@ class GUI {
   
   void render() {
     /* Draws all the graphics elements of each frame */   
+    BPanel.display();
+    
     drawDividers();
     drawGameBoard();
     axisLabels();
-    showSelectedTile();     //For unknown reasons, this MUST be called before the two highlight functions or they all break
+    showSelectedTile();
     highlightSingle();
     highlightBulk();
     
@@ -79,13 +69,6 @@ class GUI {
     showDistT.display();
     showProfitT.display();
     sliderT.display();
-    
-    factoryB.display();
-    farmB.display();
-    houseB.display();
-    forestB.display();
-    demolishB.display();
-    resetB.display();
     
     if (showSlider == true) {
       factoryS.display();
@@ -468,66 +451,6 @@ class GUI {
  }
 }
 
- 
-class Button{ 
-  final PFont BASEFONT = createFont("Arial", 16);
-  final PFont SELECTEDFONT = createFont("Arial-Black", 16);
-  int x, y;                 // The x- and y-coordinates of the Button in pixels
-  int bWidth;                 // Dimensions in pixels
-  int bHeight;
-  color baseColor;           // Default color value 
-  color overColor;           //Color when mouse over button
-  color selectedColor;        //Color when button is selected
-  String label;
-  boolean over = false;     //true if mouse is over button
-  
-  Button(int xp, int yp, int w, int h, color c, color o, color s, String l) {
-    x = xp;
-    y = yp;
-    bWidth = w+5;
-    bHeight = h+5;
-    baseColor = c;          //Default color
-    overColor = o;           //Color when mouse over button
-    selectedColor = s; 
-    label = l;            //Color when button is in pushed state
-  }
-  
-  void display() {
-    stroke(255);
-    strokeWeight(1.5);
-    fill(255);  //Color of text label
-    textAlign(LEFT,CENTER);
-    if (pushed == this) { 
-      stroke(90);
-      strokeWeight(2.5);
-      textFont(SELECTEDFONT);
-      text(label, x+bWidth+8, y+(bHeight/2.)-3);
-      fill(selectedColor);
-    }else if (over) {
-      textFont(BASEFONT);
-      text(label, x+bWidth+5, y+(bHeight/2.)-1);
-      fill(overColor);
-    }else {
-      textFont(BASEFONT);
-      text(label, x+bWidth+5, y+(bHeight/2.)-1);
-      fill(baseColor);
-    }
-    rect(x, y, bWidth, bHeight);
-    update();
-  }  
-  
-  // Updates the over field every frame
-  void update() {
-    if ((mouseX >= x-1) && (mouseX <= x+bWidth+textWidth(label)+8) && 
-        (mouseY >= y-1) && (mouseY <= y+bHeight+1)) {
-      over = true;
-    } else {
-      over = false;
-    }
-  }
-} 
-
-
 class Toggle {
   final PFont BASEFONT = createFont("Arial", 14);  
   int x, y;                 // The x- and y-coordinates of the Button in pixels
@@ -591,85 +514,7 @@ class Toggle {
   }
 }
 
-class Slider { 
-  final int BAR_WIDTH = 180;
-  final int BAR_HEIGHT = 20;    // width and height of bar 
-  final int S_WIDTH = 20;        //width and height of slider
-  final int S_HEIGHT = BAR_HEIGHT;
-  final PFont sliderFont = createFont("Calibri", 14);
-  
- 
-  int x, y;       // x and y position of bar
-  float spos;  // x position of slider
-  boolean over;           // is the mouse over the slider?
-  boolean locked;
-  color col;
-  
-  LandUse lu;
-  int minVal;        //Min and max val of slider
-  int maxVal;
-  float defaultVal;    //The initial value of the slider
-  float ratio;
-  
-  Slider(LandUse l, int xp, int yp, int minV, int maxV, color c) {
-    lu = l;
-    x = xp;
-    y = yp;
-    minVal = minV;
-    maxVal = maxV;
-    defaultVal = l.getBasePollution();
-    ratio = (maxVal - minVal)/((float)(BAR_WIDTH - S_WIDTH));
-    spos = x + (defaultVal-minVal)/ratio;
-    col = c ;
-  }
-  
-  boolean overEvent() {
-    if (mouseX > x && mouseX < x+BAR_WIDTH &&
-       mouseY > y && mouseY < y+BAR_HEIGHT) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-  
-  void update() {
-    if (overEvent()) {
-      over = true;
-    } else {
-      over = false;
-    }
-    if (mousePressed && over) {
-      locked = true;
-    }
-    if (!mousePressed) {
-      locked = false;
-    }
-    if (locked) {
-      spos = constrain(mouseX, x+1, x+BAR_WIDTH-S_WIDTH);
-    }
-    lu.updatePollution(getVal());
-  }
 
-  void display() {
-    stroke(255);
-    strokeWeight(1);
-    fill(col);
-    rectMode(CORNER);
-    rect(x, y, BAR_WIDTH, BAR_HEIGHT);
-    noStroke();
-    fill(80);
-    rect(spos, y-1, S_WIDTH, S_HEIGHT+2);
-    fill(0);
-    textFont(sliderFont); 
-    text(getVal(), x + BAR_WIDTH + 15, y+7);
-    update();
-  }
-
-  int getVal() {
-    // Convert spos to be values between minVal and maxVal
-    return round(((spos - x) * ratio) + minVal);
-  }
-}
 
 
  
