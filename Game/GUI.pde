@@ -36,7 +36,7 @@ class GUI {
     BPanel.makeAdderButton(HOUSE, HOUSE_GRAY, #73A29C, #90B3B4, "House");
     BPanel.makeAdderButton(FOREST, FOREST_GREEN, #73A29C, #02A002, "Forest");
     BPanel.makeDemolishButton(DEMOLISH_BEIGE, #73A29C, #F5BB74, "Demolish");
-    BPanel.makeResetButton(x+220, YPOS+TILE_HEIGHT*SIZE_Y-57, TILE_WIDTH + 5, TILE_HEIGHT + 5, #FFFFFF, #989795, #171717, "RESET MAP");
+    BPanel.makeResetButton(XPOSB+220, YPOS+TILE_HEIGHT*SIZE_Y-57, TILE_WIDTH + 5, TILE_HEIGHT + 5, #FFFFFF, #989795, #171717, "RESET MAP");
     
     waterS = ws;
     
