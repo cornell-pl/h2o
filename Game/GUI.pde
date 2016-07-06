@@ -166,30 +166,30 @@ class GUI {
       int[] pos = converter(mouseX, mouseY);
       color hc;
       over = waterS.getTile(pos[0], pos[1]);
-        if (!(over.isRiver())) {
-           float d = over.distToRiver();
-          if (pushed.label.equals("Factory")) {
+      if (!(over.isRiver())) {
+          float d = over.distToRiver();
+          if (pushed != null && pushed.label.equals("Factory")) {
             hc = FACTORY.getIcon();
             projectedProfit = FACTORY.calcActualProfit(d);
             projectedPollution = FACTORY.calcDecayPollution(d);        
             purchaseInfo = "Money: + $" + nfc(round(projectedProfit));
             pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
           }
-          else if (pushed.label.equals("Farm")) {
+          else if (pushed != null && pushed.label.equals("Farm")) {
             hc = FARM.getIcon();
             projectedProfit = FARM.calcActualProfit(d);
             projectedPollution = FARM.calcDecayPollution(d);
             purchaseInfo = "Money: + $" + nfc(round(projectedProfit));
             pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
           }
-          else if (pushed.label.equals("House")) {
+          else if (pushed != null && pushed.label.equals("House")) {
             hc = HOUSE.getIcon();
             projectedProfit = HOUSE.calcActualProfit(d);
             projectedPollution = HOUSE.calcDecayPollution(d);
             purchaseInfo = "Money: + $" + nfc(round(projectedProfit));
             pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
           }
-          else if (pushed.label.equals("Forest")) {
+          else if (pushed != null && pushed.label.equals("Forest")) {
             hc = FOREST.getIcon();
             projectedProfit = FOREST.calcActualProfit(d);
             projectedPollution = FOREST.calcDecayPollution(d);
@@ -199,12 +199,12 @@ class GUI {
             hc = #B6FAB1;
             purchaseInfo = "";   
             pollutionInfo = "";
-          }
-        }else {    //Over the river
-          hc = #B6FAB1;
-          purchaseInfo = ""; 
-          pollutionInfo = "";
         }
+      }else {    //Over the river
+        hc = #B6FAB1;
+        purchaseInfo = ""; 
+        pollutionInfo = "";
+      }
     drawTile(pos[0], pos[1], hc , 100);
     }
     textFont(MESSAGEFONT);
@@ -237,27 +237,27 @@ class GUI {
         Tile t = waterS.getTile(p[0], p[1]);
         float d = t.distToRiver();
         if (! (t.getLandUse() instanceof River)) {
-          if  (pushed.label.equals("Factory")) {    
+          if  (pushed != null && pushed.label.equals("Factory")) {    
             hc = FACTORY_BROWN;      //highlight color
             projectedProfit += FACTORY.calcActualProfit(d);  
             projectedPollution += FACTORY.calcDecayPollution(d);
           } 
-          else if (pushed.label.equals("Farm")) {
+          else if (pushed != null && pushed.label.equals("Farm")) {
             hc = FARM_YELLOW;
             projectedProfit += FARM.calcActualProfit(d);
             projectedPollution += FARM.calcDecayPollution( d);
           }
-          else if (pushed.label.equals("House")) {
+          else if (pushed != null && pushed.label.equals("House")) {
             hc = HOUSE_GRAY;
             projectedProfit += HOUSE.calcActualProfit(d);
             projectedPollution += HOUSE.calcDecayPollution(d);
           }
-          else if (pushed.label.equals("Forest")) {
+          else if (pushed != null && pushed.label.equals("Forest")) {
             hc = #1EC610;
             projectedProfit += FOREST.calcActualProfit(d);
             projectedPollution += FOREST.calcDecayPollution(d);
           }
-          else if (pushed.label.equals("Demolish")){
+          else if (pushed != null && pushed.label.equals("Demolish")){
             hc = DEMOLISH_BEIGE;
             purchaseInfo = "";   
             pollutionInfo = "";

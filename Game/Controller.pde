@@ -32,27 +32,15 @@ int[] converter(int xraw, int yraw) {
 
 
 void mousePressed() {  
-
-  //if (mouseOverMap()){     //When mouse clicked on tile
-  //  mousePX = mouseX;
-  //  mousePY = mouseY;
-  //  if (pushed == resetB) {
-  //    message2 = "";
-  //    message = "";
-  //    pushed = null;
-  //  }
-  //}
-  //else {
-  //  if (pushed == resetB) {
-  //    message2 = "";
-  //  }
-  //  pushed = null;
-  //  message = "";
-  //}
-  //if (! mouseOverMap() && !factoryS.over && !farmS.over && !houseS.over && !forestS.over && !showPolT.over && !showDecayPolT.over && !showDistT.over && !showProfitT.over)
-  //  selected = null;    //Unselect when I click outside map
+  if (mouseOverMap()){     //When mouse clicked on tile
+    mousePX = mouseX;
+    mousePY = mouseY;
+  }
+  if (! mouseOverMap() && !factoryS.over && !farmS.over && !houseS.over && !forestS.over && !showPolT.over && !showDecayPolT.over && !showDistT.over && !showProfitT.over){
+    selected = null;    //Unselect when I click outside map
+  }
 }
-//
+
 void mouseReleased() {
   if (mouseOverMap() && mouseButton == LEFT){    //Left mouse button to add
     mouseRX = mouseX;
@@ -63,35 +51,36 @@ void mouseReleased() {
     int count = 0;
     String thing = "";
     boolean s = false;
-    for (int x = min(posP[0], posR[0]); x <= max(posP[0], posR[0]); x++) {
-      for (int y = min(posP[1], posR[1]); y <= max(posP[1], posR[1]); y++) {
-        //if (pushed == factoryB) {        //If factory button is in pressed state
-        //  s = WS.addFactory(x, y);      //count++ only when true
-        //  if (s) count ++;
-        //  thing = "Factories";
-        //} 
-        //else if (pushed == farmB) {        //If farm button is in pressed state
-        //  s = WS.addFarm(x, y);
-        //  if (s) count ++;
-        //  thing = "Farms";
-        //}
-        //else if (pushed == houseB) {        //If house button is in pressed state
-        //  s = WS.addHouse(x, y);
-        //  if (s) count ++;
-        //  thing = "Houses";
-        //}
-        //else if (pushed == forestB) {        //If forest button is in pressed state
-        //  s = WS.addForest(x, y);
-        //  if (s) count ++;
-        //  thing = "Forests";
-        //}
-        //else if(pushed == demolishB) {    //If demolish button is in pressed state
-        //  s = WS.removeLandUse(x,y);
-        //  if (s) count ++;
-        //}
-      }
-    }
-    if (pushed == null) {
+    if (pushed != null){
+      for (int x = min(posP[0], posR[0]); x <= max(posP[0], posR[0]); x++) {
+        for (int y = min(posP[1], posR[1]); y <= max(posP[1], posR[1]); y++) {
+          if (pushed.label.equals("Factory")) {        //If factory button is in pressed state
+            s = WS.addFactory(x, y);      //count++ only when true
+            if (s) count ++;
+            thing = "Factories";
+          } 
+          else if (pushed.label.equals("Factory")) {        //If farm button is in pressed state
+            s = WS.addFarm(x, y);
+            if (s) count ++;
+            thing = "Farms";
+          }
+          else if (pushed.label.equals("Farm")) {        //If house button is in pressed state
+            s = WS.addHouse(x, y);
+            if (s) count ++;
+            thing = "Houses";
+          }
+          else if (pushed.label.equals("House")) {        //If forest button is in pressed state
+            s = WS.addForest(x, y);
+            if (s) count ++;
+            thing = "Forests";
+          }
+          else if(pushed.label.equals("Demolish")) {    //If demolish button is in pressed state
+            s = WS.removeLandUse(x,y);
+            if (s) count ++;
+          }
+        }     //for loop
+      }  //for loop
+    }else {    //pushed is null
       selected = WS.getTile(posR[0],posR[1]);     //Select tile if no button is pushed and clicked inside map
     } 
     if (pushed != null) selected = null;     //Remove selection when building things

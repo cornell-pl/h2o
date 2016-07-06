@@ -151,19 +151,21 @@ class ResetButton extends Button {
   
   @Override
   void press() {
-    if (pushed == this) {
-      message = "Restarting game";
-      message2 = "";
-      resetGame();
-      graphics.waterS = WS;                
-      pushed = null;
-      selected = null;
-      message = "Game is reset";
-      message2 = "";
-    } else {
-      pushed = this;
-      message = "Do you want to reset the map? Click button again to reset.";
-      message2 = "Click anywhere to cancel.";
+    if (this.over) {      //When button is clicked on
+      if (pushed == this) {
+        message = "Restarting game";
+        message2 = "";
+        resetGame();
+        graphics.waterS = WS;                
+        pushed = null;
+        selected = null;
+        message = "Game is reset";
+        message2 = "";
+      } else {
+        pushed = this;
+        message = "Do you want to reset the map? Click button again to reset.";
+        message2 = "Click anywhere to cancel.";
+      }
     }
   }
 }
