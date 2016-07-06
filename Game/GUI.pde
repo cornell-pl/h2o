@@ -51,10 +51,10 @@ class GUI {
     showProfitT = new Toggle(XPOSB+180, YPOSB+600, "Show Money");
     sliderT = new Toggle(XPOSB+160, YPOSB+240, "Show sliders");
 
-    factoryS = new Slider(XPOSB+140, YPOSB, 0, 20, FACTORY.basePollution, FACTORY, FACTORY_BROWN);
-    farmS = new Slider(XPOSB+140, YPOSB + 60, 0, 20, FARM.basePollution, FARM, FARM_YELLOW);
-    houseS = new Slider(XPOSB+140, YPOSB + 120, 0, 20, HOUSE.basePollution, HOUSE, HOUSE_GRAY);
-    forestS = new Slider(XPOSB+140, YPOSB + 180, -10, 10, FOREST.basePollution, FOREST, FOREST_GREEN);
+    factoryS = new Slider(FACTORY, XPOSB+140, YPOSB, 0, 20, FACTORY_BROWN);
+    farmS = new Slider(FARM, XPOSB+140, YPOSB + 60, 0, 20, FARM_YELLOW);
+    houseS = new Slider(HOUSE, XPOSB+140, YPOSB + 120, 0, 20, HOUSE_GRAY);
+    forestS = new Slider(FOREST, XPOSB+140, YPOSB + 180, -10, 10, FOREST_GREEN);
   }
   
   void render() {
@@ -597,28 +597,28 @@ class Slider {
   final int S_HEIGHT = BAR_HEIGHT;
   final PFont sliderFont = createFont("Calibri", 14);
   
+ 
   int x, y;       // x and y position of bar
   float spos;  // x position of slider
-  int minVal;        //Min and max val of slider
-  int maxVal;
-  float defaultVal;    //The initial and default value of the slider
-  float ratio;
- 
   boolean over;           // is the mouse over the slider?
   boolean locked;
   color col;
   
   LandUse lu;
+  int minVal;        //Min and max val of slider
+  int maxVal;
+  float defaultVal;    //The initial value of the slider
+  float ratio;
   
-  Slider(int xp, int yp, int minV, int maxV, float defaultV, LandUse l, color c) {
+  Slider(LandUse l, int xp, int yp, int minV, int maxV, color c) {
+    lu = l;
     x = xp;
     y = yp;
     minVal = minV;
     maxVal = maxV;
-    defaultVal = defaultV;
+    defaultVal = l.getBasePollution();
     ratio = (maxVal - minVal)/((float)(BAR_WIDTH - S_WIDTH));
     spos = x + (defaultVal-minVal)/ratio;
-    lu = l;
     col = c ;
   }
   
