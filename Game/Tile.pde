@@ -30,11 +30,6 @@ class Tile {
     return (landU.isRiver());
   }
   
-  void changeLandUse(LandUse lu) {
-    /* Changes the LandUse held by the Tile to lu */
-    landU = lu;
-  }
-  
   float distToRiver() {
     /* Helper: Returns the distance of location this to closest River Tile. */
     float minDist = Float.MAX_VALUE;
@@ -43,6 +38,11 @@ class Tile {
       if (d < minDist) minDist = d;
     }
     return minDist;
+  }
+  
+  void changeLandUse(LandUse lu) {
+    /* Changes the LandUse held by the Tile to lu */
+    landU = lu;
   }
   
   LandUse getLandUse() {
