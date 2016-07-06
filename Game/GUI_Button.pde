@@ -1,9 +1,3 @@
-Button factoryB;
-Button farmB;
-Button houseB;
-Button forestB;
-Button demolishB;
-Button resetB;
 
 class ButtonPanel {
   /* Creates and draws a vertical panel of Buttons  */
@@ -21,19 +15,20 @@ class ButtonPanel {
     bHeight = bh;
     interval = bHeight + i;
     nexty = y;
+  }
    
-    //demolishB = new Button(x, y+4*interval, bWidth, bHeight, DEMOLISH_BEIGE, #73A29C, #F5BB74, "Demolish");
-    //resetB = new Button(x+220, YPOS+TILE_HEIGHT*SIZE_Y-57, bWidth + 5, bHeight + 5, #FFFFFF, #989795, #171717, "RESET MAP");
-  }
-  
-  void makeButton(color c, color over, color selected, String l) {
-    Buttons.add(new Button(x, nexty, bWidth, bHeight, c, over, selected, l));
+  void makeAdderButton(LandUse lu, color c, color over, color selected, String l) {
+    Buttons.add(new AdderButton(lu, x, nexty, bWidth, bHeight, c, over, selected, l));
     nexty += interval;
   }
   
-  void makeButton(int x, int y, int bw, int bh, color c, color over, color selected, String l) {
-    Buttons.add(new Button(x, y, bw, bh, c, over, selected, l));
+  void makeDemolishButton(color c, color over, color selected, String l) {
+    Buttons.add(new DemolishButton(x, nexty, bWidth, bHeight, c, over, selected, l));
     nexty += interval;
+  }
+  
+  void makeResetButton(int xp, int yp, int bw, int bh, color c, color over, color selected, String l) {
+    Buttons.add(new ResetButton(xp, yp, bw, bh, c, over, selected, l));
   }
   
   ArrayList<Button> getButtons() {
@@ -97,7 +92,6 @@ class Button{
   
   void press(){
     if (this.over) {      //When button is clicked on
-     // println("Pressed" + "  " + this.label);
       if (pushed == this) {
         message = "";
         pushed = null;
@@ -106,7 +100,6 @@ class Button{
       pushed = this;
       message = "Add " + label + "mode is selected";
       message2 = "";
-     // println(pushed);
       }
     }return;
   }
@@ -119,5 +112,68 @@ class Button{
     } else {
       over = false;
     }
+  }   
+}
+
+
+class AdderButton extends Button {
+  LandUse lu;
+  
+  AdderButton(LandUse landu, int xp, int yp, int w, int h, color c, color o, color s, String l) {
+    super(xp, yp, w, h, c, o, s, l);
+    lu = landu;
   }
-} 
+  
+  void addLandUse(Watershed ws, int xpos, int ypos){
+    ws.getTile(xpos, ypos).changeLandUse(lu);
+  }
+}
+
+
+class DemolishButton extends Button {
+  DemolishButton(int xp, int yp, int w, int h, color c, color o, color s, String l) {
+    super(xp, yp, w, h, c, o, s, l);
+  }
+  
+  void demolishLandUse(Watershed ws, int xpos, int ypos){
+    ws.removeLandUse(xpos, ypos);
+  }
+}
+
+class ResetButton extends Button {
+  ResetButton(int xp, int yp, int w, int h, color c, color o, color s, String l) {
+    super(xp, yp, w, h, c, o, s, l);
+  }
+  
+  void resetGame(){
+    WS = new Watershed(SIZE_X, SIZE_Y);
+  }
+  
+  @Override
+  void press() {
+    if (pushed == this) {
+      message = "Restarting game";
+      message2 = "";
+      resetGame();
+      graphics.waterS = WS;                
+      pushed = null;
+      selected = null;
+      message = "Game is reset";
+      message2 = "";
+    } else {
+      pushed = this;
+      message = "Do you want to reset the map? Click button again to reset.";
+      message2 = "Click anywhere to cancel.";
+    }
+  }
+}
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    

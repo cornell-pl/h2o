@@ -32,43 +32,27 @@ int[] converter(int xraw, int yraw) {
 
 
 void mousePressed() {  
- 
-  if(resetB.over) {  //When reset button is clicked on
-    if (pushed == resetB) {
-      message = "Restarting game";
-      message2 = "";
-      WS = new Watershed(SIZE_X, SIZE_Y);      //
-      graphics.waterS = WS;                
-      pushed = null;
-      selected = null;
-      message = "Game is reset";
-      message2 = "";
-    } else {
-      pushed = resetB;
-      message = "Do you want to reset the map? Click button again to reset.";
-      message2 = "Click anywhere to cancel.";
-    }
-  }
-  else if (mouseOverMap()){     //When mouse clicked on tile
-    mousePX = mouseX;
-    mousePY = mouseY;
-    if (pushed == resetB) {
-      message2 = "";
-      message = "";
-      pushed = null;
-    }
-  }
-  else {
-    if (pushed == resetB) {
-      message2 = "";
-    }
-    pushed = null;
-    message = "";
-  }
-  if (! mouseOverMap() && !factoryS.over && !farmS.over && !houseS.over && !forestS.over && !showPolT.over && !showDecayPolT.over && !showDistT.over && !showProfitT.over)
-    selected = null;    //Unselect when I click outside map
-}
 
+  //if (mouseOverMap()){     //When mouse clicked on tile
+  //  mousePX = mouseX;
+  //  mousePY = mouseY;
+  //  if (pushed == resetB) {
+  //    message2 = "";
+  //    message = "";
+  //    pushed = null;
+  //  }
+  //}
+  //else {
+  //  if (pushed == resetB) {
+  //    message2 = "";
+  //  }
+  //  pushed = null;
+  //  message = "";
+  //}
+  //if (! mouseOverMap() && !factoryS.over && !farmS.over && !houseS.over && !forestS.over && !showPolT.over && !showDecayPolT.over && !showDistT.over && !showProfitT.over)
+  //  selected = null;    //Unselect when I click outside map
+}
+//
 void mouseReleased() {
   if (mouseOverMap() && mouseButton == LEFT){    //Left mouse button to add
     mouseRX = mouseX;
@@ -81,30 +65,30 @@ void mouseReleased() {
     boolean s = false;
     for (int x = min(posP[0], posR[0]); x <= max(posP[0], posR[0]); x++) {
       for (int y = min(posP[1], posR[1]); y <= max(posP[1], posR[1]); y++) {
-        if (pushed == factoryB) {        //If factory button is in pressed state
-          s = WS.addFactory(x, y);      //count++ only when true
-          if (s) count ++;
-          thing = "Factories";
-        } 
-        else if (pushed == farmB) {        //If farm button is in pressed state
-          s = WS.addFarm(x, y);
-          if (s) count ++;
-          thing = "Farms";
-        }
-        else if (pushed == houseB) {        //If house button is in pressed state
-          s = WS.addHouse(x, y);
-          if (s) count ++;
-          thing = "Houses";
-        }
-        else if (pushed == forestB) {        //If forest button is in pressed state
-          s = WS.addForest(x, y);
-          if (s) count ++;
-          thing = "Forests";
-        }
-        else if(pushed == demolishB) {    //If demolish button is in pressed state
-          s = WS.removeLandUse(x,y);
-          if (s) count ++;
-        }
+        //if (pushed == factoryB) {        //If factory button is in pressed state
+        //  s = WS.addFactory(x, y);      //count++ only when true
+        //  if (s) count ++;
+        //  thing = "Factories";
+        //} 
+        //else if (pushed == farmB) {        //If farm button is in pressed state
+        //  s = WS.addFarm(x, y);
+        //  if (s) count ++;
+        //  thing = "Farms";
+        //}
+        //else if (pushed == houseB) {        //If house button is in pressed state
+        //  s = WS.addHouse(x, y);
+        //  if (s) count ++;
+        //  thing = "Houses";
+        //}
+        //else if (pushed == forestB) {        //If forest button is in pressed state
+        //  s = WS.addForest(x, y);
+        //  if (s) count ++;
+        //  thing = "Forests";
+        //}
+        //else if(pushed == demolishB) {    //If demolish button is in pressed state
+        //  s = WS.removeLandUse(x,y);
+        //  if (s) count ++;
+        //}
       }
     }
     if (pushed == null) {
@@ -114,7 +98,7 @@ void mouseReleased() {
     
     if (count > 1 || (count == 1 && s == false)) {  //Different message if multiple objects 
       message2 = "Added " + Integer.toString(count) + " " + thing;    
-      if (pushed == demolishB) message2 = "Removed land use at " + Integer.toString(count) + " locations";
+      //if (pushed == demolishB) message2 = "Removed land use at " + Integer.toString(count) + " locations";
     }    
   }
   if (mouseButton == RIGHT) {    //Right mouse button to cancel selection and button pushed
@@ -127,7 +111,6 @@ void mouseReleased() {
 void mouseClicked() {
   for (Button b: graphics.BPanel.getButtons()){
     b.press();
-    println("pressed " + pushed);
   }
   if (showPolT.over) {
     if (toggled == showPolT) toggled = null;
