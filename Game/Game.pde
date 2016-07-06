@@ -24,7 +24,8 @@ void setup() {
   size(1250, 950);
   WS = new Watershed(SIZE_X, SIZE_Y);   //Creates watershed of size 20*20
   graphics = new GUI(SIZE_X, SIZE_Y, WS);
-  //optimize();
+  Optimizer op = new Optimizer();
+  op.optimize(WS);
 }
 
 void draw() {  
@@ -40,7 +41,7 @@ class Watershed{
   
   Watershed(int x, int y) {
     initializeWithForest();
-  }     //<>//
+  }     //<>// //<>//
   
   void initializeWithForest() {
     for (int j=0; j<SIZE_Y; j++) {
