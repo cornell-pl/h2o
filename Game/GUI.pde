@@ -426,8 +426,9 @@ class GUI {
       textSize(10);
       fill(0);
       textAlign(LEFT, TOP);
-      if(t.getTilePollution()!=0) 
-        text(round(t.getTilePollution()), t.getX()*TILE_WIDTH + XPOS+2, t.getY()*TILE_HEIGHT + YPOS+1);
+      int p = round(t.getBasePollution());
+      if(p != 0) 
+        text(p, t.getX()*TILE_WIDTH + XPOS+2, t.getY()*TILE_HEIGHT + YPOS+1);
    }
  }
  
@@ -438,7 +439,7 @@ class GUI {
       textSize(10);
       fill(0);
       textAlign(LEFT, TOP);
-      if(t.getTilePollution()!=0) 
+      if(t.getBasePollution()!=0) 
         text(nfc(t.getDecayPollution(),1), t.getX()*TILE_WIDTH + XPOS+2, t.getY()*TILE_HEIGHT + YPOS+1);
       total += t.getDecayPollution();
    }

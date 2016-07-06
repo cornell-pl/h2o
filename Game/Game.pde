@@ -148,7 +148,7 @@ class Watershed{
     /* Returns simple sum of pollution generated for all Tiles */
     int totalPollution = 0;
     for (Tile t: getAllTiles()) 
-       totalPollution += t.getTilePollution();
+       totalPollution += t.getBasePollution();
     return totalPollution;
   }
   
