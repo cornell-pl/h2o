@@ -88,9 +88,7 @@ class Watershed{
     /* Sets the pollution, ld pollution and distToRiver for each tile.
     * Called once after map is initialized */
     for (Tile t : getAllTiles()) {
-      //t.pollution = getPollution(t.getLandUse());
-      t.distToRiver = t.distToRiver();      //I dont have to set all these pollution stuff because they are updated each frame.
-      ///t.decayPollution = calcDecayPollution(t.pollution, t.distToRiver);
+      t.distToRiver = t.distToRiver();
     }
   }
 

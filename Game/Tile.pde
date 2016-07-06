@@ -91,19 +91,11 @@ class Tile {
   }
   
   void update() {
-    if (showSlider == true) {
-      if (! (this.isDirt()) && !(this.isRiver())){
-        pollution = landU.basePollution;
-      }
-      if (! (this.isForest()) && !(this.isRiver())) {
-        decayPollution = landU.calcDecayPollution(distToRiver);
-      } else decayPollution = pollution;
-    }else{
+    if (! (this.isDirt()) && !(this.isRiver()))
       pollution = landU.basePollution;
-      if (! (this.isForest()) && !(this.isRiver())) {
-        decayPollution = landU.calcDecayPollution(distToRiver);
-      } else decayPollution = pollution;
-    }
+    if (! (this.isForest()) && !(this.isRiver()))
+       decayPollution = landU.calcDecayPollution(distToRiver);
+    else decayPollution = pollution;
   }
   
   int getX(){
