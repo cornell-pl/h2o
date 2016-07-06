@@ -36,7 +36,7 @@ void optimize() {
     LandUse[] landUses = { FACTORY, FARM, HOUSE };
     for(Tile t : WS.getAllTiles()) {
       if(t.isDirt()) {
-        float dist = t.distToRiver;
+        float dist = t.distToRiver();
         for(LandUse lu : landUses) {
           if(buildOk(lu)) {
             float luProfit = profit(lu, dist);

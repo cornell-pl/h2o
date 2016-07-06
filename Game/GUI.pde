@@ -160,7 +160,7 @@ class GUI {
       text(text1, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 30);   
       String text2 = "Money: $" + round(selected.getActualProfit()) + 
                       "\ndecayPollution: " + nfc(selected.getDecayPollution(),2) + 
-                      "\nDistToRiver: " + nfc(selected.getDistToRiver(),2);
+                      "\nDistToRiver: " + nfc(selected.distToRiver(),2);
       text(text2, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 50);
     }
   }
@@ -177,7 +177,7 @@ class GUI {
       color hc;
       over = waterS.getTile(pos[0], pos[1]);
         if (!(over.isRiver())) {
-           float d = over.getDistToRiver();
+           float d = over.distToRiver();
           if (pushed == factoryB) {
             hc = FACTORY.getIcon();
             projectedProfit = FACTORY.calcActualProfit(d);
@@ -245,7 +245,7 @@ class GUI {
       projectedPollution = 0;
       for (int[] p : highlighted) {
         Tile t = waterS.getTile(p[0], p[1]);
-        float d = t.getDistToRiver();
+        float d = t.distToRiver();
         if (! (t.getLandUse() instanceof River)) {
           if  (pushed == factoryB) {    
             hc = FACTORY_BROWN;      //highlight color
@@ -451,7 +451,7 @@ class GUI {
       fill(0);
       textAlign(LEFT, TOP);
       if (!(t.getLandUse() instanceof River)) 
-        text(nfc(t.getDistToRiver(),1), t.getX()*TILE_WIDTH + XPOS+2, t.getY()*TILE_HEIGHT + YPOS+1);
+        text(nfc(t.distToRiver(),1), t.getX()*TILE_WIDTH + XPOS+2, t.getY()*TILE_HEIGHT + YPOS+1);
    }
  }
  

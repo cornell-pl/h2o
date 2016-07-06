@@ -41,7 +41,6 @@ class Watershed{
   
   Watershed(int x, int y) {
     initializeWithForest();
-    setTileVals();
   }     //<>//
   
   void initializeWithForest() {
@@ -77,13 +76,6 @@ class Watershed{
     for (int[] c: HOUSE_COORDS) 
       getTile(c[0], c[1]).landU = HOUSE;
     initializeRiver();    //Creates the river
-  }
-  
-  void setTileVals() {
-    /* Sets the pollution, ld pollution and distToRiver for each tile.
-    * Called once after map is initialized */
-    for (Tile t : getAllTiles())
-      t.distToRiver = t.distToRiver();
   }
 
   //**** Methods to place rivers of various designs in map  ****//  -----------------------------------------------
