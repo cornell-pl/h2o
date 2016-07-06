@@ -4,9 +4,6 @@ class Tile {
   final int Y;  //y-coordinate
   LandUse landU;
   
-  //Every derived variable that is summed over all Tiles in WS is stored as constants, to avoid expensive calculation over each frame.
-  float actualProfit = 0;  //Actual profit made by the landU at this tile
-  
   Tile(LandUse lu, int xp, int yp) {
      /* Constructor: Initializes Tile with LandUse lu, and integer slope sl, soil so values */
      X = xp;
@@ -36,7 +33,6 @@ class Tile {
   void changeLandUse(LandUse lu) {
     /* Changes the LandUse held by the Tile to lu */
     landU = lu;
-    actualProfit = landU.calcActualProfit(distToRiver());
   }
   
   float distToRiver() {
@@ -72,7 +68,7 @@ class Tile {
   
   float getActualProfit() {
     /* Returns the actual profit gained at this tile */
-    return actualProfit;
+    return landU.calcActualProfit(distToRiver());
   }
   
   int getX(){
