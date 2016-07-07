@@ -5,26 +5,8 @@ final int TILE_HEIGHT = 26;    //height of a tile in pixels
 final int XPOSB = XPOS + SIZE_X*TILE_WIDTH + 40;    //Drawing dimensions. XPOS and ypos are the coordinates of the top most button. 
 final int YPOSB = 60;    //All buttons scale with respect to these
 
-
-Button factoryB;
-Button farmB;
-Button houseB;
-Button forestB;
-Button demolishB;
-Button resetB;
-
-Toggle showPolT;
-Toggle showDecayPolT;
-Toggle showDistT;
-Toggle showProfitT;
-Toggle sliderT;
-
-Slider factoryS;
-Slider farmS;
-Slider houseS;
-Slider forestS;
-
-
+String message = "";
+String message2 = "";
 
 class GUI {
   final PFont AXISFONT = createFont("Calibri", 12);
@@ -33,6 +15,26 @@ class GUI {
   final PFont NUMERALFONT = createFont("Courier", 30);
   
   Watershed waterS;
+  
+  Button factoryB;
+  Button farmB;
+  Button houseB;
+  Button forestB;
+  Button demolishB;
+  Button resetB;
+  
+  Toggle showPolT;
+  Toggle showDecayPolT;
+  Toggle showDistT;
+  Toggle showProfitT;
+  Toggle sliderT;
+  
+  Slider factoryS;
+  Slider farmS;
+  Slider houseS;
+  Slider forestS;
+  
+
   
   GUI(int x, int y, Watershed WS) {
     
@@ -469,63 +471,7 @@ class GUI {
 }
 
  
-class Button{ 
-  final PFont BASEFONT = createFont("Arial", 16);
-  final PFont SELECTEDFONT = createFont("Arial-Black", 16);
-  int x, y;                 // The x- and y-coordinates of the Button in pixels
-  int bWidth;                 // Dimensions in pixels
-  int bHeight;
-  color baseColor;           // Default color value 
-  color overColor;           //Color when mouse over button
-  color selectedColor;        //Color when button is selected
-  String label;
-  boolean over = false;     //true if mouse is over button
-  
-  Button(int xp, int yp, int w, int h, color c, color o, color s, String l) {
-    x = xp;
-    y = yp;
-    bWidth = w+5;
-    bHeight = h+5;
-    baseColor = c;          //Default color
-    overColor = o;           //Color when mouse over button
-    selectedColor = s; 
-    label = l;            //Color when button is in pushed state
-  }
-  
-  void display() {
-    stroke(255);
-    strokeWeight(1.5);
-    fill(255);  //Color of text label
-    textAlign(LEFT,CENTER);
-    if (pushed == this) { 
-      stroke(90);
-      strokeWeight(2.5);
-      textFont(SELECTEDFONT);
-      text(label, x+bWidth+8, y+(bHeight/2.)-3);
-      fill(selectedColor);
-    }else if (over) {
-      textFont(BASEFONT);
-      text(label, x+bWidth+5, y+(bHeight/2.)-1);
-      fill(overColor);
-    }else {
-      textFont(BASEFONT);
-      text(label, x+bWidth+5, y+(bHeight/2.)-1);
-      fill(baseColor);
-    }
-    rect(x, y, bWidth, bHeight);
-    update();
-  }  
-  
-  // Updates the over field every frame
-  void update() {
-    if ((mouseX >= x-1) && (mouseX <= x+bWidth+textWidth(label)+8) && 
-        (mouseY >= y-1) && (mouseY <= y+bHeight+1)) {
-      over = true;
-    } else {
-      over = false;
-    }
-  }
-} 
+
 
 
 class Toggle {
@@ -590,86 +536,3 @@ class Toggle {
     }
   }
 }
-
-class Slider { 
-  final int BAR_WIDTH = 180;
-  final int BAR_HEIGHT = 20;    // width and height of bar 
-  final int S_WIDTH = 20;        //width and height of slider
-  final int S_HEIGHT = BAR_HEIGHT;
-  final PFont sliderFont = createFont("Calibri", 14);
-  
- 
-  int x, y;       // x and y position of bar
-  float spos;  // x position of slider
-  boolean over;           // is the mouse over the slider?
-  boolean locked;
-  color col;
-  
-  LandUse lu;
-  int minVal;        //Min and max val of slider
-  int maxVal;
-  float defaultVal;    //The initial value of the slider
-  float ratio;
-  
-  Slider(LandUse l, int xp, int yp, int minV, int maxV, color c) {
-    lu = l;
-    x = xp;
-    y = yp;
-    minVal = minV;
-    maxVal = maxV;
-    defaultVal = l.getBasePollution();
-    ratio = (maxVal - minVal)/((float)(BAR_WIDTH - S_WIDTH));
-    spos = x + (defaultVal-minVal)/ratio;
-    col = c ;
-  }
-  
-  boolean overEvent() {
-    if (mouseX > x && mouseX < x+BAR_WIDTH &&
-       mouseY > y && mouseY < y+BAR_HEIGHT) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-  
-  void update() {
-    if (overEvent()) {
-      over = true;
-    } else {
-      over = false;
-    }
-    if (mousePressed && over) {
-      locked = true;
-    }
-    if (!mousePressed) {
-      locked = false;
-    }
-    if (locked) {
-      spos = constrain(mouseX, x+1, x+BAR_WIDTH-S_WIDTH);
-    }
-    lu.updatePollution(getVal());
-  }
-
-  void display() {
-    stroke(255);
-    strokeWeight(1);
-    fill(col);
-    rectMode(CORNER);
-    rect(x, y, BAR_WIDTH, BAR_HEIGHT);
-    noStroke();
-    fill(80);
-    rect(spos, y-1, S_WIDTH, S_HEIGHT+2);
-    fill(0);
-    textFont(sliderFont); 
-    text(getVal(), x + BAR_WIDTH + 15, y+7);
-    update();
-  }
-
-  int getVal() {
-    // Convert spos to be values between minVal and maxVal
-    return round(((spos - x) * ratio) + minVal);
-  }
-}
-
-
- 

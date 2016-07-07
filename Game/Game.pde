@@ -17,6 +17,7 @@ ArrayList<Tile> riverTiles = new ArrayList<Tile>(200);
 
 Watershed WS;
 GUI graphics;
+Controller control;
 
 //-------------------------------------------------------------------------------------------------//
 
@@ -25,6 +26,7 @@ void setup() {
   size(1250, 950);
   WS = new Watershed(SIZE_X, SIZE_Y);   //Creates watershed of size 20*20
   graphics = new GUI(SIZE_X, SIZE_Y, WS);
+  control = new Controller(WS, graphics);
   Optimizer op = new Optimizer();
   //op.optimize(WS);
 }

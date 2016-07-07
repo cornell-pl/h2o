@@ -4,8 +4,7 @@ Button pushed = null;   //The current button that is pushed. null if none is pus
 Toggle toggled = null;   //The current toggle. null if none toggled
 boolean showSlider = false;
 
-String message = "";
-String message2 = "";
+
 int mousePX;    // Mouse press positions
 int mousePY;
 int mouseRX;   //Mouse release positions
@@ -31,84 +30,118 @@ int[] converter(int xraw, int yraw) {
 }
 
 
-void mousePressed() {  
-  if (factoryB.over) {      //When factory button is clicked on
-    if (pushed == factoryB) {
+class Controller{
+  Watershed waterS;
+  GUI view;
+  
+  Controller(Watershed ws, GUI g) {
+    waterS = ws;
+    view = g;
+  }
+  
+  void pressButton() {
+    if (view.factoryB.over) {      //When factory button is clicked on
+      if (pushed == view.factoryB) {
         message = "";
         pushed = null;
       } else {
-    pushed = factoryB;
-    message = "Add factory mode is selected";
-    message2 = "";
-      }
-  }
-  else if (farmB.over) {      //When farm button is clicked on
-    if (pushed == farmB) {
+        pushed = view.factoryB;
+        message = "Add factory mode is selected";
+        message2 = "";
+       }
+    }
+    else if (view.farmB.over) {      //When farm button is clicked on
+      if (pushed == view.farmB) {
         message = "";
         pushed = null;
       }else {
-    pushed = farmB;
-    message = "Add farm mode is selected";
-    message2 = "";
-      }
-  }
-  else if (houseB.over) {      //When house button is clicked on
-    if (pushed == houseB) {
+        pushed = view.farmB;
+        message = "Add farm mode is selected";
+        message2 = "";
+       }
+    }
+    else if (view.houseB.over) {      //When house button is clicked on
+      if (pushed == view.houseB) {
         message = "";
         pushed = null;
       } else {
-    pushed = houseB;
-    message = "Add house mode is selected";
-    message2 = "";
+        pushed = view.houseB;
+        message = "Add house mode is selected";
+        message2 = "";
       }
-  }
-  else if (forestB.over) {      //When forest button is clicked on
-    if (pushed == forestB) {
+    }
+    else if (view.forestB.over) {      //When forest button is clicked on
+      if (pushed == view.forestB) {
         message = "";
         pushed = null;
       }else {
-    pushed = forestB;
-    message = "Add forest mode is selected";
-    message2 = "";
+        pushed = view.forestB;
+        message = "Add forest mode is selected";
+        message2 = "";
       }
-  }
-  else if(demolishB.over) {   //When demolish button is clicked on
-    if (pushed == demolishB) {
+    }
+    else if(view.demolishB.over) {   //When demolish button is clicked on
+      if (pushed == view.demolishB) {
         message = "";
         pushed = null;
       } else {
-    pushed = demolishB;
-    message = "Demolish mode is selected";
-    message2 = "";
+        pushed = view.demolishB;
+        message = "Demolish mode is selected";
+        message2 = "";
       }
-  }
-  else if(resetB.over) {  //When reset button is clicked on
-    if (pushed == resetB) {
-      message = "Restarting game";
-      message2 = "";
-      WS = new Watershed(SIZE_X, SIZE_Y);      //
-      graphics.waterS = WS;                
-      pushed = null;
-      selected = null;
-      message = "Game is reset";
-      message2 = "";
-    } else {
-      pushed = resetB;
-      message = "Do you want to reset the map? Click button again to reset.";
-      message2 = "Click anywhere to cancel.";
+    }
+    else if(view.resetB.over) {  //When reset button is clicked on
+      if (pushed == view.resetB) {
+        message = "Restarting game";
+        message2 = "";
+        WS = new Watershed(SIZE_X, SIZE_Y);      //
+        graphics.waterS = WS;                
+        pushed = null;
+        selected = null;
+        message = "Game is reset";
+        message2 = "";
+      }else {
+        pushed = view.resetB;
+        message = "Do you want to reset the map? Click button again to reset.";
+        message2 = "Click anywhere to cancel.";
+      }
     }
   }
-  else if (mouseOverMap()){     //When mouse clicked on tile
+  
+  void pressMapTile(){
+    if (mouseOverMap()){     //When mouse clicked on tile
+      mousePX = mouseX;
+      mousePY = mouseY;
+      if (pushed == view.resetB) {
+        message2 = "";
+        message = "";
+        pushed = null;
+      }
+    }
+  }
+}
+  
+  
+  
+  
+  
+  
+}
+
+void mousePressed() {  
+  control.pressButton();
+  control.pressMapTile();
+  if (mouseOverMap()){     //When mouse clicked on tile
     mousePX = mouseX;
     mousePY = mouseY;
-    if (pushed == resetB) {
+    if (pushed == view.resetB) {
       message2 = "";
       message = "";
       pushed = null;
     }
   }
   else {
-    if (pushed == resetB) {
+    if (pushed == view.resetB) {
       message2 = "";
     }
     pushed = null;
