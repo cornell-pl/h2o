@@ -39,71 +39,58 @@ class Controller{
     view = g;
   }
   
+  boolean isOverButton(){
+    return view.factoryB.isOver() ||
+           view.farmB.isOver() ||
+           view.houseB.isOver() ||
+           view.forestB.isOver() ||
+           view.demolishB.isOver() ||
+           view.resetB.isOver();
+  }
+  
+  Button getOverButton() {
+    /* Returns Button mouse is over. */
+     return mouseOverButton;
+  }
+  
   void pressButton() {
-    if (view.factoryB.over) {      //When factory button is clicked on
-      if (pushed == view.factoryB) {
-        message = "";
-        pushed = null;
-      } else {
-        pushed = view.factoryB;
-        message = "Add factory mode is selected";
-        message2 = "";
-       }
-    }
-    else if (view.farmB.over) {      //When farm button is clicked on
-      if (pushed == view.farmB) {
-        message = "";
-        pushed = null;
-      }else {
-        pushed = view.farmB;
-        message = "Add farm mode is selected";
-        message2 = "";
-       }
-    }
-    else if (view.houseB.over) {      //When house button is clicked on
-      if (pushed == view.houseB) {
-        message = "";
-        pushed = null;
-      } else {
-        pushed = view.houseB;
-        message = "Add house mode is selected";
-        message2 = "";
+    if (isOverButton()) {
+      Button b = getOverButton();
+      if (b != view.resetB && b != view.demolishB){
+        if (pushed == b) {
+          message = "";
+          pushed = null;
+        } else {
+          pushed = b;
+          message = "Add " + b.label + " mode is selected";
+          message2 = "";
+         }
       }
-    }
-    else if (view.forestB.over) {      //When forest button is clicked on
-      if (pushed == view.forestB) {
-        message = "";
-        pushed = null;
-      }else {
-        pushed = view.forestB;
-        message = "Add forest mode is selected";
-        message2 = "";
+      else if(b == view.demolishB) {   //When demolish button is clicked on
+        if (pushed == view.demolishB) {
+          message = "";
+          pushed = null;
+        } else {
+          pushed = view.demolishB;
+          message = "Demolish mode is selected";
+          message2 = "";
+        }
       }
-    }
-    else if(view.demolishB.over) {   //When demolish button is clicked on
-      if (pushed == view.demolishB) {
-        message = "";
-        pushed = null;
-      } else {
-        pushed = view.demolishB;
-        message = "Demolish mode is selected";
-        message2 = "";
-      }
-    }
-    else if(view.resetB.over) {  //When reset button is clicked on
-      if (pushed == view.resetB) {
-        message = "Restarting game";
-        message2 = "";
-        WS = new Watershed(SIZE_X, SIZE_Y);      //
-        graphics.waterS = WS;                
-        pushed = null;
-        selected = null;
-        message = "Game is reset";
-        message2 = "";
-      }else {
-        pushed = view.resetB;
-        message = "Do you want to reset the map? Click button again to reset.";
-        message2 = "Click anywhere to cancel.";
+      else if(b == view.resetB) {  //When reset button is clicked on
+        if (pushed == view.resetB) {
+          message = "Restarting game";
+          message2 = "";
+          WS = new Watershed(SIZE_X, SIZE_Y);      //
+          graphics.waterS = WS;                
+          pushed = null;
+          selected = null;
+          message = "Game is reset";
+          message2 = "";
+        }else {
+          pushed = view.resetB;
+          message = "Do you want to reset the map? Click button again to reset.";
+          message2 = "Click anywhere to cancel.";
+        }
       }
     }
   }
@@ -121,10 +108,13 @@ class Controller{
   }
   
   void pressOutOfMap(){
-    if (pushed == view.resetB)
-      message2 = "";
-    pushed = null;
-    message = "";
+    if (! mouseOverMap() && !isOverButton() && !view.factoryS.over && !view.farmS.over && !view.houseS.over && !view.forestS.over && !view.showPolT.over && !view.showDecayPolT.over && !view.showDistT.over && !view.showProfitT.over){
+      if (pushed == view.resetB)
+        message2 = "";
+      pushed = null;
+      println("out of map nulled");
+      message = "";
+    }
   }
   
   void unselect(){

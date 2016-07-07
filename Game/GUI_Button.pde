@@ -21,6 +21,10 @@ class Button{
     label = l;            //Color when button is in pushed state
   }
   
+  boolean isOver(){
+    return over;
+  }
+  
   void display() {
     stroke(255);
     strokeWeight(1.5);
@@ -50,6 +54,7 @@ class Button{
     if ((mouseX >= x-1) && (mouseX <= x+bWidth+textWidth(label)+8) && 
         (mouseY >= y-1) && (mouseY <= y+bHeight+1)) {
       over = true;
+      mouseOverButton = this;
     } else {
       over = false;
     }

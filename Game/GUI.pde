@@ -8,6 +8,8 @@ final int YPOSB = 60;    //All buttons scale with respect to these
 String message = "";
 String message2 = "";
 
+Button mouseOverButton = null;
+
 class GUI {
   final PFont AXISFONT = createFont("Calibri", 12);
   final PFont MESSAGEFONT = createFont("Calibri", 14);
@@ -33,8 +35,6 @@ class GUI {
   Slider farmS;
   Slider houseS;
   Slider forestS;
-  
-
   
   GUI(int x, int y, Watershed WS) {
     
