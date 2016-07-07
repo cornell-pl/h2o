@@ -119,36 +119,26 @@ class Controller{
       }
     }
   }
+  
+  void pressOutOfMap(){
+    if (pushed == view.resetB)
+      message2 = "";
+    pushed = null;
+    message = "";
+  }
+  
+  void unselect(){
+    if (! mouseOverMap() && !view.factoryS.over && !view.farmS.over && !view.houseS.over && !view.forestS.over && !view.showPolT.over && !view.showDecayPolT.over && !view.showDistT.over && !view.showProfitT.over)
+      selected = null;    //Unselect when I click outside map
+  }
 }
   
-  
-  
-  
-  
-  
-}
 
 void mousePressed() {  
   control.pressButton();
   control.pressMapTile();
-  if (mouseOverMap()){     //When mouse clicked on tile
-    mousePX = mouseX;
-    mousePY = mouseY;
-    if (pushed == view.resetB) {
-      message2 = "";
-      message = "";
-      pushed = null;
-    }
-  }
-  else {
-    if (pushed == view.resetB) {
-      message2 = "";
-    }
-    pushed = null;
-    message = "";
-  }
-  if (! mouseOverMap() && !factoryS.over && !farmS.over && !houseS.over && !forestS.over && !showPolT.over && !showDecayPolT.over && !showDistT.over && !showProfitT.over)
-    selected = null;    //Unselect when I click outside map
+  control.pressOutOfMap();
+  control.unselect();
 }
 
 void mouseReleased() {
@@ -163,27 +153,27 @@ void mouseReleased() {
     boolean s = false;
     for (int x = min(posP[0], posR[0]); x <= max(posP[0], posR[0]); x++) {
       for (int y = min(posP[1], posR[1]); y <= max(posP[1], posR[1]); y++) {
-        if (pushed == factoryB) {        //If factory button is in pressed state
+        if (pushed == graphics.factoryB) {        //If factory button is in pressed state
           s = WS.addFactory(x, y);      //count++ only when true
           if (s) count ++;
           thing = "Factories";
         } 
-        else if (pushed == farmB) {        //If farm button is in pressed state
+        else if (pushed == graphics.farmB) {        //If farm button is in pressed state
           s = WS.addFarm(x, y);
           if (s) count ++;
           thing = "Farms";
         }
-        else if (pushed == houseB) {        //If house button is in pressed state
+        else if (pushed == graphics.houseB) {        //If house button is in pressed state
           s = WS.addHouse(x, y);
           if (s) count ++;
           thing = "Houses";
         }
-        else if (pushed == forestB) {        //If forest button is in pressed state
+        else if (pushed == graphics.forestB) {        //If forest button is in pressed state
           s = WS.addForest(x, y);
           if (s) count ++;
           thing = "Forests";
         }
-        else if(pushed == demolishB) {    //If demolish button is in pressed state
+        else if(pushed == graphics.demolishB) {    //If demolish button is in pressed state
           s = WS.removeLandUse(x,y);
           if (s) count ++;
         }
@@ -196,7 +186,7 @@ void mouseReleased() {
     
     if (count > 1 || (count == 1 && s == false)) {  //Different message if multiple objects 
       message2 = "Added " + Integer.toString(count) + " " + thing;    
-      if (pushed == demolishB) message2 = "Removed land use at " + Integer.toString(count) + " locations";
+      if (pushed == graphics.demolishB) message2 = "Removed land use at " + Integer.toString(count) + " locations";
     }    
   }
   if (mouseButton == RIGHT) {    //Right mouse button to cancel selection and button pushed
@@ -207,20 +197,20 @@ void mouseReleased() {
 }
 
 void mouseClicked() {
-  if (showPolT.over) {
-    if (toggled == showPolT) toggled = null;
-    else toggled = showPolT;
-  }else if (showDecayPolT.over) {
-    if (toggled == showDecayPolT) toggled = null;
-    else toggled = showDecayPolT;
-  }else if (showDistT.over) {
-    if (toggled == showDistT) toggled = null;
-    else toggled = showDistT;
-  }else if (showProfitT.over) {
-    if (toggled == showProfitT) toggled = null;
-    else toggled = showProfitT;
+  if (graphics.showPolT.over) {
+    if (toggled == graphics.showPolT) toggled = null;
+    else toggled = graphics.showPolT;
+  }else if (graphics.showDecayPolT.over) {
+    if (toggled == graphics.showDecayPolT) toggled = null;
+    else toggled = graphics.showDecayPolT;
+  }else if (graphics.showDistT.over) {
+    if (toggled == graphics.showDistT) toggled = null;
+    else toggled = graphics.showDistT;
+  }else if (graphics.showProfitT.over) {
+    if (toggled == graphics.showProfitT) toggled = null;
+    else toggled = graphics.showProfitT;
   }
-  else if (sliderT.over) {
+  else if (graphics.sliderT.over) {
     if (showSlider == true) showSlider = false;
     else showSlider = true;
   }
