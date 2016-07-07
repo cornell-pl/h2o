@@ -46,7 +46,7 @@ class Watershed{
     populateGameMap();
     initializeRiver();
     buildForests();
-  }   //<>//
+  }   //<>// //<>//
   
   void populateGameMap(){
     for (int j=0; j<SIZE_Y; j++) {
