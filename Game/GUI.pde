@@ -8,7 +8,7 @@ final int YPOSB = 60;    //All buttons scale with respect to these
 String message = "";
 String message2 = "";
 
-Button mouseOverButton = null;
+
 
 class GUI {
   final PFont AXISFONT = createFont("Calibri", 12);
@@ -174,8 +174,8 @@ class GUI {
     String pollutionInfo = "";
     float projectedProfit = 0;
     float projectedPollution = 0;
-    if (mouseOverMap() && !mousePressed) {   //Highlight tile mouse is over
-      int[] pos = converter(mouseX, mouseY);
+    if (control.mouseOverMap() && !mousePressed) {   //Highlight tile mouse is over
+      int[] pos = control.converter(mouseX, mouseY);
       color hc;
       over = waterS.getTile(pos[0], pos[1]);
         if (!(over.isRiver())) {
@@ -221,15 +221,15 @@ class GUI {
     }
     textFont(MESSAGEFONT);
     fill(125);
-    text(purchaseInfo, XPOS+460, YPOS + SIZE_Y*TILE_HEIGHT + 90);  
-    text(pollutionInfo, XPOS+460, YPOS + SIZE_Y*TILE_HEIGHT + 110);
+    text(purchaseInfo, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 90);  
+    text(pollutionInfo, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 110);
   }
   
   void highlightBulk() {
     /* Highlights tiles during click and drag, and shows bulk purchase info */
-    if (mousePressed && mouseOverMap()) {
-      int[] posP = converter(mousePX, mousePY);   //tile coordinate when mouse is pressed
-      int[] posC = converter(mouseX, mouseY);     //current tile coordinate
+    if (mousePressed && control.mouseOverMap()) {
+      int[] posP = control.converter(mousePX, mousePY);   //tile coordinate when mouse is pressed
+      int[] posC = control.converter(mouseX, mouseY);     //current tile coordinate
       ArrayList<int[]> highlighted = new ArrayList<int[]>();
       if ((posP[0] >= 0 && posP[0] <SIZE_X) && (posP[1] >= 0 && posP[1] < SIZE_Y)) {
         for (int x = min(posP[0], posC[0]); x <= max(posP[0], posC[0]); x++) {
@@ -293,8 +293,8 @@ class GUI {
         else pollutionInfo = "Pollution: - " + nfc(abs(projectedPollution),2);
         textFont(MESSAGEFONT);
         fill(125);
-        text(purchaseInfo, XPOS+460, YPOS + SIZE_Y*TILE_HEIGHT + 90);  
-        text(pollutionInfo, XPOS+460, YPOS + SIZE_Y*TILE_HEIGHT + 110); 
+        text(purchaseInfo, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 90);  
+        text(pollutionInfo, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 110); 
       }
     }
   }
