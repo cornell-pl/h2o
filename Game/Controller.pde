@@ -10,24 +10,9 @@ int mousePY;
 int mouseRX;   //Mouse release positions
 int mouseRY;
 
-boolean mouseOverMap(){
-  /* Helper function: Returns true if the mouse position is over the Watershed map. false otherwise. */
-  int[] xRange = {XPOS, XPOS + SIZE_X*TILE_WIDTH};
-  int[] yRange = {YPOS, YPOS + SIZE_Y*TILE_HEIGHT};
-  return ((mouseX > xRange[0] && mouseX < xRange[1]) && (mouseY > yRange[0] && mouseY < yRange[1]));
-}
 
-int[] converter(int xraw, int yraw) {
-  /*Helper function: converts raw coordinates x and y in frame to tile locations   */
-  if (mouseOverMap()){
-    int xloc = 0;
-    int yloc = 0;
-    xloc = (xraw-XPOS)/TILE_WIDTH;
-    yloc = (yraw-YPOS)/TILE_HEIGHT;
-    int[] out = {xloc, yloc};
-    return out;
-  } else return new int[] {0,0};
-}
+
+Button mouseOverButton = null;
 
 
 class Controller{
@@ -39,7 +24,14 @@ class Controller{
     view = g;
   }
   
-  boolean isOverButton(){
+  boolean mouseOverMap(){
+    /* Helper function: Returns true if the mouse position is over the Watershed map. false otherwise. */
+    int[] xRange = {XPOS, XPOS + SIZE_X*TILE_WIDTH};
+    int[] yRange = {YPOS, YPOS + SIZE_Y*TILE_HEIGHT};
+    return ((mouseX > xRange[0] && mouseX < xRange[1]) && (mouseY > yRange[0] && mouseY < yRange[1]));
+  }
+  
+  boolean mouseOverButton(){
     return view.factoryB.isOver() ||
            view.farmB.isOver() ||
            view.houseB.isOver() ||
@@ -53,8 +45,20 @@ class Controller{
      return mouseOverButton;
   }
   
+  int[] converter(int xraw, int yraw) {
+    /*Helper function: converts raw coordinates x and y in frame to tile locations   */
+    if (mouseOverMap()){
+      int xloc = 0;
+      int yloc = 0;
+      xloc = (xraw-XPOS)/TILE_WIDTH;
+      yloc = (yraw-YPOS)/TILE_HEIGHT;
+      int[] out = {xloc, yloc};
+      return out;
+    } else return new int[] {0,0};
+  }
+  
   void pressButton() {
-    if (isOverButton()) {
+    if (mouseOverButton()) {
       Button b = getOverButton();
       if (b != view.resetB && b != view.demolishB){
         if (pushed == b) {
@@ -95,7 +99,7 @@ class Controller{
     }
   }
   
-  void pressMapTile(){
+  void pressOnMap(){
     if (mouseOverMap()){     //When mouse clicked on tile
       mousePX = mouseX;
       mousePY = mouseY;
@@ -108,82 +112,95 @@ class Controller{
   }
   
   void pressOutOfMap(){
-    if (! mouseOverMap() && !isOverButton() && !view.factoryS.over && !view.farmS.over && !view.houseS.over && !view.forestS.over && !view.showPolT.over && !view.showDecayPolT.over && !view.showDistT.over && !view.showProfitT.over){
+    if (! mouseOverMap() && !mouseOverButton() && !view.factoryS.over && !view.farmS.over && !view.houseS.over && !view.forestS.over && !view.showPolT.over && !view.showDecayPolT.over && !view.showDistT.over && !view.showProfitT.over){
       if (pushed == view.resetB)
         message2 = "";
       pushed = null;
-      println("out of map nulled");
       message = "";
     }
   }
-  
+      
   void unselect(){
     if (! mouseOverMap() && !view.factoryS.over && !view.farmS.over && !view.houseS.over && !view.forestS.over && !view.showPolT.over && !view.showDecayPolT.over && !view.showDistT.over && !view.showProfitT.over)
       selected = null;    //Unselect when I click outside map
+  }
+  
+  void selectTile(){
+    if (control.mouseOverMap() && mouseButton == LEFT){ 
+      mouseRX = mouseX;
+      mouseRY = mouseY;
+      int[] posP = control.converter(mousePX, mousePY);
+      int[] posR = control.converter(mouseRX, mouseRY);
+      if (pushed == null) {
+      selected = WS.getTile(posR[0],posR[1]);     //Select tile if no button is pushed and clicked inside map
+      } 
+      if (pushed != null) 
+        selected = null;     //Remove selection when building things
+        println(selected);
+    }
+    if (mouseButton == RIGHT) {    //Right mouse button to cancel selection and button pushed
+      message = "";
+      pushed = null;
+      selected = null;
+    }
+  }
+  
+  void addStuff(){
+    if (control.mouseOverMap() && mouseButton == LEFT){    //Left mouse button to add
+      mouseRX = mouseX;
+      mouseRY = mouseY;
+      int[] posP = control.converter(mousePX, mousePY);
+      int[] posR = control.converter(mouseRX, mouseRY);
+      int count = 0;
+      String thing = "";
+      boolean s = false;
+      for (int x = min(posP[0], posR[0]); x <= max(posP[0], posR[0]); x++) {
+        for (int y = min(posP[1], posR[1]); y <= max(posP[1], posR[1]); y++) {
+          if (pushed == graphics.factoryB) {        //If factory button is in pressed state
+            s = WS.addFactory(x, y);      //count++ only when true
+            if (s) count ++;
+            thing = "Factories";
+          } 
+          else if (pushed == graphics.farmB) {        //If farm button is in pressed state
+            s = WS.addFarm(x, y);
+            if (s) count ++;
+            thing = "Farms";
+          }
+          else if (pushed == graphics.houseB) {        //If house button is in pressed state
+            s = WS.addHouse(x, y);
+            if (s) count ++;
+            thing = "Houses";
+          }
+          else if (pushed == graphics.forestB) {        //If forest button is in pressed state
+            s = WS.addForest(x, y);
+            if (s) count ++;
+            thing = "Forests";
+          }
+          else if(pushed == graphics.demolishB) {    //If demolish button is in pressed state
+            s = WS.removeLandUse(x,y);
+            if (s) count ++;
+          }
+        }
+      }
+      if (count > 1 || (count == 1 && s == false)) {  //Different message if multiple objects 
+        message2 = "Added " + Integer.toString(count) + " " + thing;    
+        if (pushed == graphics.demolishB) message2 = "Removed land use at " + Integer.toString(count) + " locations";
+      }    
+    }
   }
 }
   
 
 void mousePressed() {  
   control.pressButton();
-  control.pressMapTile();
+  control.pressOnMap();
   control.pressOutOfMap();
   control.unselect();
 }
 
 void mouseReleased() {
-  if (mouseOverMap() && mouseButton == LEFT){    //Left mouse button to add
-    mouseRX = mouseX;
-    mouseRY = mouseY;
-    int[] posP = converter(mousePX, mousePY);
-    int[] posR = converter(mouseRX, mouseRY);
-    selected = WS.getTile(posR[0], posR[1]);
-    int count = 0;
-    String thing = "";
-    boolean s = false;
-    for (int x = min(posP[0], posR[0]); x <= max(posP[0], posR[0]); x++) {
-      for (int y = min(posP[1], posR[1]); y <= max(posP[1], posR[1]); y++) {
-        if (pushed == graphics.factoryB) {        //If factory button is in pressed state
-          s = WS.addFactory(x, y);      //count++ only when true
-          if (s) count ++;
-          thing = "Factories";
-        } 
-        else if (pushed == graphics.farmB) {        //If farm button is in pressed state
-          s = WS.addFarm(x, y);
-          if (s) count ++;
-          thing = "Farms";
-        }
-        else if (pushed == graphics.houseB) {        //If house button is in pressed state
-          s = WS.addHouse(x, y);
-          if (s) count ++;
-          thing = "Houses";
-        }
-        else if (pushed == graphics.forestB) {        //If forest button is in pressed state
-          s = WS.addForest(x, y);
-          if (s) count ++;
-          thing = "Forests";
-        }
-        else if(pushed == graphics.demolishB) {    //If demolish button is in pressed state
-          s = WS.removeLandUse(x,y);
-          if (s) count ++;
-        }
-      }
-    }
-    if (pushed == null) {
-      selected = WS.getTile(posR[0],posR[1]);     //Select tile if no button is pushed and clicked inside map
-    } 
-    if (pushed != null) selected = null;     //Remove selection when building things
-    
-    if (count > 1 || (count == 1 && s == false)) {  //Different message if multiple objects 
-      message2 = "Added " + Integer.toString(count) + " " + thing;    
-      if (pushed == graphics.demolishB) message2 = "Removed land use at " + Integer.toString(count) + " locations";
-    }    
-  }
-  if (mouseButton == RIGHT) {    //Right mouse button to cancel selection and button pushed
-    message = "";
-    pushed = null;
-    selected = null;
-  }
+  control.selectTile();
+  control.addStuff();
 }
 
 void mouseClicked() {
