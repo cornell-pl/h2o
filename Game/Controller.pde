@@ -41,6 +41,15 @@ class Controller{
            view.resetB.isOver();
   }
   
+  boolean inAddMode(){
+    /* Returns true if an adder button is pushed (includes demolish). False otherwise */
+    return pushed == view.factoryB ||
+           pushed == view.farmB ||
+           pushed == view.houseB ||
+           pushed == view.forestB ||
+           pushed == view.demolishB;
+  }
+  
   Button getOverButton() {
     /* Returns Button mouse is over. */
      return mouseOverButton;
@@ -63,9 +72,8 @@ class Controller{
     if (control.mouseOverMap() && !mousePressed) {
       int[] pos = control.converter(mouseX, mouseY);
       view.highlightThese.add(new int[] {pos[0], pos[1]});
-      if (pushed != null && pushed != view.resetB){   //Change highlight color when an add button is pressed
+      if (inAddMode() && (!waterS.getTile(pos[0], pos[1]).isRiver())){   //Change highlight color when in add mode but not over River
         view.highlightColor = pushed.baseColor;
-        println("change color cond");
       }else view.highlightColor = DEFAULT_HIGHLIGHT;
     }
   }

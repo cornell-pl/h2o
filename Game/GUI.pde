@@ -107,16 +107,7 @@ class GUI {
   }
   
   
-  void highlight(color hc) {
-    /* Hightligts Tile at position <x, y> with color hc) */
-    for (int[] c : highlightThese) {
-      drawTile(c[0], c[1], hc, 100);
-      println(hc);
-    }
-    highlightThese = new ArrayList<int[]>();    //Clear list after highlighting all its Tiles
-  }
-  
-  
+
   //**** Draws elements of the game map  ****//  -----------------------------------------------
   void drawDividers(){ 
     noFill();
@@ -185,6 +176,15 @@ class GUI {
       text(text2, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 50);
     }
   }
+  
+  void highlight(color hc) {
+    /* Hightligts Tile at position <x, y> with color hc) */
+    for (int[] c : highlightThese)
+      drawTile(c[0], c[1], hc, 100);
+    highlightThese = new ArrayList<int[]>();    //Clear list after highlighting all its Tiles
+  }
+  
+  
   
   void highlightSingle() {
     /* Accents the Tile mouse is over, displays purchase information if in purchase mode */
