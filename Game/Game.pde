@@ -33,6 +33,7 @@ void setup() {
 
 void draw() {  
   background(165);
+  control.eventLoop();
   graphics.render();
 }
 

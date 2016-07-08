@@ -16,6 +16,8 @@ class GUI {
   final PFont BIGFONT = createFont("Calibri-Bold", 20);
   final PFont NUMERALFONT = createFont("Courier", 30);
   
+  ArrayList<int[]> highlightThese = new ArrayList<int[]>();
+  
   Watershed waterS;
   
   Button factoryB;
@@ -39,6 +41,7 @@ class GUI {
   GUI(int x, int y, Watershed WS) {
     
     waterS = WS;
+    
     
     factoryB = new Button(XPOSB, YPOSB, TILE_WIDTH, TILE_HEIGHT, FACTORY_BROWN, #73A29C, #EA7E2F, "Factory");
     farmB = new Button(XPOSB, YPOSB + 60, TILE_WIDTH, TILE_HEIGHT, FARM_YELLOW, #73A29C, #F0AD1D, "Farm");
@@ -65,8 +68,9 @@ class GUI {
     drawGameBoard();
     axisLabels();
     showSelectedTile();     //For unknown reasons, this MUST be called before the two highlight functions or they all break
-    highlightSingle();
-    highlightBulk();
+    highlight();
+    //highlightSingle();
+   // highlightBulk();
     
     showFeedback();
     showActualProfits();
@@ -179,7 +183,7 @@ class GUI {
       color hc;
       over = waterS.getTile(pos[0], pos[1]);
         if (!(over.isRiver())) {
-           float d = over.distToRiver();
+          float d = over.distToRiver();
           if (pushed == factoryB) {
             hc = FACTORY.getIcon();
             projectedProfit = FACTORY.calcActualProfit(d);
@@ -223,6 +227,14 @@ class GUI {
     fill(125);
     text(purchaseInfo, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 90);  
     text(pollutionInfo, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 110);
+  }
+  
+  void highlight() {
+    /* Hightligts Tile at position <x, y> with color hc) */
+    for (int[] c : highlightThese) {
+      println("highlighting ");
+      drawTile(c[0], c[1], hc, 100);
+    }
   }
   
   void highlightBulk() {
@@ -284,7 +296,7 @@ class GUI {
           projectedProfit += 0;
           projectedPollution += 0;
         }
-        drawTile(p[0], p[1], hc, 100);    //draws highlighted tile
+        //drawTile(p[0], p[1], hc, 100);    //draws highlighted tile
       }
       if (pushed != null && pushed != demolishB) {
         if (projectedProfit > 0) purchaseInfo = "Money: + $" + nfc(round(projectedProfit));
