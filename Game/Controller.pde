@@ -137,7 +137,7 @@ class Controller{
       if (view.highlightThese.size() == 1 && waterS.getTile(view.highlightThese.get(0)[0], view.highlightThese.get(0)[1]).isRiver()){  
         purchaseInfo = ""; 
         pollutionInfo = "";
-      }// Empty message when only one tile highlighted and the tile is River
+      }// Empty message when only one River Tile is highlighted
     }
   }
   

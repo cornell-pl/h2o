@@ -77,11 +77,9 @@ class GUI {
     drawDividers();
     drawGameBoard();
     axisLabels();
-    showSelectedTile();     //For unknown reasons, this MUST be called before the two highlight functions or they all break
     highlight(highlightColor);
-    showAddInfo();
-    //highlightSingle();
-   // highlightBulk();
+    showPrePurchaseInfo();
+    showInfoBox();
     
     showFeedback();
     showActualProfits();
@@ -156,15 +154,19 @@ class GUI {
     }
     textAlign(LEFT);
   }
-    
-  void showSelectedTile() {    
-    /* Accents the selected tile, displays tile information */
-    //Draws the box
+  
+  
+ void showInfoBox(){
+   /* Draws box and displays selected Tile info and prePurchaseInfo */
     stroke(255);
     fill(255);
     rect(XPOS+455, YPOS + SIZE_Y*TILE_HEIGHT + 10, 200, 115);
+    showPrePurchaseInfo();
+    showSelectedTile();
+}
     
-    //Displays info
+  void showSelectedTile() {    
+    /* Accents the selected tile, displays tile information */
     if (selected != null) {
       drawTile(selected.getX(), selected.getY(), 255, 130);
       noFill();
@@ -190,7 +192,7 @@ class GUI {
     highlightThese = new ArrayList<int[]>();    //Clear list after highlighting all its Tiles
   }
   
-  void showAddInfo(){
+  void showPrePurchaseInfo(){
     textFont(MESSAGEFONT);
     fill(125);
     text(purchaseInfo, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 90);  
