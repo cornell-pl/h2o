@@ -79,7 +79,7 @@ class Controller{
     }
   }
   
-  void preAddInfo(){
+  void calcAddInfo(){
     float projectedProfit = 0;
     float projectedPollution = 0;
     purchaseInfo = "";   //No button is pushed
