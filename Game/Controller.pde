@@ -23,6 +23,7 @@ class Controller{
   void eventLoop() {
     highlightSingleTile();
     highlightManyTiles();
+    preAddInfo();
   }
   
   boolean mouseOverMap(){
@@ -78,19 +79,62 @@ class Controller{
     }
   }
   
+  void preAddInfo(){
+    float projectedProfit = 0;
+    float projectedPollution = 0;
+    purchaseInfo = "";   //No button is pushed
+    pollutionInfo = "";
+    if (control.mouseOverMap() && inAddMode()) {
+      for (int[] c : view.highlightThese){
+        Tile t = waterS.getTile(c[0], c[1]);
+        float d = t.distToRiver();
+        if (! waterS.getTile(c[0], c[1]).isRiver()){
+          if  (pushed == view.factoryB) {    
+            projectedProfit += FACTORY.calcActualProfit(d);  
+            projectedPollution += FACTORY.calcDecayPollution(d);
+          } 
+          else if (pushed == view.farmB) {
+            projectedProfit += FARM.calcActualProfit(d);
+            projectedPollution += FARM.calcDecayPollution( d);
+          }
+          else if (pushed == view.houseB) {
+            projectedProfit += HOUSE.calcActualProfit(d);
+            projectedPollution += HOUSE.calcDecayPollution(d);
+          }
+          else if (pushed == view.forestB) {
+            projectedProfit += FOREST.calcActualProfit(d);
+            projectedPollution += FOREST.calcDecayPollution(d);
+          }   //Calculations for each button
+        }else {    //Don't sum when over River
+          projectedProfit += 0;
+          projectedPollution += 0;
+        }
+      }
+      if (pushed != view.demolishB) {
+        if (projectedProfit > 0) purchaseInfo = "Money: + $" + nfc(round(projectedProfit));
+        else purchaseInfo = "Money: - $" + nfc(abs(projectedProfit),2);
+        if (projectedPollution > 0)pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
+        else pollutionInfo = "Pollution: - " + nfc(abs(projectedPollution),2);
+      }
+    }
+  }
+  
+  
   void highlightManyTiles() {
     /* Tells GUI what Tiles to highlight when mouse is dragged */
-    if (mousePressed && mouseOverMap() && pushed == null) {         //When no button is pushed
-      view.highlightColor = DEFAULT_HIGHLIGHT;
+    if (mousePressed && mouseOverMap()) {         //When no button is pushed
       int[] posP = control.converter(mousePX, mousePY);   //tile coordinate when mouse is pressed
       int[] posC = control.converter(mouseX, mouseY);     //current tile coordinate
       if ((posP[0] >= 0 && posP[0] <SIZE_X) && (posP[1] >= 0 && posP[1] < SIZE_Y)) {
         for (int x = min(posP[0], posC[0]); x <= max(posP[0], posC[0]); x++) {
           for (int y = min(posP[1], posC[1]); y <= max(posP[1], posC[1]); y++) {
-           view.highlightThese.add(new int[] {x,y});
+            view.highlightThese.add(new int[] {x,y});
           }
         }// for all tiles to highlight
-      }  // if tile range is valid
+      }// if tile range is valid
+      if (inAddMode()){   //Change highlight color when in add mode
+        view.highlightColor = pushed.baseColor;
+      }else view.highlightColor = DEFAULT_HIGHLIGHT;
     }
   } 
   

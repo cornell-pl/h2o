@@ -11,6 +11,11 @@ final color DEFAULT_HIGHLIGHT = #B6FAB1;   // Default color to highllight Tiles 
 String message = "";
 String message2 = "";
 
+String purchaseInfo = "";
+String pollutionInfo = "";
+float projectedProfit = 0;
+float projectedPollution = 0;
+
 
 
 class GUI {
@@ -74,6 +79,7 @@ class GUI {
     axisLabels();
     showSelectedTile();     //For unknown reasons, this MUST be called before the two highlight functions or they all break
     highlight(highlightColor);
+    showAddInfo();
     //highlightSingle();
    // highlightBulk();
     
@@ -178,148 +184,20 @@ class GUI {
   }
   
   void highlight(color hc) {
-    /* Hightligts Tile at position <x, y> with color hc) */
+    /* Hightlights Tile at position <x, y> with color hc) */
     for (int[] c : highlightThese)
       drawTile(c[0], c[1], hc, 100);
     highlightThese = new ArrayList<int[]>();    //Clear list after highlighting all its Tiles
   }
   
-  
-  
-  void highlightSingle() {
-    /* Accents the Tile mouse is over, displays purchase information if in purchase mode */
-    Tile over = null;   //The Tile mouse is over
-    String purchaseInfo = "";
-    String pollutionInfo = "";
-    float projectedProfit = 0;
-    float projectedPollution = 0;
-    if (control.mouseOverMap() && !mousePressed) {   //Highlight tile mouse is over
-      int[] pos = control.converter(mouseX, mouseY);
-      color hc;
-      over = waterS.getTile(pos[0], pos[1]);
-        if (!(over.isRiver())) {
-          float d = over.distToRiver();
-          if (pushed == factoryB) {
-            hc = FACTORY.getIcon();
-            projectedProfit = FACTORY.calcActualProfit(d);
-            projectedPollution = FACTORY.calcDecayPollution(d);        
-            purchaseInfo = "Money: + $" + nfc(round(projectedProfit));
-            pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
-          }
-          else if (pushed == farmB) {
-            hc = FARM.getIcon();
-            projectedProfit = FARM.calcActualProfit(d);
-            projectedPollution = FARM.calcDecayPollution(d);
-            purchaseInfo = "Money: + $" + nfc(round(projectedProfit));
-            pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
-          }
-          else if (pushed == houseB) {
-            hc = HOUSE.getIcon();
-            projectedProfit = HOUSE.calcActualProfit(d);
-            projectedPollution = HOUSE.calcDecayPollution(d);
-            purchaseInfo = "Money: + $" + nfc(round(projectedProfit));
-            pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
-          }
-          else if (pushed == forestB) {
-            hc = FOREST.getIcon();
-            projectedProfit = FOREST.calcActualProfit(d);
-            projectedPollution = FOREST.calcDecayPollution(d);
-            purchaseInfo = "Money: - $" + nfc(round(projectedProfit));
-            pollutionInfo = "Pollution: - " + nfc(abs(projectedPollution),2);
-          } else {                //Button not pressed
-            hc = #B6FAB1;
-            purchaseInfo = "";   
-            pollutionInfo = "";
-          }
-        }else {    //Over the river
-          hc = #B6FAB1;
-          purchaseInfo = ""; 
-          pollutionInfo = "";
-        }
-    drawTile(pos[0], pos[1], hc , 100);
-    }
+  void showAddInfo(){
     textFont(MESSAGEFONT);
     fill(125);
     text(purchaseInfo, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 90);  
     text(pollutionInfo, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 110);
   }
   
-
-  void highlightBulk() {
-    /* Highlights tiles during click and drag, and shows bulk purchase info */
-    if (mousePressed && control.mouseOverMap()) {
-      int[] posP = control.converter(mousePX, mousePY);   //tile coordinate when mouse is pressed
-      int[] posC = control.converter(mouseX, mouseY);     //current tile coordinate
-      ArrayList<int[]> highlighted = new ArrayList<int[]>();
-      if ((posP[0] >= 0 && posP[0] <SIZE_X) && (posP[1] >= 0 && posP[1] < SIZE_Y)) {
-        for (int x = min(posP[0], posC[0]); x <= max(posP[0], posC[0]); x++) {
-          for (int y = min(posP[1], posC[1]); y <= max(posP[1], posC[1]); y++) {
-            highlighted.add(new int[] {x, y});
-          }
-        }
-      }
-      String purchaseInfo = "";
-      String pollutionInfo = "";
-      float projectedProfit = 0;
-      float projectedPollution = 0;
-      color hc;       //Highlight color
-      projectedProfit = 0;     //calculate purchase info
-      projectedPollution = 0;
-      for (int[] p : highlighted) {
-        Tile t = waterS.getTile(p[0], p[1]);
-        float d = t.distToRiver();
-        if (! (t.getLandUse() instanceof River)) {
-          if  (pushed == factoryB) {    
-            hc = FACTORY_BROWN;      //highlight color
-            projectedProfit += FACTORY.calcActualProfit(d);  
-            projectedPollution += FACTORY.calcDecayPollution(d);
-          } 
-          else if (pushed == farmB) {
-            hc = FARM_YELLOW;
-            projectedProfit += FARM.calcActualProfit(d);
-            projectedPollution += FARM.calcDecayPollution( d);
-          }
-          else if (pushed == houseB) {
-            hc = HOUSE_GRAY;
-            projectedProfit += HOUSE.calcActualProfit(d);
-            projectedPollution += HOUSE.calcDecayPollution(d);
-          }
-          else if (pushed == forestB) {
-            hc = #1EC610;
-            projectedProfit += FOREST.calcActualProfit(d);
-            projectedPollution += FOREST.calcDecayPollution(d);
-          }
-          else if (pushed == demolishB){
-            hc = DEMOLISH_BEIGE;
-            purchaseInfo = "";   
-            pollutionInfo = "";
-          }
-          else {
-            hc = #B6FAB1;
-            purchaseInfo = "";   //No button is pushed
-            pollutionInfo = "";
-          }
-        }else {
-          hc = #B6FAB1;
-          projectedProfit += 0;
-          projectedPollution += 0;
-        }
-        //drawTile(p[0], p[1], hc, 100);    //draws highlighted tile
-      }
-      if (pushed != null && pushed != demolishB) {
-        if (projectedProfit > 0) purchaseInfo = "Money: + $" + nfc(round(projectedProfit));
-        else purchaseInfo = "Money: - $" + nfc(abs(projectedProfit),2);
-        if (projectedPollution > 0)pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
-        else pollutionInfo = "Pollution: - " + nfc(abs(projectedPollution),2);
-        textFont(MESSAGEFONT);
-        fill(125);
-        text(purchaseInfo, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 90);  
-        text(pollutionInfo, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 110); 
-      }
-    }
-  }
-  
-   void showFeedback() {
+  void showFeedback() {
      /*Draws the feedback box and shows info */
     stroke(255);
     fill(255);
