@@ -16,7 +16,7 @@ class GUI {
   final PFont BIGFONT = createFont("Calibri-Bold", 20);
   final PFont NUMERALFONT = createFont("Courier", 30);
   
-  ArrayList<int[]> highlightThese = new ArrayList<int[]>();
+  ArrayList<int[]> highlightThese = new ArrayList<int[]>();    // A list containing all the Tiles that are to be highlighted
   
   Watershed waterS;
   
@@ -233,8 +233,9 @@ class GUI {
     /* Hightligts Tile at position <x, y> with color hc) */
     for (int[] c : highlightThese) {
       println("highlighting ");
-      drawTile(c[0], c[1], hc, 100);
+      drawTile(c[0], c[1], #B6FAB1, 100);
     }
+    highlightThese = new ArrayList<int[]>();    //Clear list after highlighting all its Tiles
   }
   
   void highlightBulk() {

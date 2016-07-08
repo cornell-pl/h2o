@@ -24,6 +24,7 @@ class Controller{
   }
   
   void eventLoop() {
+    highlightSingleTile();
     highlightManyTiles();
   }
   
@@ -60,86 +61,28 @@ class Controller{
     } else return new int[] {0,0};
   }
   
+  void highlightSingleTile() {
+    /* Tells GUI which Tile to highlight when mouse is over map */
+    if (control.mouseOverMap() && !mousePressed) {   //Highlight tile mouse is over
+      int[] pos = control.converter(mouseX, mouseY);
+      view.highlightThese.add(new int[] {pos[0], pos[1]});
+    }
+  }
+  
   void highlightManyTiles() {
+    /* Tells GUI what Tiles to highlight when mouse is dragged */
     if (mousePressed && mouseOverMap() && pushed == null) {
       int[] posP = control.converter(mousePX, mousePY);   //tile coordinate when mouse is pressed
       int[] posC = control.converter(mouseX, mouseY);     //current tile coordinate
-      //println(mousePX, mousePY);
-      //println(mouseRX, mouseRY);
       if ((posP[0] >= 0 && posP[0] <SIZE_X) && (posP[1] >= 0 && posP[1] < SIZE_Y)) {
         for (int x = min(posP[0], posC[0]); x <= max(posP[0], posC[0]); x++) {
           for (int y = min(posP[1], posC[1]); y <= max(posP[1], posC[1]); y++) {
-           // println(x,y);
+           view.highlightThese.add(new int[] {x,y});
           }
         }// for all tiles to highlight
       }  // if tile range is valid
     }
-  }
-  
-  
-  
-  
-  //void highlightSingle() {
-  //  /* Accents the Tile mouse is over, displays purchase information if in purchase mode */
-  //  Tile over = null;   //The Tile mouse is over
-  //  String purchaseInfo = "";
-  //  String pollutionInfo = "";
-  //  float projectedProfit = 0;
-  //  float projectedPollution = 0;
-  //  if (control.mouseOverMap() && !mousePressed) {   //Highlight tile mouse is over
-  //    int[] pos = control.converter(mouseX, mouseY);
-  //    color hc;
-  //    over = waterS.getTile(pos[0], pos[1]);
-  //      if (!(over.isRiver())) {
-  //         float d = over.distToRiver();
-  //        if (pushed == factoryB) {
-  //          hc = FACTORY.getIcon();
-  //          projectedProfit = FACTORY.calcActualProfit(d);
-  //          projectedPollution = FACTORY.calcDecayPollution(d);        
-  //          purchaseInfo = "Money: + $" + nfc(round(projectedProfit));
-  //          pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
-  //        }
-  //        else if (pushed == farmB) {
-  //          hc = FARM.getIcon();
-  //          projectedProfit = FARM.calcActualProfit(d);
-  //          projectedPollution = FARM.calcDecayPollution(d);
-  //          purchaseInfo = "Money: + $" + nfc(round(projectedProfit));
-  //          pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
-  //        }
-  //        else if (pushed == houseB) {
-  //          hc = HOUSE.getIcon();
-  //          projectedProfit = HOUSE.calcActualProfit(d);
-  //          projectedPollution = HOUSE.calcDecayPollution(d);
-  //          purchaseInfo = "Money: + $" + nfc(round(projectedProfit));
-  //          pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
-  //        }
-  //        else if (pushed == forestB) {
-  //          hc = FOREST.getIcon();
-  //          projectedProfit = FOREST.calcActualProfit(d);
-  //          projectedPollution = FOREST.calcDecayPollution(d);
-  //          purchaseInfo = "Money: - $" + nfc(round(projectedProfit));
-  //          pollutionInfo = "Pollution: - " + nfc(abs(projectedPollution),2);
-  //        } else {                //Button not pressed
-  //          hc = #B6FAB1;
-  //          purchaseInfo = "";   
-  //          pollutionInfo = "";
-  //        }
-  //      }else {    //Over the river
-  //        hc = #B6FAB1;
-  //        purchaseInfo = ""; 
-  //        pollutionInfo = "";
-  //      }
-  //  drawTile(pos[0], pos[1], hc , 100);
-  //  }
-  //  textFont(MESSAGEFONT);
-  //  fill(125);
-  //  text(purchaseInfo, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 90);  
-  //  text(pollutionInfo, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 110);
-  //}
-  
-  
-  
-  
+  } 
   
   
   void pressButton() {
