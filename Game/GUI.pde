@@ -155,6 +155,13 @@ class GUI {
     textAlign(LEFT);
   }
   
+  void highlight(color hc) {
+    /* Hightlights Tile at position <x, y> with color hc) */
+    for (int[] c : highlightThese)
+      drawTile(c[0], c[1], hc, 100);
+    highlightThese = new ArrayList<int[]>();    //Clear list after highlighting all its Tiles
+  }
+  
   
  void showInfoBox(){
    /* Draws box and displays selected Tile info and prePurchaseInfo */
@@ -163,7 +170,7 @@ class GUI {
     rect(XPOS+455, YPOS + SIZE_Y*TILE_HEIGHT + 10, 200, 115);
     showPrePurchaseInfo();
     showSelectedTile();
-}
+  }
     
   void showSelectedTile() {    
     /* Accents the selected tile, displays tile information */
@@ -185,12 +192,7 @@ class GUI {
     }
   }
   
-  void highlight(color hc) {
-    /* Hightlights Tile at position <x, y> with color hc) */
-    for (int[] c : highlightThese)
-      drawTile(c[0], c[1], hc, 100);
-    highlightThese = new ArrayList<int[]>();    //Clear list after highlighting all its Tiles
-  }
+
   
   void showPrePurchaseInfo(){
     textFont(MESSAGEFONT);
