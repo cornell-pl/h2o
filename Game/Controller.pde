@@ -23,7 +23,7 @@ class Controller{
   void eventLoop() {
     highlightSingleTile();
     highlightManyTiles();
-    preAddInfo();
+    calcAddInfo();
   }
   
   boolean mouseOverMap(){
@@ -79,6 +79,24 @@ class Controller{
     }
   }
   
+  void highlightManyTiles() {
+    /* Tells GUI what Tiles to highlight when mouse is dragged */
+    if (mousePressed && mouseOverMap()) {         //When no button is pushed
+      int[] posP = control.converter(mousePX, mousePY);   //tile coordinate when mouse is pressed
+      int[] posC = control.converter(mouseX, mouseY);     //current tile coordinate
+      if ((posP[0] >= 0 && posP[0] <SIZE_X) && (posP[1] >= 0 && posP[1] < SIZE_Y)) {
+        for (int x = min(posP[0], posC[0]); x <= max(posP[0], posC[0]); x++) {
+          for (int y = min(posP[1], posC[1]); y <= max(posP[1], posC[1]); y++) {
+            view.highlightThese.add(new int[] {x,y});
+          }
+        }// for all tiles to highlight
+      }// if tile range is valid
+      if (inAddMode()){   //Change highlight color when in add mode
+        view.highlightColor = pushed.baseColor;
+      }else view.highlightColor = DEFAULT_HIGHLIGHT;
+    }
+  } 
+  
   void calcAddInfo(){
     float projectedProfit = 0;
     float projectedPollution = 0;
@@ -88,7 +106,7 @@ class Controller{
       for (int[] c : view.highlightThese){
         Tile t = waterS.getTile(c[0], c[1]);
         float d = t.distToRiver();
-        if (! waterS.getTile(c[0], c[1]).isRiver()){
+        if (! t.isRiver()){
           if  (pushed == view.factoryB) {    
             projectedProfit += FACTORY.calcActualProfit(d);  
             projectedPollution += FACTORY.calcDecayPollution(d);
@@ -116,27 +134,12 @@ class Controller{
         if (projectedPollution > 0)pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
         else pollutionInfo = "Pollution: - " + nfc(abs(projectedPollution),2);
       }
+      if (view.highlightThese.size() == 1 && waterS.getTile(view.highlightThese.get(0)[0], view.highlightThese.get(0)[1]).isRiver()){  
+        purchaseInfo = ""; 
+        pollutionInfo = "";
+      }// Empty message when only one tile highlighted and the tile is River
     }
   }
-  
-  
-  void highlightManyTiles() {
-    /* Tells GUI what Tiles to highlight when mouse is dragged */
-    if (mousePressed && mouseOverMap()) {         //When no button is pushed
-      int[] posP = control.converter(mousePX, mousePY);   //tile coordinate when mouse is pressed
-      int[] posC = control.converter(mouseX, mouseY);     //current tile coordinate
-      if ((posP[0] >= 0 && posP[0] <SIZE_X) && (posP[1] >= 0 && posP[1] < SIZE_Y)) {
-        for (int x = min(posP[0], posC[0]); x <= max(posP[0], posC[0]); x++) {
-          for (int y = min(posP[1], posC[1]); y <= max(posP[1], posC[1]); y++) {
-            view.highlightThese.add(new int[] {x,y});
-          }
-        }// for all tiles to highlight
-      }// if tile range is valid
-      if (inAddMode()){   //Change highlight color when in add mode
-        view.highlightColor = pushed.baseColor;
-      }else view.highlightColor = DEFAULT_HIGHLIGHT;
-    }
-  } 
   
   
   void pressButton() {
