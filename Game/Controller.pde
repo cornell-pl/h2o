@@ -9,10 +9,7 @@ int mousePY;
 int mouseRX;   //Mouse release positions
 int mouseRY;
 
-
-
 Button mouseOverButton = null;
-
 
 class Controller{
   Watershed waterS;
@@ -63,15 +60,20 @@ class Controller{
   
   void highlightSingleTile() {
     /* Tells GUI which Tile to highlight when mouse is over map */
-    if (control.mouseOverMap() && !mousePressed) {   //Highlight tile mouse is over
+    if (control.mouseOverMap() && !mousePressed) {
       int[] pos = control.converter(mouseX, mouseY);
       view.highlightThese.add(new int[] {pos[0], pos[1]});
+      if (pushed != null && pushed != view.resetB){   //Change highlight color when an add button is pressed
+        view.highlightColor = pushed.baseColor;
+        println("change color cond");
+      }else view.highlightColor = DEFAULT_HIGHLIGHT;
     }
   }
   
   void highlightManyTiles() {
     /* Tells GUI what Tiles to highlight when mouse is dragged */
-    if (mousePressed && mouseOverMap() && pushed == null) {
+    if (mousePressed && mouseOverMap() && pushed == null) {         //When no button is pushed
+      view.highlightColor = DEFAULT_HIGHLIGHT;
       int[] posP = control.converter(mousePX, mousePY);   //tile coordinate when mouse is pressed
       int[] posC = control.converter(mouseX, mouseY);     //current tile coordinate
       if ((posP[0] >= 0 && posP[0] <SIZE_X) && (posP[1] >= 0 && posP[1] < SIZE_Y)) {

@@ -4,6 +4,9 @@ final int TILE_WIDTH = 26;   //width of a tile in pixels
 final int TILE_HEIGHT = 26;    //height of a tile in pixels
 final int XPOSB = XPOS + SIZE_X*TILE_WIDTH + 40;    //Drawing dimensions. XPOS and ypos are the coordinates of the top most button. 
 final int YPOSB = 60;    //All buttons scale with respect to these
+final color DEFAULT_HIGHLIGHT = #B6FAB1;   // Default color to highllight Tiles with
+
+
 
 String message = "";
 String message2 = "";
@@ -17,6 +20,8 @@ class GUI {
   final PFont NUMERALFONT = createFont("Courier", 30);
   
   ArrayList<int[]> highlightThese = new ArrayList<int[]>();    // A list containing all the Tiles that are to be highlighted
+  color highlightColor = DEFAULT_HIGHLIGHT;    //Color used to highlight tiles in highlightThese
+  
   
   Watershed waterS;
   
@@ -68,7 +73,7 @@ class GUI {
     drawGameBoard();
     axisLabels();
     showSelectedTile();     //For unknown reasons, this MUST be called before the two highlight functions or they all break
-    highlight();
+    highlight(highlightColor);
     //highlightSingle();
    // highlightBulk();
     
@@ -99,6 +104,16 @@ class GUI {
       houseS.display();
       forestS.display();
     }
+  }
+  
+  
+  void highlight(color hc) {
+    /* Hightligts Tile at position <x, y> with color hc) */
+    for (int[] c : highlightThese) {
+      drawTile(c[0], c[1], hc, 100);
+      println(hc);
+    }
+    highlightThese = new ArrayList<int[]>();    //Clear list after highlighting all its Tiles
   }
   
   
@@ -229,15 +244,7 @@ class GUI {
     text(pollutionInfo, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 110);
   }
   
-  void highlight() {
-    /* Hightligts Tile at position <x, y> with color hc) */
-    for (int[] c : highlightThese) {
-      println("highlighting ");
-      drawTile(c[0], c[1], #B6FAB1, 100);
-    }
-    highlightThese = new ArrayList<int[]>();    //Clear list after highlighting all its Tiles
-  }
-  
+
   void highlightBulk() {
     /* Highlights tiles during click and drag, and shows bulk purchase info */
     if (mousePressed && control.mouseOverMap()) {
