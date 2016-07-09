@@ -27,6 +27,7 @@ class GUI {
   final PFont NUMERALFONT = createFont("Courier", 30);
   
   final GameBoard GAME_BOARD = new GameBoard();
+  final InfoBox INFO_BOX = new InfoBox();
   
   Watershed waterS;
   
@@ -73,10 +74,9 @@ class GUI {
   void render() {
     /* Draws all the graphics elements of each frame */   
     GAME_BOARD.display();
+    INFO_BOX.display();
     
     drawDividers();
-    showPrePurchaseInfo();
-    showInfoBox();
     
     showFeedback();
     showActualProfits();
@@ -118,9 +118,10 @@ class GUI {
       line(XPOSB-20, YPOSB+TILE_HEIGHT+5+270, XPOSB-20+392, YPOSB+TILE_HEIGHT+5+270);
   }
 
+
+
   class GameBoard {
     ArrayList<int[]>  highlightThese = new ArrayList<int[]>();    // A list containing all the Tiles that are to be highlighted, each element is of format {posX, posY, color}
-
     void GameBoard() {
     }
     
@@ -199,38 +200,54 @@ class GUI {
     }
   }
   
- void showInfoBox(){
-   /* Draws box and displays selected Tile info and prePurchaseInfo */
-    stroke(255);
-    fill(255);
-    rect(XPOS+455, YPOS + SIZE_Y*TILE_HEIGHT + 10, 200, 115);
-    showPrePurchaseInfo();
-    showSelectedTile();
-  }
+  
+  
+  
+  
+  
+  
+  class InfoBox{
+    /* Draws box and displays selected Tile info and prePurchaseInfo */
+    void InfoBox(){
+    }
+      
+    void display(){
+     /* Draws box and displays selected Tile info and prePurchaseInfo */
+      stroke(255);
+      fill(255);
+      rect(XPOS+455, YPOS + SIZE_Y*TILE_HEIGHT + 10, 200, 115);
+      showPrePurchaseInfo();
+      showTileInfo();
+    }
     
-  void showSelectedTile() {    
+    void showTileInfo() {    
     /* Accents the selected tile, displays tile information */
-    if (selected != null) {
-      fill(0);  //Color of text 
+      if (selected != null) {
+        fill(0);  //Color of text 
+        textFont(MESSAGEFONT);
+        String text1 = selected.toString() + 
+                      "     Type: " + selected.getLandUse().toString();
+        text(text1, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 30);   
+        String text2 = "Money: $" + round(selected.getActualProfit()) + 
+                        "\ndecayPollution: " + nfc(selected.getDecayPollution(),2) + 
+                        "\nDistToRiver: " + nfc(selected.distToRiver(),2);
+        text(text2, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 50);
+      }
+    }
+
+    void showPrePurchaseInfo(){
       textFont(MESSAGEFONT);
-      String text1 = selected.toString() + 
-                    "     Type: " + selected.getLandUse().toString();
-      text(text1, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 30);   
-      String text2 = "Money: $" + round(selected.getActualProfit()) + 
-                      "\ndecayPollution: " + nfc(selected.getDecayPollution(),2) + 
-                      "\nDistToRiver: " + nfc(selected.distToRiver(),2);
-      text(text2, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 50);
+      fill(125);
+      text(purchaseInfo, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 90);  
+      text(pollutionInfo, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 110);
     }
   }
   
-
   
-  void showPrePurchaseInfo(){
-    textFont(MESSAGEFONT);
-    fill(125);
-    text(purchaseInfo, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 90);  
-    text(pollutionInfo, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 110);
-  }
+  
+  
+  
+  
   
   void showFeedback() {
      /*Draws the feedback box and shows info */
