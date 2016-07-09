@@ -128,6 +128,7 @@ class GUI {
       drawGameBoard();
       drawAxisLabels();
       highlight();
+      showSelectedTile();
     }
       
     void drawGameBoard(){
@@ -161,6 +162,17 @@ class GUI {
         drawTile(e[0], e[1], e[2], 100);
       }
       highlightThese = new ArrayList<int[]>();     //Clear list after highlighting all its Tiles
+    }
+    
+    void showSelectedTile() {    
+    /* Accents the selected tile, displays tile information */
+      if (selected != null){
+        drawTile(selected.getX(), selected.getY(), 255, 130);
+        noFill();
+        strokeWeight(1.5);
+        stroke(245);
+        rect(selected.getX()*TILE_WIDTH + XPOS, selected.getY()*TILE_HEIGHT + YPOS, TILE_WIDTH, TILE_HEIGHT);
+      }
     }
     
     void drawTile(int x, int y, color c, int t) {
@@ -199,11 +211,6 @@ class GUI {
   void showSelectedTile() {    
     /* Accents the selected tile, displays tile information */
     if (selected != null) {
-      drawTile(selected.getX(), selected.getY(), 255, 130);
-      noFill();
-      strokeWeight(1.5);
-      stroke(245);
-      rect(selected.getX()*TILE_WIDTH + XPOS, selected.getY()*TILE_HEIGHT + YPOS, TILE_WIDTH, TILE_HEIGHT);
       fill(0);  //Color of text 
       textFont(MESSAGEFONT);
       String text1 = selected.toString() + 

@@ -102,10 +102,11 @@ class Controller{
   void calcAddInfo(){
     float projectedProfit = 0;
     float projectedPollution = 0;
+    int[][] tilesHighlighted = view.GAME_BOARD.getHighlightedTiles();
     purchaseInfo = "";   //No button is pushed
     pollutionInfo = "";
     if (control.mouseOverMap() && inAddMode()) {
-      for (int[] c : view.highlightThese){
+      for (int[] c : tilesHighlighted){
         Tile t = waterS.getTile(c[0], c[1]);
         float d = t.distToRiver();
         if (! t.isRiver()){
@@ -136,7 +137,7 @@ class Controller{
         if (projectedPollution > 0)pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
         else pollutionInfo = "Pollution: - " + nfc(abs(projectedPollution),2);
       }
-      if (view.highlightThese.size() == 1 && waterS.getTile(view.highlightThese.get(0)[0], view.highlightThese.get(0)[1]).isRiver()){  
+      if (tilesHighlighted.length == 1 && waterS.getTile(tilesHighlighted[0][0], tilesHighlighted[0][1]).isRiver()){  
         purchaseInfo = ""; 
         pollutionInfo = "";
       }// Empty message when only one River Tile is highlighted
