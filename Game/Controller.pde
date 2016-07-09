@@ -72,10 +72,11 @@ class Controller{
     /* Tells GUI which Tile to highlight when mouse is over map */
     if (control.mouseOverMap() && !mousePressed) {
       int[] pos = control.converter(mouseX, mouseY);
-      view.highlightThese.add(new int[] {pos[0], pos[1]});
+      color highlightColor;
       if (inAddMode() && (!waterS.getTile(pos[0], pos[1]).isRiver())){   //Change highlight color when in add mode but not over River
-        view.highlightColor = pushed.baseColor;
-      }else view.highlightColor = DEFAULT_HIGHLIGHT;
+        highlightColor = pushed.baseColor;
+      }else highlightColor = DEFAULT_HIGHLIGHT;
+      view.GAME_BOARD.highlightTile(pos[0], pos[1], highlightColor);
     }
   }
   
@@ -84,16 +85,17 @@ class Controller{
     if (mousePressed && mouseOverMap()) {         //When no button is pushed
       int[] posP = control.converter(mousePX, mousePY);   //tile coordinate when mouse is pressed
       int[] posC = control.converter(mouseX, mouseY);     //current tile coordinate
+      color highlightColor;
       if ((posP[0] >= 0 && posP[0] <SIZE_X) && (posP[1] >= 0 && posP[1] < SIZE_Y)) {
         for (int x = min(posP[0], posC[0]); x <= max(posP[0], posC[0]); x++) {
           for (int y = min(posP[1], posC[1]); y <= max(posP[1], posC[1]); y++) {
-            view.highlightThese.add(new int[] {x,y});
+            if (inAddMode() && (!waterS.getTile(x, y).isRiver())){   //Change highlight color when in add mode but not over River
+              highlightColor = pushed.baseColor;
+            }else highlightColor = DEFAULT_HIGHLIGHT;
+            view.GAME_BOARD.highlightTile(x, y, highlightColor);
           }
         }// for all tiles to highlight
       }// if tile range is valid
-      if (inAddMode()){   //Change highlight color when in add mode
-        view.highlightColor = pushed.baseColor;
-      }else view.highlightColor = DEFAULT_HIGHLIGHT;
     }
   } 
   

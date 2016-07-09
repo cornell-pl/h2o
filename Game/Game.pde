@@ -25,7 +25,7 @@ void setup() {
   frameRate(30);
   size(1250, 950);
   WS = new Watershed(SIZE_X, SIZE_Y);   //Creates watershed of size 20*20
-  graphics = new GUI(SIZE_X, SIZE_Y, WS);
+  graphics = new GUI(WS);
   control = new Controller(WS, graphics);
   Optimizer op = new Optimizer();
   //op.optimize(WS);
@@ -94,9 +94,6 @@ class Watershed{
     for (int[] c: HOUSE_COORDS) 
       getTile(c[0], c[1]).changeLandUse(HOUSE);
   }
-  
-  
-  
 
   Tile[] getAllTiles(){
     /* Returns an array of all the tiles on the game map (hides gameMap internal structure) */

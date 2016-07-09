@@ -1,3 +1,5 @@
+import java.util.Map;
+
 final int XPOS = 40;   //XPOS and ypos determines the position of the top left corner of the map, in pixels
 final int YPOS = 30;
 final int TILE_WIDTH = 26;   //width of a tile in pixels
@@ -24,9 +26,7 @@ class GUI {
   final PFont BIGFONT = createFont("Calibri-Bold", 20);
   final PFont NUMERALFONT = createFont("Courier", 30);
   
-  ArrayList<int[]> highlightThese = new ArrayList<int[]>();    // A list containing all the Tiles that are to be highlighted
-  color highlightColor = DEFAULT_HIGHLIGHT;    //Color used to highlight tiles in highlightThese
-  
+  final GameBoard GAME_BOARD = new GameBoard();
   
   Watershed waterS;
   
@@ -48,11 +48,9 @@ class GUI {
   Slider houseS;
   Slider forestS;
   
-  GUI(int x, int y, Watershed WS) {
+  GUI(Watershed WS) {
     
     waterS = WS;
-    
-    
     factoryB = new Button(XPOSB, YPOSB, TILE_WIDTH, TILE_HEIGHT, FACTORY_BROWN, #73A29C, #EA7E2F, "Factory");
     farmB = new Button(XPOSB, YPOSB + 60, TILE_WIDTH, TILE_HEIGHT, FARM_YELLOW, #73A29C, #F0AD1D, "Farm");
     houseB = new Button(XPOSB, YPOSB + 120, TILE_WIDTH, TILE_HEIGHT, HOUSE_GRAY, #73A29C, #90B3B4, "House");
@@ -74,10 +72,9 @@ class GUI {
   
   void render() {
     /* Draws all the graphics elements of each frame */   
+    GAME_BOARD.display();
+    
     drawDividers();
-    drawGameBoard();
-    axisLabels();
-    highlight(highlightColor);
     showPrePurchaseInfo();
     showInfoBox();
     
@@ -112,56 +109,83 @@ class GUI {
   
   
 
-  //**** Draws elements of the game map  ****//  -----------------------------------------------
+  //**** Draws elements of the game map  ****//  -----------------------------------------------  
   void drawDividers(){ 
-    noFill();
-    stroke(204);
-    strokeWeight(1);
-    rect(XPOSB-20, YPOS, 392, TILE_HEIGHT*SIZE_Y);
-    line(XPOSB-20, YPOSB+TILE_HEIGHT+5+270, XPOSB-20+392, YPOSB+TILE_HEIGHT+5+270);
+      noFill();
+      stroke(204);
+      strokeWeight(1);
+      rect(XPOSB-20, YPOS, 392, TILE_HEIGHT*SIZE_Y);
+      line(XPOSB-20, YPOSB+TILE_HEIGHT+5+270, XPOSB-20+392, YPOSB+TILE_HEIGHT+5+270);
   }
+
+  class GameBoard {
+    ArrayList<int[]>  highlightThese = new ArrayList<int[]>();    // A list containing all the Tiles that are to be highlighted, each element is of format {posX, posY, color}
+
+    void GameBoard() {
+    }
     
-  void drawTile(int x, int y, color c, int t) {
-    /* Draws a tile at Location <x, y> on game map, fill color c, transparency t */
-    stroke(240);
-    strokeWeight(0.5);
-    fill(c, t);
-    rect(x*TILE_WIDTH + XPOS, y*TILE_HEIGHT + YPOS, TILE_WIDTH, TILE_HEIGHT);
-    fill(255);    //resets to white.
-  } 
-  
-  void drawGameBoard(){
-    /* Draws the game board */
-    for (Tile t: waterS.getAllTiles()) 
-      drawTile(t.getX(), t.getY(), t.getLandUse().getIcon(), 255);
-  }
-  
-  void axisLabels() {
-    /* Draws axis labels. */
-    textFont(AXISFONT);
-    textAlign(CENTER, BOTTOM);
-    fill(255);
-    int xcount = 0;  
-    for (int x=XPOS; x < SIZE_X*TILE_WIDTH+XPOS; x+=TILE_WIDTH){
-      text(xcount, x+(TILE_WIDTH/2), YPOS-3);
-      xcount ++;
+    void display() {
+      drawGameBoard();
+      drawAxisLabels();
+      highlight();
     }
-    textAlign(RIGHT,CENTER);
-    int ycount = 0;
-    for (int y=YPOS; y < SIZE_Y*TILE_HEIGHT+YPOS; y+=TILE_HEIGHT){
-      text(ycount, XPOS-7, y+(TILE_HEIGHT/2));
-      ycount ++;
+      
+    void drawGameBoard(){
+      /* Draws the game board */
+      for (Tile t: waterS.getAllTiles()) 
+        drawTile(t.getX(), t.getY(), t.getLandUse().getIcon(), 255);
     }
-    textAlign(LEFT);
+    
+    void drawAxisLabels() {
+      /* Draws axis labels. */
+      textFont(AXISFONT);
+      textAlign(CENTER, BOTTOM);
+      fill(255);
+      int xcount = 0;  
+      for (int x=XPOS; x < SIZE_X*TILE_WIDTH+XPOS; x+=TILE_WIDTH){
+        text(xcount, x+(TILE_WIDTH/2), YPOS-3);
+        xcount ++;
+      }
+      textAlign(RIGHT,CENTER);
+      int ycount = 0;
+      for (int y=YPOS; y < SIZE_Y*TILE_HEIGHT+YPOS; y+=TILE_HEIGHT){
+        text(ycount, XPOS-7, y+(TILE_HEIGHT/2));
+        ycount ++;
+      }
+      textAlign(LEFT);
+    }
+    
+    void highlight() {
+      /* Hightlights Tile at position <x, y> with color hc) */
+      for (int [] e : highlightThese){
+        drawTile(e[0], e[1], e[2], 100);
+      }
+      highlightThese = new ArrayList<int[]>();     //Clear list after highlighting all its Tiles
+    }
+    
+    void drawTile(int x, int y, color c, int t) {
+      /* Draws a tile at Location <x, y> on game map, fill color c, transparency t */
+      stroke(240);
+      strokeWeight(0.5);
+      fill(c, t);
+      rect(x*TILE_WIDTH + XPOS, y*TILE_HEIGHT + YPOS, TILE_WIDTH, TILE_HEIGHT);
+      fill(255);    //resets to white.
+    } 
+
+    void highlightTile(int x, int y, color hc) {
+      highlightThese.add(new int[] {x, y, hc});
+    }
+    
+    int[][] getHighlightedTiles(){
+      int[][] coords = new int[highlightThese.size()][2];
+      int i = 0;
+      for (int[] e : highlightThese){
+        coords[i] = new int[] {e[0], e[1]};
+        i++;
+      }
+    return coords;
+    }
   }
-  
-  void highlight(color hc) {
-    /* Hightlights Tile at position <x, y> with color hc) */
-    for (int[] c : highlightThese)
-      drawTile(c[0], c[1], hc, 100);
-    highlightThese = new ArrayList<int[]>();    //Clear list after highlighting all its Tiles
-  }
-  
   
  void showInfoBox(){
    /* Draws box and displays selected Tile info and prePurchaseInfo */
