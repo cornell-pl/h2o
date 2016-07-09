@@ -184,22 +184,16 @@ class Controller{
     }
   }
   
-  void pressOnMap(){
-    if (mouseOverMap()){     //When mouse clicked on tile
-      mousePX = mouseX;
-      mousePY = mouseY;
-      if (pushed == view.resetB) {
-        message2 = "";
-        message = "";
-        pushed = null;
-      }
+  void unpressReset(){
+    if (pushed == view.resetB && ! view.resetB.isOver()) {
+      message2 = "";
+      message = "";
+      pushed = null;
     }
   }
   
   void pressOutOfMap(){
     if (! mouseOverMap() && !mouseOverButton() && !view.factoryS.over && !view.farmS.over && !view.houseS.over && !view.forestS.over && !view.showPolT.over && !view.showDecayPolT.over && !view.showDistT.over && !view.showProfitT.over){
-      if (pushed == view.resetB)
-        message2 = "";
       pushed = null;
       message = "";
     }
@@ -212,8 +206,6 @@ class Controller{
   
   void selectTile(){
     if (control.mouseOverMap() && mouseButton == LEFT){ 
-      mouseRX = mouseX;
-      mouseRY = mouseY;
       int[] posP = control.converter(mousePX, mousePY);
       int[] posR = control.converter(mouseRX, mouseRY);
       if (pushed == null) {
@@ -231,8 +223,6 @@ class Controller{
   
   void addStuff(){
     if (control.mouseOverMap() && mouseButton == LEFT){    //Left mouse button to add
-      mouseRX = mouseX;
-      mouseRY = mouseY;
       int[] posP = control.converter(mousePX, mousePY);
       int[] posR = control.converter(mouseRX, mouseRY);
       int count = 0;
@@ -277,8 +267,8 @@ class Controller{
 
 void mousePressed() {  
   mousePX = mouseX; mousePY = mouseY;
-  control.pressOnMap();
   control.pressButton();
+  control.unpressReset();
   control.pressOutOfMap();
   control.unselect();
 }
@@ -287,6 +277,8 @@ void mouseDragged(){
 }
 
 void mouseReleased() {
+  mouseRX = mouseX;
+  mouseRY = mouseY;
   control.selectTile();
   control.addStuff();
 }
