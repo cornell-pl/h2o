@@ -72,11 +72,12 @@ class Controller{
     /* Tells GUI which Tile to highlight when mouse is over map */
     if (control.mouseOverMap() && !mousePressed) {
       int[] pos = control.converter(mouseX, mouseY);
+      Tile t = waterS.getTile(pos[0], pos[1]);
       color highlightColor;
-      if (inAddMode() && (!waterS.getTile(pos[0], pos[1]).isRiver())){   //Change highlight color when in add mode but not over River
+      if (inAddMode() && (t.isRiver())){   //Change highlight color when in add mode but not over River
         highlightColor = pushed.baseColor;
       }else highlightColor = DEFAULT_HIGHLIGHT;
-      view.GAME_BOARD.highlightTile(pos[0], pos[1], highlightColor);
+      view.GAME_BOARD.highlightTile(t, highlightColor);
     }
   }
   
@@ -89,10 +90,11 @@ class Controller{
       if ((posP[0] >= 0 && posP[0] <SIZE_X) && (posP[1] >= 0 && posP[1] < SIZE_Y)) {
         for (int x = min(posP[0], posC[0]); x <= max(posP[0], posC[0]); x++) {
           for (int y = min(posP[1], posC[1]); y <= max(posP[1], posC[1]); y++) {
-            if (inAddMode() && (!waterS.getTile(x, y).isRiver())){   //Change highlight color when in add mode but not over River
+            Tile t = waterS.getTile(x, y);
+            if (inAddMode() && (t.isRiver())){   //Change highlight color when in add mode but not over River
               highlightColor = pushed.baseColor;
             }else highlightColor = DEFAULT_HIGHLIGHT;
-            view.GAME_BOARD.highlightTile(x, y, highlightColor);
+            view.GAME_BOARD.highlightTile(t, highlightColor);
           }
         }// for all tiles to highlight
       }// if tile range is valid
@@ -102,12 +104,11 @@ class Controller{
   void calcAddInfo(){
     float projectedProfit = 0;
     float projectedPollution = 0;
-    int[][] tilesHighlighted = view.GAME_BOARD.getHighlightedTiles();
+    Tile[] tilesHighlighted = view.GAME_BOARD.getHighlightedTiles();
     purchaseInfo = "";   //No button is pushed
     pollutionInfo = "";
     if (control.mouseOverMap() && inAddMode()) {
-      for (int[] c : tilesHighlighted){
-        Tile t = waterS.getTile(c[0], c[1]);
+      for (Tile t : tilesHighlighted){
         float d = t.distToRiver();
         if (! t.isRiver()){
           if  (pushed == view.factoryB) {    
@@ -137,7 +138,7 @@ class Controller{
         if (projectedPollution > 0)pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
         else pollutionInfo = "Pollution: - " + nfc(abs(projectedPollution),2);
       }
-      if (tilesHighlighted.length == 1 && waterS.getTile(tilesHighlighted[0][0], tilesHighlighted[0][1]).isRiver()){  
+      if (tilesHighlighted.length == 1 && tilesHighlighted[0].isRiver()){  
         purchaseInfo = ""; 
         pollutionInfo = "";
       }// Empty message when only one River Tile is highlighted

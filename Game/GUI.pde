@@ -184,18 +184,18 @@ class GUI {
       fill(255);    //resets to white.
     } 
 
-    void highlightTile(int x, int y, color hc) {
-      highlightThese.add(new int[] {x, y, hc});
+    void highlightTile(Tile t, color hc) {
+      highlightThese.add(new int[] {t.getX(), t.getY(), hc});
     }
     
-    int[][] getHighlightedTiles(){
-      int[][] coords = new int[highlightThese.size()][2];
+    Tile[] getHighlightedTiles(){
+      Tile[] tiles = new Tile[highlightThese.size()];
       int i = 0;
       for (int[] e : highlightThese){
-        coords[i] = new int[] {e[0], e[1]};
+        tiles[i] = waterS.getTile(e[0], e[1]);
         i++;
       }
-    return coords;
+    return tiles;
     }
   }
   
