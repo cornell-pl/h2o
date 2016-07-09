@@ -81,8 +81,6 @@ class GUI {
     DASHBOARD.display();
     
     drawDividers();
-  
-    showToggleInfo();    
     
     showPolT.display();
     showDecayPolT.display();
@@ -128,6 +126,7 @@ class GUI {
       drawAxisLabels();
       highlight();
       showSelectedTile();
+      showToggleInfo();
     }
       
     void drawGameBoard(){
@@ -195,6 +194,18 @@ class GUI {
         i++;
       }
     return tiles;
+    }
+    
+    void showToggleInfo() {
+      if (toggled == showPolT) {
+        showPollution();
+      }else if (toggled == showDecayPolT) {
+        showDecayPollution();
+      }else if (toggled == showDistT) {
+        showDist();
+      }else if (toggled == showProfitT) {
+        showProfit();
+      }
     }
     
     void showPollution() {
@@ -415,72 +426,7 @@ class GUI {
       text("Pollution indicator: " + pLevel, x, y+65);
     }
   }
-    
-
- //**** Some helper displays ****//  -----------------------------------------------
- void showToggleInfo() {
-   if (toggled == showPolT) {
-     showPollution();
-   } else if (toggled == showDecayPolT) {
-     showDecayPollution();
-   } else if (toggled == showDistT) {
-     showDist();
-   }else if (toggled == showProfitT) {
-     showProfit();
-   }
- }
- 
- void showPollution() {
-    for (Tile t: waterS.getAllTiles()) {
-      textFont(MESSAGEFONT);
-      textSize(10);
-      fill(0);
-      textAlign(LEFT, TOP);
-      int p = round(t.getBasePollution());
-      if(p != 0) 
-        text(p, t.getX()*TILE_WIDTH + XPOS+2, t.getY()*TILE_HEIGHT + YPOS+1);
-   }
- }
- 
- void showDecayPollution() {
-   float total = 0.;
-    for (Tile t: waterS.getAllTiles()) {
-      textFont(MESSAGEFONT);
-      textSize(10);
-      fill(0);
-      textAlign(LEFT, TOP);
-      if(t.getBasePollution()!=0) 
-        text(nfc(t.getDecayPollution(),1), t.getX()*TILE_WIDTH + XPOS+2, t.getY()*TILE_HEIGHT + YPOS+1);
-      total += t.getDecayPollution();
-   }
- }
- 
- void showDist() {
-    for (Tile t: waterS.getAllTiles()) {
-      textFont(MESSAGEFONT);
-      textSize(10);
-      fill(0);
-      textAlign(LEFT, TOP);
-      if (!(t.getLandUse() instanceof River)) 
-        text(nfc(t.distToRiver(),1), t.getX()*TILE_WIDTH + XPOS+2, t.getY()*TILE_HEIGHT + YPOS+1);
-   }
- }
- 
- void showProfit() {
-    for (Tile t: waterS.getAllTiles()) {
-      textFont(MESSAGEFONT);
-      textSize(9);
-      fill(0);
-      textAlign(LEFT, TOP);
-      if (round(t.getActualProfit())!=0) 
-        text(round(t.getActualProfit()), t.getX()*TILE_WIDTH + XPOS+2, t.getY()*TILE_HEIGHT + YPOS+1);
-   }
- }
 }
-
- 
-
-
 
 class Toggle {
   final PFont BASEFONT = createFont("Arial", 14);  
