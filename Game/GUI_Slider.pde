@@ -1,8 +1,8 @@
 class Slider { 
-  final int BAR_WIDTH = 180;
-  final int BAR_HEIGHT = 20;    // width and height of bar 
-  final int S_WIDTH = 20;        //width and height of slider
-  final int S_HEIGHT = BAR_HEIGHT;
+  static final int BAR_WIDTH = 180;
+  static final int BAR_HEIGHT = 20;    // width and height of bar 
+  static final int S_WIDTH = 20;        //width and height of slider
+  static final int S_HEIGHT = BAR_HEIGHT;
   final PFont sliderFont = createFont("Calibri", 14);
   
  

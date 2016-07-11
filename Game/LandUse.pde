@@ -1,17 +1,17 @@
-final static color RIVER_BLUE = #3CA1E3;
-final static color FACTORY_BROWN = #EA9253; 
-final static color FARM_YELLOW = #F0D446;
-final static color FOREST_GREEN = #5DD65E;
-final static color HOUSE_GRAY = #9CC2C4;
-final static color DIRT_BROWN = #AF956A;
-final static color DEMOLISH_BEIGE = #F5DAB9;
+static final color RIVER_BLUE = #3CA1E3;
+static final color FACTORY_BROWN = #EA9253; 
+static final color FARM_YELLOW = #F0D446;
+static final color FOREST_GREEN = #5DD65E;
+static final color HOUSE_GRAY = #9CC2C4;
+static final color DIRT_BROWN = #AF956A;
+static final color DEMOLISH_BEIGE = #F5DAB9;
 
 //Default pollution values that the game is initialized with
-final static int DEFAULT_FACTORY_POLLUTION = 20;    
-final static int DEFAULT_FARM_POLLUTION = 12;
-final static int DEFAULT_HOUSE_POLLUTION = 4;
-final static int DEFAULT_FOREST_POLLUTION = -2;
-final static int DEFAULT_DIRT_POLLUTION = 0;
+static final int DEFAULT_FACTORY_POLLUTION = 20;    
+static final int DEFAULT_FARM_POLLUTION = 12;
+static final int DEFAULT_HOUSE_POLLUTION = 4;
+static final int DEFAULT_FOREST_POLLUTION = -2;
+static final int DEFAULT_DIRT_POLLUTION = 0;
 
 
 static class LandUse {

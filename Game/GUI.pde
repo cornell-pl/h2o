@@ -1,12 +1,12 @@
 import java.util.Map;
 
-final int XPOS = 40;   //XPOS and ypos determines the position of the top left corner of the map, in pixels
-final int YPOS = 30;
-final int TILE_WIDTH = 26;   //width of a tile in pixels
-final int TILE_HEIGHT = 26;    //height of a tile in pixels
-final int XPOSB = XPOS + SIZE_X*TILE_WIDTH + 40;    //Drawing dimensions. XPOS and ypos are the coordinates of the top most button. 
-final int YPOSB = 60;    //All buttons scale with respect to these
-final color DEFAULT_HIGHLIGHT = #E5FCFC;   // Default color to highllight Tiles with
+static final int XPOS = 40;   //XPOS and ypos determines the position of the top left corner of the map, in pixels
+static final int YPOS = 30;
+static final int TILE_WIDTH = 26;   //width of a tile in pixels
+static final int TILE_HEIGHT = 26;    //height of a tile in pixels
+static final int XPOSB = XPOS + SIZE_X*TILE_WIDTH + 40;    //Drawing dimensions. XPOS and ypos are the coordinates of the top most button. 
+static final int YPOSB = 60;    //All buttons scale with respect to these
+static final color DEFAULT_HIGHLIGHT = #E5FCFC;   // Default color to highllight Tiles with
 
 //#B6FAB1; 
 
