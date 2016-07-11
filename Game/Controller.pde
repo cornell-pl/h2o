@@ -11,7 +11,6 @@ int mouseRY;
 
 class Controller{
   final HighlightController HIGHLIGHT_CONTROLLER = new HighlightController();
-  
   Watershed waterS;
   GUI view;
   
@@ -76,6 +75,8 @@ class Controller{
   }
   
   class HighlightController {
+    /* Decides which Tiles to highlight, and instructs GUI to highlight them */
+    
     void highlightSingleTile() {
       /* Decides which Tile to highlight when mouse is over map */
       if (control.mouseOverMap() && !mousePressed) {
@@ -91,7 +92,7 @@ class Controller{
     
     void highlightManyTiles() {
       /* Decides what Tiles to highlight when mouse is dragged */
-      if (mousePressed && mouseOverMap()) {         //When no button is pushed
+      if (mousePressed && mouseOverMap()) {    
         int[] posP = control.converter(mousePX, mousePY);   //tile coordinate when mouse is pressed
         int[] posC = control.converter(mouseX, mouseY);     //current tile coordinate
         color highlightColor;
@@ -106,7 +107,7 @@ class Controller{
             }
           }// for all tiles to highlight
         }// if tile range is valid
-      }
+      }// if mouse dragged over map
     } 
     
     void highlight(Tile t, color highlightColor){
@@ -120,7 +121,7 @@ class Controller{
     }
   }
   
-  
+
   void calcAddInfo(){
     /* Determines if in add mode, calculated projected values, instructs INFO_BOX to display them */
     float projectedProfit = 0;
@@ -156,6 +157,7 @@ class Controller{
   
   
   void pushUnpushButtons() {
+    /* Logic for pushing and unpushing buttons */
     if (mouseOverButton()) {
       Button b = getOverButton();
       if (b != view.resetB && b != view.demolishB){
@@ -205,16 +207,15 @@ class Controller{
       pushed = null;
       view.FEEDBACK_BOX.setModeMessage("");
     }
-  }
-      
-  void unselect(){
-    if (! mouseOverMap() && !view.factoryS.over && !view.farmS.over && !view.houseS.over && !view.forestS.over && !view.showPolT.over && !view.showDecayPolT.over && !view.showDistT.over && !view.showProfitT.over && !view.sliderT.over)
-      selected = null;    //Unselect when I click outside map
+    if (mouseButton == RIGHT) {    //Right mouse button to unpush any button
+      view.FEEDBACK_BOX.setModeMessage("");
+      pushed = null;
+    }
   }
   
   void selectTile(){
+    /* Logic for selecting a tile when not in add mode */
     if (control.mouseOverMap() && mouseButton == LEFT){ 
-      int[] posP = control.converter(mousePX, mousePY);
       int[] posR = control.converter(mouseRX, mouseRY);
       if (pushed == null) {
       selected = WS.getTile(posR[0],posR[1]);     //Select tile if no button is pushed and clicked inside map
@@ -222,14 +223,17 @@ class Controller{
       if (pushed != null) 
         selected = null;     //Remove selection when building things
     }
-    if (mouseButton == RIGHT) {    //Right mouse button to cancel selection and button pushed
+    if (mouseButton == RIGHT) {    //Right mouse button to cancel selection
       view.FEEDBACK_BOX.setModeMessage("");
       pushed = null;
       selected = null;
     }
+    if (! mouseOverMap() && !view.factoryS.over && !view.farmS.over && !view.houseS.over && !view.forestS.over && !view.showPolT.over && !view.showDecayPolT.over && !view.showDistT.over && !view.showProfitT.over && !view.sliderT.over)
+      selected = null;    //Unselect when I click outside map
   }
   
   void addStuff(){
+    /* Logic to change LandUses and display appropriate feebback */
     if (control.mouseOverMap() && mouseButton == LEFT && inAddMode()){    //Left mouse button to add
       int[] posP = control.converter(mousePX, mousePY);     //Mouse press position
       int[] posR = control.converter(mouseRX, mouseRY);    //Mopuse release position
@@ -318,7 +322,6 @@ class Controller{
 void mousePressed() {  
   mousePX = mouseX; mousePY = mouseY;
   control.pushUnpushButtons();
-  control.unselect();
 }
 
 void mouseDragged(){
