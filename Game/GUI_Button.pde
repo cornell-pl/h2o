@@ -54,9 +54,7 @@ class Button{
     if ((mouseX >= x-1) && (mouseX <= x+bWidth+textWidth(label)+8) && 
         (mouseY >= y-1) && (mouseY <= y+bHeight+1)) {
       over = true;
-      mouseOverButton = this;     /// ======> VIEW IS CHANGING STATE. ILLEGAL
-    } else {
+    } else
       over = false;
-    }
   }
 } 

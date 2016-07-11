@@ -9,8 +9,6 @@ int mousePY;
 int mouseRX;   //Mouse release positions
 int mouseRY;
 
-Button mouseOverButton = null;
-
 class Controller{
   Watershed waterS;
   GUI view;
@@ -52,8 +50,15 @@ class Controller{
   }
   
   Button getOverButton() {
-    /* Returns Button mouse is over. */
-     return mouseOverButton;
+    /* Returns Button mouse is over, null if mouse not over any button*/
+    Button over = null;
+    if (view.factoryB.isOver()) over = view.factoryB;
+    if (view.farmB.isOver()) over = view.farmB;
+    if (view.houseB.isOver()) over = view.houseB;
+    if (view.forestB.isOver()) over = view.forestB;
+    if (view.demolishB.isOver()) over = view.demolishB;
+    if (view.resetB.isOver()) over = view.resetB;
+    return over;
   }
   
   int[] converter(int xraw, int yraw) {
