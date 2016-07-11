@@ -1,5 +1,3 @@
-import java.util.Map;
-
 static final int XPOS = 40;   //XPOS and ypos determines the position of the top left corner of the map, in pixels
 static final int YPOS = 30;
 static final int TILE_WIDTH = 26;   //width of a tile in pixels

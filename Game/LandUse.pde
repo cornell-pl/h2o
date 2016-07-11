@@ -82,9 +82,9 @@ static class Factory extends LandUse {
     basePollution = DEFAULT_FACTORY_POLLUTION;
     baseProfit = 2000;
   }
- 
- @Override
- float calcActualProfit(float distToRiver) {
+  
+  @Override
+  float calcActualProfit(float distToRiver) {
     /*Returns the actual profit made according to profit model  */
     return baseProfit/(sqrt(distToRiver)/4 + 0.75);
   }
