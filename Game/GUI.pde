@@ -6,9 +6,9 @@ final int TILE_WIDTH = 26;   //width of a tile in pixels
 final int TILE_HEIGHT = 26;    //height of a tile in pixels
 final int XPOSB = XPOS + SIZE_X*TILE_WIDTH + 40;    //Drawing dimensions. XPOS and ypos are the coordinates of the top most button. 
 final int YPOSB = 60;    //All buttons scale with respect to these
-final color DEFAULT_HIGHLIGHT = #B6FAB1;   // Default color to highllight Tiles with
+final color DEFAULT_HIGHLIGHT = #E5FCFC;   // Default color to highllight Tiles with
 
-
+//#B6FAB1; 
 
 String message = "";
 String message2 = "";
