@@ -135,7 +135,7 @@ class Controller{
   }
   
   
-  void pressButton() {
+  void pushUnpushButtons() {
     if (mouseOverButton()) {
       Button b = getOverButton();
       if (b != view.resetB && b != view.demolishB){
@@ -175,15 +175,18 @@ class Controller{
         }
       }
     }
-  }
-  
-  void unpressReset(){
-    if (pushed == view.resetB && ! view.resetB.isOver()) {
-      view.FEEDBACK_BOX.setActionMessage("");
-      view.FEEDBACK_BOX.setModeMessage("");
+    //Unpress button if clicked out of map but not on sliders and toggles
+    if (! mouseOverMap() && !mouseOverButton() && !view.factoryS.over && !view.farmS.over && !view.houseS.over && !view.forestS.over && !view.showPolT.over && !view.showDecayPolT.over && !view.showDistT.over && !view.showProfitT.over){
+      //Unpress reset button if it is pressed and user clicks outside the button
+      if (pushed == view.resetB && ! view.resetB.isOver()) {
+        view.FEEDBACK_BOX.setModeMessage("");
+        view.FEEDBACK_BOX.setActionMessage("");
+      }
       pushed = null;
+      view.FEEDBACK_BOX.setModeMessage("");
     }
   }
+
   
   void pressOutOfMap(){
     if (! mouseOverMap() && !mouseOverButton() && !view.factoryS.over && !view.farmS.over && !view.houseS.over && !view.forestS.over && !view.showPolT.over && !view.showDecayPolT.over && !view.showDistT.over && !view.showProfitT.over){
@@ -302,9 +305,7 @@ class Controller{
 
 void mousePressed() {  
   mousePX = mouseX; mousePY = mouseY;
-  control.pressButton();
-  control.unpressReset();
-  control.pressOutOfMap();
+  control.pushUnpushButtons();
   control.unselect();
 }
 
