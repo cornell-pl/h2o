@@ -74,9 +74,9 @@ class Controller{
       int[] pos = control.converter(mouseX, mouseY);
       Tile t = waterS.getTile(pos[0], pos[1]);
       color highlightColor;
-      if (inAddMode() && (t.isRiver())){   //Change highlight color when in add mode but not over River
+      if (inAddMode() && (!t.isRiver()))   //Change highlight color when in add mode but not over River
         highlightColor = pushed.baseColor;
-      }else highlightColor = DEFAULT_HIGHLIGHT;
+      else highlightColor = DEFAULT_HIGHLIGHT;
       view.GAME_BOARD.highlightTile(t, highlightColor);
     }
   }
@@ -91,9 +91,9 @@ class Controller{
         for (int x = min(posP[0], posC[0]); x <= max(posP[0], posC[0]); x++) {
           for (int y = min(posP[1], posC[1]); y <= max(posP[1], posC[1]); y++) {
             Tile t = waterS.getTile(x, y);
-            if (inAddMode() && (t.isRiver())){   //Change highlight color when in add mode but not over River
+            if (inAddMode() && (!t.isRiver()))   //Change highlight color when in add mode but not over River
               highlightColor = pushed.baseColor;
-            }else highlightColor = DEFAULT_HIGHLIGHT;
+            else highlightColor = DEFAULT_HIGHLIGHT;
             view.GAME_BOARD.highlightTile(t, highlightColor);
           }
         }// for all tiles to highlight
