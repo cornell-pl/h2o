@@ -10,9 +10,6 @@ static final color DEFAULT_HIGHLIGHT = #E5FCFC;   // Default color to highllight
 
 //#B6FAB1; 
 
-String message = "";
-String message2 = "";
-
 class GUI {
   final PFont AXISFONT = createFont("Calibri", 12);
   final PFont MESSAGEFONT = createFont("Calibri", 14);
@@ -314,20 +311,28 @@ class GUI {
   
   
   class FeedbackBox {
-    FeedbackBox(){
-    }
+    String modeMessage = "";
+    String actionMessage = "";
     
     void display() {
-       /*Draws the feedback box and shows info */
+       /*Draws the feedback box and shows messages */
       stroke(255);
       fill(255);
       rect(XPOS, YPOS + SIZE_Y*TILE_HEIGHT + 10, 440, 115);
       fill(0);  //Color of text 
       textFont(MESSAGEFONT);
-      text(message, XPOS + 20, YPOS + SIZE_Y*TILE_HEIGHT + 30);   
-      text(message2, XPOS + 20, YPOS + SIZE_Y*TILE_HEIGHT + 50);   
+      text(modeMessage, XPOS + 20, YPOS + SIZE_Y*TILE_HEIGHT + 30);   
+      text(actionMessage, XPOS + 20, YPOS + SIZE_Y*TILE_HEIGHT + 50);   
       text("Simple sum of all pollution: " + waterS.sumTotalPollution(), XPOS + 20, YPOS + SIZE_Y*TILE_HEIGHT + 90);
       text("Total pollution entering river after distance decay: " + nfc(waterS.sumDecayPollution(),2), XPOS + 20, YPOS + SIZE_Y*TILE_HEIGHT + 110);
+    }
+    
+    void setModeMessage(String m){
+      modeMessage = m;
+    }
+    
+    void setActionMessage(String m){
+      actionMessage = m;
     }
   }
   

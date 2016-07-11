@@ -189,11 +189,9 @@ class Watershed{
       Tile t = getTile(x, y);
       if (! (t.isRiver())) {
         t.changeLandUse(FACTORY);
-        message2 = "Added a Factory at " + t;
         println("Added a Factory at", t);
         return true;      
       }else {
-        message2 = "Cannot built factory in river. Nothing is added.";
         println("Cannot built factory in river. Nothing is added");
         return false;
       }
@@ -207,11 +205,9 @@ class Watershed{
       Tile t = getTile(x, y);
       if (! (t.isRiver())) {
         t.changeLandUse(FARM); 
-        message2 = "Added a Farm at " + t;
         println("Added a Farm at", t);
         return true;
       }else {
-        message2 = "Cannot built farm in river. Nothing is added.";
         println("Cannot built farm in river. Nothing is added.");
         return false;
       }
@@ -225,11 +221,9 @@ class Watershed{
       Tile t = getTile(x, y);
       if (! (t.isRiver())) {
         t.changeLandUse(HOUSE); 
-        message2 = "Added a House at " + t;
         println("Added a House at", t);
         return true;
       }else {
-        message2 = "Cannot built house in river. Nothing is added.";
         println("Cannot built house in river. Nothing is added.");
         return false;
       }
@@ -242,11 +236,9 @@ class Watershed{
     Tile t = getTile(x, y);
     if (! (t.isRiver())) {
       t.changeLandUse(FOREST); 
-      message2 = "Added a Forest at " + t;
       println("Added a Forest at", t);
       return true;
     }else {
-      message2 = "Cannot plant trees in river. Nothing is added.";
       println("Cannot plant trees in river. Nothing is added.");
       return false;
     }
@@ -266,15 +258,13 @@ class Watershed{
     if (! (t.isRiver())) {
       LandUse olu = t.getLandUse();   //Original land use
       if (olu.isDirt()) {
-        message2 = "Nothing to remove";
+        println("Nothing to remove");
         return false;
       }
       addDirt(x,y);
-      message2 = "Removed " + olu.toString() + " at " + t;
       println("Removed land use at", t);
       return true;
     }else {
-      message2 = "River cannot be removed.";
       println("River cannot be removed.");
       return false;
     }

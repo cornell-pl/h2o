@@ -140,38 +140,38 @@ class Controller{
       Button b = getOverButton();
       if (b != view.resetB && b != view.demolishB){
         if (pushed == b) {
-          message = "";
+         view.FEEDBACK_BOX.setModeMessage("");
           pushed = null;
         } else {
           pushed = b;
-          message = "Add " + b.label + " mode is selected";
-          message2 = "";
+          view.FEEDBACK_BOX.setModeMessage("Add " + b.label + " mode is selected");
+          view.FEEDBACK_BOX.setActionMessage("");
          }
       }
       else if(b == view.demolishB) {   //When demolish button is clicked on
         if (pushed == view.demolishB) {
-          message = "";
+           view.FEEDBACK_BOX.setModeMessage("");
           pushed = null;
         } else {
           pushed = view.demolishB;
-          message = "Demolish mode is selected";
-          message2 = "";
+          view.FEEDBACK_BOX.setModeMessage("Demolish mode is selected");
+          view.FEEDBACK_BOX.setActionMessage("");
         }
       }
       else if(b == view.resetB) {  //When reset button is clicked on
         if (pushed == view.resetB) {
-          message = "Restarting game";
-          message2 = "";
+          view.FEEDBACK_BOX.setModeMessage("Restarting game");
+          view.FEEDBACK_BOX.setActionMessage("");
           WS = new Watershed(SIZE_X, SIZE_Y);      //
           graphics.waterS = WS;                
           pushed = null;
           selected = null;
-          message = "Game is reset";
-          message2 = "";
+          view.FEEDBACK_BOX.setModeMessage("");
+          view.FEEDBACK_BOX.setActionMessage("Game is reset");
         }else {
           pushed = view.resetB;
-          message = "Do you want to reset the map? Click button again to reset.";
-          message2 = "Click anywhere to cancel.";
+          view.FEEDBACK_BOX.setModeMessage("Do you want to reset the map? Click button again to reset.");
+          view.FEEDBACK_BOX.setActionMessage("Click anywhere to cancel.");
         }
       }
     }
@@ -179,8 +179,8 @@ class Controller{
   
   void unpressReset(){
     if (pushed == view.resetB && ! view.resetB.isOver()) {
-      message2 = "";
-      message = "";
+      view.FEEDBACK_BOX.setActionMessage("");
+      view.FEEDBACK_BOX.setModeMessage("");
       pushed = null;
     }
   }
@@ -188,7 +188,7 @@ class Controller{
   void pressOutOfMap(){
     if (! mouseOverMap() && !mouseOverButton() && !view.factoryS.over && !view.farmS.over && !view.houseS.over && !view.forestS.over && !view.showPolT.over && !view.showDecayPolT.over && !view.showDistT.over && !view.showProfitT.over){
       pushed = null;
-      message = "";
+      view.FEEDBACK_BOX.setModeMessage("");
     }
   }
       
@@ -208,52 +208,94 @@ class Controller{
         selected = null;     //Remove selection when building things
     }
     if (mouseButton == RIGHT) {    //Right mouse button to cancel selection and button pushed
-      message = "";
+      view.FEEDBACK_BOX.setModeMessage("");
       pushed = null;
       selected = null;
     }
   }
   
   void addStuff(){
-    if (control.mouseOverMap() && mouseButton == LEFT){    //Left mouse button to add
-      int[] posP = control.converter(mousePX, mousePY);
-      int[] posR = control.converter(mouseRX, mouseRY);
-      int count = 0;
-      String thing = "";
+    if (control.mouseOverMap() && mouseButton == LEFT && inAddMode()){    //Left mouse button to add
+      int[] posP = control.converter(mousePX, mousePY);     //Mouse press position
+      int[] posR = control.converter(mouseRX, mouseRY);    //Mopuse release position
+      LandUse olu = null;  //Original landuse of tile
+      int count = 0;    //Number of landUses add/removed
+      String thing = "";  
       boolean s = false;
+      int i = 0; 
+      int j = 0;      
       for (int x = min(posP[0], posR[0]); x <= max(posP[0], posR[0]); x++) {
         for (int y = min(posP[1], posR[1]); y <= max(posP[1], posR[1]); y++) {
-          if (pushed == graphics.factoryB) {        //If factory button is in pressed state
+          if (pushed == view.factoryB) {        //If factory button is in pressed state
             s = WS.addFactory(x, y);      //count++ only when true
-            if (s) count ++;
-            thing = "Factories";
+            if (s) {
+              count ++;   //increment and save coordinates if successful
+              i = x;
+              j = y;
+            }
+            thing = "Factory";
+            if (count > 1) thing = "Factories";
           } 
-          else if (pushed == graphics.farmB) {        //If farm button is in pressed state
+          else if (pushed == view.farmB) {        //If farm button is in pressed state
             s = WS.addFarm(x, y);
-            if (s) count ++;
-            thing = "Farms";
+             if (s) {
+              count ++;
+              i = x;
+              j = y;
+            }
+            thing = "Farm";
+            if (count > 1) thing = "Farms";
           }
-          else if (pushed == graphics.houseB) {        //If house button is in pressed state
+          else if (pushed == view.houseB) {        //If house button is in pressed state
             s = WS.addHouse(x, y);
-            if (s) count ++;
-            thing = "Houses";
+             if (s) {
+              count ++;
+              i = x;
+              j = y;
+            }
+            thing = "House";
+            if (count > 1) thing = "Houses";
           }
-          else if (pushed == graphics.forestB) {        //If forest button is in pressed state
+          else if (pushed == view.forestB) {        //If forest button is in pressed state
             s = WS.addForest(x, y);
-            if (s) count ++;
-            thing = "Forests";
+            if (s) {
+              count ++;
+              i = x;
+              j = y;
+            }
+            thing = "Forest";
+            if (count > 1) thing = "Forests";
           }
-          else if(pushed == graphics.demolishB) {    //If demolish button is in pressed state
+          else if(pushed == view.demolishB) {    //If demolish button is in pressed state
+            LandUse temp = waterS.getTile(x,y).getLandUse();
             s = WS.removeLandUse(x,y);
-            if (s) count ++;
+             if (s) {
+              count ++;
+              i = x;
+              j = y;
+            }
+            if (s) olu = temp;   //remember previous landuse if successful
           }
         }
-      }
-      if (count > 1 || (count == 1 && s == false)) {  //Different message if multiple objects 
-        message2 = "Added " + Integer.toString(count) + " " + thing;    
-        if (pushed == graphics.demolishB) message2 = "Removed land use at " + Integer.toString(count) + " locations";
-      }    
-    }
+      }   //for all Tiles to add landuse
+      
+      // Set messages to display
+      if (count > 1) {
+        view.FEEDBACK_BOX.setActionMessage("Built " + Integer.toString(count) + " " + thing);    
+        if (pushed == graphics.demolishB) 
+          view.FEEDBACK_BOX.setActionMessage("Removed land use at " + Integer.toString(count) + " locations");
+      }  //count > 1
+      else if (count == 1){
+        view.FEEDBACK_BOX.setActionMessage("Added a " + thing + " at " + "<" +(i)+ ", " +(j)+ ">");  
+        if (pushed == graphics.demolishB) 
+          view.FEEDBACK_BOX.setActionMessage("Removed " + olu.toString() + " at " + "<" +(i)+ ", " +(j)+ ">");  
+      }  // count == 1
+      else {
+        view.FEEDBACK_BOX.setActionMessage("Cannot build " +thing+ " in river. Nothing is added.");
+        if (pushed == graphics.demolishB) 
+          view.FEEDBACK_BOX.setActionMessage("Nothing to remove");
+      } //count == 0
+    } //if mouseOverMap() and mouseButton == LEFT
   }
 }
 
