@@ -13,13 +13,6 @@ static final color DEFAULT_HIGHLIGHT = #E5FCFC;   // Default color to highllight
 String message = "";
 String message2 = "";
 
-String purchaseInfo = "";
-String pollutionInfo = "";
-float projectedProfit = 0;
-float projectedPollution = 0;
-
-
-
 class GUI {
   final PFont AXISFONT = createFont("Calibri", 12);
   final PFont MESSAGEFONT = createFont("Calibri", 14);
@@ -113,8 +106,7 @@ class GUI {
       rect(XPOSB-20, YPOS, 392, TILE_HEIGHT*SIZE_Y);
       line(XPOSB-20, YPOSB+TILE_HEIGHT+5+270, XPOSB-20+392, YPOSB+TILE_HEIGHT+5+270);
   }
-
-
+  
 
   class GameBoard {
     ArrayList<int[]>  highlightThese = new ArrayList<int[]>();    // A list containing all the Tiles that are to be highlighted, each element is of format {posX, posY, color}
@@ -155,7 +147,7 @@ class GUI {
     }
     
     void highlight() {
-      /* Hightlights Tile at position <x, y> with color hc) */
+      /* Hightlights Tile at position <x, y> with color hc (click and drag) */
       for (int [] e : highlightThese){
         drawTile(e[0], e[1], e[2], 100);
       }
@@ -163,7 +155,7 @@ class GUI {
     }
     
     void showSelectedTile() {    
-    /* Accents the selected tile, displays tile information */
+    /* Accents the selected tile */
       if (selected != null){
         drawTile(selected.getX(), selected.getY(), 255, 130);
         noFill();
@@ -254,14 +246,12 @@ class GUI {
       }
     }
   }
- 
- 
- 
- 
+
   class InfoBox{
     /* Draws box and displays selected Tile info and prePurchaseInfo */
-    void InfoBox(){
-    }
+    float projectedProfit = 0;
+    float projectedPollution = 0;
+    boolean showPrePurchase = false;
       
     void display(){
      /* Draws box and displays selected Tile info and prePurchaseInfo */
@@ -273,7 +263,7 @@ class GUI {
     }
     
     void showTileInfo() {    
-    /* Accents the selected tile, displays tile information */
+      /* Displays information of selected Tile */
       if (selected != null) {
         fill(0);  //Color of text 
         textFont(MESSAGEFONT);
@@ -288,10 +278,34 @@ class GUI {
     }
 
     void showPrePurchaseInfo(){
-      textFont(MESSAGEFONT);
-      fill(125);
-      text(purchaseInfo, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 90);  
-      text(pollutionInfo, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 110);
+      /* Displays information about purchase when in add mode */
+      if (showPrePurchase){
+        String purchaseInfo = "";
+        String pollutionInfo = "";
+        if (pushed != demolishB) {
+          if (projectedProfit >= 0) purchaseInfo = "Money: + $" + nfc(round(projectedProfit));
+          else purchaseInfo = "Money: - $" + nfc(abs(projectedProfit),2);
+          if (projectedPollution >= 0)pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
+          else pollutionInfo = "Pollution: - " + nfc(abs(projectedPollution),2);
+        }
+        if (GAME_BOARD.getHighlightedTiles().length == 1 && GAME_BOARD.getHighlightedTiles()[0].isRiver()){  
+          purchaseInfo = ""; 
+          pollutionInfo = "";
+        }// Empty message when only one River Tile is highlighted
+        
+        textFont(MESSAGEFONT);
+        fill(125);
+        text(purchaseInfo, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 90);  
+        text(pollutionInfo, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 110);
+        showPrePurchase = false;
+      }
+    }
+    
+    void setProjected(float profit, float pollution){
+      /* Sets the projected values and displays them */
+      projectedProfit = profit;
+      projectedPollution = pollution;
+      showPrePurchase = true;
     }
   }
   
