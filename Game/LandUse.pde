@@ -1,41 +1,41 @@
-final color RIVER_BLUE = #3CA1E3;
-final color FACTORY_BROWN = #EA9253; 
-final color FARM_YELLOW = #F0D446;
-final color FOREST_GREEN = #5DD65E;
-final color HOUSE_GRAY = #9CC2C4;
-final color DIRT_BROWN = #AF956A;
-final color DEMOLISH_BEIGE = #F5DAB9;
+final static color RIVER_BLUE = #3CA1E3;
+final static color FACTORY_BROWN = #EA9253; 
+final static color FARM_YELLOW = #F0D446;
+final static color FOREST_GREEN = #5DD65E;
+final static color HOUSE_GRAY = #9CC2C4;
+final static color DIRT_BROWN = #AF956A;
+final static color DEMOLISH_BEIGE = #F5DAB9;
 
 //Default pollution values that the game is initialized with
-final int DEFAULT_FACTORY_POLLUTION = 20;    
-final int DEFAULT_FARM_POLLUTION = 12;
-final int DEFAULT_HOUSE_POLLUTION = 4;
-final int DEFAULT_FOREST_POLLUTION = -2;
-final int DEFAULT_DIRT_POLLUTION = 0;
+final static int DEFAULT_FACTORY_POLLUTION = 20;    
+final static int DEFAULT_FARM_POLLUTION = 12;
+final static int DEFAULT_HOUSE_POLLUTION = 4;
+final static int DEFAULT_FOREST_POLLUTION = -2;
+final static int DEFAULT_DIRT_POLLUTION = 0;
 
 
-abstract class LandUse {
+static class LandUse {
   color icon;
   int basePollution;
-  int baseProfit;
-
+  int baseProfit;  
+  
   boolean isDirt() {
-    return (this == DIRT);
+    return (this == Dirt.getInstance());
   }
   boolean isForest() {
-    return (this == FOREST);
+    return (this == Forest.getInstance());
   }
   boolean isFactory() {
-    return (this == FACTORY);
+    return (this == Factory.getInstance());
   }
   boolean isFarm() {
-    return (this == FARM);
+    return (this == Farm.getInstance());
   }
   boolean isHouse() {
-    return (this == HOUSE);
+    return (this == House.getInstance());
   }
   boolean isRiver() {
-    return (this == RIVER);
+    return (this == River.getInstance());
   }
   
   color getIcon() {
@@ -54,8 +54,10 @@ abstract class LandUse {
     basePollution = newPollution;
   }
  
-  abstract float calcActualProfit(float distToR);      //Placing pollution and profit calculators at this level allows for 
-                                                        //customized functions for each landuse
+  float calcActualProfit(float distToR){    //Subclasses can ovveride this
+    return 0;
+  }
+  
   float calcDecayPollution(float distToRiver) {
    /* Returns the pollution entering river of Tile t according to distance decay model.  */
      float decayPollution = basePollution/(distToRiver/2+0.5);
@@ -64,35 +66,48 @@ abstract class LandUse {
 }
 
   
-class Factory extends LandUse {
+static class Factory extends LandUse {
   /* Factory gives fixed profit no matter the location */
+  private static Factory instance = new Factory();
   
-  Factory () {
+  static Factory getInstance(){
+    return instance;
+  }
+  
+  private Factory () {
     icon = FACTORY_BROWN;   //Color code for drawing on map
     basePollution = DEFAULT_FACTORY_POLLUTION;
     baseProfit = 2000;
   }
  
+ @Override
  float calcActualProfit(float distToRiver) {
     /*Returns the actual profit made according to profit model  */
     return baseProfit/(sqrt(distToRiver)/4 + 0.75);
   }
   
-   @Override
+  @Override
   public String toString() {
     return "Factory";
   }
 }
 
 
-class Farm extends LandUse {
+static class Farm extends LandUse {
   /* Farm gives less profit further from river  */
-  Farm () {
+  private static Farm instance = new Farm();
+  
+  static Farm getInstance(){
+    return instance;
+  }
+  
+  private Farm () {
     icon = FARM_YELLOW;
     basePollution = DEFAULT_FARM_POLLUTION;
     baseProfit = 1000;
  }
   
+  @Override
   float calcActualProfit(float distToRiver) {
      /*Returns the actual profit made according to profit model  */
     return baseProfit/(distToRiver/5+0.8);
@@ -105,13 +120,20 @@ class Farm extends LandUse {
 }
 
 
-class House extends LandUse {
-  House() {
+static class House extends LandUse {
+  private static House instance = new House();
+  
+  static House getInstance(){
+    return instance;
+  }
+  
+  private House() {
     icon = HOUSE_GRAY;
     basePollution = DEFAULT_HOUSE_POLLUTION;
     baseProfit = 700;
   }
   
+  @Override
   float calcActualProfit(float distToRiver) {
      /*Returns the actual profit made according to profit model  */
     return baseProfit/(sqrt(distToRiver)/2+0.5);
@@ -124,13 +146,21 @@ class House extends LandUse {
 }
 
 
-class Forest extends LandUse {
-  Forest () {  
+static class Forest extends LandUse {
+  private static Forest instance = new Forest();
+  
+  static Forest getInstance(){
+    return instance;
+  }
+  
+  
+  private Forest () {  
     icon = FOREST_GREEN;
     basePollution = DEFAULT_FOREST_POLLUTION;
     baseProfit = -300;
   }
   
+  @Override
   float calcActualProfit(float distToRiver) {
      /*Returns the actual profit made according to profit model  */
     return baseProfit;      //Cost of forest is a constant.
@@ -145,7 +175,7 @@ class Forest extends LandUse {
   @Override 
   void updatePollution(int newPollution){
     basePollution = newPollution;
-    PFOREST.updatePollution(newPollution);
+    PrimaryForest.getInstance().updatePollution(newPollution);
   }
   
   @Override
@@ -154,12 +184,19 @@ class Forest extends LandUse {
   }
 }
 
-class PrimaryForest extends Forest {
+static class PrimaryForest extends Forest {
   /* PrimaryForests have zero cost */
-  PrimaryForest () {  
+  private static PrimaryForest instance = new PrimaryForest();
+  
+  static PrimaryForest getInstance(){
+    return instance;
+  }
+  
+  private PrimaryForest () {  
     baseProfit = 0;
   }
   
+  @Override
   float calcActualProfit(float distToRiver) {
     /*Returns the actual profit made according to profit model  */
     return baseProfit; 
@@ -177,17 +214,18 @@ class PrimaryForest extends Forest {
 }
 
 
-class Dirt extends LandUse {
-  Dirt() {
+static class Dirt extends LandUse {
+  private static Dirt instance = new Dirt();
+  
+  static Dirt getInstance(){
+    return instance;
+  }
+  
+  private Dirt() {
     icon = DIRT_BROWN;
     basePollution = DEFAULT_DIRT_POLLUTION;
     baseProfit = 0;
  }
- 
-  float calcActualProfit(float distToRiver) {
-    /*Returns the actual profit made according to profit model  */
-    return 0;
-  }
  
   @Override
   public String toString() {
@@ -195,14 +233,17 @@ class Dirt extends LandUse {
   }
 }
 
-class River extends LandUse {
-  River(){
+static class River extends LandUse {
+  private static River instance = new River();
+  
+  static River getInstance(){
+    return instance;
+  }
+  
+  private River(){
     icon = RIVER_BLUE;
   }
-  float calcActualProfit(float distToRiver) {
-     /*Returns the actual profit made according to profit model  */
-    return 0;
-  }
+
  
   @Override
   public String toString() {

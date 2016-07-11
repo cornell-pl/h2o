@@ -1,17 +1,17 @@
-final int SIZE_X = 30;    //Dimensions of the watershed in tiles
-final int SIZE_Y = 30;
+final static int SIZE_X = 30;    //Dimensions of the watershed in tiles
+final static int SIZE_Y = 30;
 
-final int FACTORY_QUOTA = 40;
-final int FARM_QUOTA = 60;
-final int HOUSE_QUOTA = 100;
+final static int FACTORY_QUOTA = 40;
+final static int FARM_QUOTA = 60;
+final static int HOUSE_QUOTA = 100;
 
-final Factory FACTORY = new Factory();
-final Farm FARM = new Farm();
-final House HOUSE = new House();
-final Forest FOREST = new Forest();
-final PrimaryForest PFOREST =  new PrimaryForest();
-final Dirt DIRT = new Dirt();
-final River RIVER = new River();
+final static Factory FACTORY = Factory.getInstance();
+final static Farm FARM = Farm.getInstance();
+final static House HOUSE = House.getInstance();
+final static Forest FOREST = Forest.getInstance();
+final static PrimaryForest PFOREST =  PrimaryForest.getInstance();
+final static Dirt DIRT = Dirt.getInstance();
+final static River RIVER = River.getInstance();
 
 ArrayList<Tile> riverTiles = new ArrayList<Tile>(200);
 
