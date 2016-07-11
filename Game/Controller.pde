@@ -186,14 +186,6 @@ class Controller{
       view.FEEDBACK_BOX.setModeMessage("");
     }
   }
-
-  
-  void pressOutOfMap(){
-    if (! mouseOverMap() && !mouseOverButton() && !view.factoryS.over && !view.farmS.over && !view.houseS.over && !view.forestS.over && !view.showPolT.over && !view.showDecayPolT.over && !view.showDistT.over && !view.showProfitT.over){
-      pushed = null;
-      view.FEEDBACK_BOX.setModeMessage("");
-    }
-  }
       
   void unselect(){
     if (! mouseOverMap() && !view.factoryS.over && !view.farmS.over && !view.houseS.over && !view.forestS.over && !view.showPolT.over && !view.showDecayPolT.over && !view.showDistT.over && !view.showProfitT.over && !view.sliderT.over)
