@@ -234,9 +234,8 @@ class Controller{
   void selectTile(){
     /* Logic for selecting a tile when not in add mode */
     if (control.mouseOverMap() && mouseButton == LEFT){ 
-      int[] posR = control.converter(mouseRX, mouseRY);
       if (pushed == null) {
-      selected = WS.getTile(posR[0],posR[1]);     //Select tile if no button is pushed and clicked inside map
+      selected = getOverTile();     //Select tile if no button is pushed and clicked inside map
       } 
       if (pushed != null) 
         selected = null;     //Remove selection when building things
@@ -246,7 +245,8 @@ class Controller{
       pushed = null;
       selected = null;
     }
-    if (! mouseOverMap() && !view.factoryS.over && !view.farmS.over && !view.houseS.over && !view.forestS.over && !view.showPolT.over && !view.showDecayPolT.over && !view.showDistT.over && !view.showProfitT.over && !view.sliderT.over)
+    if (! mouseOverMap() && !view.factoryS.over && !view.farmS.over && !view.houseS.over && !view.forestS.over && 
+        !view.showPolT.over && !view.showDecayPolT.over && !view.showDistT.over && !view.showProfitT.over && !view.sliderT.over)
       selected = null;    //Unselect when I click outside map
   }
   
