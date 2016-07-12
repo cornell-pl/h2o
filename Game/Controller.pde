@@ -11,6 +11,7 @@ int mouseRY;
 
 class Controller{
   final HighlightController HIGHLIGHT_CONTROLLER = new HighlightController();
+  final LandUseController LU_CONTROLLER =  new LandUseController();
   Watershed waterS;
   GUI view;
   
@@ -21,7 +22,7 @@ class Controller{
   
   void eventLoop() {
     HIGHLIGHT_CONTROLLER.run();
-    calcAddInfo();
+    LU_CONTROLLER.calcAddInfo();
   }
   
   boolean mouseOverMap(){
@@ -134,44 +135,7 @@ class Controller{
       highlightManyTiles();
     }
   }
-  
 
-  void calcAddInfo(){
-    /* Determines if in add mode, calculated projected values, instructs INFO_BOX to display them */
-    float projectedProfit = 0;
-    float projectedPollution = 0;
-    if (mouseOverMap() && inAddMode()) {
-      ArrayList<Tile> tlist = getDraggedTiles();  //Tiles to calculate info for
-      if (!mousePressed) tlist.add(getOverTile());     //Include info for tile mouse is over when mouse is not dragged
-      for (Tile t : tlist){
-        float d = t.distToRiver();
-        if (! t.isRiver()){
-          if  (pushed == view.factoryB) {    
-            projectedProfit += FACTORY.calcActualProfit(d);  
-            projectedPollution += FACTORY.calcDecayPollution(d);
-          } 
-          else if (pushed == view.farmB) {
-            projectedProfit += FARM.calcActualProfit(d);
-            projectedPollution += FARM.calcDecayPollution( d);
-          }
-          else if (pushed == view.houseB) {
-            projectedProfit += HOUSE.calcActualProfit(d);
-            projectedPollution += HOUSE.calcDecayPollution(d);
-          }
-          else if (pushed == view.forestB) {
-            projectedProfit += FOREST.calcActualProfit(d);
-            projectedPollution += FOREST.calcDecayPollution(d);
-          }   //Calculations for each button
-        }else {    //Don't sum when over River
-          projectedProfit += 0;
-          projectedPollution += 0;
-        }
-      }
-      view.INFO_BOX.setProjected(projectedProfit, projectedPollution);
-    }
-  }
-  
-  
   void pushUnpushButtons() {
     /* Logic for pushing and unpushing buttons */
     if (mouseOverButton()) {
@@ -248,98 +212,144 @@ class Controller{
       selected = null;    //Unselect when I click outside map
   }
   
-  void addStuff(){
-    /* Logic to change LandUses and display appropriate feebback */
-    if (control.mouseOverMap() && mouseButton == LEFT && inAddMode()){    //Left mouse button to add
-      int[] posP = control.converter(mousePX, mousePY);     //Mouse press position
-      int[] posR = control.converter(mouseRX, mouseRY);    //Mopuse release position
-      LandUse olu = null;  //Original landuse of tile
-      int count = 0;    //Number of landUses add/removed
-      String thing = "";  
-      boolean s = false;
-      int i = 0; 
-      int j = 0;      
-      int m = 0;
-      for (int x = min(posP[0], posR[0]); x <= max(posP[0], posR[0]); x++) {
-        for (int y = min(posP[1], posR[1]); y <= max(posP[1], posR[1]); y++) {
-          m++;
-          if (m<2) olu = waterS.getTile(x,y).getLandUse();    //I only have to remember previous landuse when I only change one Tile
-          if (pushed == view.factoryB) {        //If factory button is in pressed state
-            s = WS.addFactory(x, y);      //count++ only when true
-            if (s) {
-              count ++;   //increment and save coordinates if successful
-              i = x;
-              j = y;
-            }
-            thing = "Factory";
-            if (count > 1) thing = "Factories";
+  class LandUseController {
+    
+    ArrayList<Tile> getProspectiveTiles(){
+      ArrayList<Tile> tlist = new ArrayList<Tile>();
+      if (mouseOverMap() && inAddMode()) {
+        tlist = getDraggedTiles();  //Tiles to calculate info for
+        if (!mousePressed) tlist.add(getOverTile());     //Include info for tile mouse is over when mouse is not dragged
+      }
+      return tlist;
+    }
+    
+    void calcAddInfo(){
+      /* Determines if in add mode, calculated projected values, instructs INFO_BOX to display them */
+      float projectedProfit = 0;
+      float projectedPollution = 0;
+      for (Tile t : getProspectiveTiles()){
+        float d = t.distToRiver();
+        if (! t.isRiver()){
+          if  (pushed == view.factoryB) {    
+            projectedProfit += FACTORY.calcActualProfit(d);  
+            projectedPollution += FACTORY.calcDecayPollution(d);
           } 
-          else if (pushed == view.farmB) {        //If farm button is in pressed state
-            s = WS.addFarm(x, y);
-             if (s) {
-              count ++;
-              i = x;
-              j = y;
-            }
-            thing = "Farm";
-            if (count > 1) thing = "Farms";
+          else if (pushed == view.farmB) {
+            projectedProfit += FARM.calcActualProfit(d);
+            projectedPollution += FARM.calcDecayPollution( d);
           }
-          else if (pushed == view.houseB) {        //If house button is in pressed state
-            s = WS.addHouse(x, y);
-             if (s) {
-              count ++;
-              i = x;
-              j = y;
-            }
-            thing = "House";
-            if (count > 1) thing = "Houses";
+          else if (pushed == view.houseB) {
+            projectedProfit += HOUSE.calcActualProfit(d);
+            projectedPollution += HOUSE.calcDecayPollution(d);
           }
-          else if (pushed == view.forestB) {        //If forest button is in pressed state
-            s = WS.addForest(x, y);
-            if (s) {
-              count ++;
-              i = x;
-              j = y;
-            }
-            thing = "Forest";
-            if (count > 1) thing = "Forests";
-          }
-          else if(pushed == view.demolishB) {    //If demolish button is in pressed state
-            LandUse temp = waterS.getTile(x,y).getLandUse();
-            s = WS.removeLandUse(x,y);
-             if (s) {
-              count ++;
-              i = x;
-              j = y;
-            }
-            if (s) olu = temp;   //remember previous landuse if successful
-          }
+          else if (pushed == view.forestB) {
+            projectedProfit += FOREST.calcActualProfit(d);
+            projectedPollution += FOREST.calcDecayPollution(d);
+          }   //Calculations for each button
+        }else {    //Don't sum when over River
+          projectedProfit += 0;
+          projectedPollution += 0;
         }
-      }   //for all Tiles to add landuse
-      
-      // Set messages to display
-      if (count > 1) {
-        view.FEEDBACK_BOX.setActionMessage("Built " + Integer.toString(count) + " " + thing);    
-        if (pushed == graphics.demolishB) 
-          view.FEEDBACK_BOX.setActionMessage("Removed land use at " + Integer.toString(count) + " locations");
-      }  //count > 1
-      else if (count == 1){
-        view.FEEDBACK_BOX.setActionMessage("Added a " + thing + " at " + "<" +(i)+ ", " +(j)+ ">");  
-        if (pushed == graphics.demolishB) 
-          view.FEEDBACK_BOX.setActionMessage("Removed " + olu.toString() + " at " + "<" +(i)+ ", " +(j)+ ">");  
-      }  // count == 1
-      else {
-        //When quota is full
-        view.FEEDBACK_BOX.setActionMessage("Quota is full");
-        //When attempting build on River
-        if (olu.isRiver())
-           view.FEEDBACK_BOX.setActionMessage("Cannot build " +thing+ " in river.");
-        if (pushed == graphics.demolishB) 
-          view.FEEDBACK_BOX.setActionMessage("Nothing to remove");
-      } //count == 0
-    } //if mouseOverMap() and mouseButton == LEFT
+      }
+      view.INFO_BOX.setProjected(projectedProfit, projectedPollution);
+    }
+
+    
+    void addStuff(){
+      /* Logic to change LandUses and display appropriate feebback */
+      if (control.mouseOverMap() && mouseButton == LEFT && inAddMode()){    //Left mouse button to add
+        int[] posP = control.converter(mousePX, mousePY);     //Mouse press position
+        int[] posR = control.converter(mouseRX, mouseRY);    //Mopuse release position
+        LandUse olu = null;  //Original landuse of tile
+        int count = 0;    //Number of landUses add/removed
+        String thing = "";  
+        boolean s = false;
+        int i = 0; 
+        int j = 0;      
+        int m = 0;
+        for (int x = min(posP[0], posR[0]); x <= max(posP[0], posR[0]); x++) {
+          for (int y = min(posP[1], posR[1]); y <= max(posP[1], posR[1]); y++) {
+            m++;
+            if (m<2) olu = waterS.getTile(x,y).getLandUse();    //I only have to remember previous landuse when I only change one Tile
+            if (pushed == view.factoryB) {        //If factory button is in pressed state
+              s = WS.addFactory(x, y);      //count++ only when true
+              if (s) {
+                count ++;   //increment and save coordinates if successful
+                i = x;
+                j = y;
+              }
+              thing = "Factory";
+              if (count > 1) thing = "Factories";
+            } 
+            else if (pushed == view.farmB) {        //If farm button is in pressed state
+              s = WS.addFarm(x, y);
+               if (s) {
+                count ++;
+                i = x;
+                j = y;
+              }
+              thing = "Farm";
+              if (count > 1) thing = "Farms";
+            }
+            else if (pushed == view.houseB) {        //If house button is in pressed state
+              s = WS.addHouse(x, y);
+               if (s) {
+                count ++;
+                i = x;
+                j = y;
+              }
+              thing = "House";
+              if (count > 1) thing = "Houses";
+            }
+            else if (pushed == view.forestB) {        //If forest button is in pressed state
+              s = WS.addForest(x, y);
+              if (s) {
+                count ++;
+                i = x;
+                j = y;
+              }
+              thing = "Forest";
+              if (count > 1) thing = "Forests";
+            }
+            else if(pushed == view.demolishB) {    //If demolish button is in pressed state
+              LandUse temp = waterS.getTile(x,y).getLandUse();
+              s = WS.removeLandUse(x,y);
+               if (s) {
+                count ++;
+                i =  x;
+                j = y;
+              }
+              if (s) olu = temp;   //remember previous landuse if successful
+            }
+          }
+        }   //for all Tiles to add landuse
+        
+        // Set messages to display
+        if (count > 1) {
+          view.FEEDBACK_BOX.setActionMessage("Built " + Integer.toString(count) + " " + thing);    
+          if (pushed == graphics.demolishB) 
+            view.FEEDBACK_BOX.setActionMessage("Removed land use at " + Integer.toString(count) + " locations");
+        }  //count > 1
+        else if (count == 1){
+          view.FEEDBACK_BOX.setActionMessage("Added a " + thing + " at " + "<" +(i)+ ", " +(j)+ ">");  
+          if (pushed == graphics.demolishB) 
+            view.FEEDBACK_BOX.setActionMessage("Removed " + olu.toString() + " at " + "<" +(i)+ ", " +(j)+ ">");  
+        }  // count == 1
+        else {
+          //When quota is full
+          view.FEEDBACK_BOX.setActionMessage("Quota is full");
+          //When attempting build on River
+          if (olu.isRiver())
+             view.FEEDBACK_BOX.setActionMessage("Cannot build " +thing+ " in river.");
+          if (pushed == graphics.demolishB) 
+            view.FEEDBACK_BOX.setActionMessage("Nothing to remove");
+        } //count == 0
+      } //if mouseOverMap() and mouseButton == LEFT
+    }
+    
+    
   }
-}
+} //End of class Controller
 
 
 void mousePressed() {  
@@ -354,7 +364,7 @@ void mouseReleased() {
   mouseRX = mouseX;
   mouseRY = mouseY;
   control.selectTile();
-  control.addStuff();
+  control.LU_CONTROLLER.addStuff();
 }
 
 void mouseClicked() {
