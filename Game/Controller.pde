@@ -263,7 +263,7 @@ class Controller{
       for (int x = min(posP[0], posR[0]); x <= max(posP[0], posR[0]); x++) {
         for (int y = min(posP[1], posR[1]); y <= max(posP[1], posR[1]); y++) {
           m++;
-          if (m<2) olu = waterS.getTile(x,y).getLandUse();
+          if (m<2) olu = waterS.getTile(x,y).getLandUse();    //I only have to remember previous landuse when I only change one Tile
           if (pushed == view.factoryB) {        //If factory button is in pressed state
             s = WS.addFactory(x, y);      //count++ only when true
             if (s) {
@@ -329,13 +329,11 @@ class Controller{
           view.FEEDBACK_BOX.setActionMessage("Removed " + olu.toString() + " at " + "<" +(i)+ ", " +(j)+ ">");  
       }  // count == 1
       else {
-        //When attempting build on River
-       
         //When quota is full
         view.FEEDBACK_BOX.setActionMessage("Quota is full");
-        if (olu.isRiver()){
-           view.FEEDBACK_BOX.setActionMessage("Cannot build " +thing+ " in river. Nothing is added.");
-        }
+        //When attempting build on River
+        if (olu.isRiver())
+           view.FEEDBACK_BOX.setActionMessage("Cannot build " +thing+ " in river.");
         if (pushed == graphics.demolishB) 
           view.FEEDBACK_BOX.setActionMessage("Nothing to remove");
       } //count == 0
