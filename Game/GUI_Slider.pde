@@ -15,7 +15,7 @@ class Slider {
   LandUse lu;
   int minVal;        //Min and max val of slider
   int maxVal;
-  float defaultVal;    //The initial value of the slider
+  float currentVal;    //The initial value of the slider
   float ratio;
   
   Slider(LandUse l, int xp, int yp, int minV, int maxV, color c) {
@@ -24,9 +24,9 @@ class Slider {
     y = yp;
     minVal = minV;
     maxVal = maxV;
-    defaultVal = l.getBasePollution();
+    currentVal = l.getBasePollution();
     ratio = (maxVal - minVal)/((float)(BAR_WIDTH - S_WIDTH));
-    spos = x + (defaultVal-minVal)/ratio;
+    spos = x + (currentVal-minVal)/ratio;
     col = c ;
   }
   
@@ -38,6 +38,11 @@ class Slider {
       return false;
     }
   }
+  
+  void setVal(int v){
+    currentVal = v;
+  }
+    
   
   void update() {
     if (overEvent()) {

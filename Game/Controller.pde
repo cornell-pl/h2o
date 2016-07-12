@@ -308,7 +308,7 @@ class Controller {
     }
   }//END OF NESTED CLASS LANDUSE_CONTROLLER
   
-  
+  //-------Button and Slider  ----//
  
     void pushUnpushButtons() {
       /* Logic for pushing and unpushing buttons */
@@ -366,6 +366,8 @@ class Controller {
         pushed = null;
       }
     }
+    
+    
 
 } //END OF CLASS CONTROLLER
 
