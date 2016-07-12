@@ -87,13 +87,11 @@ class Controller{
     if (mousePressed && mouseOverMap()) {    
       int[] posP = control.converter(mousePX, mousePY);   //tile coordinate when mouse is pressed
       int[] posC = control.converter(mouseX, mouseY);     //current tile coordinate
-      if ((posP[0] >= 0 && posP[0] <SIZE_X) && (posP[1] >= 0 && posP[1] < SIZE_Y)) {
-        for (int x = min(posP[0], posC[0]); x <= max(posP[0], posC[0]); x++) {
-          for (int y = min(posP[1], posC[1]); y <= max(posP[1], posC[1]); y++) {
-            tlist.add(waterS.getTile(x, y));
-          }
-        }// for all tiles to highlight
-      }// if tile range is valid
+      for (int x = min(posP[0], posC[0]); x <= max(posP[0], posC[0]); x++) {
+        for (int y = min(posP[1], posC[1]); y <= max(posP[1], posC[1]); y++) {
+          tlist.add(waterS.getTile(x, y));
+        }
+      }// for all tiles to highlight
     }// if mouse dragged over map
     return tlist;
   }
@@ -261,8 +259,11 @@ class Controller{
       boolean s = false;
       int i = 0; 
       int j = 0;      
+      int m = 0;
       for (int x = min(posP[0], posR[0]); x <= max(posP[0], posR[0]); x++) {
         for (int y = min(posP[1], posR[1]); y <= max(posP[1], posR[1]); y++) {
+          m++;
+          if (m<2) olu = waterS.getTile(x,y).getLandUse();
           if (pushed == view.factoryB) {        //If factory button is in pressed state
             s = WS.addFactory(x, y);      //count++ only when true
             if (s) {
@@ -328,7 +329,13 @@ class Controller{
           view.FEEDBACK_BOX.setActionMessage("Removed " + olu.toString() + " at " + "<" +(i)+ ", " +(j)+ ">");  
       }  // count == 1
       else {
-        view.FEEDBACK_BOX.setActionMessage("Cannot build " +thing+ " in river. Nothing is added.");
+        //When attempting build on River
+       
+        //When quota is full
+        view.FEEDBACK_BOX.setActionMessage("Quota is full");
+        if (olu.isRiver()){
+           view.FEEDBACK_BOX.setActionMessage("Cannot build " +thing+ " in river. Nothing is added.");
+        }
         if (pushed == graphics.demolishB) 
           view.FEEDBACK_BOX.setActionMessage("Nothing to remove");
       } //count == 0
