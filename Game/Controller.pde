@@ -9,7 +9,7 @@ int mousePY;
 int mouseRX;   //Mouse release positions
 int mouseRY;
 
-class Controller{
+class Controller {
   final TileController TILE_CONTROLLER = new TileController();
   final LandUseController LU_CONTROLLER =  new LandUseController();
   Watershed waterS;
@@ -160,67 +160,9 @@ class Controller{
     }
   }  //END OF NESTED CLASS TILE_CONTROLLER
 
-  void pushUnpushButtons() {
-    /* Logic for pushing and unpushing buttons */
-    if (mouseOverButton()) {
-      Button b = getOverButton();
-      if (b != view.resetB && b != view.demolishB){
-        if (pushed == b) {
-         view.FEEDBACK_BOX.setModeMessage("");
-          pushed = null;
-        } else {
-          pushed = b;
-          view.FEEDBACK_BOX.setModeMessage("Add " + b.label + " mode is selected");
-          view.FEEDBACK_BOX.setActionMessage("");
-         }
-      }
-      else if(b == view.demolishB) {   //When demolish button is clicked on
-        if (pushed == view.demolishB) {
-           view.FEEDBACK_BOX.setModeMessage("");
-          pushed = null;
-        } else {
-          pushed = view.demolishB;
-          view.FEEDBACK_BOX.setModeMessage("Demolish mode is selected");
-          view.FEEDBACK_BOX.setActionMessage("");
-        }
-      }
-      else if(b == view.resetB) {  //When reset button is clicked on
-        if (pushed == view.resetB) {
-          view.FEEDBACK_BOX.setModeMessage("Restarting game");
-          view.FEEDBACK_BOX.setActionMessage("");
-          WS = new Watershed(SIZE_X, SIZE_Y);      //
-          graphics.waterS = WS;                
-          pushed = null;
-          selected = null;
-          view.FEEDBACK_BOX.setModeMessage("");
-          view.FEEDBACK_BOX.setActionMessage("Game is reset");
-        }else {
-          pushed = view.resetB;
-          view.FEEDBACK_BOX.setModeMessage("Do you want to reset the map? Click button again to reset.");
-          view.FEEDBACK_BOX.setActionMessage("Click anywhere to cancel.");
-        }
-      }
-    }
-    //Unpress button if clicked out of map but not on sliders and toggles
-    if (! mouseOverMap() && !mouseOverButton() && !view.factoryS.over && !view.farmS.over && !view.houseS.over && !view.forestS.over && !view.showPolT.over && !view.showDecayPolT.over && !view.showDistT.over && !view.showProfitT.over){
-      //Unpress reset button if it is pressed and user clicks outside the button
-      if (pushed == view.resetB && ! view.resetB.isOver()) {
-        view.FEEDBACK_BOX.setModeMessage("");
-        view.FEEDBACK_BOX.setActionMessage("");
-      }
-      pushed = null;
-      view.FEEDBACK_BOX.setModeMessage("");
-    }
-    if (mouseButton == RIGHT) {    //Right mouse button to unpush any button
-      view.FEEDBACK_BOX.setModeMessage("");
-      pushed = null;
-    }
-  }
-  
-  
-  
-  
+
   class LandUseController {
+    /* Calculates projected values, updates view and model on changing LandUse */
     
     void run(){
       calcAddInfo(getProspectiveTiles());
@@ -363,10 +305,68 @@ class Controller{
             view.FEEDBACK_BOX.setActionMessage("Nothing to remove");
         } //count == 0
       } //if mouseOverMap() and mouseButton == LEFT
-    } //END OF NESTED CLASS LANDUSE_CONTROLLER
-    
-    
-  }
+    }
+  }//END OF NESTED CLASS LANDUSE_CONTROLLER
+  
+  
+ 
+    void pushUnpushButtons() {
+      /* Logic for pushing and unpushing buttons */
+      if (mouseOverButton()) {
+        Button b = getOverButton();
+        if (b != view.resetB && b != view.demolishB){
+          if (pushed == b) {
+           view.FEEDBACK_BOX.setModeMessage("");
+            pushed = null;
+          } else {
+            pushed = b;
+            view.FEEDBACK_BOX.setModeMessage("Add " + b.label + " mode is selected");
+            view.FEEDBACK_BOX.setActionMessage("");
+           }
+        }
+        else if(b == view.demolishB) {   //When demolish button is clicked on
+          if (pushed == view.demolishB) {
+             view.FEEDBACK_BOX.setModeMessage("");
+            pushed = null;
+          } else {
+            pushed = view.demolishB;
+            view.FEEDBACK_BOX.setModeMessage("Demolish mode is selected");
+            view.FEEDBACK_BOX.setActionMessage("");
+          }
+        }
+        else if(b == view.resetB) {  //When reset button is clicked on
+          if (pushed == view.resetB) {
+            view.FEEDBACK_BOX.setModeMessage("Restarting game");
+            view.FEEDBACK_BOX.setActionMessage("");
+            WS = new Watershed(SIZE_X, SIZE_Y);      //
+            graphics.waterS = WS;                
+            pushed = null;
+            selected = null;
+            view.FEEDBACK_BOX.setModeMessage("");
+            view.FEEDBACK_BOX.setActionMessage("Game is reset");
+          }else {
+            pushed = view.resetB;
+            view.FEEDBACK_BOX.setModeMessage("Do you want to reset the map? Click button again to reset.");
+            view.FEEDBACK_BOX.setActionMessage("Click anywhere to cancel.");
+          }
+        }
+      }
+      //Unpress button if clicked out of map but not on sliders and toggles
+      if (! mouseOverMap() && !mouseOverButton() && !view.factoryS.over && !view.farmS.over && !view.houseS.over && !view.forestS.over && !view.showPolT.over && !view.showDecayPolT.over && !view.showDistT.over && !view.showProfitT.over){
+        //Unpress reset button if it is pressed and user clicks outside the button
+        if (pushed == view.resetB && ! view.resetB.isOver()) {
+          view.FEEDBACK_BOX.setModeMessage("");
+          view.FEEDBACK_BOX.setActionMessage("");
+        }
+        pushed = null;
+        view.FEEDBACK_BOX.setModeMessage("");
+      }
+      if (mouseButton == RIGHT) {    //Right mouse button to unpush any button
+        view.FEEDBACK_BOX.setModeMessage("");
+        pushed = null;
+      }
+    }
+
 } //END OF CLASS CONTROLLER
 
 
