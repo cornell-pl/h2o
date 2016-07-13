@@ -30,17 +30,13 @@ class Slider {
     col = c ;
   }
   
-  boolean overEvent() {
+  boolean isOver(){
     if (mouseX > x && mouseX < x+BAR_WIDTH &&
        mouseY > y && mouseY < y+BAR_HEIGHT) {
       return true;
     } else {
       return false;
     }
-  }
-  
-  boolean isOver(){
-    return over;
   }
   
   boolean isLocked(){
@@ -56,7 +52,7 @@ class Slider {
   }
 
   void update() {
-    if (overEvent()) {
+    if (isOver()) {
       over = true;
     } else {
       over = false;
