@@ -319,6 +319,18 @@ class Controller {
         int currentVal = view.factoryS.getVal();
         FACTORY.updatePollution(currentVal);
       }
+      if (view.farmS.isLocked()){
+        int currentVal = view.farmS.getVal();
+        FARM.updatePollution(currentVal);
+      }
+      if (view.houseS.isLocked()){
+        int currentVal = view.houseS.getVal();
+        HOUSE.updatePollution(currentVal);
+      }
+      if (view.forestS.isLocked()){
+        int currentVal = view.forestS.getVal();
+        FOREST.updatePollution(currentVal);
+      }
     }
   }
  

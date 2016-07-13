@@ -85,9 +85,9 @@ class GUI {
     
     if (showSlider == true) {
       factoryS.display();
-      //farmS.display();
-      //houseS.display();
-      //forestS.display();
+      farmS.display();
+      houseS.display();
+      forestS.display();
     }
   }
   
