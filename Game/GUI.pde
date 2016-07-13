@@ -251,6 +251,7 @@ class GUI {
     void display(){
      /* Draws box and displays selected Tile info and prePurchaseInfo */
       stroke(255);
+      strokeWeight(1);
       fill(255);
       rect(XPOS+455, YPOS + SIZE_Y*TILE_HEIGHT + 10, 200, 115);
       showPrePurchaseInfo();
@@ -261,6 +262,7 @@ class GUI {
       /* Displays information of selected Tile */
       if (selected != null) {
         fill(0);  //Color of text 
+        textAlign(CORNER);
         textFont(MESSAGEFONT);
         String text1 = selected.toString() + 
                       "     Type: " + selected.getLandUse().toString();
@@ -290,6 +292,7 @@ class GUI {
         
         textFont(MESSAGEFONT);
         fill(125);
+        textAlign(CORNER);
         text(purchaseInfo, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 90);  
         text(pollutionInfo, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 110);
         showPrePurchase = false;
@@ -319,6 +322,7 @@ class GUI {
       rect(XPOS, YPOS + SIZE_Y*TILE_HEIGHT + 10, 440, 115);
       fill(0);  //Color of text 
       textFont(MESSAGEFONT);
+      textAlign(CORNER);
       text(modeMessage, XPOS + 20, YPOS + SIZE_Y*TILE_HEIGHT + 30);   
       text(actionMessage, XPOS + 20, YPOS + SIZE_Y*TILE_HEIGHT + 50);   
       text("Simple sum of all pollution: " + waterS.sumTotalPollution(), XPOS + 20, YPOS + SIZE_Y*TILE_HEIGHT + 90);
@@ -352,6 +356,7 @@ class GUI {
       int y = YPOSB + 460;
       fill(0);
       textFont(BIGFONT);
+      textAlign(CORNER);
       text("Money: ", x, y);
       textFont(NUMERALFONT);
       text("$"+nfc(round(waterS.sumActualProfits())), x, y+36);
@@ -363,6 +368,7 @@ class GUI {
       int y = YPOSB + 550;
       fill(0);
       textFont(BIGFONT);
+      textAlign(CORNER);
       text("Score: ", x, y);
       textFont(NUMERALFONT);
       text(nfc(round(waterS.calcScore())), x, y+36);
@@ -374,6 +380,7 @@ class GUI {
       int y = YPOSB + 640;
       fill(0);
       textFont(BIGFONT);
+      textAlign(CORNER);
       text("Quota: ", x, y);
       textFont(MESSAGEFONT);
       textSize(16);
