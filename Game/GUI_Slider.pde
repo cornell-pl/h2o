@@ -7,7 +7,7 @@ class Slider {
   
  
   int x, y;       // x and y position of bar
-  float spos;  // x position of slider
+  int spos; //position of the slider in pixels
   boolean over;           // is the mouse over the slider?
   boolean locked;
   color col;
@@ -15,7 +15,7 @@ class Slider {
   LandUse lu;
   int minVal;        //Min and max val of slider
   int maxVal;
-  float currentVal;    //The initial value of the slider
+  int currentVal;    //The initial value of the slider
   float ratio;
   
   Slider(LandUse l, int xp, int yp, int minV, int maxV, color c) {
@@ -26,7 +26,6 @@ class Slider {
     maxVal = maxV;
     currentVal = l.getBasePollution();
     ratio = (maxVal - minVal)/((float)(BAR_WIDTH - S_WIDTH));
-    spos = x + (currentVal-minVal)/ratio;
     col = c ;
   }
   
@@ -39,11 +38,22 @@ class Slider {
     }
   }
   
-  void setVal(int v){
+  boolean isOver(){
+    return over;
+  }
+  
+  boolean isLocked(){
+    return locked;
+  }
+  
+  void setVal(int v){  // ---> does nothing now
     currentVal = v;
   }
-    
   
+  int valToSpos(int v){
+    return round(x + (currentVal-minVal)/ratio);
+  }
+
   void update() {
     if (overEvent()) {
       over = true;
@@ -57,9 +67,9 @@ class Slider {
       locked = false;
     }
     if (locked) {
-      spos = constrain(mouseX, x+1, x+BAR_WIDTH-S_WIDTH);
+      spos = constrain(valToSpos(currentVal), x+1, x+BAR_WIDTH-S_WIDTH);
     }
-    lu.updatePollution(getVal());
+    lu.updatePollution(getVal());    // ---> totally illegal
   }
 
   void display() {

@@ -12,6 +12,7 @@ int mouseRY;
 class Controller {
   final TileController TILE_CONTROLLER = new TileController();
   final LandUseController LU_CONTROLLER =  new LandUseController();
+  final SliderController SLIDE_CONTROLLER = new SliderController();
   Watershed waterS;
   GUI view;
   
@@ -23,6 +24,7 @@ class Controller {
   void eventLoop() {
     TILE_CONTROLLER.run();
     LU_CONTROLLER.run();
+    SLIDE_CONTROLLER.run();
   }
   
   boolean mouseOverMap(){
@@ -309,6 +311,14 @@ class Controller {
   }//END OF NESTED CLASS LANDUSE_CONTROLLER
   
   //-------Button and Slider  ----//
+  
+  class SliderController{
+    
+    void run(){
+      if (view.factoryS.isLocked())
+        view.factoryS.setVal(4);
+    }
+  }
  
     void pushUnpushButtons() {
       /* Logic for pushing and unpushing buttons */
