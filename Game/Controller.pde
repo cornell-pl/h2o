@@ -315,8 +315,10 @@ class Controller {
   class SliderController{
     
     void run(){
-      if (view.factoryS.isLocked())
-        view.factoryS.setVal(4);
+      if (view.factoryS.isLocked()){
+        int currentVal = view.factoryS.getVal();
+        FACTORY.updatePollution(currentVal);
+      }
     }
   }
  

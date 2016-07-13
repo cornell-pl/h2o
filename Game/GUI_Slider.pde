@@ -16,7 +16,7 @@ class Slider {
   int minVal;        //Min and max val of slider
   int maxVal;
   int currentVal;    //The initial value of the slider
-  float ratio;
+  float ratio;   //units per pixellength
   
   Slider(LandUse l, int xp, int yp, int minV, int maxV, color c) {
     lu = l;
@@ -26,6 +26,7 @@ class Slider {
     maxVal = maxV;
     currentVal = l.getBasePollution();
     ratio = (maxVal - minVal)/((float)(BAR_WIDTH - S_WIDTH));
+    spos = valToSpos(currentVal);
     col = c ;
   }
   
@@ -67,9 +68,8 @@ class Slider {
       locked = false;
     }
     if (locked) {
-      spos = constrain(valToSpos(currentVal), x+1, x+BAR_WIDTH-S_WIDTH);
+      spos = constrain(mouseX, x+1, x+BAR_WIDTH-S_WIDTH);
     }
-    lu.updatePollution(getVal());    // ---> totally illegal
   }
 
   void display() {
