@@ -348,10 +348,11 @@ class Controller{
   class ButtonController{
     
     void actionOnPress(){
-      pushUnpushButtons();
+      pushButtons();
+      unpushButtons();
     }
  
-    void pushUnpushButtons() {
+    void pushButtons() {
       /* Logic for pushing and unpushing buttons */
       if (mouseOverButton()) {
         Button b = getOverButton();
@@ -392,6 +393,9 @@ class Controller{
           }
         }
       }
+    }
+    
+    void unpushButtons(){
       //Unpress button if clicked out of map but not on sliders and toggles
       if (! mouseOverMap() && !mouseOverButton() && !view.factoryS.over && !view.farmS.over && !view.houseS.over && !view.forestS.over && !view.showPolT.over && !view.showDecayPolT.over && !view.showDistT.over && !view.showProfitT.over){
         //Unpress reset button if it is pressed and user clicks outside the button
