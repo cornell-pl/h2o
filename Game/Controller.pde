@@ -9,10 +9,11 @@ int mousePY;
 int mouseRX;   //Mouse release positions
 int mouseRY;
 
-class Controller {
+class Controller{
   final TileController TILE_CONTROLLER = new TileController();
   final LandUseController LU_CONTROLLER =  new LandUseController();
   final SliderController SLIDE_CONTROLLER = new SliderController();
+  final ButtonController BUTTON_CONTROLLER = new ButtonController();
   Watershed waterS;
   GUI view;
   
@@ -25,6 +26,15 @@ class Controller {
     TILE_CONTROLLER.run();
     LU_CONTROLLER.run();
     SLIDE_CONTROLLER.run();
+  }
+  
+  void actionOnPress(){
+    BUTTON_CONTROLLER.actionOnPress();
+  }
+  
+  void actionOnRelease(){
+    TILE_CONTROLLER.actionOnRelease();
+    LU_CONTROLLER.actionOnRelease();
   }
   
   boolean mouseOverMap(){
@@ -332,7 +342,14 @@ class Controller {
         FOREST.updatePollution(currentVal);
       }
     }
-  }
+  }//END OF NESTED CLASS SLIDER_CONTROLLER
+  
+  
+  class ButtonController{
+    
+    void actionOnPress(){
+      pushUnpushButtons();
+    }
  
     void pushUnpushButtons() {
       /* Logic for pushing and unpushing buttons */
@@ -390,6 +407,7 @@ class Controller {
         pushed = null;
       }
     }
+  }
     
     
 
@@ -398,14 +416,13 @@ class Controller {
 
 void mousePressed() {  
   mousePX = mouseX; mousePY = mouseY;
-  control.pushUnpushButtons();
+  control.actionOnPress();
 }
 
 void mouseReleased() {
   mouseRX = mouseX;
   mouseRY = mouseY;
-  control.TILE_CONTROLLER.actionOnRelease();
-  control.LU_CONTROLLER.actionOnRelease();
+  control.actionOnRelease();
 }
 
 void mouseClicked() {

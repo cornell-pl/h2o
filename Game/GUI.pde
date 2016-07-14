@@ -105,6 +105,7 @@ class GUI {
 
   class GameBoard {
     ArrayList<int[]>  highlightThese = new ArrayList<int[]>();    // A list containing all the Tiles that are to be highlighted, each element is of format {posX, posY, color}
+    
     void GameBoard() {
     }
     
@@ -121,6 +122,15 @@ class GUI {
       for (Tile t: waterS.getAllTiles()) 
         drawTile(t.getX(), t.getY(), t.getLandUse().getIcon(), 255);
     }
+    
+     void drawTile(int x, int y, color c, int t) {
+      /* Draws a tile at Location <x, y> on game map, fill color c, transparency t */
+      stroke(240);
+      strokeWeight(0.5);
+      fill(c, t);
+      rect(x*TILE_WIDTH + XPOS, y*TILE_HEIGHT + YPOS, TILE_WIDTH, TILE_HEIGHT);
+      fill(255);    //resets to white.
+    } 
     
     void drawAxisLabels() {
       /* Draws axis labels. */
@@ -159,15 +169,6 @@ class GUI {
         rect(selected.getX()*TILE_WIDTH + XPOS, selected.getY()*TILE_HEIGHT + YPOS, TILE_WIDTH, TILE_HEIGHT);
       }
     }
-    
-    void drawTile(int x, int y, color c, int t) {
-      /* Draws a tile at Location <x, y> on game map, fill color c, transparency t */
-      stroke(240);
-      strokeWeight(0.5);
-      fill(c, t);
-      rect(x*TILE_WIDTH + XPOS, y*TILE_HEIGHT + YPOS, TILE_WIDTH, TILE_HEIGHT);
-      fill(255);    //resets to white.
-    } 
 
     void highlightTile(Tile t, color hc) {
       highlightThese.add(new int[] {t.getX(), t.getY(), hc});
