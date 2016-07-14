@@ -1,4 +1,4 @@
-//**** MOUSE INTERACTION  ****//  -----------------------------------------------
+
 Tile selected = null;    //The current Tile that is selected. null if no Tile selected
 Button pushed = null;   //The current button that is pushed. null if none is pushed.
 Toggle toggled = null;   //The current toggle. null if none toggled
@@ -14,6 +14,7 @@ class Controller{
   final LandUseController LU_CONTROLLER =  new LandUseController();
   final SliderController SLIDE_CONTROLLER = new SliderController();
   final ButtonController BUTTON_CONTROLLER = new ButtonController();
+  final ToggleController TOGGLE_CONTROLLER = new ToggleController();
   Watershed waterS;
   GUI view;
   
@@ -35,6 +36,10 @@ class Controller{
   void actionOnRelease(){
     TILE_CONTROLLER.actionOnRelease();
     LU_CONTROLLER.actionOnRelease();
+  }
+  
+  void actionOnClick(){
+    TOGGLE_CONTROLLER.actionOnClick();
   }
   
   boolean mouseOverMap(){
@@ -411,10 +416,34 @@ class Controller{
         pushed = null;
       }
     }
+  }//END OF NESTED CLASS BUTTON_CONTROLLER
+  
+  class ToggleController{
+    
+    void actionOnClick(){
+      toggle();
+    }
+    
+    void toggle(){
+      if (graphics.showPolT.over) {
+        if (toggled == graphics.showPolT) toggled = null;
+        else toggled = graphics.showPolT;
+      }else if (graphics.showDecayPolT.over) {
+        if (toggled == graphics.showDecayPolT) toggled = null;
+        else toggled = graphics.showDecayPolT;
+      }else if (graphics.showDistT.over) {
+        if (toggled == graphics.showDistT) toggled = null;
+        else toggled = graphics.showDistT;
+      }else if (graphics.showProfitT.over) {
+        if (toggled == graphics.showProfitT) toggled = null;
+        else toggled = graphics.showProfitT;
+      }
+      else if (graphics.sliderT.over) {
+        if (showSlider == true) showSlider = false;
+        else showSlider = true;
+      }
+    }
   }
-    
-    
-
 } //END OF CLASS CONTROLLER
 
 
@@ -430,21 +459,5 @@ void mouseReleased() {
 }
 
 void mouseClicked() {
-  if (graphics.showPolT.over) {
-    if (toggled == graphics.showPolT) toggled = null;
-    else toggled = graphics.showPolT;
-  }else if (graphics.showDecayPolT.over) {
-    if (toggled == graphics.showDecayPolT) toggled = null;
-    else toggled = graphics.showDecayPolT;
-  }else if (graphics.showDistT.over) {
-    if (toggled == graphics.showDistT) toggled = null;
-    else toggled = graphics.showDistT;
-  }else if (graphics.showProfitT.over) {
-    if (toggled == graphics.showProfitT) toggled = null;
-    else toggled = graphics.showProfitT;
-  }
-  else if (graphics.sliderT.over) {
-    if (showSlider == true) showSlider = false;
-    else showSlider = true;
-  }
+  control.actionOnClick();
 }
