@@ -188,7 +188,7 @@ static class Forest extends LandUse {
 }
 
 static class PrimaryForest extends Forest {
-  /* PrimaryForests have zero cost */
+  /* PrimaryFOREST_SLIDER have zero cost */
   private static PrimaryForest instance = new PrimaryForest();
   
   static PrimaryForest getInstance(){

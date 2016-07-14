@@ -6,9 +6,9 @@ static final int XPOSB = XPOS + SIZE_X*TILE_WIDTH + 40;    //Drawing dimensions.
 static final int YPOSB = 60;    //All buttons scale with respect to these
 static final color DEFAULT_HIGHLIGHT = #E5FCFC;   // Default color to highllight Tiles with
 
-//#B6FAB1; 
-
 class GUI {
+  Watershed waterS;
+  
   final PFont AXISFONT = createFont("Calibri", 12);
   final PFont MESSAGEFONT = createFont("Calibri", 14);
   final PFont BIGFONT = createFont("Calibri-Bold", 20);
@@ -19,46 +19,44 @@ class GUI {
   final FeedbackBox FEEDBACK_BOX = new FeedbackBox();
   final Dashboard DASHBOARD = new Dashboard();
   
-  Watershed waterS;
+  final Button FACTORY_BUTTON;
+  final Button FARM_BUTTON;
+  final Button HOUSE_BUTTON;
+  final Button FOREST_BUTTON;
+  final Button DEMOLISH_BUTTON;
+  final Button RESET_BUTTON;
   
-  Button factoryB;
-  Button farmB;
-  Button houseB;
-  Button forestB;
-  Button demolishB;
-  Button resetB;
+  final Toggle POLLUTION_TOGGLE;
+  final Toggle DECAYPOL_TOGGLE;
+  final Toggle DIST_TOGGLE;
+  final Toggle PROFIT_TOGGLE;
+  final Toggle SLIDER_TOGGLE;
   
-  Toggle showPolT;
-  Toggle showDecayPolT;
-  Toggle showDistT;
-  Toggle showProfitT;
-  Toggle sliderT;
-  
-  Slider factoryS;
-  Slider farmS;
-  Slider houseS;
-  Slider forestS;
+  final Slider FACTORY_SLIDER;
+  final Slider FARM_SLIDER;
+  final Slider HOUSE_SLIDER;
+  final Slider FOREST_SLIDER;
   
   GUI(Watershed WS) {
     
     waterS = WS;
-    factoryB = new Button(XPOSB, YPOSB, TILE_WIDTH, TILE_HEIGHT, FACTORY_BROWN, #73A29C, #EA7E2F, "Factory");
-    farmB = new Button(XPOSB, YPOSB + 60, TILE_WIDTH, TILE_HEIGHT, FARM_YELLOW, #73A29C, #F0AD1D, "Farm");
-    houseB = new Button(XPOSB, YPOSB + 120, TILE_WIDTH, TILE_HEIGHT, HOUSE_GRAY, #73A29C, #90B3B4, "House");
-    forestB = new Button(XPOSB, YPOSB + 180, TILE_WIDTH, TILE_HEIGHT, FOREST_GREEN, #73A29C, #02A002, "Forest");
-    demolishB = new Button(XPOSB, YPOSB + 240, TILE_WIDTH, TILE_HEIGHT, DEMOLISH_BEIGE, #73A29C, #F5BB74, "Demolish");
-    resetB = new Button(XPOSB+220, YPOS+TILE_HEIGHT*SIZE_Y-57, TILE_WIDTH + 5, TILE_HEIGHT + 5, #FFFFFF, #989795, #171717, "RESET MAP");
+    FACTORY_BUTTON = new Button(XPOSB, YPOSB, TILE_WIDTH, TILE_HEIGHT, FACTORY_BROWN, #73A29C, #EA7E2F, "Factory");
+    FARM_BUTTON = new Button(XPOSB, YPOSB + 60, TILE_WIDTH, TILE_HEIGHT, FARM_YELLOW, #73A29C, #F0AD1D, "Farm");
+    HOUSE_BUTTON = new Button(XPOSB, YPOSB + 120, TILE_WIDTH, TILE_HEIGHT, HOUSE_GRAY, #73A29C, #90B3B4, "House");
+    FOREST_BUTTON = new Button(XPOSB, YPOSB + 180, TILE_WIDTH, TILE_HEIGHT, FOREST_GREEN, #73A29C, #02A002, "Forest");
+    DEMOLISH_BUTTON = new Button(XPOSB, YPOSB + 240, TILE_WIDTH, TILE_HEIGHT, DEMOLISH_BEIGE, #73A29C, #F5BB74, "Demolish");
+    RESET_BUTTON = new Button(XPOSB+220, YPOS+TILE_HEIGHT*SIZE_Y-57, TILE_WIDTH + 5, TILE_HEIGHT + 5, #FFFFFF, #989795, #171717, "RESET MAP");
     
-    showPolT = new Toggle(XPOSB+180, YPOSB+450, "Show Pollution");
-    showDecayPolT = new Toggle(XPOSB+180, YPOSB+500, "Show decayPollution");
-    showDistT = new Toggle(XPOSB+180, YPOSB+550, "Show distToRiver");
-    showProfitT = new Toggle(XPOSB+180, YPOSB+600, "Show Money");
-    sliderT = new Toggle(XPOSB+160, YPOSB+240, "Show sliders");
+    POLLUTION_TOGGLE = new Toggle(XPOSB+180, YPOSB+450, "Show Pollution");
+    DECAYPOL_TOGGLE = new Toggle(XPOSB+180, YPOSB+500, "Show decayPollution");
+    DIST_TOGGLE = new Toggle(XPOSB+180, YPOSB+550, "Show distToRiver");
+    PROFIT_TOGGLE = new Toggle(XPOSB+180, YPOSB+600, "Show Money");
+    SLIDER_TOGGLE = new Toggle(XPOSB+160, YPOSB+240, "Show sliders");
 
-    factoryS = new Slider(FACTORY, XPOSB+140, YPOSB, 0, 20, FACTORY_BROWN);
-    farmS = new Slider(FARM, XPOSB+140, YPOSB + 60, 0, 20, FARM_YELLOW);
-    houseS = new Slider(HOUSE, XPOSB+140, YPOSB + 120, 0, 20, HOUSE_GRAY);
-    forestS = new Slider(FOREST, XPOSB+140, YPOSB + 180, -10, 10, FOREST_GREEN);
+    FACTORY_SLIDER = new Slider(FACTORY, XPOSB+140, YPOSB, 0, 20, FACTORY_BROWN);
+    FARM_SLIDER = new Slider(FARM, XPOSB+140, YPOSB + 60, 0, 20, FARM_YELLOW);
+    HOUSE_SLIDER = new Slider(HOUSE, XPOSB+140, YPOSB + 120, 0, 20, HOUSE_GRAY);
+    FOREST_SLIDER = new Slider(FOREST, XPOSB+140, YPOSB + 180, -10, 10, FOREST_GREEN);
   }
   
   void render() {
@@ -70,30 +68,27 @@ class GUI {
     
     drawDividers();
     
-    showPolT.display();
-    showDecayPolT.display();
-    showDistT.display();
-    showProfitT.display();
-    sliderT.display();
+    POLLUTION_TOGGLE.display();
+    DECAYPOL_TOGGLE.display();
+    DIST_TOGGLE.display();
+    PROFIT_TOGGLE.display();
+    SLIDER_TOGGLE.display();
     
-    factoryB.display();
-    farmB.display();
-    houseB.display();
-    forestB.display();
-    demolishB.display();
-    resetB.display();
+    FACTORY_BUTTON.display();
+    FARM_BUTTON.display();
+    HOUSE_BUTTON.display();
+    FOREST_BUTTON.display();
+    DEMOLISH_BUTTON.display();
+    RESET_BUTTON.display();
     
     if (showSlider == true) {
-      factoryS.display();
-      farmS.display();
-      houseS.display();
-      forestS.display();
+      FACTORY_SLIDER.display();
+      FARM_SLIDER.display();
+      HOUSE_SLIDER.display();
+      FOREST_SLIDER.display();
     }
   }
-  
-  
 
-  //**** Draws elements of the game map  ****//  -----------------------------------------------  
   void drawDividers(){ 
       noFill();
       stroke(204);
@@ -102,6 +97,9 @@ class GUI {
       line(XPOSB-20, YPOSB+TILE_HEIGHT+5+270, XPOSB-20+392, YPOSB+TILE_HEIGHT+5+270);
   }
   
+  class ButtonPanel {
+    
+  }
 
   class GameBoard {
     ArrayList<int[]>  highlightThese = new ArrayList<int[]>();    // A list containing all the Tiles that are to be highlighted, each element is of format {posX, posY, color}
@@ -185,13 +183,13 @@ class GUI {
     }
     
     void showToggleInfo() {
-      if (toggled == showPolT) {
+      if (toggled == POLLUTION_TOGGLE) {
         showPollution();
-      }else if (toggled == showDecayPolT) {
+      }else if (toggled == DECAYPOL_TOGGLE) {
         showDecayPollution();
-      }else if (toggled == showDistT) {
+      }else if (toggled == DIST_TOGGLE) {
         showDist();
-      }else if (toggled == showProfitT) {
+      }else if (toggled == PROFIT_TOGGLE) {
         showProfit();
       }
     }
@@ -241,7 +239,7 @@ class GUI {
           text(round(t.getActualProfit()), t.getX()*TILE_WIDTH + XPOS+2, t.getY()*TILE_HEIGHT + YPOS+1);
       }
     }
-  }
+  }// END OF GAMEBOARD NESTED CLASS
 
   class InfoBox{
     /* Draws box and displays selected Tile info and prePurchaseInfo */
@@ -280,7 +278,7 @@ class GUI {
       if (showPrePurchase){
         String purchaseInfo = "";
         String pollutionInfo = "";
-        if (pushed != demolishB) {
+        if (pushed != DEMOLISH_BUTTON) {
           if (projectedProfit >= 0) purchaseInfo = "Money: + $" + nfc(round(projectedProfit));
           else purchaseInfo = "Money: - $" + nfc(abs(projectedProfit),2);
           if (projectedPollution >= 0)pollutionInfo = "Pollution: + " + nfc(projectedPollution,2);
@@ -306,7 +304,7 @@ class GUI {
       projectedPollution = pollution;
       showPrePurchase = true;
     }
-  }
+  } //END OF NESTED CLASS INFO_BOX
   
   
   
@@ -337,7 +335,7 @@ class GUI {
     void setActionMessage(String m){
       actionMessage = m;
     }
-  }
+  }//END OF NESTED CLASS FEEDBACK_BOX
   
   
   class Dashboard {
@@ -386,8 +384,8 @@ class GUI {
       textFont(MESSAGEFONT);
       textSize(16);
       text("  Factories: " + waterS.countFactories() + " / " + FACTORY_QUOTA, x,y+30);
-      text("  Farms: " + waterS.countFarms() + " / " + FARM_QUOTA, x,y+60);
-      text("  Houses: " + waterS.countHouses() + " / " + HOUSE_QUOTA, x,y+90);
+      text("  FARM_SLIDER: " + waterS.countFARM_SLIDER() + " / " + FARM_QUOTA, x,y+60);
+      text("  HOUSE_SLIDER: " + waterS.countHOUSE_SLIDER() + " / " + HOUSE_QUOTA, x,y+90);
     }
     
      void showPollutionSlider() {
@@ -450,68 +448,5 @@ class GUI {
       fill(0);
       text("Pollution indicator: " + pLevel, x, y+65);
     }
-  }
-}
-
-class Toggle {
-  final PFont BASEFONT = createFont("Arial", 14);  
-  int x, y;                 // The x- and y-coordinates of the Button in pixels
-  int tWidth;                 // Dimensions in pixels
-  int tHeight;
-  color baseColor;           // Default color value 
-  color overColor;           //Color when mouse over button
-  color selectedColor;        //Color when button is selected
-  String label;
-  boolean over = false;     //true if mouse is over button
-  
-  Toggle(int xp, int yp, String l) {
-    x = xp;
-    y = yp;
-    tWidth = 15;
-    tHeight = 15;
-    baseColor = 255;          //Default color
-    overColor = 204;           //Color when mouse over button
-    selectedColor = 0; 
-    label = l;            //Color when button is in pushed state
-  }
-  
-  void display() {
-    ellipseMode(CORNER);
-    stroke(255);
-    strokeWeight(2);
-    textFont(BASEFONT);
-    fill(255);  //Color of text label
-    textAlign(LEFT,CENTER);
-    if ((toggled == this) || (this.label.equals("Show sliders") && showSlider == true)) { 
-      text(label, x+tWidth+5, y+(tHeight/2.)-1);
-      fill(selectedColor);
-      if (this.label.equals("Show sliders")) fill(#B72416);
-    }else if (over) {
-      text(label, x+tWidth+5, y+(tHeight/2.)-1);
-      fill(overColor);
-    }else {
-      text(label, x+tWidth+5, y+(tHeight/2.)-1);
-      fill(baseColor);
-    }
-    ellipse(x, y, tWidth, tHeight);
-    update();
-  }  
-  
-  // Updates the over field every frame
-  boolean overEvent() {
-    if (mouseX > x-3 && mouseX < x+tWidth+textWidth(label)+9 &&
-       mouseY > y-5 && mouseY < y+tHeight+5) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-  
-  void update() {
-    if (overEvent()) {
-      over = true;
-    } else {
-      over = false;
-    }
-  }
-}
+  }//END OF NESTED CLASS DASHBOARD
+}//END OF GUI CLASS

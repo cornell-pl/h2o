@@ -37,17 +37,17 @@ class Optimizer {
   
   boolean fullyBuilt(Watershed ws) {
     return (ws.countFactories() == FACTORY_QUOTA &&
-            ws.countFarms() == FARM_QUOTA &&
-            ws.countHouses() == HOUSE_QUOTA);
+            ws.countFARM_SLIDER() == FARM_QUOTA &&
+            ws.countHOUSE_SLIDER() == HOUSE_QUOTA);
   }
   
   boolean buildOk(LandUse lu, Watershed ws) {
     if(lu.isFactory())
       return ws.countFactories() < FACTORY_QUOTA;
     if(lu.isFarm())
-      return ws.countFarms() < FARM_QUOTA;
+      return ws.countFARM_SLIDER() < FARM_QUOTA;
     if(lu.isHouse())
-      return ws.countHouses() < HOUSE_QUOTA;
+      return ws.countHOUSE_SLIDER() < HOUSE_QUOTA;
     if (lu.isForest())
       return ws.sumDecayPollution() > 1.0;
     return false;    

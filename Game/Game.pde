@@ -46,7 +46,7 @@ class Watershed{
   Watershed(int x, int y) {
     populateGameMap();
     initializeRiver();
-    buildForests();
+    buildFOREST_SLIDER();
   }  //<>//
   
   void populateGameMap(){
@@ -68,9 +68,9 @@ class Watershed{
     }
   }
   
-  void buildForests() {
-    /* PrimaryForests for a 30*30 board.
-    *Adds PrimaryForests at designated locations
+  void buildFOREST_SLIDER() {
+    /* PrimaryFOREST_SLIDER for a 30*30 board.
+    *Adds PrimaryFOREST_SLIDER at designated locations
     *River design 2 used. (See Excel sheet)*/
     final int[][] FOREST_COORDS = { { 1 , 1 },  { 1 , 2 },  { 1 , 5 },  { 1 , 18 },  { 1 , 19 },  { 2 , 2 },  { 2 , 3 },  { 2 , 4 },  { 2 , 17 },  { 2 , 18 },  { 2 , 19 },  { 2 , 20 },  { 3 , 2 },  { 3 , 3 },  { 3 , 4 },  { 3 , 5 },  { 3 , 16 },  { 3 , 17 },  { 3 , 18 },  { 3 , 19 },  { 4 , 2 },  { 4 , 3 },  { 4 , 4 },  { 4 , 15 },  { 4 , 16 },  { 4 , 17 },  { 4 , 18 },  { 5 , 4 },  { 5 , 17 },  { 6 , 16 },  { 6 , 17 },  { 6 , 18 },  { 7 , 2 },  { 7 , 17 },  { 7 , 18 },  { 7 , 19 },  { 8 , 17 },  { 8 , 18 },  { 10 , 24 },  { 11 , 24 },  { 11 , 25 },  { 14 , 20 },  { 14 , 21 },  { 15 , 19 },  { 15 , 20 },  { 15 , 21 },  { 15 , 22 },  { 15 , 23 },  { 16 , 18 },  { 16 , 19 },  { 16 , 20 },  { 16 , 21 },  { 17 , 18 },  { 17 , 19 },  { 17 , 20 },  { 21 , 20 },  { 21 , 22 },  { 21 , 23 },  { 22 , 3 },  { 22 , 4 },  { 22 , 19 },  { 22 , 20 },  { 22 , 21 },  { 22 , 22 },  { 22 , 23 },  { 23 , 2 },  { 23 , 3 },  { 23 , 4 },  { 23 , 18 },  { 23 , 19 },  { 23 , 20 },  { 23 , 21 },  { 23 , 22 },  { 23 , 23 },  { 24 , 1 },  { 24 , 2 },  { 24 , 3 },  { 24 , 4 },  { 24 , 5 },  { 24 , 19 },  { 24 , 20 },  { 24 , 21 },  { 24 , 22 },  { 24 , 23 },  { 25 , 2 },  { 25 , 3 },  { 25 , 4 },  { 25 , 5 },  { 25 , 12 },  { 25 , 13 },  { 25 , 20 },  { 25 , 21 },  { 25 , 22 },  { 26 , 3 },  { 26 , 4 },  { 26 , 5 },  { 26 , 6 },  { 26 , 12 },  { 26 , 13 },  { 26 , 23 },  { 26 , 24 },  { 26 , 25 },  { 27 , 4 },  { 27 , 12 },  { 27 , 24 },  { 27 , 25 },  { 27 , 26 },  { 28 , 25 },  { 28 , 26 } };
     for (int[] c: FOREST_COORDS)
@@ -128,24 +128,24 @@ class Watershed{
     return factories;
   }
   
-    int countFarms() {
+    int countFARM_SLIDER() {
     /* Sums the number of each landUse  */
-    int farms = 0;
+    int FARM_SLIDER = 0;
     for (Tile t: getAllTiles()) {
       if (t.isFarm()) 
-        farms ++;
+        FARM_SLIDER ++;
     }
-    return farms;
+    return FARM_SLIDER;
   }
   
-    int countHouses() {
+    int countHOUSE_SLIDER() {
     /* Sums the number of each landUse  */
-    int houses = 0;
+    int HOUSE_SLIDER = 0;
     for (Tile t: getAllTiles()) {
       if (t.isHouse()) 
-        houses ++;
+        HOUSE_SLIDER ++;
     }
-    return houses;
+    return HOUSE_SLIDER;
   }
   
   int sumTotalPollution() {
@@ -201,7 +201,7 @@ class Watershed{
   boolean addFarm(int x, int y) {
     /* Places a new Farm at Location <x, y> on the map. 
     Returns true if successful. False otherwise. */
-    if (countFarms() < FARM_QUOTA) {
+    if (countFARM_SLIDER() < FARM_QUOTA) {
       Tile t = getTile(x, y);
       if (! (t.isRiver())) {
         t.changeLandUse(FARM); 
@@ -217,7 +217,7 @@ class Watershed{
   boolean addHouse(int x, int y) {
     /* Places a new House at Location <x, y> on the map. 
     Returns true if successful. False otherwise. */
-    if (countHouses() < HOUSE_QUOTA) {
+    if (countHOUSE_SLIDER() < HOUSE_QUOTA) {
       Tile t = getTile(x, y);
       if (! (t.isRiver())) {
         t.changeLandUse(HOUSE); 
