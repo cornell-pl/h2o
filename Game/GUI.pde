@@ -16,7 +16,7 @@ class GUI {
   
   final GameBoard GAME_BOARD = new GameBoard(XPOS, YPOS, SIZE_X*TILE_WIDTH-200, SIZE_Y*TILE_HEIGHT-200);
   final InfoBox INFO_BOX = new InfoBox(XPOS+455, YPOS + SIZE_Y*TILE_HEIGHT + 10);
-  final FeedbackBox FEEDBACK_BOX = new FeedbackBox();
+  final FeedbackBox FEEDBACK_BOX = new FeedbackBox(XPOS, YPOS + SIZE_Y*TILE_HEIGHT + 10);
   final Dashboard DASHBOARD = new Dashboard();
   
   final Button FACTORY_BUTTON;
@@ -275,7 +275,7 @@ class GUI {
       stroke(255);
       strokeWeight(1);
       fill(255);
-      rect(xpos, ypos, 200, 115);
+      rect(xpos, ypos, wide, tall);
       showPrePurchaseInfo();
       showTileInfo();
     }
@@ -288,11 +288,11 @@ class GUI {
         textFont(MESSAGEFONT);
         String text1 = selected.toString() + 
                       "     Type: " + selected.getLandUse().toString();
-        text(text1, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 30);   
+        text(text1, xpos+15, ypos+25);   
         String text2 = "Money: $" + round(selected.getActualProfit()) + 
                         "\ndecayPollution: " + nfc(selected.getDecayPollution(),2) + 
                         "\nDistToRiver: " + nfc(selected.distToRiver(),2);
-        text(text2, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 50);
+        text(text2, xpos+15, ypos+55);
       }
     }
 
@@ -315,8 +315,8 @@ class GUI {
         textFont(MESSAGEFONT);
         fill(125);
         textAlign(CORNER);
-        text(purchaseInfo, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 90);  
-        text(pollutionInfo, XPOS+470, YPOS + SIZE_Y*TILE_HEIGHT + 110);
+        text(purchaseInfo, xpos+15, ypos+80);  
+        text(pollutionInfo, xpos+15, ypos+100);
         showPrePurchase = false;
       }
     }
@@ -328,27 +328,34 @@ class GUI {
       showPrePurchase = true;
     }
   } //END OF NESTED CLASS INFO_BOX
-  
-  
-  
-  
+    
   
   class FeedbackBox {
+    int xpos;
+    int ypos;
+    int wide = 440;
+    int tall = 115;
+    
     String modeMessage = "";
     String actionMessage = "";
+    
+    FeedbackBox(int x, int y) {
+      xpos = x;
+      ypos = y;
+    }
     
     void display() {
        /*Draws the feedback box and shows messages */
       stroke(255);
       fill(255);
-      rect(XPOS, YPOS + SIZE_Y*TILE_HEIGHT + 10, 440, 115);
+      rect(xpos, ypos, wide, tall);
       fill(0);  //Color of text 
       textFont(MESSAGEFONT);
       textAlign(CORNER);
-      text(modeMessage, XPOS + 20, YPOS + SIZE_Y*TILE_HEIGHT + 30);   
-      text(actionMessage, XPOS + 20, YPOS + SIZE_Y*TILE_HEIGHT + 50);   
-      text("Simple sum of all pollution: " + waterS.sumTotalPollution(), XPOS + 20, YPOS + SIZE_Y*TILE_HEIGHT + 90);
-      text("Total pollution entering river after distance decay: " + nfc(waterS.sumDecayPollution(),2), XPOS + 20, YPOS + SIZE_Y*TILE_HEIGHT + 110);
+      text(modeMessage, xpos+15, ypos+25);   
+      text(actionMessage, xpos+15, ypos+45);   
+      text("Simple sum of all pollution: " + waterS.sumTotalPollution(), XPOS + 20, ypos+80);
+      text("Total pollution entering river after distance decay: " + nfc(waterS.sumDecayPollution(),2), XPOS + 20,ypos+100);
     }
     
     void setModeMessage(String m){
