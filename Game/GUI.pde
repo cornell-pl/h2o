@@ -17,7 +17,7 @@ class GUI {
   final GameBoard GAME_BOARD = new GameBoard(XPOS, YPOS, SIZE_X*TILE_WIDTH-200, SIZE_Y*TILE_HEIGHT-200);
   final InfoBox INFO_BOX = new InfoBox(XPOS+455, YPOS + SIZE_Y*TILE_HEIGHT + 10);
   final FeedbackBox FEEDBACK_BOX = new FeedbackBox(XPOS, YPOS + SIZE_Y*TILE_HEIGHT + 10);
-  final Dashboard DASHBOARD = new Dashboard();
+  final Dashboard DASHBOARD = new Dashboard(XPOS + SIZE_X*TILE_WIDTH + 40, YPOSB + 340);
   
   final Button FACTORY_BUTTON;
   final Button FARM_BUTTON;
@@ -369,7 +369,12 @@ class GUI {
   
   
   class Dashboard {
-    Dashboard(){
+    int xpos;
+    int ypos;
+    
+    Dashboard(int x, int y) {
+      xpos = x;
+      ypos = y;
     }
     
     void display(){
@@ -379,52 +384,13 @@ class GUI {
       showPollutionSlider();
     }
     
-    void showActualProfits() {
-      /* Displays the money */
-      int x = XPOS + SIZE_X*TILE_WIDTH + 40;
-      int y = YPOSB + 460;
-      fill(0);
-      textFont(BIGFONT);
-      textAlign(CORNER);
-      text("Money: ", x, y);
-      textFont(NUMERALFONT);
-      text("$"+nfc(round(waterS.sumActualProfits())), x, y+36);
-    }
-    
-    void showScore() {
-      /* Displays the score */
-      int x = XPOS + SIZE_X*TILE_WIDTH + 40;
-      int y = YPOSB + 550;
-      fill(0);
-      textFont(BIGFONT);
-      textAlign(CORNER);
-      text("Score: ", x, y);
-      textFont(NUMERALFONT);
-      text(nfc(round(waterS.calcScore())), x, y+36);
-    }
-    
-    void showBuildQuota() {
-      /* Displays the build quota */
-      int x = XPOS + SIZE_X*TILE_WIDTH + 40;
-      int y = YPOSB + 640;
-      fill(0);
-      textFont(BIGFONT);
-      textAlign(CORNER);
-      text("Quota: ", x, y);
-      textFont(MESSAGEFONT);
-      textSize(16);
-      text("  Factories: " + waterS.countFactories() + " / " + FACTORY_QUOTA, x,y+30);
-      text("  FARM_SLIDER: " + waterS.countFARM_SLIDER() + " / " + FARM_QUOTA, x,y+60);
-      text("  HOUSE_SLIDER: " + waterS.countHOUSE_SLIDER() + " / " + HOUSE_QUOTA, x,y+90);
-    }
-    
-     void showPollutionSlider() {
+    void showPollutionSlider() {
       /* Displays the pollution slider and indicator */
       color green = #4BDE4A;
       color red = #FF3300;
       color extreme = #A72200;
-      int x =  XPOS + SIZE_X*TILE_WIDTH + 40;     //xposition of the slider
-      int y = YPOSB + 340;       //YPOSition of the slider
+      int x =  xpos;     //xposition of the slider
+      int y = ypos;       //YPOSition of the slider
       int w = 220;    //width of slider
       int h = 33;  //height if slider
       int polMax = 1200;  // The maximum pollution the slider can handle
@@ -477,6 +443,45 @@ class GUI {
       textSize(15);
       fill(0);
       text("Pollution indicator: " + pLevel, x, y+65);
+    }
+    
+    void showActualProfits() {
+      /* Displays the money */
+      int x = xpos;
+      int y = ypos + 120;
+      fill(0);
+      textFont(BIGFONT);
+      textAlign(CORNER);
+      text("Money: ", x, y);
+      textFont(NUMERALFONT);
+      text("$"+nfc(round(waterS.sumActualProfits())), x, y+36);
+    }
+    
+    void showScore() {
+      /* Displays the score */
+      int x = xpos;
+      int y = ypos + 210;
+      fill(0);
+      textFont(BIGFONT);
+      textAlign(CORNER);
+      text("Score: ", x, y);
+      textFont(NUMERALFONT);
+      text(nfc(round(waterS.calcScore())), x, y+36);
+    }
+    
+    void showBuildQuota() {
+      /* Displays the build quota */
+      int x = xpos;
+      int y = ypos + 300;
+      fill(0);
+      textFont(BIGFONT);
+      textAlign(CORNER);
+      text("Quota: ", x, y);
+      textFont(MESSAGEFONT);
+      textSize(16);
+      text("  Factories: " + waterS.countFactories() + " / " + FACTORY_QUOTA, x,y+30);
+      text("  FARM_SLIDER: " + waterS.countFARM_SLIDER() + " / " + FARM_QUOTA, x,y+60);
+      text("  HOUSE_SLIDER: " + waterS.countHOUSE_SLIDER() + " / " + HOUSE_QUOTA, x,y+90);
     }
   }//END OF NESTED CLASS DASHBOARD
 }//END OF GUI CLASS
