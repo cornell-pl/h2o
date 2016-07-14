@@ -3,7 +3,7 @@ static final int YPOS = 30;
 static final int TILE_WIDTH = 26;   //width of a tile in pixels
 static final int TILE_HEIGHT = 26;    //height of a tile in pixels
 static final int XPOSB = XPOS + SIZE_X*TILE_WIDTH + 40;    //Drawing dimensions. XPOS and ypos are the coordinates of the top most button. 
-static final int YPOSB = 60;    //All buttons scale with respect to these
+static final int YPOSB = 60;    //All objects scale with respect to these
 static final color DEFAULT_HIGHLIGHT = #E5FCFC;   // Default color to highllight Tiles with
 
 class GUI {
@@ -14,8 +14,8 @@ class GUI {
   final PFont BIGFONT = createFont("Calibri-Bold", 20);
   final PFont NUMERALFONT = createFont("Courier", 30);
   
-  final GameBoard GAME_BOARD = new GameBoard();
-  final InfoBox INFO_BOX = new InfoBox();
+  final GameBoard GAME_BOARD = new GameBoard(XPOS, YPOS, SIZE_X*TILE_WIDTH-200, SIZE_Y*TILE_HEIGHT-200);
+  final InfoBox INFO_BOX = new InfoBox(XPOS+455, YPOS + SIZE_Y*TILE_HEIGHT + 10);
   final FeedbackBox FEEDBACK_BOX = new FeedbackBox();
   final Dashboard DASHBOARD = new Dashboard();
   
@@ -35,7 +35,7 @@ class GUI {
   final Slider FACTORY_SLIDER;
   final Slider FARM_SLIDER;
   final Slider HOUSE_SLIDER;
-  final Slider FOREST_SLIDER;
+  final Slider forestS;
   
   GUI(Watershed WS) {
     
@@ -56,7 +56,7 @@ class GUI {
     FACTORY_SLIDER = new Slider(FACTORY, XPOSB+140, YPOSB, 0, 20, FACTORY_BROWN);
     FARM_SLIDER = new Slider(FARM, XPOSB+140, YPOSB + 60, 0, 20, FARM_YELLOW);
     HOUSE_SLIDER = new Slider(HOUSE, XPOSB+140, YPOSB + 120, 0, 20, HOUSE_GRAY);
-    FOREST_SLIDER = new Slider(FOREST, XPOSB+140, YPOSB + 180, -10, 10, FOREST_GREEN);
+    forestS = new Slider(FOREST, XPOSB+140, YPOSB + 180, -10, 10, FOREST_GREEN);
   }
   
   void render() {
@@ -85,7 +85,7 @@ class GUI {
       FACTORY_SLIDER.display();
       FARM_SLIDER.display();
       HOUSE_SLIDER.display();
-      FOREST_SLIDER.display();
+      forestS.display();
     }
   }
 
@@ -102,11 +102,24 @@ class GUI {
   }
 
   class GameBoard {
+    int xpos;
+    int ypos;
+    int wide;
+    int tall;
+    int tileW = wide/SIZE_X;
+    int tileH = tall/SIZE_Y;
+    
     ArrayList<int[]>  highlightThese = new ArrayList<int[]>();    // A list containing all the Tiles that are to be highlighted, each element is of format {posX, posY, color}
     
-    void GameBoard() {
+    GameBoard(int x, int y, int w, int t) {
+      xpos = x;
+      ypos = y;
+      wide = w;
+      tall = t;
+      tileW = wide/SIZE_X;
+      tileH = tall/SIZE_Y;
     }
-    
+ 
     void display() {
       drawGameBoard();
       drawAxisLabels();
@@ -126,7 +139,7 @@ class GUI {
       stroke(240);
       strokeWeight(0.5);
       fill(c, t);
-      rect(x*TILE_WIDTH + XPOS, y*TILE_HEIGHT + YPOS, TILE_WIDTH, TILE_HEIGHT);
+      rect(x*tileW + XPOS, y*tileH + YPOS, tileW, tileH);
       fill(255);    //resets to white.
     } 
     
@@ -136,14 +149,14 @@ class GUI {
       textAlign(CENTER, BOTTOM);
       fill(255);
       int xcount = 0;  
-      for (int x=XPOS; x < SIZE_X*TILE_WIDTH+XPOS; x+=TILE_WIDTH){
-        text(xcount, x+(TILE_WIDTH/2), YPOS-3);
+      for (int x=xpos; x < xpos+wide; x+=tileW){
+        text(xcount, x+(tileW/2), ypos-3);
         xcount ++;
       }
       textAlign(RIGHT,CENTER);
       int ycount = 0;
-      for (int y=YPOS; y < SIZE_Y*TILE_HEIGHT+YPOS; y+=TILE_HEIGHT){
-        text(ycount, XPOS-7, y+(TILE_HEIGHT/2));
+      for (int y=ypos; y < ypos+wide; y+=tileH){
+        text(ycount, xpos-7, y+(tileH/2));
         ycount ++;
       }
       textAlign(LEFT);
@@ -164,7 +177,7 @@ class GUI {
         noFill();
         strokeWeight(1.5);
         stroke(245);
-        rect(selected.getX()*TILE_WIDTH + XPOS, selected.getY()*TILE_HEIGHT + YPOS, TILE_WIDTH, TILE_HEIGHT);
+        rect(selected.getX()*tileW + xpos, selected.getY()*tileH + ypos, tileW, tileH);
       }
     }
 
@@ -202,7 +215,7 @@ class GUI {
         textAlign(LEFT, TOP);
         int p = round(t.getBasePollution());
         if(p != 0) 
-          text(p, t.getX()*TILE_WIDTH + XPOS+2, t.getY()*TILE_HEIGHT + YPOS+1);
+          text(p, t.getX()*tileW + xpos+2, t.getY()*tileH + ypos+1);
       }
     }
     void showDecayPollution() {
@@ -213,7 +226,7 @@ class GUI {
         fill(0);
         textAlign(LEFT, TOP);
         if(t.getBasePollution()!=0) 
-          text(nfc(t.getDecayPollution(),1), t.getX()*TILE_WIDTH + XPOS+2, t.getY()*TILE_HEIGHT + YPOS+1);
+          text(nfc(t.getDecayPollution(),1), t.getX()*tileW + xpos+2, t.getY()*tileH + ypos+1);
         total += t.getDecayPollution();
       }
     }
@@ -225,7 +238,7 @@ class GUI {
         fill(0);
         textAlign(LEFT, TOP);
         if (!(t.getLandUse() instanceof River)) 
-          text(nfc(t.distToRiver(),1), t.getX()*TILE_WIDTH + XPOS+2, t.getY()*TILE_HEIGHT + YPOS+1);
+          text(nfc(t.distToRiver(),1), t.getX()*tileW + xpos+2, t.getY()*tileH + ypos+1);
       }
     }
      
@@ -236,23 +249,33 @@ class GUI {
         fill(0);
         textAlign(LEFT, TOP);
         if (round(t.getActualProfit())!=0) 
-          text(round(t.getActualProfit()), t.getX()*TILE_WIDTH + XPOS+2, t.getY()*TILE_HEIGHT + YPOS+1);
+          text(round(t.getActualProfit()), t.getX()*tileW + xpos+2, t.getY()*tileH + ypos+1);
       }
     }
   }// END OF GAMEBOARD NESTED CLASS
 
   class InfoBox{
     /* Draws box and displays selected Tile info and prePurchaseInfo */
+    int xpos;
+    int ypos;
+    int wide = 200;
+    int tall = 115;
+    
     float projectedProfit = 0;
     float projectedPollution = 0;
     boolean showPrePurchase = false;
-      
+    
+    InfoBox(int x, int y) {
+      xpos = x;
+      ypos = y;
+    }
+
     void display(){
      /* Draws box and displays selected Tile info and prePurchaseInfo */
       stroke(255);
       strokeWeight(1);
       fill(255);
-      rect(XPOS+455, YPOS + SIZE_Y*TILE_HEIGHT + 10, 200, 115);
+      rect(xpos, ypos, 200, 115);
       showPrePurchaseInfo();
       showTileInfo();
     }
