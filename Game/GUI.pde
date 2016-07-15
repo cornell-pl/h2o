@@ -139,7 +139,7 @@ class GUI {
       stroke(240);
       strokeWeight(0.5);
       fill(c, t);
-      rect(x*tileW + XPOS, y*tileH + YPOS, tileW, tileH);
+      rect(x*tileW+xpos, y*tileH+ypos, tileW, tileH);
       fill(255);    //resets to white.
     } 
     
@@ -148,16 +148,12 @@ class GUI {
       textFont(AXISFONT);
       textAlign(CENTER, BOTTOM);
       fill(255);
-      int xcount = 0;  
-      for (int x=xpos; x < xpos+wide; x+=tileW){
-        text(xcount, x+(tileW/2), ypos-3);
-        xcount ++;
+      for (int x=0; x < SIZE_X; x++){
+        text(x, xpos+x*tileW+(tileW/2), ypos-3);
       }
       textAlign(RIGHT,CENTER);
-      int ycount = 0;
-      for (int y=ypos; y < ypos+wide; y+=tileH){
-        text(ycount, xpos-7, y+(tileH/2));
-        ycount ++;
+      for (int y=0; y < SIZE_Y; y++){
+        text(y, xpos-7, ypos+y*tileH+(tileH/2));
       }
       textAlign(LEFT);
     }
@@ -354,8 +350,8 @@ class GUI {
       textAlign(CORNER);
       text(modeMessage, xpos+15, ypos+25);   
       text(actionMessage, xpos+15, ypos+45);   
-      text("Simple sum of all pollution: " + waterS.sumTotalPollution(), XPOS + 20, ypos+80);
-      text("Total pollution entering river after distance decay: " + nfc(waterS.sumDecayPollution(),2), XPOS + 20,ypos+100);
+      text("Simple sum of all pollution: " + waterS.sumTotalPollution(), xpos+15, ypos+80);
+      text("Total pollution entering river after distance decay: " + nfc(waterS.sumDecayPollution(),2), xpos+15,ypos+100);
     }
     
     void setModeMessage(String m){
