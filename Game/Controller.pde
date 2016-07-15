@@ -98,7 +98,7 @@ class Controller{
   }
   
   Tile getOverTile(){
-    /* Returns the Tile the mouse is over if mouseOverMap, null otherwise */
+    /* Returns the Tile the mouse is hovering over if mouseOverMap, null otherwise */
     if (mouseOverMap()) {
       int[] pos = converter(mouseX, mouseY);
       return waterS.getTile(pos[0], pos[1]);

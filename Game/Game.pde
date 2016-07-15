@@ -23,7 +23,7 @@ Controller control;
 
 void setup() {
   frameRate(30);
-  size(1600, 1500);
+  size(1300, 950);
   WS = new Watershed(SIZE_X, SIZE_Y);   //Creates watershed of size 20*20
   graphics = new GUI(WS);
   control = new Controller(WS, graphics);

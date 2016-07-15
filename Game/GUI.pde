@@ -14,7 +14,7 @@ class GUI {
   final PFont BIGFONT = createFont("Calibri-Bold", 20);
   final PFont NUMERALFONT = createFont("Courier", 30);
   
-  final GameBoard GAME_BOARD = new GameBoard(XPOS+40, YPOS, SIZE_X*TILE_WIDTH-300, SIZE_Y*TILE_HEIGHT+400);
+  final GameBoard GAME_BOARD = new GameBoard(XPOS, YPOS, SIZE_X*TILE_WIDTH, SIZE_Y*TILE_HEIGHT);
   final InfoBox INFO_BOX = new InfoBox(XPOS+455, YPOS + SIZE_Y*TILE_HEIGHT + 10);
   final FeedbackBox FEEDBACK_BOX = new FeedbackBox(XPOS, YPOS + SIZE_Y*TILE_HEIGHT + 10);
   final Dashboard DASHBOARD = new Dashboard(XPOS + SIZE_X*TILE_WIDTH + 40, YPOSB + 340);
@@ -484,8 +484,8 @@ class GUI {
       textFont(MESSAGEFONT);
       textSize(16);
       text("  Factories: " + waterS.countFactories() + " / " + FACTORY_QUOTA, x,y+30);
-      text("  FARM_SLIDER: " + waterS.countFARM_SLIDER() + " / " + FARM_QUOTA, x,y+60);
-      text("  HOUSE_SLIDER: " + waterS.countHOUSE_SLIDER() + " / " + HOUSE_QUOTA, x,y+90);
+      text("  Farms: " + waterS.countFARM_SLIDER() + " / " + FARM_QUOTA, x,y+60);
+      text("  Houses: " + waterS.countHOUSE_SLIDER() + " / " + HOUSE_QUOTA, x,y+90);
     }
   }//END OF NESTED CLASS DASHBOARD
 }//END OF GUI CLASS
