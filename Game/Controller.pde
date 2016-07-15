@@ -45,8 +45,8 @@ class Controller{
   
   boolean mouseOverMap(){
     /* Returns true if the mouse position is over the Watershed map. false otherwise. */
-    int[] xRange = {XPOS, XPOS + SIZE_X*TILE_WIDTH};
-    int[] yRange = {YPOS, YPOS + SIZE_Y*TILE_HEIGHT};
+    int[] xRange = view.GAME_BOARD.getXRange();
+    int[] yRange =  view.GAME_BOARD.getYRange();
     return ((mouseX > xRange[0] && mouseX < xRange[1]) && (mouseY > yRange[0] && mouseY < yRange[1]));
   }
   
@@ -81,22 +81,26 @@ class Controller{
     return over;
   }
   
-  int[] converter(int xraw, int yraw) {
+  int[] converter(int xRaw, int yRaw) {
     /*Converts raw coordinates x and y in frame to tile locations   */
     if (mouseOverMap()){
-      int xloc = 0;
-      int yloc = 0;
-      xloc = (xraw-XPOS)/TILE_WIDTH;
-      yloc = (yraw-YPOS)/TILE_HEIGHT;
+      int xMin = view.GAME_BOARD.getXRange()[0];
+      int xMax = view.GAME_BOARD.getXRange()[1];
+      int yMin = view.GAME_BOARD.getYRange()[0];
+      int yMax = view.GAME_BOARD.getYRange()[1];
+      int tileW = round((xMax - xMin)/(float)SIZE_X);
+      int tileH = round((yMax - yMin)/(float)SIZE_Y);
+      int xloc = constrain((xRaw-xMin)/tileW, 0, SIZE_X-1);
+      int yloc = constrain((yRaw-yMin)/tileH, 0, SIZE_Y-1);
       int[] out = {xloc, yloc};
       return out;
-    } else return new int[] {0,0};
+    }return new int[] {0,0};
   }
   
   Tile getOverTile(){
     /* Returns the Tile the mouse is over if mouseOverMap, null otherwise */
     if (mouseOverMap()) {
-      int[] pos = control.converter(mouseX, mouseY);
+      int[] pos = converter(mouseX, mouseY);
       return waterS.getTile(pos[0], pos[1]);
     } return null;
   }
@@ -105,8 +109,8 @@ class Controller{
     /* Returns a list of tiles that are highlighted during click and drag */
     ArrayList<Tile> tlist= new ArrayList<Tile>();
     if (mousePressed && mouseOverMap()) {    
-      int[] posP = control.converter(mousePX, mousePY);   //tile coordinate when mouse is pressed
-      int[] posC = control.converter(mouseX, mouseY);     //current tile coordinate
+      int[] posP = converter(mousePX, mousePY);   //tile coordinate when mouse is pressed
+      int[] posC = converter(mouseX, mouseY);     //current tile coordinate
       for (int x = min(posP[0], posC[0]); x <= max(posP[0], posC[0]); x++) {
         for (int y = min(posP[1], posC[1]); y <= max(posP[1], posC[1]); y++) {
           tlist.add(waterS.getTile(x, y));
@@ -191,7 +195,7 @@ class Controller{
     }
     
     ArrayList<Tile> getProspectiveTiles(){
-      /* Returns an array of Tiles to calculate projected values */
+      /* Returns an array of Tiles to calculate projected values, including both mouse hover and mouse drag cases */
       ArrayList<Tile> tlist = new ArrayList<Tile>();
       if (mouseOverMap() && inAddMode()) {
         tlist = getDraggedTiles();  //Tiles to calculate info for
@@ -237,7 +241,7 @@ class Controller{
       /* Logic to change LandUses and display appropriate feebback */
       if (control.mouseOverMap() && mouseButton == LEFT && inAddMode()){    //Left mouse button to add
         int[] posP = control.converter(mousePX, mousePY);     //Mouse press position
-        int[] posR = control.converter(mouseRX, mouseRY);    //Mopuse release position
+        int[] posR = control.converter(mouseRX, mouseRY);    //Mouse release position
         LandUse olu = null;  //Original landuse of tile
         int count = 0;    //Number of landUses add/removed
         String thing = "";  

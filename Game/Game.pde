@@ -112,7 +112,7 @@ class Watershed{
     try{
      return GAME_MAP[x][y];
     }catch(ArrayIndexOutOfBoundsException e){
-      println("Error at getTile(x,y). Check x & y are valid array index");
+      println("Error at getTile(",x,y,"). Check x & y are valid array index");
       return null;
     }
   }

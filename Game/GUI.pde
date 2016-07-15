@@ -14,7 +14,7 @@ class GUI {
   final PFont BIGFONT = createFont("Calibri-Bold", 20);
   final PFont NUMERALFONT = createFont("Courier", 30);
   
-  final GameBoard GAME_BOARD = new GameBoard(XPOS, YPOS, SIZE_X*TILE_WIDTH-200, SIZE_Y*TILE_HEIGHT-200);
+  final GameBoard GAME_BOARD = new GameBoard(XPOS+40, YPOS, SIZE_X*TILE_WIDTH-300, SIZE_Y*TILE_HEIGHT+400);
   final InfoBox INFO_BOX = new InfoBox(XPOS+455, YPOS + SIZE_Y*TILE_HEIGHT + 10);
   final FeedbackBox FEEDBACK_BOX = new FeedbackBox(XPOS, YPOS + SIZE_Y*TILE_HEIGHT + 10);
   final Dashboard DASHBOARD = new Dashboard(XPOS + SIZE_X*TILE_WIDTH + 40, YPOSB + 340);
@@ -116,8 +116,16 @@ class GUI {
       ypos = y;
       wide = w;
       tall = t;
-      tileW = wide/SIZE_X;
-      tileH = tall/SIZE_Y;
+      tileW = round(wide/(float)SIZE_X);
+      tileH = round(tall/(float)SIZE_Y);
+    }
+    
+    int[] getXRange(){
+      return new int[] {xpos, xpos+tileW*SIZE_X};
+    }
+    
+    int[] getYRange(){
+      return new int[] {ypos, ypos+tileH*SIZE_Y};
     }
  
     void display() {
