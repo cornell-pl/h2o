@@ -6,6 +6,11 @@ static final int XPOSB = XPOS + SIZE_X*TILE_WIDTH + 40;    //Drawing dimensions.
 static final int YPOSB = 60;    //All objects scale with respect to these
 static final color DEFAULT_HIGHLIGHT = #E5FCFC;   // Default color to highllight Tiles with
 
+
+final PFont BASEFONT = createFont("Arial", 16);
+final PFont SELECTEDFONT = createFont("Arial-Black", 16);
+final PFont SLIDERFONT = createFont("Calibri", 14);
+
 final Button FACTORY_BUTTON = new Button(XPOSB, YPOSB, TILE_WIDTH, TILE_HEIGHT, FACTORY_BROWN, #73A29C, #EA7E2F, "Factory");
 final Button FARM_BUTTON = new Button(XPOSB, YPOSB + 60, TILE_WIDTH, TILE_HEIGHT, FARM_YELLOW, #73A29C, #F0AD1D, "Farm");
 final Button HOUSE_BUTTON = new Button(XPOSB, YPOSB + 120, TILE_WIDTH, TILE_HEIGHT, HOUSE_GRAY, #73A29C, #90B3B4, "House");

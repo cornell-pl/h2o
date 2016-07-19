@@ -2,9 +2,7 @@ class Slider {
   static final int BAR_WIDTH = 180;
   static final int BAR_HEIGHT = 20;    // width and height of bar 
   static final int S_WIDTH = 20;        //width and height of slider
-  static final int S_HEIGHT = BAR_HEIGHT;
-  final PFont sliderFont = createFont("Calibri", 14);
-  
+  static final int S_HEIGHT = BAR_HEIGHT;  
  
   int x, y;       // x and y position of bar
   int spos; //position of the slider in pixels
@@ -78,7 +76,7 @@ class Slider {
     fill(80);
     rect(spos, y-1, S_WIDTH, S_HEIGHT+2);
     fill(0);
-    textFont(sliderFont); 
+    textFont(SLIDERFONT); 
     text(getVal(), x + BAR_WIDTH + 15, y+7);
     update();
   }
