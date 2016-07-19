@@ -6,6 +6,25 @@ static final int XPOSB = XPOS + SIZE_X*TILE_WIDTH + 40;    //Drawing dimensions.
 static final int YPOSB = 60;    //All objects scale with respect to these
 static final color DEFAULT_HIGHLIGHT = #E5FCFC;   // Default color to highllight Tiles with
 
+final Button FACTORY_BUTTON = new Button(XPOSB, YPOSB, TILE_WIDTH, TILE_HEIGHT, FACTORY_BROWN, #73A29C, #EA7E2F, "Factory");
+final Button FARM_BUTTON = new Button(XPOSB, YPOSB + 60, TILE_WIDTH, TILE_HEIGHT, FARM_YELLOW, #73A29C, #F0AD1D, "Farm");
+final Button HOUSE_BUTTON = new Button(XPOSB, YPOSB + 120, TILE_WIDTH, TILE_HEIGHT, HOUSE_GRAY, #73A29C, #90B3B4, "House");
+final Button FOREST_BUTTON = new Button(XPOSB, YPOSB + 180, TILE_WIDTH, TILE_HEIGHT, FOREST_GREEN, #73A29C, #02A002, "Forest");
+final Button DEMOLISH_BUTTON = new Button(XPOSB, YPOSB + 240, TILE_WIDTH, TILE_HEIGHT, DEMOLISH_BEIGE, #73A29C, #F5BB74, "Demolish");
+final Button RESET_BUTTON = new Button(XPOSB+220, YPOS+TILE_HEIGHT*SIZE_Y-57, TILE_WIDTH + 5, TILE_HEIGHT + 5, #FFFFFF, #989795, #171717, "RESET MAP");
+    
+final Toggle POLLUTION_TOGGLE = new Toggle(XPOSB+180, YPOSB+450, "Show Pollution");
+final Toggle DECAYPOL_TOGGLE = new Toggle(XPOSB+180, YPOSB+500, "Show decayPollution");
+final Toggle DIST_TOGGLE = new Toggle(XPOSB+180, YPOSB+550, "Show distToRiver");
+final Toggle PROFIT_TOGGLE = new Toggle(XPOSB+180, YPOSB+600, "Show Money");
+final Toggle SLIDER_TOGGLE = new Toggle(XPOSB+160, YPOSB+240, "Show sliders");
+
+final Slider FACTORY_SLIDER = new Slider(FACTORY, XPOSB+140, YPOSB, 0, 20, FACTORY_BROWN);
+final Slider FARM_SLIDER = new Slider(FARM, XPOSB+140, YPOSB + 60, 0, 20, FARM_YELLOW);
+final Slider HOUSE_SLIDER = new Slider(HOUSE, XPOSB+140, YPOSB + 120, 0, 20, HOUSE_GRAY);
+final Slider FOREST_SLIDER = new Slider(FOREST, XPOSB+140, YPOSB + 180, -10, 10, FOREST_GREEN);
+
+
 class GUI {
   Watershed waterS;
   
@@ -18,47 +37,10 @@ class GUI {
   final InfoBox INFO_BOX = new InfoBox(XPOS+455, YPOS + SIZE_Y*TILE_HEIGHT + 10);
   final FeedbackBox FEEDBACK_BOX = new FeedbackBox(XPOS, YPOS + SIZE_Y*TILE_HEIGHT + 10);
   final Dashboard DASHBOARD = new Dashboard(XPOS + SIZE_X*TILE_WIDTH + 40, YPOSB + 340);
-  final ButtonPanel BUTTON_PANEL = new ButtonPanel(XPOSB, YPOSB);
-  
-  final Button FACTORY_BUTTON;
-  final Button FARM_BUTTON;
-  final Button HOUSE_BUTTON;
-  final Button FOREST_BUTTON;
-  final Button DEMOLISH_BUTTON;
-  final Button RESET_BUTTON;
-  
-  final Toggle POLLUTION_TOGGLE;
-  final Toggle DECAYPOL_TOGGLE;
-  final Toggle DIST_TOGGLE;
-  final Toggle PROFIT_TOGGLE;
-  final Toggle SLIDER_TOGGLE;
-  
-  final Slider FACTORY_SLIDER;
-  final Slider FARM_SLIDER;
-  final Slider HOUSE_SLIDER;
-  final Slider FOREST_SLIDER;
+
   
   GUI(Watershed WS) {
-    
     waterS = WS;   
-    
-    FACTORY_BUTTON = new Button(XPOSB, YPOSB, TILE_WIDTH, TILE_HEIGHT, FACTORY_BROWN, #73A29C, #EA7E2F, "Factory");
-    FARM_BUTTON = new Button(XPOSB, YPOSB + 60, TILE_WIDTH, TILE_HEIGHT, FARM_YELLOW, #73A29C, #F0AD1D, "Farm");
-    HOUSE_BUTTON = new Button(XPOSB, YPOSB + 120, TILE_WIDTH, TILE_HEIGHT, HOUSE_GRAY, #73A29C, #90B3B4, "House");
-    FOREST_BUTTON = new Button(XPOSB, YPOSB + 180, TILE_WIDTH, TILE_HEIGHT, FOREST_GREEN, #73A29C, #02A002, "Forest");
-    DEMOLISH_BUTTON = new Button(XPOSB, YPOSB + 240, TILE_WIDTH, TILE_HEIGHT, DEMOLISH_BEIGE, #73A29C, #F5BB74, "Demolish");
-    RESET_BUTTON = new Button(XPOSB+220, YPOS+TILE_HEIGHT*SIZE_Y-57, TILE_WIDTH + 5, TILE_HEIGHT + 5, #FFFFFF, #989795, #171717, "RESET MAP");
-    
-    POLLUTION_TOGGLE = new Toggle(XPOSB+180, YPOSB+450, "Show Pollution");
-    DECAYPOL_TOGGLE = new Toggle(XPOSB+180, YPOSB+500, "Show decayPollution");
-    DIST_TOGGLE = new Toggle(XPOSB+180, YPOSB+550, "Show distToRiver");
-    PROFIT_TOGGLE = new Toggle(XPOSB+180, YPOSB+600, "Show Money");
-    SLIDER_TOGGLE = new Toggle(XPOSB+160, YPOSB+240, "Show sliders");
-
-    FACTORY_SLIDER = new Slider(FACTORY, XPOSB+140, YPOSB, 0, 20, FACTORY_BROWN);
-    FARM_SLIDER = new Slider(FARM, XPOSB+140, YPOSB + 60, 0, 20, FARM_YELLOW);
-    HOUSE_SLIDER = new Slider(HOUSE, XPOSB+140, YPOSB + 120, 0, 20, HOUSE_GRAY);
-    FOREST_SLIDER = new Slider(FOREST, XPOSB+140, YPOSB + 180, -10, 10, FOREST_GREEN);
   }
   
   void render() {
@@ -67,17 +49,21 @@ class GUI {
     INFO_BOX.display();
     FEEDBACK_BOX.display();
     DASHBOARD.display();
-    BUTTON_PANEL.display();
     
     drawDividers();
+    
+    FACTORY_BUTTON.display();
+    FARM_BUTTON.display();
+    HOUSE_BUTTON.display();
+    FOREST_BUTTON.display();
+    DEMOLISH_BUTTON.display();
+    RESET_BUTTON.display();
     
     POLLUTION_TOGGLE.display();
     DECAYPOL_TOGGLE.display();
     DIST_TOGGLE.display();
     PROFIT_TOGGLE.display();
     SLIDER_TOGGLE.display();
-    
-
     
     if (showSlider == true) {
       FACTORY_SLIDER.display();
@@ -95,38 +81,6 @@ class GUI {
       line(XPOSB-20, YPOSB+TILE_HEIGHT+5+270, XPOSB-20+392, YPOSB+TILE_HEIGHT+5+270);
   }
   
-  class ButtonPanel {
-    //final Button FACTORY_BUTTON;
-    //final Button FARM_BUTTON;
-    //final Button HOUSE_BUTTON;
-    //final Button FOREST_BUTTON;
-    //final Button DEMOLISH_BUTTON;
-    //final Button RESET_BUTTON;
-    
-    //int xpos;
-    //int ypos;
-    
-    ButtonPanel(int x, int y){
-      //xpos = x;
-      //ypos = y;
-      //FACTORY_BUTTON = new Button(XPOSB, YPOSB, TILE_WIDTH, TILE_HEIGHT, FACTORY_BROWN, #73A29C, #EA7E2F, "Factory");
-      //FARM_BUTTON = new Button(XPOSB, YPOSB + 60, TILE_WIDTH, TILE_HEIGHT, FARM_YELLOW, #73A29C, #F0AD1D, "Farm");
-      //HOUSE_BUTTON = new Button(XPOSB, YPOSB + 120, TILE_WIDTH, TILE_HEIGHT, HOUSE_GRAY, #73A29C, #90B3B4, "House");
-      //FOREST_BUTTON = new Button(XPOSB, YPOSB + 180, TILE_WIDTH, TILE_HEIGHT, FOREST_GREEN, #73A29C, #02A002, "Forest");
-      //DEMOLISH_BUTTON = new Button(XPOSB, YPOSB + 240, TILE_WIDTH, TILE_HEIGHT, DEMOLISH_BEIGE, #73A29C, #F5BB74, "Demolish");
-      //RESET_BUTTON = new Button(XPOSB+220, YPOS+TILE_HEIGHT*SIZE_Y-57, TILE_WIDTH + 5, TILE_HEIGHT + 5, #FFFFFF, #989795, #171717, "RESET MAP");
-    }
-    
-    void display(){
-      FACTORY_BUTTON.display();
-      FARM_BUTTON.display();
-      HOUSE_BUTTON.display();
-      FOREST_BUTTON.display();
-      DEMOLISH_BUTTON.display();
-      RESET_BUTTON.display();
-    }
-  }
-
   class GameBoard {
     int xpos;
     int ypos;
