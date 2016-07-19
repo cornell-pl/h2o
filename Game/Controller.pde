@@ -176,7 +176,7 @@ class Controller{
         pushed = null;
         selected = null;
       }
-      if (! mouseOverMap() && !view.FACTORY_SLIDER.over && !view.FARM_SLIDER.over && !view.HOUSE_SLIDER.over && !view.forestS.over && 
+      if (! mouseOverMap() && !view.FACTORY_SLIDER.over && !view.FARM_SLIDER.over && !view.HOUSE_SLIDER.over && !view.FOREST_SLIDER.over && 
           !view.POLLUTION_TOGGLE.over && !view.DECAYPOL_TOGGLE.over && !view.DIST_TOGGLE.over && !view.PROFIT_TOGGLE.over && !view.SLIDER_TOGGLE.over)
         selected = null;    //Unselect when I click outside map
     }
@@ -347,8 +347,8 @@ class Controller{
         int currentVal = view.HOUSE_SLIDER.getVal();
         HOUSE.updatePollution(currentVal);
       }
-      if (view.forestS.isLocked()){
-        int currentVal = view.forestS.getVal();
+      if (view.FOREST_SLIDER.isLocked()){
+        int currentVal = view.FOREST_SLIDER.getVal();
         FOREST.updatePollution(currentVal);
       }
     }
@@ -407,7 +407,7 @@ class Controller{
     
     void unpushButtons(){
       //Unpress button if clicked out of map but not on sliders and toggles
-      if (! mouseOverMap() && !mouseOverButton() && !view.FACTORY_SLIDER.over && !view.FARM_SLIDER.over && !view.HOUSE_SLIDER.over && !view.forestS.over && !view.POLLUTION_TOGGLE.over && !view.DECAYPOL_TOGGLE.over && !view.DIST_TOGGLE.over && !view.PROFIT_TOGGLE.over){
+      if (! mouseOverMap() && !mouseOverButton() && !view.FACTORY_SLIDER.over && !view.FARM_SLIDER.over && !view.HOUSE_SLIDER.over && !view.FOREST_SLIDER.over && !view.POLLUTION_TOGGLE.over && !view.DECAYPOL_TOGGLE.over && !view.DIST_TOGGLE.over && !view.PROFIT_TOGGLE.over){
         //Unpress reset button if it is pressed and user clicks outside the button
         if (pushed == view.RESET_BUTTON && ! view.RESET_BUTTON.isOver()) {
           view.FEEDBACK_BOX.setModeMessage("");
