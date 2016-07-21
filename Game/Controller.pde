@@ -1,5 +1,3 @@
-
-
 Tile selected = null;    //The current Tile that is selected. null if no Tile selected
 Button pushed = null;   //The current button that is pushed. null if none is pushed.
 Toggle toggled = null;   //The current toggle. null if none toggled
@@ -54,32 +52,32 @@ class Controller{
   
   boolean mouseOverButton(){
     /* Returns true if mouse is over a button, false otherwise. */
-    return FACTORY_BUTTON.isOver() ||
-           FARM_BUTTON.isOver() ||
-           HOUSE_BUTTON.isOver() ||
-           FOREST_BUTTON.isOver() ||
-           DEMOLISH_BUTTON.isOver() ||
-           RESET_BUTTON.isOver();
+    return view.FACTORY_BUTTON.isOver() ||
+           view.FARM_BUTTON.isOver() ||
+           view.HOUSE_BUTTON.isOver() ||
+           view.FOREST_BUTTON.isOver() ||
+           view.DEMOLISH_BUTTON.isOver() ||
+           view.RESET_BUTTON.isOver();
   }
   
   boolean inAddMode(){
     /* Returns true if an adder button is pushed (includes demolish). False otherwise */
-    return pushed == FACTORY_BUTTON ||
-           pushed == FARM_BUTTON ||
-           pushed == HOUSE_BUTTON ||
-           pushed == FOREST_BUTTON ||
-           pushed == DEMOLISH_BUTTON;
+    return pushed == view.FACTORY_BUTTON ||
+           pushed == view.FARM_BUTTON ||
+           pushed == view.HOUSE_BUTTON ||
+           pushed == view.FOREST_BUTTON ||
+           pushed == view.DEMOLISH_BUTTON;
   }
   
   Button getOverButton() {
     /* Returns Button mouse is over, null if mouse not over any button*/
     Button over = null;
-    if (FACTORY_BUTTON.isOver()) over = FACTORY_BUTTON;
-    if (FARM_BUTTON.isOver()) over = FARM_BUTTON;
-    if (HOUSE_BUTTON.isOver()) over = HOUSE_BUTTON;
-    if (FOREST_BUTTON.isOver()) over = FOREST_BUTTON;
-    if (DEMOLISH_BUTTON.isOver()) over = DEMOLISH_BUTTON;
-    if (RESET_BUTTON.isOver()) over = RESET_BUTTON;
+    if (view.FACTORY_BUTTON.isOver()) over = view.FACTORY_BUTTON;
+    if (view.FARM_BUTTON.isOver()) over = view.FARM_BUTTON;
+    if (view.HOUSE_BUTTON.isOver()) over = view.HOUSE_BUTTON;
+    if (view.FOREST_BUTTON.isOver()) over = view.FOREST_BUTTON;
+    if (view.DEMOLISH_BUTTON.isOver()) over = view.DEMOLISH_BUTTON;
+    if (view.RESET_BUTTON.isOver()) over = view.RESET_BUTTON;
     return over;
   }
   
@@ -179,8 +177,8 @@ class Controller{
         selected = null;
       }
       if (! mouseOverMap() && 
-          !FACTORY_SLIDER.over && !FARM_SLIDER.over && !HOUSE_SLIDER.over && !FOREST_SLIDER.over && 
-          !POLLUTION_TOGGLE.over && !DECAYPOL_TOGGLE.over && !DIST_TOGGLE.over && !PROFIT_TOGGLE.over && !SLIDER_TOGGLE.over)
+          !view.FACTORY_SLIDER.over && !view.FARM_SLIDER.over && !view.HOUSE_SLIDER.over && !view.FOREST_SLIDER.over && 
+          !view.POLLUTION_TOGGLE.over && !view.DECAYPOL_TOGGLE.over && !view.DIST_TOGGLE.over && !view.PROFIT_TOGGLE.over && !view.SLIDER_TOGGLE.over)
         selected = null;    //Unselect when I click outside map
     }
   }  //END OF NESTED CLASS TILE_CONTROLLER
@@ -215,19 +213,19 @@ class Controller{
         for (Tile t : prospectiveTiles){
           float d = t.distToRiver();
           if (! t.isRiver()){
-            if  (pushed == FACTORY_BUTTON) {    
+            if  (pushed == view.FACTORY_BUTTON) {    
               projectedProfit += FACTORY.calcActualProfit(d);  
               projectedPollution += FACTORY.calcDecayPollution(d);
             } 
-            else if (pushed == FARM_BUTTON) {
+            else if (pushed == view.FARM_BUTTON) {
               projectedProfit += FARM.calcActualProfit(d);
               projectedPollution += FARM.calcDecayPollution( d);
             }
-            else if (pushed == HOUSE_BUTTON) {
+            else if (pushed == view.HOUSE_BUTTON) {
               projectedProfit += HOUSE.calcActualProfit(d);
               projectedPollution += HOUSE.calcDecayPollution(d);
             }
-            else if (pushed == FOREST_BUTTON) {
+            else if (pushed == view.FOREST_BUTTON) {
               projectedProfit += FOREST.calcActualProfit(d);
               projectedPollution += FOREST.calcDecayPollution(d);
             }   //Calculations for each button
@@ -256,7 +254,7 @@ class Controller{
           for (int y = min(posP[1], posR[1]); y <= max(posP[1], posR[1]); y++) {
             m++;
             if (m<2) olu = waterS.getTile(x,y).getLandUse();    //I only have to remember previous landuse when I only change one Tile
-            if (pushed == FACTORY_BUTTON) {        //If factory button is in pressed state
+            if (pushed == view.FACTORY_BUTTON) {        //If factory button is in pressed state
               s = WS.addFactory(x, y);      //count++ only when true
               if (s) {
                 count ++;   //increment and save coordinates if successful
@@ -266,7 +264,7 @@ class Controller{
               thing = "Factory";
               if (count > 1) thing = "Factories";
             } 
-            else if (pushed == FARM_BUTTON) {        //If farm button is in pressed state
+            else if (pushed == view.FARM_BUTTON) {        //If farm button is in pressed state
               s = WS.addFarm(x, y);
                if (s) {
                 count ++;
@@ -274,9 +272,9 @@ class Controller{
                 j = y;
               }
               thing = "Farm";
-              if (count > 1) thing = "FARM_SLIDER";
+              if (count > 1) thing = "Farms";
             }
-            else if (pushed == HOUSE_BUTTON) {        //If house button is in pressed state
+            else if (pushed == view.HOUSE_BUTTON) {        //If house button is in pressed state
               s = WS.addHouse(x, y);
                if (s) {
                 count ++;
@@ -284,9 +282,9 @@ class Controller{
                 j = y;
               }
               thing = "House";
-              if (count > 1) thing = "HOUSE_SLIDER";
+              if (count > 1) thing = "Houses";
             }
-            else if (pushed == FOREST_BUTTON) {        //If forest button is in pressed state
+            else if (pushed == view.FOREST_BUTTON) {        //If forest button is in pressed state
               s = WS.addForest(x, y);
               if (s) {
                 count ++;
@@ -296,7 +294,7 @@ class Controller{
               thing = "Forest";
               if (count > 1) thing = "Forests";
             }
-            else if(pushed == DEMOLISH_BUTTON) {    //If demolish button is in pressed state
+            else if(pushed == view.DEMOLISH_BUTTON) {    //If demolish button is in pressed state
               LandUse temp = waterS.getTile(x,y).getLandUse();
               s = WS.removeLandUse(x,y);
                if (s) {
@@ -312,12 +310,12 @@ class Controller{
         // Set messages to display
         if (count > 1) {
           view.FEEDBACK_BOX.setActionMessage("Built " + Integer.toString(count) + " " + thing);    
-          if (pushed == DEMOLISH_BUTTON) 
+          if (pushed == view.DEMOLISH_BUTTON) 
             view.FEEDBACK_BOX.setActionMessage("Removed land use at " + Integer.toString(count) + " locations");
         }  //count > 1
         else if (count == 1){
           view.FEEDBACK_BOX.setActionMessage("Added a " + thing + " at " + "<" +(i)+ ", " +(j)+ ">");  
-          if (pushed == DEMOLISH_BUTTON) 
+          if (pushed == view.DEMOLISH_BUTTON) 
             view.FEEDBACK_BOX.setActionMessage("Removed " + olu.toString() + " at " + "<" +(i)+ ", " +(j)+ ">");  
         }  // count == 1
         else {
@@ -326,7 +324,7 @@ class Controller{
           //When attempting build on River
           if (olu.isRiver())
              view.FEEDBACK_BOX.setActionMessage("Cannot build " +thing+ " in river.");
-          if (pushed == DEMOLISH_BUTTON) 
+          if (pushed == view.DEMOLISH_BUTTON) 
             view.FEEDBACK_BOX.setActionMessage("Nothing to remove");
         } //count == 0
       } //if mouseOverMap() and mouseButton == LEFT
@@ -338,20 +336,20 @@ class Controller{
   class SliderController{
     
     void run(){
-      if (FACTORY_SLIDER.isLocked()){
-        int currentVal = FACTORY_SLIDER.getVal();
+      if (view.FACTORY_SLIDER.isLocked()){
+        int currentVal = view.FACTORY_SLIDER.getVal();
         FACTORY.updatePollution(currentVal);
       }
-      if (FARM_SLIDER.isLocked()){
-        int currentVal = FARM_SLIDER.getVal();
+      if (view.FARM_SLIDER.isLocked()){
+        int currentVal = view.FARM_SLIDER.getVal();
         FARM.updatePollution(currentVal);
       }
-      if (HOUSE_SLIDER.isLocked()){
-        int currentVal = HOUSE_SLIDER.getVal();
+      if (view.HOUSE_SLIDER.isLocked()){
+        int currentVal = view.HOUSE_SLIDER.getVal();
         HOUSE.updatePollution(currentVal);
       }
-      if (FOREST_SLIDER.isLocked()){
-        int currentVal = FOREST_SLIDER.getVal();
+      if (view.FOREST_SLIDER.isLocked()){
+        int currentVal = view.FOREST_SLIDER.getVal();
         FOREST.updatePollution(currentVal);
       }
     }
@@ -367,9 +365,9 @@ class Controller{
  
     void pushButtons() {
       /* Logic for pushing and unpushing buttons */
-      if (mouseOverButton()) {
+      if (getOverButton() != null) {
         Button b = getOverButton();
-        if (b != RESET_BUTTON && b != DEMOLISH_BUTTON){
+        if (b != view.RESET_BUTTON && b != view.DEMOLISH_BUTTON){
           if (pushed == b) {
            view.FEEDBACK_BOX.setModeMessage("");
             pushed = null;
@@ -379,18 +377,18 @@ class Controller{
             view.FEEDBACK_BOX.setActionMessage("");
            }
         }
-        else if(b == DEMOLISH_BUTTON) {   //When demolish button is clicked on
-          if (pushed == DEMOLISH_BUTTON) {
+        else if(b == view.DEMOLISH_BUTTON) {   //When demolish button is clicked on
+          if (pushed == view.DEMOLISH_BUTTON) {
              view.FEEDBACK_BOX.setModeMessage("");
             pushed = null;
           } else {
-            pushed = DEMOLISH_BUTTON;
+            pushed = view.DEMOLISH_BUTTON;
             view.FEEDBACK_BOX.setModeMessage("Demolish mode is selected");
             view.FEEDBACK_BOX.setActionMessage("");
           }
         }
-        else if(b == RESET_BUTTON) {  //When reset button is clicked on
-          if (pushed == RESET_BUTTON) {
+        else if(b == view.RESET_BUTTON) {  //When reset button is clicked on
+          if (pushed == view.RESET_BUTTON) {
             view.FEEDBACK_BOX.setModeMessage("Restarting game");
             view.FEEDBACK_BOX.setActionMessage("");
             WS = new Watershed(SIZE_X, SIZE_Y);      //
@@ -400,7 +398,7 @@ class Controller{
             view.FEEDBACK_BOX.setModeMessage("");
             view.FEEDBACK_BOX.setActionMessage("Game is reset");
           }else {
-            pushed = RESET_BUTTON;
+            pushed = view.RESET_BUTTON;
             view.FEEDBACK_BOX.setModeMessage("Do you want to reset the map? Click button again to reset.");
             view.FEEDBACK_BOX.setActionMessage("Click anywhere to cancel.");
           }
@@ -410,11 +408,11 @@ class Controller{
     
     void unpushButtons(){
       //Unpress button if clicked out of map but not on sliders and toggles
-      if (! mouseOverMap() && !mouseOverButton() && 
-          !FACTORY_SLIDER.over && !FARM_SLIDER.over && !HOUSE_SLIDER.over && !FOREST_SLIDER.over && 
-          !POLLUTION_TOGGLE.over && !DECAYPOL_TOGGLE.over && !DIST_TOGGLE.over && !PROFIT_TOGGLE.over){
+      if (! mouseOverMap() && getOverButton() == null && 
+          !view.FACTORY_SLIDER.over && !view.FARM_SLIDER.over && !view.HOUSE_SLIDER.over && !view.FOREST_SLIDER.over && 
+          !view.POLLUTION_TOGGLE.over && !view.DECAYPOL_TOGGLE.over && !view.DIST_TOGGLE.over && !view.PROFIT_TOGGLE.over){
         //Unpress reset button if it is pressed and user clicks outside the button
-        if (pushed == RESET_BUTTON && ! RESET_BUTTON.isOver()) {
+        if (pushed == view.RESET_BUTTON && ! view.RESET_BUTTON.isOver()) {
           view.FEEDBACK_BOX.setModeMessage("");
           view.FEEDBACK_BOX.setActionMessage("");
         }
@@ -435,20 +433,20 @@ class Controller{
     }
     
     void toggle(){
-      if (POLLUTION_TOGGLE.over) {
-        if (toggled == POLLUTION_TOGGLE) toggled = null;
-        else toggled = POLLUTION_TOGGLE;
-      }else if (DECAYPOL_TOGGLE.over) {
-        if (toggled == DECAYPOL_TOGGLE) toggled = null;
-        else toggled = DECAYPOL_TOGGLE;
-      }else if (DIST_TOGGLE.over) {
-        if (toggled == DIST_TOGGLE) toggled = null;
-        else toggled = DIST_TOGGLE;
-      }else if (PROFIT_TOGGLE.over) {
-        if (toggled == PROFIT_TOGGLE) toggled = null;
-        else toggled = PROFIT_TOGGLE;
+      if (view.POLLUTION_TOGGLE.over) {
+        if (toggled == view.POLLUTION_TOGGLE) toggled = null;
+        else toggled = view.POLLUTION_TOGGLE;
+      }else if (view.DECAYPOL_TOGGLE.over) {
+        if (toggled == view.DECAYPOL_TOGGLE) toggled = null;
+        else toggled = view.DECAYPOL_TOGGLE;
+      }else if (view.DIST_TOGGLE.over) {
+        if (toggled == view.DIST_TOGGLE) toggled = null;
+        else toggled = view.DIST_TOGGLE;
+      }else if (view.PROFIT_TOGGLE.over) {
+        if (toggled == view.PROFIT_TOGGLE) toggled = null;
+        else toggled = view.PROFIT_TOGGLE;
       }
-      else if (SLIDER_TOGGLE.over) {
+      else if (view.SLIDER_TOGGLE.over) {
         if (showSlider == true) showSlider = false;
         else showSlider = true;
       }

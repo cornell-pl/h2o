@@ -3,6 +3,8 @@ class Slider {
   static final int BAR_HEIGHT = 20;    // width and height of bar 
   static final int S_WIDTH = 20;        //width and height of slider
   static final int S_HEIGHT = BAR_HEIGHT;  
+  
+  final PFont SLIDERFONT = createFont("Calibri", 14);
  
   int x, y;       // x and y position of bar
   int spos; //position of the slider in pixels

@@ -1,5 +1,7 @@
 class Button{ 
-
+  final PFont BASEFONT = createFont("Arial", 16);
+  final PFont SELECTEDFONT = createFont("Arial-Black", 16);
+  
   int x, y;                 // The x- and y-coordinates of the Button in pixels
   int bWidth;                 // Dimensions in pixels
   int bHeight;
@@ -10,7 +12,6 @@ class Button{
   boolean over = false;     //true if mouse is over button
   
   Button(int xp, int yp, int w, int h, color c, color o, color s, String l) {
-    println("going to make a button");
     x = xp;
     y = yp;
     bWidth = w+5;
@@ -19,7 +20,6 @@ class Button{
     overColor = o;           //Color when mouse over button
     selectedColor = s; 
     label = l;            //Color when button is in pushed state
-    println("made a button");
   }
   
   boolean isOver(){
@@ -47,7 +47,6 @@ class Button{
       fill(baseColor);
     }
     rect(x, y, bWidth, bHeight);
-    println("i'm a button");
     update();
   }  
   
