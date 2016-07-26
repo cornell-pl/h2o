@@ -1,11 +1,11 @@
 static final int SIZE_X = 30;    //Dimensions of the watershed in tiles
 static final int SIZE_Y = 30;
 
-static final int FACTORY_QUOTA = 40;
+static final int FACTORY_QUOTA = 40;    //Quota for each landuse
 static final int FARM_QUOTA = 60;
 static final int HOUSE_QUOTA = 100;
 
-static final Factory FACTORY = Factory.getInstance();
+static final Factory FACTORY = Factory.getInstance();   //Singletons for each landUse type
 static final Farm FARM = Farm.getInstance();
 static final House HOUSE = House.getInstance();
 static final Forest FOREST = Forest.getInstance();
@@ -13,7 +13,7 @@ static final PrimaryForest PFOREST =  PrimaryForest.getInstance();
 static final Dirt DIRT = Dirt.getInstance();
 static final River RIVER = River.getInstance();
 
-ArrayList<Tile> riverTiles = new ArrayList<Tile>(200);
+ArrayList<Tile> riverTiles = new ArrayList<Tile>(200);    //All the Tiles that are River
 
 Watershed WS;
 GUI graphics;
@@ -40,16 +40,18 @@ void draw() {
 //-------------------------------------------------------------------------------------------------//
 
 class Watershed{
-  /* Contains all elements of the Game and implements the GUI. All user functions can be accessed from this class */
+  /* Contains all game model and functions */
   final Tile[][] GAME_MAP = new Tile[SIZE_X][SIZE_Y]; //2D Matrix of all grid Tiles on game map
   
   Watershed(int x, int y) {
     populateGameMap();
     initializeRiver();
     buildForests();
-  }  //<>// //<>//
+   // buildAll();
+  }   //<>//
   
   void populateGameMap(){
+    /* Initializes a game map with all Dirt Tiles */
     for (int j=0; j<SIZE_Y; j++) {
       for (int i=0; i<SIZE_X; i++) { 
          GAME_MAP[i][j] = new Tile(DIRT, i, j);
@@ -109,6 +111,7 @@ class Watershed{
   }
   
   Tile getTile(int x, int y){
+    /* Returns Tile at positon <x, y> on map */
     try{
      return GAME_MAP[x][y];
     }catch(ArrayIndexOutOfBoundsException e){

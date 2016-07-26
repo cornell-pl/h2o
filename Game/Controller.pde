@@ -330,7 +330,7 @@ class Controller{
   //-------Button and Slider  ----//
   
   class SliderController{
-    
+    /* Controls slider values, updates model */
     void run(){
       if (view.FACTORY_SLIDER.isLocked()){
         int currentVal = view.FACTORY_SLIDER.getVal();
@@ -353,7 +353,7 @@ class Controller{
   
   
   class ButtonController{
-    
+    /* Contains logic for all buttons */
     void actionOnPress(){
       pushButtons();
       unpushButtons();

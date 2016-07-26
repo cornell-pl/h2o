@@ -51,8 +51,6 @@ class GUI {
     FEEDBACK_BOX.display();
     DASHBOARD.display();
     
-    drawDividers();
-    
     FACTORY_BUTTON.display();
     FARM_BUTTON.display();
     HOUSE_BUTTON.display();
@@ -74,15 +72,10 @@ class GUI {
     }
   }
 
-  void drawDividers(){ 
-      noFill();
-      stroke(204);
-      strokeWeight(1);
-      rect(XPOSB-20, YPOS, 392, TILE_HEIGHT*SIZE_Y);
-      line(XPOSB-20, YPOSB+TILE_HEIGHT+5+270, XPOSB-20+392, YPOSB+TILE_HEIGHT+5+270);
-  }
+
   
   class GameBoard {
+    /* Draws the game board */
     int xpos;
     int ypos;
     int wide;
@@ -148,7 +141,7 @@ class GUI {
     }
     
     void highlight() {
-      /* Hightlights Tile at position <x, y> with color hc (click and drag) */
+      /* Hightlights all the Tiles with color hc (during click and drag) */
       for (int [] e : highlightThese){
         drawTile(e[0], e[1], e[2], 100);
       }
@@ -167,10 +160,12 @@ class GUI {
     }
 
     void highlightTile(Tile t, color hc) {
+      /* Instructs GameBoard to highlight Tile t with color hc */
       highlightThese.add(new int[] {t.getX(), t.getY(), hc});
     }
     
     Tile[] getHighlightedTiles(){
+      /* Returns an array of the Tiles that are highlighted */
       Tile[] tiles = new Tile[highlightThese.size()];
       int i = 0;
       for (int[] e : highlightThese){
@@ -181,6 +176,7 @@ class GUI {
     }
     
     void showToggleInfo() {
+      /* Displays the appropriate information of each Tile */
       if (toggled == POLLUTION_TOGGLE) {
         showPollution();
       }else if (toggled == DECAYPOL_TOGGLE) {
@@ -354,6 +350,7 @@ class GUI {
   
   
   class Dashboard {
+    /* Displays information such as Score, Money and Quotas */
     int xpos;
     int ypos;
     
@@ -367,10 +364,11 @@ class GUI {
       showScore();
       showBuildQuota();
       showPollutionSlider();
+      drawDividers();
     }
     
     void showPollutionSlider() {
-      /* Displays the pollution slider and indicator */
+      /* Displays the pollution indicator */
       color green = #4BDE4A;
       color red = #FF3300;
       color extreme = #A72200;
@@ -467,6 +465,14 @@ class GUI {
       text("  Factories: " + waterS.countFactories() + " / " + FACTORY_QUOTA, x,y+30);
       text("  Farms: " + waterS.countFARM_SLIDER() + " / " + FARM_QUOTA, x,y+60);
       text("  Houses: " + waterS.countHOUSE_SLIDER() + " / " + HOUSE_QUOTA, x,y+90);
+    }
+    
+    void drawDividers(){ 
+      noFill();
+      stroke(204);
+      strokeWeight(1);
+      rect(xpos-20, ypos - 365, 392, TILE_HEIGHT*SIZE_Y);
+      line(xpos-20, ypos+TILE_HEIGHT+5+270-350, xpos-20+392, ypos+TILE_HEIGHT+5+270-350);
     }
   }//END OF NESTED CLASS DASHBOARD
 }//END OF GUI CLASS

@@ -70,7 +70,6 @@ static class LandUse {
 //Only one instance of each LandUse subclass is ever created, accessed statically using Subclass.getInstance();
   
 static class Factory extends LandUse {
-  /* Factory gives fixed profit no matter the location */
   private static Factory instance = new Factory();
   
   static Factory getInstance(){
@@ -97,7 +96,6 @@ static class Factory extends LandUse {
 
 
 static class Farm extends LandUse {
-  /* Farm gives less profit further from river  */
   private static Farm instance = new Farm();
   
   static Farm getInstance(){
