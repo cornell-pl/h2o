@@ -25,40 +25,36 @@ class Controller{
   }
   
   void eventLoop() {
+    /* Perform these actions on mouse input */
     TILE_CONTROLLER.run();
     LU_CONTROLLER.run();
     SLIDE_CONTROLLER.run();
   }
   
   void actionOnPress(){
+    /* Perform these actions on mousePress */
     BUTTON_CONTROLLER.actionOnPress();
   }
   
   void actionOnRelease(){
+    /* Perform these actions on mouseRelease */
     TILE_CONTROLLER.actionOnRelease();
     LU_CONTROLLER.actionOnRelease();
   }
   
   void actionOnClick(){
+    /* Perform these actions on mouseClick */
     TOGGLE_CONTROLLER.actionOnClick();
   }
   
   boolean mouseOverMap(){
-    /* Returns true if the mouse position is over the Watershed map. false otherwise. */
+    /* Returns true if the mouse position is over the Watershed map. False otherwise. */
     int[] xRange = view.GAME_BOARD.getXRange();
     int[] yRange =  view.GAME_BOARD.getYRange();
     return ((mouseX > xRange[0] && mouseX < xRange[1]) && (mouseY > yRange[0] && mouseY < yRange[1]));
   }
   
-  boolean mouseOverButton(){
-    /* Returns true if mouse is over a button, false otherwise. */
-    return view.FACTORY_BUTTON.isOver() ||
-           view.FARM_BUTTON.isOver() ||
-           view.HOUSE_BUTTON.isOver() ||
-           view.FOREST_BUTTON.isOver() ||
-           view.DEMOLISH_BUTTON.isOver() ||
-           view.RESET_BUTTON.isOver();
-  }
+
   
   boolean inAddMode(){
     /* Returns true if an adder button is pushed (includes demolish). False otherwise */
